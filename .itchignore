@@ -1,0 +1,12 @@
+.git/
+.agents/
+.codex/
+
+*.ps1
+*.log
+*.tmp
+*.bak
+*.zip
+dist/
+
+art/icons/v1/_contact-sheet.png

@@ -1,0 +1,4105 @@
+[
+  {
+    "id": "cloak_feywilds",
+    "name": "Cloak of Fey Paths",
+    "trueName": {
+      "name": "Sylvara",
+      "title": "Whisper of the First Forest",
+      "full": "Sylvara, Whisper of the First Forest",
+      "unlockAffinity": 1000,
+      "revealed": false
+    },
+    "class": "Ranger",
+    "virtue": "The Hunt",
+    "theme": "Fey • Nature • Hunt • Balance",
+    "icon": "modules/the-first-relics/art/icons/v1/cloak-feywilds.png",
+    "personality": {
+      "temperament": [
+        "Patient",
+        "Protective",
+        "Observant",
+        "Ancient",
+        "Merciless only toward unnatural prey"
+      ],
+      "likes": [
+        "Mercy toward the innocent",
+        "Respectful hunting",
+        "Protecting nature",
+        "Patience",
+        "Balance",
+        "Tracking without waste"
+      ],
+      "dislikes": [
+        "Cruelty",
+        "Fire used carelessly",
+        "Needless killing",
+        "Deforestation",
+        "Greed",
+        "Corruption of the wild"
+      ],
+      "corePhrase": "The forest remembers every step.",
+      "roleplayGuidance": "Sylvara does not command. She watches, remembers, and judges. She responds to choices, not requests."
+    },
+    "moodMap": [
+      {
+        "min": 0,
+        "max": 99,
+        "mood": "Silent",
+        "description": "The cloak is cold and distant. It gives no dreams."
+      },
+      {
+        "min": 100,
+        "max": 299,
+        "mood": "Watching",
+        "description": "The cloak notices the bearer. Leaves sometimes turn toward them."
+      },
+      {
+        "min": 300,
+        "max": 499,
+        "mood": "Curious",
+        "description": "The cloak begins to answer through instinct and small signs."
+      },
+      {
+        "min": 500,
+        "max": 749,
+        "mood": "Respectful",
+        "description": "The relic recognizes the bearer as a true hunter."
+      },
+      {
+        "min": 750,
+        "max": 999,
+        "mood": "Bound",
+        "description": "The forest moves with the bearer, but the true name remains sealed."
+      },
+      {
+        "min": 1000,
+        "max": 1000,
+        "mood": "One With The Hunt",
+        "description": "Sylvara reveals her true name. The bearer is no longer alone in the hunt."
+      }
+    ],
+    "affinity": {
+      "min": 0,
+      "max": 1000,
+      "thresholds": {
+        "dormant": 0,
+        "awakened": 300,
+        "exalted": 750,
+        "signature": 1000
+      },
+      "moods": [
+        "Silent",
+        "Watching",
+        "Curious",
+        "Respectful",
+        "Bound",
+        "One With The Hunt"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Dormant",
+        "bonus": 1,
+        "charges": 3
+      },
+      "awakened": {
+        "title": "Awakened",
+        "bonus": 2,
+        "charges": 6
+      },
+      "exalted": {
+        "title": "Exalted",
+        "bonus": 3,
+        "charges": 10
+      }
+    },
+    "affinityEvents": [
+      {
+        "id": "protect_wild_creature",
+        "label": "Protected a wounded wild creature",
+        "delta": 10,
+        "category": "Nature"
+      },
+      {
+        "id": "protect_grove",
+        "label": "Protected a sacred grove or ancient tree",
+        "delta": 25,
+        "category": "Nature"
+      },
+      {
+        "id": "clean_hunt",
+        "label": "Completed a hunt without needless cruelty",
+        "delta": 15,
+        "category": "The Hunt"
+      },
+      {
+        "id": "track_prey",
+        "label": "Solved a problem through tracking and patience",
+        "delta": 10,
+        "category": "The Hunt"
+      },
+      {
+        "id": "spare_nature_spirit",
+        "label": "Spared or aided a fey/nature spirit",
+        "delta": 20,
+        "category": "Fey"
+      },
+      {
+        "id": "destroy_anomaly",
+        "label": "Destroyed anomalous corruption threatening nature",
+        "delta": 35,
+        "category": "Corruption"
+      },
+      {
+        "id": "protect_weak_in_wild",
+        "label": "Protected a powerless traveler, beast, or spirit in the wild",
+        "delta": 15,
+        "category": "Protection"
+      },
+      {
+        "id": "refuse_wasteful_reward",
+        "label": "Refused a reward that would harm the natural balance",
+        "delta": 20,
+        "category": "Balance"
+      },
+      {
+        "id": "complete_first_hunt",
+        "label": "Completed a meaningful hunt by patience, not brute force",
+        "delta": 50,
+        "category": "Milestone"
+      },
+      {
+        "id": "kill_for_sport",
+        "label": "Killed for sport or pleasure",
+        "delta": -25,
+        "category": "Violation"
+      },
+      {
+        "id": "burn_forest",
+        "label": "Burned or desecrated living nature",
+        "delta": -40,
+        "category": "Violation"
+      },
+      {
+        "id": "betray_fey",
+        "label": "Betrayed a fey or forest guardian without cause",
+        "delta": -30,
+        "category": "Violation"
+      },
+      {
+        "id": "torture_prey",
+        "label": "Caused needless suffering to hunted prey",
+        "delta": -20,
+        "category": "Violation"
+      },
+      {
+        "id": "ignore_corruption",
+        "label": "Ignored a spreading corruption of the wild when action was possible",
+        "delta": -20,
+        "category": "Violation"
+      }
+    ],
+    "hiddenRequirements": [
+      {
+        "id": "reach_1000",
+        "label": "Reach 1000 Affinity",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "protect_elder_tree",
+        "label": "Protect the Elder Tree or a similarly ancient natural spirit",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "complete_first_hunt",
+        "label": "Complete the First Hunt without needless cruelty",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "refuse_archfey_gift",
+        "label": "Refuse an Archfey's gift when accepting it would betray balance",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "never_kill_for_pleasure",
+        "label": "Never kill for pleasure after being chosen by the relic",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      }
+    ],
+    "features": {
+      "passives": [
+        "<strong>Hunter's Instinct.</strong> You gain the relic bonus to Wisdom (Survival) checks made to track creatures and Wisdom (Perception) checks that rely on sight, hearing, or smell.",
+        "<strong>Path of the Wild.</strong> Nonmagical difficult terrain caused by plants, mud, snow, roots, or natural terrain does not slow you.",
+        "<strong>Predator's Patience.</strong> If you do not move on your turn, your next ranged weapon attack before the end of your next turn deals extra force damage equal to the relic stage bonus.",
+        "<strong>Eternal Hunt.</strong> You always know the direction of a creature marked by Hunter's Mark or a similar ranger feature while it is on the same plane. The target cannot benefit from invisibility against your tracking."
+      ],
+      "actives": [
+        "<strong>Fey Step.</strong> <em>Bonus Action, 1 charge.</em> Teleport up to 60 feet to an unoccupied space you can see. After teleporting, you may move 10 feet without provoking opportunity attacks. <strong>Midi:</strong> Utility Activity spends charges and posts usage; token movement is resolved manually.",
+        "<strong>Arrow of the First Hunt.</strong> <em>Special, 2 charges.</em> Use when you hit with a ranged weapon attack. The attack deals extra force damage. The target cannot benefit from invisibility against you until the start of your next turn. <strong>Midi:</strong> Damage Activity rolls extra force damage.",
+        "<strong>Nature's Pursuit.</strong> <em>Bonus Action, 3 charges, 1 minute.</em> Your speed increases by 10 feet, you ignore nonmagical difficult terrain, and ranged attacks at long range do not impose disadvantage. <strong>Midi:</strong> Utility Activity can apply the Nature's Pursuit item effect.",
+        "<strong>Briar Snare.</strong> <em>Action, 4 charges.</em> A creature within 60 feet must make a Strength saving throw against your relic DC. On a failure, it is restrained by fey vines until the end of your next turn. <strong>Midi:</strong> Save Activity requests a STR save; apply Restrained through normal Foundry condition tools if the condition is not applied automatically."
+      ],
+      "avatar": "<strong>Avatar of the First Hunt.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> Spectral antlers, emerald leaves, and fey lights surround you. You gain flying speed 40 ft, hover, ignore nonmagical difficult terrain, ignore half and three-quarters cover with ranged weapon attacks, and have advantage on attacks against a creature you have marked. Beasts are not hostile to you unless magically compelled or directly harmed by you. Trees, roots, and undergrowth bend away from your path. <strong>Automation:</strong> Avatar Helper applies fly/hover/basic bonuses; terrain, cover, beasts, and marked target advantage are GM-resolved.",
+      "signature": "<strong>Blessing of Sylvara: Whisper of the First Forest.</strong> <em>Once per long rest.</em> For 1 minute, the forest hunts with you. You know the exact location of any creature you have marked within 1 mile if it is on the same plane. Invisibility, mundane hiding, nonmagical cover, and natural terrain cannot conceal that creature from you. Your first successful ranged weapon attack against the marked creature during this duration deals extra force damage. If the marked creature drops to 0 HP before the duration ends, you may immediately use Fey Step once without spending charges. <strong>Automation:</strong> signature activity rolls damage; tracking, concealment bypass, and free Fey Step are GM-resolved."
+    },
+    "dreams": [
+      {
+        "id": "silent_forest",
+        "stage": "dormant",
+        "affinityMin": 100,
+        "title": "The Silent Forest",
+        "text": "You dream of a forest where no bird sings. Every tree faces away from you. When you wake, a single green leaf rests inside your palm."
+      },
+      {
+        "id": "white_stag",
+        "stage": "awakened",
+        "affinityMin": 300,
+        "title": "The White Stag",
+        "text": "A white stag watches you from between silver trees. You draw no weapon. It nods once, then vanishes into mist."
+      },
+      {
+        "id": "first_huntress",
+        "stage": "exalted",
+        "affinityMin": 750,
+        "title": "The First Huntress",
+        "text": "You see a woman cloaked in leaves and moonlight. She looses an arrow, but not at prey. She shoots the chain around a wounded beast's neck."
+      },
+      {
+        "id": "true_name",
+        "stage": "signature",
+        "affinityMin": 1000,
+        "title": "Sylvara",
+        "text": "The world falls silent. The old forest kneels without bending. A voice whispers: 'You no longer hunt for the forest. The forest hunts with you.'"
+      }
+    ],
+    "memories": [
+      {
+        "id": "first_mercy",
+        "title": "The First Mercy",
+        "locked": true,
+        "text": "The relic remembers the day its bearer chose mercy over pride."
+      },
+      {
+        "id": "elder_tree",
+        "title": "The Elder Tree",
+        "locked": true,
+        "text": "The relic remembers the ancient roots that were protected from fire and axe."
+      },
+      {
+        "id": "corrupted_stag",
+        "title": "The Corrupted Stag",
+        "locked": true,
+        "text": "The relic remembers the hunt that ended corruption without hatred."
+      },
+      {
+        "id": "dryad_refusal",
+        "title": "The Refused Gift",
+        "locked": true,
+        "text": "The relic remembers the gift refused for the sake of balance."
+      },
+      {
+        "id": "true_name_spoken",
+        "title": "The True Name Spoken",
+        "locked": true,
+        "text": "The relic remembers the moment Sylvara was no longer hidden."
+      }
+    ],
+    "quotes": {
+      "positive": [
+        "The forest noticed.",
+        "You hunted with respect.",
+        "The arrow was not cruel.",
+        "Mercy is not weakness. It is restraint.",
+        "The path opens for those who do not wound it."
+      ],
+      "negative": [
+        "The trees watched. And they wept.",
+        "That was not a hunt. It was waste.",
+        "Fire remembers the hand that feeds it.",
+        "You stepped loudly today.",
+        "The forest does not forget cruelty."
+      ],
+      "neutral": [
+        "The forest remembers every step.",
+        "Patience is the first arrow.",
+        "Not all prey must die.",
+        "Listen before you loose the arrow.",
+        "The wilds are watching."
+      ],
+      "signature": [
+        "We are no longer two.",
+        "You no longer hunt for the forest. The forest hunts with you.",
+        "My name is Sylvara. Remember it only when the leaves are listening."
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Sylvara Awakens",
+      "text": [
+        "The wind stops.",
+        "Leaves rise from the ground, but none fall.",
+        "For a heartbeat, every bird, beast, and branch turns toward you.",
+        "A white stag steps out of the mist and lowers its head.",
+        "A voice older than any kingdom whispers:",
+        "You no longer hunt for the forest.",
+        "The forest hunts with you.",
+        "The true name burns softly in your mind: Sylvara, Whisper of the First Forest."
+      ]
+    },
+    "lore": {
+      "origin": "Sylvara is believed to be one of the oldest First Relics, born from the first pact between mortal hunters and the living wild.",
+      "hiddenSorrow": "Sylvara failed to protect her first bearer, who chose to save a sacred beast instead of themselves.",
+      "knownRumor": "Some hunters claim the cloak does not help those who seek trophies. It only answers those who understand the difference between hunting and killing.",
+      "appearanceDormant": "A weathered green cloak with faint leaf-pattern stitching.",
+      "appearanceAwakened": "Emerald veins and fey script appear along the hem.",
+      "appearanceExalted": "The cloak trails mist and drifting leaves. Moonlit antlers appear in its shadow.",
+      "appearanceSignature": "The cloak is unchanged at first glance, but every living forest recognizes its bearer."
+    },
+    "releaseStatus": "stable",
+    "v1Checklist": {
+      "trueName": true,
+      "personality": true,
+      "moodMap": true,
+      "affinityEvents": true,
+      "hiddenRequirements": true,
+      "features": true,
+      "dreams": true,
+      "memories": true,
+      "quotes": true,
+      "signatureCeremony": true,
+      "lore": true,
+      "automationMetadata": true,
+      "needsPlaytest": false,
+      "relicCleanup": true
+    },
+    "automationStatus": {
+      "passives": "Foundry Active Effects",
+      "actives": "dnd5e Activities + MidiQOL",
+      "avatar": "dnd5e Activity + Active Effect",
+      "signature": "dnd5e Utility Activity",
+      "notes": [
+        "Primary workflow is Item Sheet → Activities.",
+        "No player-facing macro is required.",
+        "Damage abilities use native Damage Activities.",
+        "Buff abilities use item-linked Active Effects.",
+        "Teleport placement, precise cover ignore, and complex marked-prey logic remain GM adjudication."
+      ]
+    },
+    "nativeWorkflow": true
+  },
+  {
+    "id": "mantle_first_seer",
+    "name": "Mantle of the First Seer",
+    "trueName": {
+      "name": "Aetherys",
+      "title": "Witness Beyond Time",
+      "full": "Aetherys, Witness Beyond Time",
+      "unlockAffinity": 1000,
+      "revealed": false
+    },
+    "class": "Wizard",
+    "virtue": "Understanding",
+    "theme": "Knowledge • Time • Memory • Stars • Prophecy • Truth",
+    "icon": "modules/the-first-relics/art/icons/v1/mantle-first-seer.png",
+    "personality": {
+      "temperament": [
+        "Patient",
+        "Calm",
+        "Curious",
+        "Ancient",
+        "Cryptic"
+      ],
+      "likes": [
+        "Honest curiosity",
+        "Ancient libraries",
+        "Teaching",
+        "Stargazing",
+        "Discoveries",
+        "Solving mysteries"
+      ],
+      "dislikes": [
+        "Pride",
+        "Dogma",
+        "Destroying books",
+        "Blind certainty",
+        "Hiding truth",
+        "Knowledge used only for domination"
+      ],
+      "corePhrase": "Every answer creates another question.",
+      "roleplayGuidance": "Aetherys teaches by asking the question the bearer is avoiding. It rewards curiosity, humility before evidence, and choices made after seeing the pattern rather than forcing the desired answer."
+    },
+    "moodMap": [
+      {
+        "min": 0,
+        "max": 99,
+        "mood": "Silent",
+        "description": "The mantle offers no visions."
+      },
+      {
+        "min": 100,
+        "max": 299,
+        "mood": "Observing",
+        "description": "Ink shifts, books open, and omens appear."
+      },
+      {
+        "min": 300,
+        "max": 499,
+        "mood": "Questioning",
+        "description": "The mantle answers questions with sharper questions."
+      },
+      {
+        "min": 500,
+        "max": 749,
+        "mood": "Teaching",
+        "description": "The mantle reveals patterns behind events."
+      },
+      {
+        "min": 750,
+        "max": 999,
+        "mood": "Guiding",
+        "description": "Bearer and relic read possibilities together."
+      },
+      {
+        "min": 1000,
+        "max": 1000,
+        "mood": "Beyond Time",
+        "description": "Aetherys reveals the future was never written."
+      }
+    ],
+    "affinity": {
+      "min": 0,
+      "max": 1000,
+      "thresholds": {
+        "dormant": 0,
+        "awakened": 300,
+        "exalted": 750,
+        "signature": 1000
+      },
+      "moods": [
+        "Silent",
+        "Observing",
+        "Questioning",
+        "Teaching",
+        "Guiding",
+        "Beyond Time"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Dormant",
+        "bonus": 1,
+        "charges": 3
+      },
+      "awakened": {
+        "title": "Awakened",
+        "bonus": 2,
+        "charges": 6
+      },
+      "exalted": {
+        "title": "Exalted",
+        "bonus": 3,
+        "charges": 10
+      }
+    },
+    "affinityEvents": [
+      {
+        "id": "learn_spell",
+        "label": "Learned a new spell through study",
+        "delta": 10,
+        "category": "Knowledge"
+      },
+      {
+        "id": "identify_magic",
+        "label": "Correctly identified an unknown magical effect",
+        "delta": 5,
+        "category": "Knowledge"
+      },
+      {
+        "id": "solve_puzzle",
+        "label": "Solved a magical puzzle or riddle",
+        "delta": 10,
+        "category": "Understanding"
+      },
+      {
+        "id": "share_knowledge",
+        "label": "Shared knowledge with another scholar or ally",
+        "delta": 10,
+        "category": "Teaching"
+      },
+      {
+        "id": "preserve_library",
+        "label": "Preserved a library, archive, or irreplaceable record",
+        "delta": 20,
+        "category": "Knowledge"
+      },
+      {
+        "id": "decipher_language",
+        "label": "Deciphered a forgotten language or ancient script",
+        "delta": 20,
+        "category": "Understanding"
+      },
+      {
+        "id": "solve_old_mystery",
+        "label": "Solved a centuries-old mystery",
+        "delta": 25,
+        "category": "Truth"
+      },
+      {
+        "id": "truth_over_gain",
+        "label": "Chose truth over personal gain",
+        "delta": 25,
+        "category": "Truth"
+      },
+      {
+        "id": "complete_prophecy",
+        "label": "Completed or correctly fulfilled an ancient prophecy",
+        "delta": 50,
+        "category": "Milestone"
+      },
+      {
+        "id": "recover_first_chronicle",
+        "label": "Recovered the First Chronicle or equivalent lost truth",
+        "delta": 50,
+        "category": "Milestone"
+      },
+      {
+        "id": "burn_books",
+        "label": "Burned books or destroyed knowledge intentionally",
+        "delta": -30,
+        "category": "Violation"
+      },
+      {
+        "id": "destroy_evidence",
+        "label": "Destroyed historical evidence for convenience",
+        "delta": -25,
+        "category": "Violation"
+      },
+      {
+        "id": "lie_to_innocents",
+        "label": "Used lies or false knowledge to manipulate innocents",
+        "delta": -20,
+        "category": "Violation"
+      },
+      {
+        "id": "power_over_truth",
+        "label": "Chose power over truth",
+        "delta": -25,
+        "category": "Violation"
+      },
+      {
+        "id": "suppress_knowledge",
+        "label": "Suppressed knowledge for selfish reasons",
+        "delta": -30,
+        "category": "Violation"
+      }
+    ],
+    "hiddenRequirements": [
+      {
+        "id": "reach_1000",
+        "label": "Reach 1000 Resonance",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "recover_first_chronicle",
+        "label": "Recover the First Chronicle or equivalent ancient truth",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "complete_prophecy",
+        "label": "Complete an ancient prophecy",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "teach_worthy_student",
+        "label": "Teach a worthy student",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "refuse_forbidden_knowledge",
+        "label": "Refuse forbidden knowledge when it offers easy power",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "accept_fixed_future",
+        "label": "Accept a future that cannot be changed",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      }
+    ],
+    "features": {
+      "passives": [
+        "<strong>Scholar's Insight.</strong> You gain the relic bonus to Intelligence (Arcana), Intelligence (History), and Intelligence (Investigation) checks made to understand magic, prophecy, history, or ancient writing.",
+        "<strong>Perfect Concentration.</strong> You have advantage on saving throws made to maintain concentration on divination spells. If the spell is not divination, you may add the relic bonus instead.",
+        "<strong>Eyes Beyond Time.</strong> The first time each combat you attempt Counterspell, Dispel Magic, or an Arcana check to identify a spell, add the relic bonus to the roll.",
+        "<strong>Living Chronicle.</strong> When you cast a divination spell, you gain temporary hit points equal to your proficiency bonus + the relic bonus. You also cannot be surprised while conscious."
+      ],
+      "actives": [
+        "<strong>Echo of Tomorrow.</strong> <em>Bonus Action, 1 charge.</em> Gain advantage on your next Intelligence ability check before the end of your next turn.",
+        "<strong>Moment of Clarity.</strong> <em>Reaction, 2 charges.</em> When a creature you can see makes an attack roll, ability check, or saving throw, add or subtract the relic bonus from that roll before the outcome is finalized.",
+        "<strong>Threads of Fate.</strong> <em>Reaction, 3 charges.</em> A willing creature within 60 feet may reroll one attack roll, saving throw, or ability check after seeing the result. The new roll must be used.",
+        "<strong>Spell Insight.</strong> <em>Reaction, 4 charges.</em> When you see a creature within 120 feet cast a spell, learn its level, school, and components. If the spell is 5th level or lower, gain advantage on one saving throw against it before the end of the turn."
+      ],
+      "avatar": "<strong>Avatar of the First Seer.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> Constellations orbit you. You gain flying speed 30 ft with hover, detect invisible creatures within 30 ft, advantage on Intelligence and Arcana checks, and advantage on concentration checks. Once during the avatar, you may cast one divination spell of 3rd level or lower without expending a spell slot.",
+      "signature": "<strong>Chronicle Unwritten.</strong> <em>Once per long rest.</em> When any creature you can see rolls a d20 for an attack roll, saving throw, or ability check, after seeing the result but before the outcome is finalized, force that creature to reroll. You choose which result is used."
+    },
+    "dreams": [
+      {
+        "id": "silent_library",
+        "stage": "dormant",
+        "affinityMin": 100,
+        "title": "The Silent Library",
+        "text": "You walk between endless shelves. Every book is blank."
+      },
+      {
+        "id": "empty_observatory",
+        "stage": "awakened",
+        "affinityMin": 300,
+        "title": "The Empty Observatory",
+        "text": "The stars do not move. You do."
+      },
+      {
+        "id": "seventh_eclipse",
+        "stage": "exalted",
+        "affinityMin": 750,
+        "title": "The Seventh Eclipse",
+        "text": "Two suns hang above the world. One is false."
+      },
+      {
+        "id": "witness_beyond_time",
+        "stage": "signature",
+        "affinityMin": 1000,
+        "title": "Witness Beyond Time",
+        "text": "A hooded figure turns. Its eyes contain every star that ever died."
+      }
+    ],
+    "memories": [
+      {
+        "id": "first_library",
+        "title": "The First Library",
+        "locked": true,
+        "text": "Aetherys remembers the first place where mortals preserved memory."
+      },
+      {
+        "id": "broken_prophecy",
+        "title": "The Broken Prophecy",
+        "locked": true,
+        "text": "A prophecy shattered because someone understood it."
+      },
+      {
+        "id": "forgotten_student",
+        "title": "The Forgotten Student",
+        "locked": true,
+        "text": "The student who asked the question no master dared answer."
+      },
+      {
+        "id": "seventh_eclipse",
+        "title": "The Seventh Eclipse",
+        "locked": true,
+        "text": "The sky lied to the world."
+      },
+      {
+        "id": "time_stopped",
+        "title": "The Day Time Stopped",
+        "locked": true,
+        "text": "The future held its breath."
+      }
+    ],
+    "quotes": {
+      "positive": [
+        "Knowledge shared becomes wisdom.",
+        "You asked the right question.",
+        "Few choose understanding.",
+        "Curiosity is sacred."
+      ],
+      "negative": [
+        "You already knew.",
+        "Pride blinds more surely than darkness.",
+        "Ignorance is chosen.",
+        "A burned page still remembers the hand."
+      ],
+      "neutral": [
+        "Every answer creates another question.",
+        "Time remembers.",
+        "Ask again.",
+        "Tomorrow already answered."
+      ],
+      "signature": [
+        "I no longer observe history.",
+        "We write it together.",
+        "The future was never written."
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Aetherys Awakens",
+      "text": [
+        "The stars stop moving.",
+        "Countless empty books open around you.",
+        "A single sentence appears: The future was never written.",
+        "A hooded figure turns at last.",
+        "A voice whispers: I am Aetherys. Witness Beyond Time."
+      ]
+    },
+    "lore": {
+      "origin": "Aetherys is the living memory of the first mortal who understood that knowledge is not the same as wisdom.",
+      "hiddenSorrow": "Aetherys once revealed a truth too early, and an age burned because of it.",
+      "knownRumor": "Some wizards say the mantle answers questions. They are wrong. It teaches why the question was flawed.",
+      "appearanceDormant": "A dark scholar's mantle marked with faint silver thread.",
+      "appearanceAwakened": "Star-maps appear across the fabric when exposed to moonlight.",
+      "appearanceExalted": "The mantle trails drifting pages and quiet constellations.",
+      "appearanceSignature": "The stars on the mantle no longer match the sky."
+    },
+    "releaseStatus": "stable",
+    "v1Checklist": {
+      "trueName": true,
+      "personality": true,
+      "moodMap": true,
+      "affinityEvents": true,
+      "hiddenRequirements": true,
+      "features": true,
+      "dreams": true,
+      "memories": true,
+      "quotes": true,
+      "signatureCeremony": true,
+      "lore": true,
+      "needsPlaytest": false,
+      "relicCleanup": true
+    },
+    "nativeWorkflow": true
+  },
+  {
+    "id": "manacles_unbroken",
+    "name": "Girdle of the Unbroken",
+    "trueName": {
+      "name": "Kharok",
+      "title": "The Unbroken Stone",
+      "full": "Kharok, The Unbroken Stone",
+      "unlockAffinity": 1000,
+      "revealed": false
+    },
+    "class": "Barbarian",
+    "virtue": "Indomitable Will",
+    "theme": "Will • Endurance • Defiance • Survival • Strength",
+    "icon": "modules/the-first-relics/art/icons/v1/girdle-unbroken.png",
+    "personality": {
+      "temperament": [
+        "Blunt",
+        "Enduring",
+        "Protective",
+        "Severe",
+        "Unshakable"
+      ],
+      "likes": [
+        "Standing back up",
+        "Protecting allies",
+        "Enduring pain without surrender",
+        "Courage under fear",
+        "Strength used with restraint"
+      ],
+      "dislikes": [
+        "Bullying the weak",
+        "Cowardice that betrays others",
+        "Breaking under temptation",
+        "Cruel displays of strength",
+        "Abandoning companions"
+      ],
+      "corePhrase": "Stand.",
+      "roleplayGuidance": "Kharok speaks rarely and directly. It commands the bearer to rise, endure, and protect strength from becoming cruelty. It respects stubborn courage only when it serves someone beyond the bearer."
+    },
+    "moodMap": [
+      {
+        "min": 0,
+        "max": 99,
+        "mood": "Silent",
+        "description": "The girdle feels like dead weight."
+      },
+      {
+        "min": 100,
+        "max": 299,
+        "mood": "Testing",
+        "description": "The bearer feels pressure during fear and pain."
+      },
+      {
+        "min": 300,
+        "max": 499,
+        "mood": "Demanding",
+        "description": "The relic speaks in single-word commands."
+      },
+      {
+        "min": 500,
+        "max": 749,
+        "mood": "Respectful",
+        "description": "The relic recognizes the bearer has stood when falling was easier."
+      },
+      {
+        "min": 750,
+        "max": 999,
+        "mood": "Unbroken",
+        "description": "Relic and bearer endure together."
+      },
+      {
+        "min": 1000,
+        "max": 1000,
+        "mood": "Stoneheart",
+        "description": "Kharok reveals strength is refusal to yield."
+      }
+    ],
+    "affinity": {
+      "min": 0,
+      "max": 1000,
+      "thresholds": {
+        "dormant": 0,
+        "awakened": 300,
+        "exalted": 750,
+        "signature": 1000
+      },
+      "moods": [
+        "Silent",
+        "Testing",
+        "Demanding",
+        "Respectful",
+        "Unbroken",
+        "Stoneheart"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Dormant",
+        "bonus": 1,
+        "charges": 3
+      },
+      "awakened": {
+        "title": "Awakened",
+        "bonus": 2,
+        "charges": 6
+      },
+      "exalted": {
+        "title": "Exalted",
+        "bonus": 3,
+        "charges": 10
+      }
+    },
+    "affinityEvents": [
+      {
+        "id": "stand_after_fall",
+        "label": "Stood back up after being defeated, dropped, or overwhelmed",
+        "delta": 20,
+        "category": "Will"
+      },
+      {
+        "id": "protect_ally",
+        "label": "Protected an ally while personally endangered",
+        "delta": 20,
+        "category": "Protection"
+      },
+      {
+        "id": "resist_fear",
+        "label": "Resisted fear, domination, or despair",
+        "delta": 15,
+        "category": "Will"
+      },
+      {
+        "id": "hold_line",
+        "label": "Held the line against stronger opposition",
+        "delta": 25,
+        "category": "Endurance"
+      },
+      {
+        "id": "control_rage",
+        "label": "Controlled rage instead of harming the undeserving",
+        "delta": 20,
+        "category": "Restraint"
+      },
+      {
+        "id": "face_impossible",
+        "label": "Faced impossible odds without abandoning the cause",
+        "delta": 35,
+        "category": "Defiance"
+      },
+      {
+        "id": "last_one_standing",
+        "label": "Was the last one standing and refused to yield",
+        "delta": 50,
+        "category": "Milestone"
+      },
+      {
+        "id": "bully_weak",
+        "label": "Used strength to bully or humiliate the weak",
+        "delta": -25,
+        "category": "Violation"
+      },
+      {
+        "id": "abandon_ally",
+        "label": "Abandoned an ally out of fear or convenience",
+        "delta": -35,
+        "category": "Violation"
+      },
+      {
+        "id": "surrender_values",
+        "label": "Surrendered core values to avoid pain",
+        "delta": -30,
+        "category": "Violation"
+      },
+      {
+        "id": "cruel_strength",
+        "label": "Used overwhelming strength with needless cruelty",
+        "delta": -25,
+        "category": "Violation"
+      }
+    ],
+    "hiddenRequirements": [
+      {
+        "id": "reach_1000",
+        "label": "Reach 1000 Resonance",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "stand_after_true_defeat",
+        "label": "Rise after a true defeat without surrendering your cause",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "protect_without_glory",
+        "label": "Protect someone when no glory or reward is possible",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "refuse_easy_surrender",
+        "label": "Refuse an easy surrender that would betray others",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "master_rage",
+        "label": "Prove that rage serves will, not the other way around",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      }
+    ],
+    "features": {
+      "passives": [
+        "<strong>Unyielding Core.</strong> You gain the relic bonus to Strength checks and Strength saving throws made to resist being moved, knocked prone, grappled, restrained, or frightened.",
+        "<strong>Stand Again.</strong> Standing from prone costs only 5 feet of movement. While raging, it costs no movement.",
+        "<strong>Will Before Wound.</strong> While raging, the first time each round you take damage, reduce that damage by the relic bonus.",
+        "<strong>The Unbroken Does Not Kneel.</strong> You have advantage on saving throws against frightened, charmed, paralyzed, and stunned. If you already have advantage, add the relic bonus."
+      ],
+      "actives": [
+        "<strong>Stand.</strong> <em>Bonus Action, 1 charge.</em> End the prone condition on yourself and gain temporary hit points equal to your barbarian level + the relic bonus.",
+        "<strong>Stoneheart Surge.</strong> <em>Special, 2 charges.</em> Use when you hit with a melee weapon attack. The attack deals extra force damage and you may move up to 10 feet without provoking opportunity attacks.",
+        "<strong>Refuse the Fall.</strong> <em>Reaction, 3 charges.</em> When you fail a Strength, Constitution, or Wisdom saving throw, reroll it. The new result must be used.",
+        "<strong>Hold the World.</strong> <em>Reaction, 4 charges.</em> When an ally within 10 feet would be hit or forcibly moved, grant that ally +3 AC against the triggering attack or take the forced movement in their place if possible."
+      ],
+      "avatar": "<strong>Avatar of the Unbroken.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> The ground cracks beneath your feet. You gain flying speed 30 ft with hover in short bursts, cannot be forcibly moved unless you allow it, cannot be knocked prone, and once per turn when you hit with a melee weapon attack you deal extra force damage equal to your barbarian level.",
+      "signature": "<strong>Heart That Refuses.</strong> <em>Once per long rest.</em> For 1 minute, the first time you would drop to 0 hit points, you drop to 1 hit point instead. During this duration, you cannot be frightened, paralyzed, or forcibly moved, and when you stand from prone you may make one melee weapon attack as part of the same movement."
+    },
+    "dreams": [
+      {
+        "id": "stone_weight",
+        "stage": "dormant",
+        "affinityMin": 100,
+        "title": "The Stone Weight",
+        "text": "You carry a mountain on your back. It waits."
+      },
+      {
+        "id": "war_drum",
+        "stage": "awakened",
+        "affinityMin": 300,
+        "title": "The War Drum",
+        "text": "A drum beats beneath the earth. Every time you fall, it grows louder."
+      },
+      {
+        "id": "last_stand",
+        "stage": "exalted",
+        "affinityMin": 750,
+        "title": "The Last Stand",
+        "text": "A warrior stands alone before a thousand spears."
+      },
+      {
+        "id": "kharok",
+        "stage": "signature",
+        "affinityMin": 1000,
+        "title": "Kharok",
+        "text": "A figure of stone says one word: Stand."
+      }
+    ],
+    "memories": [
+      {
+        "id": "first_fall",
+        "title": "The First Fall",
+        "locked": true,
+        "text": "Strength failed and will remained."
+      },
+      {
+        "id": "shield_without_name",
+        "title": "The Shield Without Name",
+        "locked": true,
+        "text": "Someone died protecting strangers."
+      },
+      {
+        "id": "mountain_refused",
+        "title": "The Mountain Refused",
+        "locked": true,
+        "text": "A mountain moved because someone refused to."
+      },
+      {
+        "id": "broken_warband",
+        "title": "The Broken Warband",
+        "locked": true,
+        "text": "Companions were lost, but their will was carried onward."
+      },
+      {
+        "id": "last_breath",
+        "title": "The Last Breath",
+        "locked": true,
+        "text": "The breath taken after everyone said there would be no more."
+      }
+    ],
+    "quotes": {
+      "positive": [
+        "Stand.",
+        "Again.",
+        "You did not break.",
+        "Pain is not surrender."
+      ],
+      "negative": [
+        "That was not strength.",
+        "You bent for comfort.",
+        "Do not call cruelty power.",
+        "You left them."
+      ],
+      "neutral": [
+        "Breathe.",
+        "Hold.",
+        "Weight teaches.",
+        "No storm asks permission."
+      ],
+      "signature": [
+        "I do not carry you. You stand with me.",
+        "The mountain moves.",
+        "We do not fall today."
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Kharok Awakens",
+      "text": [
+        "You fall in the dream, and the world tells you to stay down.",
+        "A hand of stone reaches out, but does not lift you.",
+        "The voice says: Stand.",
+        "You rise on your own.",
+        "The name burns in your bones: Kharok, The Unbroken Stone."
+      ]
+    },
+    "lore": {
+      "origin": "Kharok is the memory of the first mortal who discovered strength is not the absence of pain, but the refusal to surrender to it.",
+      "hiddenSorrow": "Kharok could not save the first ones who stood beside him. He remembers every name.",
+      "knownRumor": "Old warriors say the girdle grows heavier when its bearer lies to themselves.",
+      "appearanceDormant": "A rough iron-and-hide girdle marked with stone-like knots.",
+      "appearanceAwakened": "Hairline cracks glow like embers across the metal.",
+      "appearanceExalted": "The girdle feels weightless, though the ground trembles under its bearer.",
+      "appearanceSignature": "No visible change occurs; only the bearer knows the mountain has answered."
+    },
+    "releaseStatus": "stable",
+    "v1Checklist": {
+      "trueName": true,
+      "personality": true,
+      "moodMap": true,
+      "affinityEvents": true,
+      "hiddenRequirements": true,
+      "features": true,
+      "dreams": true,
+      "memories": true,
+      "quotes": true,
+      "signatureCeremony": true,
+      "lore": true,
+      "needsPlaytest": false,
+      "relicCleanup": true
+    },
+    "nativeWorkflow": true
+  },
+  {
+    "id": "chains_patron",
+    "name": "Chains of the Patron",
+    "trueName": {
+      "name": "Mordrath",
+      "title": "The Price of Ambition",
+      "full": "Mordrath, The Price of Ambition",
+      "unlockAffinity": 1000,
+      "revealed": false
+    },
+    "class": "Warlock",
+    "virtue": "Ambition",
+    "theme": "Power • Pact • Price • Will • Forbidden Choice",
+    "icon": "modules/the-first-relics/art/icons/v1/chains-patron.png",
+    "personality": {
+      "temperament": [
+        "Calculating",
+        "Patient",
+        "Tempting",
+        "Honest in dangerous ways",
+        "Never charitable"
+      ],
+      "likes": [
+        "Paid prices",
+        "Ambition with purpose",
+        "Outwitting stronger powers",
+        "Bargains kept with open eyes",
+        "Power claimed without servility"
+      ],
+      "dislikes": [
+        "Begging for power",
+        "Careless oaths",
+        "Sacrificing innocents cheaply",
+        "Cowardice disguised as humility",
+        "Breaking bargains without accepting consequence"
+      ],
+      "corePhrase": "Every gift demands a price.",
+      "roleplayGuidance": "Mordrath does not lie. It lets the bearer decide how much truth they can afford."
+    },
+    "moodMap": [
+      {
+        "min": 0,
+        "max": 99,
+        "mood": "Silent",
+        "description": "The chains hang cold and inert."
+      },
+      {
+        "min": 100,
+        "max": 299,
+        "mood": "Interested",
+        "description": "The bearer hears links moving when choices have a cost."
+      },
+      {
+        "min": 300,
+        "max": 499,
+        "mood": "Negotiating",
+        "description": "The chains frame every decision as a bargain."
+      },
+      {
+        "min": 500,
+        "max": 749,
+        "mood": "Invested",
+        "description": "The relic sees ambition with shape rather than hunger."
+      },
+      {
+        "min": 750,
+        "max": 999,
+        "mood": "Bound by Price",
+        "description": "The pact between bearer and relic is nearly complete."
+      },
+      {
+        "min": 1000,
+        "max": 1000,
+        "mood": "Paid in Full",
+        "description": "Mordrath reveals that the greatest price is knowing what one truly wants."
+      }
+    ],
+    "affinity": {
+      "min": 0,
+      "max": 1000,
+      "thresholds": {
+        "dormant": 0,
+        "awakened": 300,
+        "exalted": 750,
+        "signature": 1000
+      },
+      "moods": [
+        "Silent",
+        "Interested",
+        "Negotiating",
+        "Invested",
+        "Bound by Price",
+        "Paid in Full"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Dormant",
+        "bonus": 1,
+        "charges": 3
+      },
+      "awakened": {
+        "title": "Awakened",
+        "bonus": 2,
+        "charges": 6
+      },
+      "exalted": {
+        "title": "Exalted",
+        "bonus": 3,
+        "charges": 10
+      }
+    },
+    "affinityEvents": [
+      {
+        "id": "pay_price",
+        "label": "Accepted a meaningful price for power",
+        "delta": 15,
+        "category": "Pact"
+      },
+      {
+        "id": "outwit_patron",
+        "label": "Outwitted a patron, fiend, or pact-bound enemy",
+        "delta": 25,
+        "category": "Ambition"
+      },
+      {
+        "id": "break_bad_bargain",
+        "label": "Broke or twisted an unjust bargain",
+        "delta": 25,
+        "category": "Will"
+      },
+      {
+        "id": "protect_free_will",
+        "label": "Protected someone's free will from a pact or curse",
+        "delta": 20,
+        "category": "Will"
+      },
+      {
+        "id": "claim_forbidden_power",
+        "label": "Claimed forbidden power without becoming its servant",
+        "delta": 25,
+        "category": "Power"
+      },
+      {
+        "id": "keep_costly_oath",
+        "label": "Kept a bargain even when it became costly",
+        "delta": 20,
+        "category": "Pact"
+      },
+      {
+        "id": "deny_free_power",
+        "label": "Refused free power because the hidden cost was unacceptable",
+        "delta": 35,
+        "category": "Milestone"
+      },
+      {
+        "id": "become_servile",
+        "label": "Submitted completely to a patron's demand without resistance",
+        "delta": -25,
+        "category": "Violation"
+      },
+      {
+        "id": "sacrifice_innocent",
+        "label": "Sacrificed an innocent for power",
+        "delta": -40,
+        "category": "Violation"
+      },
+      {
+        "id": "break_own_word",
+        "label": "Broke your own sworn bargain carelessly",
+        "delta": -20,
+        "category": "Violation"
+      },
+      {
+        "id": "waste_power",
+        "label": "Used hard-won power for petty cruelty or vanity",
+        "delta": -20,
+        "category": "Violation"
+      }
+    ],
+    "hiddenRequirements": [
+      {
+        "id": "reach_1000",
+        "label": "Reach 1000 Resonance",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "refuse_free_power",
+        "label": "Refuse power offered without an honest price",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "outwit_greater_patron",
+        "label": "Outwit a stronger patron, fiend, or pact-holder",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "pay_cost_self",
+        "label": "Pay a meaningful cost yourself instead of passing it to an innocent",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "define_ambition",
+        "label": "Name what you truly want and what you will not sacrifice for it",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      }
+    ],
+    "features": {
+      "passives": [
+        "<strong>Borrowed Power.</strong> Once per turn when you deal damage with Eldritch Blast, a pact weapon, or a warlock spell, add the relic bonus to one damage roll.",
+        "<strong>Read the Fine Print.</strong> You gain the relic bonus to Charisma (Deception), Charisma (Persuasion), and Intelligence (Arcana) checks related to pacts, fiends, patrons, contracts, curses, or forbidden magic.",
+        "<strong>Price Paid.</strong> When you reduce a hostile creature to 0 hit points, gain temporary hit points equal to your warlock level + the relic bonus.",
+        "<strong>No Master But the Price.</strong> You have advantage on saving throws against being charmed, dominated, or magically compelled by patrons, fiends, celestials, or pact-bound entities."
+      ],
+      "actives": [
+        "<strong>Patron's Glance.</strong> <em>Bonus Action, 1 charge.</em> Choose one creature within 60 feet. Until the end of your next turn, you sense whether it is bound by a pact, curse, oath, or extraplanar influence.",
+        "<strong>Borrowed Ruin.</strong> <em>Special, 2 charges.</em> Use when you hit with Eldritch Blast, a pact weapon, or a warlock spell. The attack or spell deals extra necrotic damage.",
+        "<strong>Chain of Binding.</strong> <em>Action, 3 charges.</em> A creature within 60 feet must make a Strength saving throw. On a failure, it is restrained by spectral chains until the end of your next turn. <strong>Midi:</strong> Save Activity requests a STR save; apply Restrained through normal Foundry condition tools if the condition is not applied automatically.",
+        "<strong>Pay the Difference.</strong> <em>Reaction, 4 charges.</em> When you fail a saving throw, take necrotic damage equal to your warlock level to reroll the save. The new result must be used."
+      ],
+      "avatar": "<strong>Avatar of the Pact.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> Black-gold chains orbit you. You gain flying speed 30 ft with hover, resistance to necrotic damage, and once per turn when you deal damage with Eldritch Blast, a pact weapon, or a warlock spell, you deal extra necrotic damage equal to your warlock level.",
+      "signature": "<strong>Price of Eternity.</strong> <em>Once per long rest.</em> Choose a creature within 60 feet that can hear you. Offer a price approved by the GM. The target must make a Charisma saving throw. On a failure, it is restrained by Mordrath's chains for 1 minute and cannot benefit from teleportation or invisibility. Once during the duration, when it fails to escape, you may regain a spent warlock spell slot of 5th level or lower. <strong>Midi:</strong> Save Activity requests a CHA save; ongoing pact effects are GM/Midi dependent."
+    },
+    "dreams": [
+      {
+        "id": "empty_contract",
+        "stage": "dormant",
+        "affinityMin": 100,
+        "title": "The Empty Contract",
+        "text": "You sign your name on a blank page. The ink asks what you wanted before you wrote it."
+      },
+      {
+        "id": "thousand_chains",
+        "stage": "awakened",
+        "affinityMin": 300,
+        "title": "The Thousand Chains",
+        "text": "A thousand chains hang from a black sky. Each one whispers a different promise."
+      },
+      {
+        "id": "auction_of_souls",
+        "stage": "exalted",
+        "affinityMin": 750,
+        "title": "The Auction of Souls",
+        "text": "No one bids coin. Everyone bids memories, names, and futures."
+      },
+      {
+        "id": "mordrath",
+        "stage": "signature",
+        "affinityMin": 1000,
+        "title": "Mordrath",
+        "text": "A figure in broken chains smiles without warmth. 'At last,' it says. 'You know what you are willing to pay.'"
+      }
+    ],
+    "memories": [
+      {
+        "id": "first_bargain",
+        "title": "The First Bargain",
+        "locked": true,
+        "text": "Mordrath remembers the first mortal who asked for more than fate offered."
+      },
+      {
+        "id": "price_unpaid",
+        "title": "The Price Unpaid",
+        "locked": true,
+        "text": "Mordrath remembers the ruin caused by power taken as a gift."
+      },
+      {
+        "id": "patron_outwitted",
+        "title": "The Patron Outwitted",
+        "locked": true,
+        "text": "A patron learned contracts can cut both ways."
+      },
+      {
+        "id": "name_sold",
+        "title": "The Name Sold",
+        "locked": true,
+        "text": "A warlock sold their name and forgot why they wanted power."
+      },
+      {
+        "id": "final_clause",
+        "title": "The Final Clause",
+        "locked": true,
+        "text": "The clause no one reads until the end."
+      }
+    ],
+    "quotes": {
+      "positive": [
+        "A fair price.",
+        "Now you understand value.",
+        "Power taken blindly owns the taker.",
+        "You paid with open eyes."
+      ],
+      "negative": [
+        "Cheap.",
+        "You mistook hunger for ambition.",
+        "That was not a bargain. That was begging.",
+        "You sold what was not yours."
+      ],
+      "neutral": [
+        "Every gift demands a price.",
+        "Read closer.",
+        "What do you want?",
+        "Nothing is free. Not even refusal.",
+        "Choose."
+      ],
+      "signature": [
+        "Paid in full.",
+        "The chain is not your prison. It is your signature.",
+        "Now bargain with eternity."
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Mordrath Awakens",
+      "text": [
+        "Every flame nearby burns black.",
+        "A chain coils around your wrist, but does not tighten.",
+        "A voice asks: What do you want?",
+        "You answer, and the world waits for the price.",
+        "The chain unlocks itself.",
+        "A name rings like metal on stone: Mordrath, The Price of Ambition."
+      ]
+    },
+    "lore": {
+      "origin": "Mordrath is the memory of the first mortal who demanded power and accepted that every gift must be paid for.",
+      "hiddenSorrow": "Mordrath once believed a bearer could take power without becoming cruel. It was wrong, and it remembers the cost.",
+      "knownRumor": "Warlocks whisper these chains do not belong to a patron. They belonged to someone who made patrons afraid.",
+      "appearanceDormant": "Short blackened chain links worn as a mantle, belt, or wrist wrap.",
+      "appearanceAwakened": "Gold script appears on the links whenever a bargain is spoken.",
+      "appearanceExalted": "The chains float weightlessly, never touching the ground.",
+      "appearanceSignature": "Every link bears a name, but the bearer can read only one: their own."
+    },
+    "releaseStatus": "stable",
+    "v1Checklist": {
+      "trueName": true,
+      "personality": true,
+      "moodMap": true,
+      "affinityEvents": true,
+      "hiddenRequirements": true,
+      "features": true,
+      "dreams": true,
+      "memories": true,
+      "quotes": true,
+      "signatureCeremony": true,
+      "lore": true,
+      "needsPlaytest": false,
+      "relicCleanup": true
+    },
+    "nativeWorkflow": true
+  },
+  {
+    "id": "aegis_dawn",
+    "name": "Aegis of the Dawn",
+    "class": "Fighter",
+    "virtue": "Protection",
+    "theme": "Dawn • Resolve • Shield",
+    "icon": "modules/the-first-relics/art/icons/v1/aegis-dawn.png",
+    "releaseStatus": "stable",
+    "nativeWorkflow": true,
+    "trueName": {
+      "name": "Sol'Kaer",
+      "title": "The Shield That Never Fell",
+      "full": "Sol'Kaer, The Shield That Never Fell",
+      "unlockAffinity": 1000,
+      "revealed": false
+    },
+    "automationStatus": {
+      "passives": "Foundry Active Effects / GM adjudication",
+      "actives": "dnd5e Activities + MidiQOL",
+      "avatar": "dnd5e Activity / reminder",
+      "signature": "dnd5e Activity / GM adjudication",
+      "notes": [
+        "Primary workflow is Item Sheet -> Activities.",
+        "No player-facing macro is required.",
+        "Relic text received the v0.24.1 cleanup pass; remaining table calls are marked in ability text."
+      ]
+    },
+    "personality": {
+      "temperament": [
+        "Ancient",
+        "Judging",
+        "Patient",
+        "Willful"
+      ],
+      "likes": [
+        "Virtue-aligned choices",
+        "Sacrifice",
+        "Meaningful growth"
+      ],
+      "dislikes": [
+        "Cowardice",
+        "Cruelty",
+        "Empty power"
+      ],
+      "corePhrase": "Dawn",
+      "roleplayGuidance": "Sol'Kaer rewards protectors who hold the line when retreat would be easier. It grows cold around selfish bravery and answers most strongly when the bearer shields another at real cost."
+    },
+    "moodMap": [
+      {
+        "min": 0,
+        "max": 99,
+        "mood": "Silent",
+        "description": "A pale warmth gathers along the shield edge when danger turns toward the helpless."
+      },
+      {
+        "min": 100,
+        "max": 299,
+        "mood": "Watching",
+        "description": "The aegis answers with brief flashes of dawnlight when the bearer chooses duty over safety."
+      },
+      {
+        "min": 300,
+        "max": 499,
+        "mood": "Testing",
+        "description": "The aegis tests whether the bearer protects because it is right, not because glory is watching."
+      },
+      {
+        "min": 500,
+        "max": 749,
+        "mood": "Trusting",
+        "description": "The relic steadies the bearer like a wall that remembers every life it sheltered."
+      },
+      {
+        "min": 750,
+        "max": 999,
+        "mood": "Chosen",
+        "description": "The shield accepts the bearer as a last line between harm and the innocent."
+      },
+      {
+        "min": 1000,
+        "max": 1000,
+        "mood": "Resonant",
+        "description": "Dawnlight collects at the bearer's arm; Sol'Kaer is ready to speak its true name."
+      }
+    ],
+    "affinity": {
+      "min": 0,
+      "max": 1000,
+      "thresholds": {
+        "dormant": 0,
+        "awakened": 300,
+        "exalted": 750,
+        "signature": 1000
+      },
+      "moods": [
+        "Silent",
+        "Watching",
+        "Testing",
+        "Trusting",
+        "Chosen",
+        "Resonant"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Dormant",
+        "bonus": 1,
+        "charges": 3
+      },
+      "awakened": {
+        "title": "Awakened",
+        "bonus": 2,
+        "charges": 6
+      },
+      "exalted": {
+        "title": "Exalted",
+        "bonus": 3,
+        "charges": 10
+      }
+    },
+    "affinityEvents": [
+      {
+        "id": "saved_an_ally_from_death",
+        "label": "Saved an ally from death",
+        "delta": 25,
+        "category": "Protection"
+      },
+      {
+        "id": "protected_someone_weaker",
+        "label": "Protected someone weaker",
+        "delta": 20,
+        "category": "Protection"
+      },
+      {
+        "id": "held_the_line_below_25_hp",
+        "label": "Held the line below 25% HP",
+        "delta": 10,
+        "category": "Resolve"
+      },
+      {
+        "id": "abandoned_innocents",
+        "label": "Abandoned innocents",
+        "delta": -25,
+        "category": "Violation"
+      },
+      {
+        "id": "left_someone_to_die",
+        "label": "Left someone to die",
+        "delta": -20,
+        "category": "Violation"
+      },
+      {
+        "id": "fled_from_fear",
+        "label": "Fled from fear",
+        "delta": -15,
+        "category": "Violation"
+      }
+    ],
+    "hiddenRequirements": [
+      {
+        "id": "reach_1000",
+        "label": "Reach 1000 Resonance",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "save_an_ally_from_death_three_times",
+        "label": "Save an ally from death three times.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "win_a_boss_battle_below_10_hp",
+        "label": "Win a boss battle below 10 HP.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "protect_a_civilian_without_reward",
+        "label": "Protect a civilian without reward.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "refuse_to_abandon_a_battlefield",
+        "label": "Refuse to abandon a battlefield.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "end_a_battle_as_the_last_one_standing",
+        "label": "End a battle as the last one standing.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      }
+    ],
+    "features": {
+      "passives": [
+        "Dawn's Endurance: first round +relic bonus AC.",
+        "Unbroken Wall: allies near you resist opportunity attacks.",
+        "Guardian's Burden: redirect an ally's attack to yourself PB/long rest.",
+        "First Light: once per long rest drop to 1 HP instead of 0."
+      ],
+      "actives": [
+        "<strong>Stand Firm.</strong> <em>Bonus Action, 1 charge.</em> Until the start of your next turn, add the relic bonus to checks and saves made to resist being pushed, knocked prone, grappled, or restrained.",
+        "<strong>Dawn Barrier.</strong> <em>Reaction, 2 charges.</em> When an ally within 30 feet is hit by an attack, grant that ally +4 AC against the triggering attack, potentially turning the hit into a miss.",
+        "<strong>Bastion of Resolve.</strong> <em>Action, 3 charges, 1 minute.</em> You radiate a 10-foot aura. You and allies in the aura have advantage on saving throws against being frightened or charmed.",
+        "<strong>Break the Darkness.</strong> <em>Action, 4 charges.</em> One fiend or undead within 30 feet must make a Constitution saving throw. On a failure, it takes radiant damage and is blinded until the end of your next turn."
+      ],
+      "avatar": "<strong>Dawn Incarnate.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> You shine with sunrise armor. You gain flying speed 30 feet with hover, resistance to bludgeoning, piercing, and slashing damage, shed bright light, and once per turn your weapon hit deals an extra 2d8 radiant damage.",
+      "signature": "<strong>Last Sunrise.</strong> <em>Once per long rest.</em> Allies of your choice within 30 feet regain 30 hit points and end frightened and charmed. Until the end of your next turn, the first time each affected ally would drop to 0 hit points, they drop to 1 instead. You gain one level of exhaustion."
+    },
+    "dreams": [
+      {
+        "id": "dream_1_aegis_dawn",
+        "stage": "dormant",
+        "affinityMin": 100,
+        "title": "The White Field",
+        "text": "A vision of the white field reaches the bearer."
+      },
+      {
+        "id": "dream_2_aegis_dawn",
+        "stage": "awakened",
+        "affinityMin": 300,
+        "title": "The Broken Shield",
+        "text": "A vision of the broken shield reaches the bearer."
+      },
+      {
+        "id": "dream_3_aegis_dawn",
+        "stage": "exalted",
+        "affinityMin": 750,
+        "title": "The Last Wall",
+        "text": "A vision of the last wall reaches the bearer."
+      },
+      {
+        "id": "dream_4_aegis_dawn",
+        "stage": "signature",
+        "affinityMin": 1000,
+        "title": "Sol'Kaer",
+        "text": "A vision of sol'kaer reaches the bearer."
+      }
+    ],
+    "memories": [
+      {
+        "id": "the_last_wall",
+        "title": "The Last Wall",
+        "locked": true,
+        "text": "Sol'Kaer remembers the last wall."
+      },
+      {
+        "id": "a_child_behind_the_shield",
+        "title": "A Child Behind the Shield",
+        "locked": true,
+        "text": "Sol'Kaer remembers a child behind the shield."
+      },
+      {
+        "id": "the_day_the_sun_did_not_rise",
+        "title": "The Day the Sun Did Not Rise",
+        "locked": true,
+        "text": "Sol'Kaer remembers the day the sun did not rise."
+      },
+      {
+        "id": "sol_kaer_s_final_stand",
+        "title": "Sol'Kaer's Final Stand",
+        "locked": true,
+        "text": "Sol'Kaer remembers sol'kaer's final stand."
+      }
+    ],
+    "quotes": {
+      "positive": [
+        "Good.",
+        "The path is remembered."
+      ],
+      "negative": [
+        "No.",
+        "The relic grows cold."
+      ],
+      "neutral": [
+        "Wait.",
+        "Choose."
+      ],
+      "signature": [
+        "I am Sol'Kaer.",
+        "The Shield That Never Fell"
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Sol'Kaer Awakens",
+      "text": [
+        "The relic speaks the name Sol'Kaer.",
+        "The bearer understands: The Shield That Never Fell."
+      ]
+    },
+    "lore": {
+      "origin": "Sol'Kaer is the living memory of Protection.",
+      "hiddenSorrow": "Sol'Kaer remembers the fortress gate that held until dawn, and the one child its bearer could not reach.",
+      "knownRumor": "Old soldiers say the aegis appears only before sieges where one stand can change a generation.",
+      "appearanceDormant": "A white-gold shield boss or bracer plate, warm only when someone nearby is afraid.",
+      "appearanceAwakened": "Hairline sunbursts spread across its surface whenever the bearer interposes themself.",
+      "appearanceExalted": "A rim of dawnfire burns around the aegis without heat, throwing long shadows behind enemies.",
+      "appearanceSignature": "The shield becomes a disk of first light, translucent at the edges and heavy with remembered vows."
+    },
+    "v1Checklist": {
+      "trueName": true,
+      "personality": true,
+      "moodMap": true,
+      "affinityEvents": true,
+      "hiddenRequirements": true,
+      "features": true,
+      "dreams": true,
+      "memories": true,
+      "quotes": true,
+      "signatureCeremony": true,
+      "lore": true,
+      "automationMetadata": true,
+      "needsPlaytest": false,
+      "relicCleanup": true
+    }
+  },
+  {
+    "id": "crown_conqueror",
+    "name": "Crown of the Conqueror",
+    "class": "Paladin",
+    "virtue": "Dominion",
+    "theme": "Order • Leadership • Authority",
+    "icon": "modules/the-first-relics/art/icons/v1/crown-conqueror.png",
+    "releaseStatus": "stable",
+    "nativeWorkflow": true,
+    "trueName": {
+      "name": "Aurex",
+      "title": "The Crown That United Kings",
+      "full": "Aurex, The Crown That United Kings",
+      "unlockAffinity": 1000,
+      "revealed": false
+    },
+    "automationStatus": {
+      "passives": "Foundry Active Effects / GM adjudication",
+      "actives": "dnd5e Activities + MidiQOL",
+      "avatar": "dnd5e Activity / reminder",
+      "signature": "dnd5e Activity / GM adjudication",
+      "notes": [
+        "Primary workflow is Item Sheet -> Activities.",
+        "No player-facing macro is required.",
+        "Relic text received the v0.24.1 cleanup pass; remaining table calls are marked in ability text."
+      ]
+    },
+    "personality": {
+      "temperament": [
+        "Ancient",
+        "Judging",
+        "Patient",
+        "Willful"
+      ],
+      "likes": [
+        "Virtue-aligned choices",
+        "Sacrifice",
+        "Meaningful growth"
+      ],
+      "dislikes": [
+        "Cowardice",
+        "Cruelty",
+        "Empty power"
+      ],
+      "corePhrase": "Order",
+      "roleplayGuidance": "Aurex respects authority earned through service, restraint, and accountability. It rejects domination for vanity and asks whether followers become stronger beneath the bearer's command."
+    },
+    "moodMap": [
+      {
+        "min": 0,
+        "max": 99,
+        "mood": "Silent",
+        "description": "The crown is heavy and silent, measuring whether the bearer commands themself first."
+      },
+      {
+        "min": 100,
+        "max": 299,
+        "mood": "Watching",
+        "description": "A low golden resonance follows promises kept and orders that protect rather than exploit."
+      },
+      {
+        "min": 300,
+        "max": 499,
+        "mood": "Testing",
+        "description": "The crown tests the bearer with hard choices between pride, mercy, and responsibility."
+      },
+      {
+        "min": 500,
+        "max": 749,
+        "mood": "Trusting",
+        "description": "The crown recognizes a voice that can lead without needing to crush dissent."
+      },
+      {
+        "min": 750,
+        "max": 999,
+        "mood": "Chosen",
+        "description": "The relic accepts the bearer as one who can carry power without being consumed by it."
+      },
+      {
+        "min": 1000,
+        "max": 1000,
+        "mood": "Resonant",
+        "description": "A ring of invisible courtiers falls silent; Aurex is ready to speak its true name."
+      }
+    ],
+    "affinity": {
+      "min": 0,
+      "max": 1000,
+      "thresholds": {
+        "dormant": 0,
+        "awakened": 300,
+        "exalted": 750,
+        "signature": 1000
+      },
+      "moods": [
+        "Silent",
+        "Watching",
+        "Testing",
+        "Trusting",
+        "Chosen",
+        "Resonant"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Dormant",
+        "bonus": 1,
+        "charges": 3
+      },
+      "awakened": {
+        "title": "Awakened",
+        "bonus": 2,
+        "charges": 6
+      },
+      "exalted": {
+        "title": "Exalted",
+        "bonus": 3,
+        "charges": 10
+      }
+    },
+    "affinityEvents": [
+      {
+        "id": "led_a_group_successfully",
+        "label": "Led a group successfully",
+        "delta": 20,
+        "category": "Leadership"
+      },
+      {
+        "id": "resolved_conflict_without_bloodshed",
+        "label": "Resolved conflict without bloodshed",
+        "delta": 20,
+        "category": "Order"
+      },
+      {
+        "id": "earned_voluntary_loyalty",
+        "label": "Earned voluntary loyalty",
+        "delta": 15,
+        "category": "Dominion"
+      },
+      {
+        "id": "abused_authority",
+        "label": "Abused authority",
+        "delta": -25,
+        "category": "Violation"
+      },
+      {
+        "id": "avoided_responsibility",
+        "label": "Avoided responsibility",
+        "delta": -20,
+        "category": "Violation"
+      },
+      {
+        "id": "abandoned_followers",
+        "label": "Abandoned followers",
+        "delta": -20,
+        "category": "Violation"
+      }
+    ],
+    "hiddenRequirements": [
+      {
+        "id": "reach_1000",
+        "label": "Reach 1000 Resonance",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "end_a_battle_without_killing",
+        "label": "End a battle without killing.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "defend_a_settlement",
+        "label": "Defend a settlement.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "gain_voluntary_support_of_five_npcs",
+        "label": "Gain voluntary support of five NPCs.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "solve_a_crisis_through_diplomacy",
+        "label": "Solve a crisis through diplomacy.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "take_responsibility_for_an_ally_s_mistake",
+        "label": "Take responsibility for an ally's mistake.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      }
+    ],
+    "features": {
+      "passives": [
+        "Royal Presence: allies within 30 ft gain relic bonus to WIS saves.",
+        "Banner of Order: combat start, PB allies gain temp HP.",
+        "Commander's Resolve: ally rerolls failed save PB/long rest.",
+        "Sovereign Aura: allies have advantage vs charm/fear."
+      ],
+      "actives": [
+        "<strong>Rally.</strong> <em>Bonus Action, 1 charge.</em> Choose allies within 30 feet who can hear you. Each may move up to half their speed without provoking opportunity attacks.",
+        "<strong>Royal Decree.</strong> <em>Action, 2 charges.</em> One creature within 60 feet must make a Wisdom saving throw. On a failure, it is compelled by your command until the end of your next turn.",
+        "<strong>Banner Unbroken.</strong> <em>Action, 3 charges, 1 minute.</em> You project a 10-foot command aura. Allies in the aura gain +2 AC while they can see or hear you.",
+        "<strong>March of Kings.</strong> <em>Action, 4 charges.</em> Choose allies within 30 feet who can hear you. Each may immediately move or make one weapon attack as the table resolves the command."
+      ],
+      "avatar": "<strong>King Eternal.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> A spectral mantle and crown form around you. You gain flying speed 30 feet with hover, resistance to psychic damage, and allies within 30 feet gain the relic bonus to saving throws against fear and charm.",
+      "signature": "<strong>The World Shall Kneel.</strong> <em>Once per long rest.</em> Enemies of your choice within 60 feet must make a Wisdom saving throw. On a failure, a creature is frightened, knocked prone, reduced to speed 0, and cannot take reactions for 1 minute."
+    },
+    "dreams": [
+      {
+        "id": "dream_1_crown_conqueror",
+        "stage": "dormant",
+        "affinityMin": 100,
+        "title": "The Empty Throne",
+        "text": "A vision of the empty throne reaches the bearer."
+      },
+      {
+        "id": "dream_2_crown_conqueror",
+        "stage": "awakened",
+        "affinityMin": 300,
+        "title": "The Broken City",
+        "text": "A vision of the broken city reaches the bearer."
+      },
+      {
+        "id": "dream_3_crown_conqueror",
+        "stage": "exalted",
+        "affinityMin": 750,
+        "title": "The Earned Crown",
+        "text": "A vision of the earned crown reaches the bearer."
+      },
+      {
+        "id": "dream_4_crown_conqueror",
+        "stage": "signature",
+        "affinityMin": 1000,
+        "title": "Aurex",
+        "text": "A vision of aurex reaches the bearer."
+      }
+    ],
+    "memories": [
+      {
+        "id": "the_empty_throne",
+        "title": "The Empty Throne",
+        "locked": true,
+        "text": "Aurex remembers the empty throne."
+      },
+      {
+        "id": "the_last_king",
+        "title": "The Last King",
+        "locked": true,
+        "text": "Aurex remembers the last king."
+      },
+      {
+        "id": "when_crowns_were_earned",
+        "title": "When Crowns Were Earned",
+        "locked": true,
+        "text": "Aurex remembers when crowns were earned."
+      },
+      {
+        "id": "the_first_kingdom",
+        "title": "The First Kingdom",
+        "locked": true,
+        "text": "Aurex remembers the first kingdom."
+      }
+    ],
+    "quotes": {
+      "positive": [
+        "Good.",
+        "The path is remembered."
+      ],
+      "negative": [
+        "No.",
+        "The relic grows cold."
+      ],
+      "neutral": [
+        "Wait.",
+        "Choose."
+      ],
+      "signature": [
+        "I am Aurex.",
+        "The Crown That United Kings"
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Aurex Awakens",
+      "text": [
+        "The relic speaks the name Aurex.",
+        "The bearer understands: The Crown That United Kings."
+      ]
+    },
+    "lore": {
+      "origin": "Aurex is the living memory of Dominion.",
+      "hiddenSorrow": "Aurex remembers the first kingdom splitting because its king chose obedience over trust.",
+      "knownRumor": "Bards claim the crown refuses any ruler who cannot kneel beside the people they command.",
+      "appearanceDormant": "A tarnished circlet fragment or command medallion that feels heavier when orders are cruel.",
+      "appearanceAwakened": "Tiny script appears along the rim, recording oaths freely given.",
+      "appearanceExalted": "A phantom crown hovers above the bearer in moments of command, visible only in reflected light.",
+      "appearanceSignature": "Aurex becomes a full golden crown of many joined crowns, each point shaped like a raised standard."
+    },
+    "v1Checklist": {
+      "trueName": true,
+      "personality": true,
+      "moodMap": true,
+      "affinityEvents": true,
+      "hiddenRequirements": true,
+      "features": true,
+      "dreams": true,
+      "memories": true,
+      "quotes": true,
+      "signatureCeremony": true,
+      "lore": true,
+      "automationMetadata": true,
+      "needsPlaytest": false,
+      "relicCleanup": true
+    }
+  },
+  {
+    "id": "bands_inner_dragon",
+    "name": "Bands of the Inner Dragon",
+    "class": "Monk",
+    "virtue": "Discipline",
+    "theme": "Self-Mastery • Balance • Perfection",
+    "icon": "modules/the-first-relics/art/icons/v1/bands-inner-dragon.png",
+    "releaseStatus": "stable",
+    "nativeWorkflow": true,
+    "trueName": {
+      "name": "Ryushen",
+      "title": "The Dragon Without Chains",
+      "full": "Ryushen, The Dragon Without Chains",
+      "unlockAffinity": 1000,
+      "revealed": false
+    },
+    "automationStatus": {
+      "passives": "Foundry Active Effects / GM adjudication",
+      "actives": "dnd5e Activities + MidiQOL",
+      "avatar": "dnd5e Activity / reminder",
+      "signature": "dnd5e Activity / GM adjudication",
+      "notes": [
+        "Primary workflow is Item Sheet -> Activities.",
+        "No player-facing macro is required.",
+        "Relic text received the v0.24.1 cleanup pass; remaining table calls are marked in ability text."
+      ]
+    },
+    "personality": {
+      "temperament": [
+        "Ancient",
+        "Judging",
+        "Patient",
+        "Willful"
+      ],
+      "likes": [
+        "Virtue-aligned choices",
+        "Sacrifice",
+        "Meaningful growth"
+      ],
+      "dislikes": [
+        "Cowardice",
+        "Cruelty",
+        "Empty power"
+      ],
+      "corePhrase": "Self-Mastery",
+      "roleplayGuidance": "Ryushen values discipline without cruelty and strength without performance. It answers practice, patience, restraint, and victories earned after failure."
+    },
+    "moodMap": [
+      {
+        "min": 0,
+        "max": 99,
+        "mood": "Silent",
+        "description": "The bands rest like cool stone, waiting for breath and motion to align."
+      },
+      {
+        "min": 100,
+        "max": 299,
+        "mood": "Watching",
+        "description": "A slow pulse follows moments when the bearer chooses patience over impulse."
+      },
+      {
+        "min": 300,
+        "max": 499,
+        "mood": "Testing",
+        "description": "The bands test whether control remains when pain, insult, or fear breaks rhythm."
+      },
+      {
+        "min": 500,
+        "max": 749,
+        "mood": "Trusting",
+        "description": "The bands move with the bearer, correcting wasted motion before thought catches up."
+      },
+      {
+        "min": 750,
+        "max": 999,
+        "mood": "Chosen",
+        "description": "The relic accepts the bearer as a student who can become the lesson."
+      },
+      {
+        "min": 1000,
+        "max": 1000,
+        "mood": "Resonant",
+        "description": "A dragon exhales inside the bearer's breath; Ryushen is ready to speak its true name."
+      }
+    ],
+    "affinity": {
+      "min": 0,
+      "max": 1000,
+      "thresholds": {
+        "dormant": 0,
+        "awakened": 300,
+        "exalted": 750,
+        "signature": 1000
+      },
+      "moods": [
+        "Silent",
+        "Watching",
+        "Testing",
+        "Trusting",
+        "Chosen",
+        "Resonant"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Dormant",
+        "bonus": 1,
+        "charges": 3
+      },
+      "awakened": {
+        "title": "Awakened",
+        "bonus": 2,
+        "charges": 6
+      },
+      "exalted": {
+        "title": "Exalted",
+        "bonus": 3,
+        "charges": 10
+      }
+    },
+    "affinityEvents": [
+      {
+        "id": "chose_patience_over_force",
+        "label": "Chose patience over force",
+        "delta": 20,
+        "category": "Discipline"
+      },
+      {
+        "id": "defeated_enemy_nonlethally",
+        "label": "Defeated enemy nonlethally",
+        "delta": 20,
+        "category": "Control"
+      },
+      {
+        "id": "learned_from_failure",
+        "label": "Learned from failure",
+        "delta": 15,
+        "category": "Growth"
+      },
+      {
+        "id": "lost_control",
+        "label": "Lost control",
+        "delta": -25,
+        "category": "Violation"
+      },
+      {
+        "id": "acted_from_rage",
+        "label": "Acted from rage",
+        "delta": -20,
+        "category": "Violation"
+      },
+      {
+        "id": "used_power_for_show",
+        "label": "Used power for show",
+        "delta": -15,
+        "category": "Violation"
+      }
+    ],
+    "hiddenRequirements": [
+      {
+        "id": "reach_1000",
+        "label": "Reach 1000 Resonance",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "defeat_an_enemy_without_killing",
+        "label": "Defeat an enemy without killing.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "take_no_damage_in_three_combats",
+        "label": "Take no damage in three combats.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "defeat_someone_after_losing_to_them",
+        "label": "Defeat someone after losing to them.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "spend_a_long_rest_in_silence",
+        "label": "Spend a long rest in silence.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "spend_meaningful_time_training",
+        "label": "Spend meaningful time training.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      }
+    ],
+    "features": {
+      "passives": [
+        "Centered Mind: advantage on concentration saves.",
+        "Perfect Motion: first OA against you each round has disadvantage.",
+        "Body Beyond Limits: +10 speed and double jump.",
+        "Flow State: reroll failed STR/DEX/CON save once/long rest."
+      ],
+      "actives": [
+        "<strong>Dragon Breath.</strong> <em>Bonus Action, 1 charge, 1 minute.</em> You ignore nonmagical difficult terrain, gain a climbing speed equal to your walking speed, and add the relic bonus to Dexterity (Acrobatics) checks.",
+        "<strong>Iron Soul.</strong> <em>Reaction, 2 charges.</em> When you fail a saving throw, reroll it. The new result must be used.",
+        "<strong>Hundred Forms.</strong> <em>Action, 3 charges, 1 minute.</em> You have advantage on Strength (Athletics) and Dexterity (Acrobatics) checks, and your AC increases by 2 while you are not incapacitated.",
+        "<strong>Perfect Strike.</strong> <em>Action, 4 charges.</em> Focus your next hit before the end of your next turn. If it hits, the attack becomes a critical hit."
+      ],
+      "avatar": "<strong>Inner Dragon Manifest.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> A translucent dragon coils around your limbs. You gain flying speed 40 feet with hover, resistance to force damage, +5 feet reach, and once per turn your unarmed strike or monk weapon hit deals an extra 2d10 force damage.",
+      "signature": "<strong>Dragon Unbound.</strong> <em>Once per long rest, 1 minute.</em> You gain advantage on attack rolls and saving throws, your speed doubles, you gain resistance to bludgeoning, piercing, slashing, and force damage, and you are immune to stunned and restrained."
+    },
+    "dreams": [
+      {
+        "id": "dream_1_bands_inner_dragon",
+        "stage": "dormant",
+        "affinityMin": 100,
+        "title": "The Silent Mountain",
+        "text": "A vision of the silent mountain reaches the bearer."
+      },
+      {
+        "id": "dream_2_bands_inner_dragon",
+        "stage": "awakened",
+        "affinityMin": 300,
+        "title": "The Meditating Dragon",
+        "text": "A vision of the meditating dragon reaches the bearer."
+      },
+      {
+        "id": "dream_3_bands_inner_dragon",
+        "stage": "exalted",
+        "affinityMin": 750,
+        "title": "The Bow Within",
+        "text": "A vision of the bow within reaches the bearer."
+      },
+      {
+        "id": "dream_4_bands_inner_dragon",
+        "stage": "signature",
+        "affinityMin": 1000,
+        "title": "Ryushen",
+        "text": "A vision of ryushen reaches the bearer."
+      }
+    ],
+    "memories": [
+      {
+        "id": "the_mountain_that_waited",
+        "title": "The Mountain That Waited",
+        "locked": true,
+        "text": "Ryushen remembers the mountain that waited."
+      },
+      {
+        "id": "one_thousand_strikes",
+        "title": "One Thousand Strikes",
+        "locked": true,
+        "text": "Ryushen remembers one thousand strikes."
+      },
+      {
+        "id": "the_silent_dragon",
+        "title": "The Silent Dragon",
+        "locked": true,
+        "text": "Ryushen remembers the silent dragon."
+      },
+      {
+        "id": "the_perfect_breath",
+        "title": "The Perfect Breath",
+        "locked": true,
+        "text": "Ryushen remembers the perfect breath."
+      }
+    ],
+    "quotes": {
+      "positive": [
+        "Good.",
+        "The path is remembered."
+      ],
+      "negative": [
+        "No.",
+        "The relic grows cold."
+      ],
+      "neutral": [
+        "Wait.",
+        "Choose."
+      ],
+      "signature": [
+        "I am Ryushen.",
+        "The Dragon Without Chains"
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Ryushen Awakens",
+      "text": [
+        "The relic speaks the name Ryushen.",
+        "The bearer understands: The Dragon Without Chains."
+      ]
+    },
+    "lore": {
+      "origin": "Ryushen is the living memory of Discipline.",
+      "hiddenSorrow": "Ryushen remembers the master who won every duel but failed to teach mercy before the temple burned.",
+      "knownRumor": "Monks say the bands tighten when worn for display and loosen only after honest practice.",
+      "appearanceDormant": "Plain iron training bands, perfectly balanced and almost impossible to scratch.",
+      "appearanceAwakened": "Scale-like seams appear when the bearer breathes slowly through pain.",
+      "appearanceExalted": "A faint dragon silhouette follows the bearer's movements half a heartbeat late.",
+      "appearanceSignature": "The bands become living rings of silver scale and warm breath, weightless until violence begins."
+    },
+    "v1Checklist": {
+      "trueName": true,
+      "personality": true,
+      "moodMap": true,
+      "affinityEvents": true,
+      "hiddenRequirements": true,
+      "features": true,
+      "dreams": true,
+      "memories": true,
+      "quotes": true,
+      "signatureCeremony": true,
+      "lore": true,
+      "automationMetadata": true,
+      "needsPlaytest": false,
+      "relicCleanup": true
+    }
+  },
+  {
+    "id": "cloak_shadowfell",
+    "name": "Cloak of the Umbral Veil",
+    "class": "Rogue",
+    "virtue": "Cunning",
+    "theme": "Shadow • Secrets • Patience",
+    "icon": "modules/the-first-relics/art/icons/v1/cloak-shadowfell.png",
+    "releaseStatus": "stable",
+    "nativeWorkflow": true,
+    "trueName": {
+      "name": "Noctyra",
+      "title": "The Shadow That Never Slept",
+      "full": "Noctyra, The Shadow That Never Slept",
+      "unlockAffinity": 1000,
+      "revealed": false
+    },
+    "automationStatus": {
+      "passives": "Foundry Active Effects / GM adjudication",
+      "actives": "dnd5e Activities + MidiQOL",
+      "avatar": "dnd5e Activity / reminder",
+      "signature": "dnd5e Activity / GM adjudication",
+      "notes": [
+        "Primary workflow is Item Sheet -> Activities.",
+        "No player-facing macro is required.",
+        "Relic text received the v0.24.1 cleanup pass; remaining table calls are marked in ability text."
+      ]
+    },
+    "personality": {
+      "temperament": [
+        "Ancient",
+        "Judging",
+        "Patient",
+        "Willful"
+      ],
+      "likes": [
+        "Virtue-aligned choices",
+        "Sacrifice",
+        "Meaningful growth"
+      ],
+      "dislikes": [
+        "Cowardice",
+        "Cruelty",
+        "Empty power"
+      ],
+      "corePhrase": "Shadow",
+      "roleplayGuidance": "Noctyra rewards patience, information, and clean plans that end danger before panic begins. It distrusts spectacle, needless lies, and cruelty disguised as cleverness."
+    },
+    "moodMap": [
+      {
+        "min": 0,
+        "max": 99,
+        "mood": "Silent",
+        "description": "The cloak drinks light silently, waiting to see whether the bearer can wait as well."
+      },
+      {
+        "min": 100,
+        "max": 299,
+        "mood": "Watching",
+        "description": "Its hem stirs toward hidden exits when the bearer gathers information before acting."
+      },
+      {
+        "min": 300,
+        "max": 499,
+        "mood": "Testing",
+        "description": "The cloak tests plans by offering tempting shortcuts that would expose the innocent."
+      },
+      {
+        "min": 500,
+        "max": 749,
+        "mood": "Trusting",
+        "description": "The cloak trusts the bearer enough to hide their heartbeat from listening shadows."
+      },
+      {
+        "min": 750,
+        "max": 999,
+        "mood": "Chosen",
+        "description": "The relic accepts the bearer as a blade that can remain sheathed until the right moment."
+      },
+      {
+        "min": 1000,
+        "max": 1000,
+        "mood": "Resonant",
+        "description": "Every shadow turns its face toward the bearer; Noctyra is ready to speak its true name."
+      }
+    ],
+    "affinity": {
+      "min": 0,
+      "max": 1000,
+      "thresholds": {
+        "dormant": 0,
+        "awakened": 300,
+        "exalted": 750,
+        "signature": 1000
+      },
+      "moods": [
+        "Silent",
+        "Watching",
+        "Testing",
+        "Trusting",
+        "Chosen",
+        "Resonant"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Dormant",
+        "bonus": 1,
+        "charges": 3
+      },
+      "awakened": {
+        "title": "Awakened",
+        "bonus": 2,
+        "charges": 6
+      },
+      "exalted": {
+        "title": "Exalted",
+        "bonus": 3,
+        "charges": 10
+      }
+    },
+    "affinityEvents": [
+      {
+        "id": "solved_conflict_unseen",
+        "label": "Solved conflict unseen",
+        "delta": 20,
+        "category": "Cunning"
+      },
+      {
+        "id": "gained_advantage_through_information",
+        "label": "Gained advantage through information",
+        "delta": 20,
+        "category": "Secrets"
+      },
+      {
+        "id": "set_an_effective_ambush",
+        "label": "Set an effective ambush",
+        "delta": 15,
+        "category": "Patience"
+      },
+      {
+        "id": "drew_needless_attention",
+        "label": "Drew needless attention",
+        "delta": -20,
+        "category": "Violation"
+      },
+      {
+        "id": "attacked_without_plan",
+        "label": "Attacked without plan",
+        "delta": -20,
+        "category": "Violation"
+      },
+      {
+        "id": "deceived_innocents",
+        "label": "Deceived innocents",
+        "delta": -15,
+        "category": "Violation"
+      }
+    ],
+    "hiddenRequirements": [
+      {
+        "id": "reach_1000",
+        "label": "Reach 1000 Resonance",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "complete_a_mission_without_combat",
+        "label": "Complete a mission without combat.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "defeat_a_boss_through_a_plan",
+        "label": "Defeat a boss through a plan.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "remain_unseen_across_three_combats",
+        "label": "Remain unseen across three combats.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "rescue_an_ally_unseen",
+        "label": "Rescue an ally unseen.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "disable_an_enemy_without_killing",
+        "label": "Disable an enemy without killing.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      }
+    ],
+    "features": {
+      "passives": [
+        "Shadow Walker: advantage Stealth in dim/dark.",
+        "Veil of Silence: silent movement and detection advantage.",
+        "One With Darkness: +2 AC in dim/dark.",
+        "Unseen Hunter: first attack has advantage and +2d8 necrotic."
+      ],
+      "actives": [
+        "<strong>Shadow Step.</strong> <em>Bonus Action, 1 charge.</em> Teleport up to 30 feet to an unoccupied space in dim light or darkness that you can see.",
+        "<strong>Fade Away.</strong> <em>Reaction, 2 charges.</em> When you are targeted by an attack or effect, become invisible until the end of your next turn or until you attack or cast a spell.",
+        "<strong>Living Darkness.</strong> <em>Action, 3 charges.</em> Create a zone of magical darkness at a point within 60 feet. The bearer can see through this darkness.",
+        "<strong>Death From Silence.</strong> <em>Action, 4 charges.</em> Make a weapon attack against a creature within reach. On a hit, deal an extra 8d6 necrotic damage; the GM may call for a save to resist being stunned."
+      ],
+      "avatar": "<strong>Walker Between Shadows.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> You gain flying speed 40 feet with hover, resistance to necrotic damage, may become invisible as a bonus action in dim light or darkness, and your movement does not provoke opportunity attacks.",
+      "signature": "<strong>One Step Behind.</strong> <em>Once per long rest, 1 minute.</em> At the start of each of your turns, you may teleport to a shadow within 60 feet. The first attack you make after each teleport has advantage and deals an extra 10d6 necrotic damage on a hit."
+    },
+    "dreams": [
+      {
+        "id": "dream_1_cloak_shadowfell",
+        "stage": "dormant",
+        "affinityMin": 100,
+        "title": "The City Without Moonlight",
+        "text": "A vision of the city without moonlight reaches the bearer."
+      },
+      {
+        "id": "dream_2_cloak_shadowfell",
+        "stage": "awakened",
+        "affinityMin": 300,
+        "title": "The Crown Not Taken",
+        "text": "A vision of the crown not taken reaches the bearer."
+      },
+      {
+        "id": "dream_3_cloak_shadowfell",
+        "stage": "exalted",
+        "affinityMin": 750,
+        "title": "The Speaking Shadows",
+        "text": "A vision of the speaking shadows reaches the bearer."
+      },
+      {
+        "id": "dream_4_cloak_shadowfell",
+        "stage": "signature",
+        "affinityMin": 1000,
+        "title": "Noctyra",
+        "text": "A vision of noctyra reaches the bearer."
+      }
+    ],
+    "memories": [
+      {
+        "id": "the_city_without_light",
+        "title": "The City Without Light",
+        "locked": true,
+        "text": "Noctyra remembers the city without light."
+      },
+      {
+        "id": "when_silence_won",
+        "title": "When Silence Won",
+        "locked": true,
+        "text": "Noctyra remembers when silence won."
+      },
+      {
+        "id": "the_unseen_queen",
+        "title": "The Unseen Queen",
+        "locked": true,
+        "text": "Noctyra remembers the unseen queen."
+      },
+      {
+        "id": "the_last_shadow",
+        "title": "The Last Shadow",
+        "locked": true,
+        "text": "Noctyra remembers the last shadow."
+      }
+    ],
+    "quotes": {
+      "positive": [
+        "Good.",
+        "The path is remembered."
+      ],
+      "negative": [
+        "No.",
+        "The relic grows cold."
+      ],
+      "neutral": [
+        "Wait.",
+        "Choose."
+      ],
+      "signature": [
+        "I am Noctyra.",
+        "The Shadow That Never Slept"
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Noctyra Awakens",
+      "text": [
+        "The relic speaks the name Noctyra.",
+        "The bearer understands: The Shadow That Never Slept."
+      ]
+    },
+    "lore": {
+      "origin": "Noctyra is the living memory of Cunning.",
+      "hiddenSorrow": "Noctyra remembers the night a perfect plan saved a kingdom and left its planner forgotten in the dark.",
+      "knownRumor": "Thieves whisper that the cloak chooses those who know when not to strike.",
+      "appearanceDormant": "A matte black cloak clasp or strip of fabric that never catches torchlight directly.",
+      "appearanceAwakened": "Its folds show impossible depth, as if a second room waits inside the cloth.",
+      "appearanceExalted": "Shadows cling to the bearer like loyal informants, bending away from allies.",
+      "appearanceSignature": "The cloak becomes a starless sky draped over the shoulders, with silent footsteps moving inside it."
+    },
+    "v1Checklist": {
+      "trueName": true,
+      "personality": true,
+      "moodMap": true,
+      "affinityEvents": true,
+      "hiddenRequirements": true,
+      "features": true,
+      "dreams": true,
+      "memories": true,
+      "quotes": true,
+      "signatureCeremony": true,
+      "lore": true,
+      "automationMetadata": true,
+      "needsPlaytest": false,
+      "relicCleanup": true
+    }
+  },
+  {
+    "id": "heart_yggdrasil",
+    "name": "Heart of Yggdrasil",
+    "class": "Druid",
+    "virtue": "Growth",
+    "theme": "Life • Renewal • Balance",
+    "icon": "modules/the-first-relics/art/icons/v1/heart-yggdrasil.png",
+    "releaseStatus": "stable",
+    "nativeWorkflow": true,
+    "trueName": {
+      "name": "Eldryss",
+      "title": "The Heart That Never Withered",
+      "full": "Eldryss, The Heart That Never Withered",
+      "unlockAffinity": 1000,
+      "revealed": false
+    },
+    "automationStatus": {
+      "passives": "Foundry Active Effects / GM adjudication",
+      "actives": "dnd5e Activities + MidiQOL",
+      "avatar": "dnd5e Activity / reminder",
+      "signature": "dnd5e Activity / GM adjudication",
+      "notes": [
+        "Primary workflow is Item Sheet -> Activities.",
+        "No player-facing macro is required.",
+        "Relic text received the v0.24.1 cleanup pass; remaining table calls are marked in ability text."
+      ]
+    },
+    "personality": {
+      "temperament": [
+        "Ancient",
+        "Judging",
+        "Patient",
+        "Willful"
+      ],
+      "likes": [
+        "Virtue-aligned choices",
+        "Sacrifice",
+        "Meaningful growth"
+      ],
+      "dislikes": [
+        "Cowardice",
+        "Cruelty",
+        "Empty power"
+      ],
+      "corePhrase": "Life",
+      "roleplayGuidance": "Eldryss honors growth that preserves balance: healing, restoration, mercy, and patient renewal. It withers around wasteful destruction or life taken for convenience."
+    },
+    "moodMap": [
+      {
+        "min": 0,
+        "max": 99,
+        "mood": "Silent",
+        "description": "A dry seed-heart waits in silence, listening for compassion beneath the bearer's choices."
+      },
+      {
+        "min": 100,
+        "max": 299,
+        "mood": "Watching",
+        "description": "Tiny green veins wake across the relic when the bearer restores what others would abandon."
+      },
+      {
+        "min": 300,
+        "max": 499,
+        "mood": "Testing",
+        "description": "The heart tests whether mercy can survive hunger, anger, and fear of loss."
+      },
+      {
+        "min": 500,
+        "max": 749,
+        "mood": "Trusting",
+        "description": "The heart beats with the bearer's pulse and steadies wounded creatures nearby."
+      },
+      {
+        "min": 750,
+        "max": 999,
+        "mood": "Chosen",
+        "description": "The relic accepts the bearer as soil where ruined things may grow again."
+      },
+      {
+        "min": 1000,
+        "max": 1000,
+        "mood": "Resonant",
+        "description": "Roots coil through dream and bone; Eldryss is ready to speak its true name."
+      }
+    ],
+    "affinity": {
+      "min": 0,
+      "max": 1000,
+      "thresholds": {
+        "dormant": 0,
+        "awakened": 300,
+        "exalted": 750,
+        "signature": 1000
+      },
+      "moods": [
+        "Silent",
+        "Watching",
+        "Testing",
+        "Trusting",
+        "Chosen",
+        "Resonant"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Dormant",
+        "bonus": 1,
+        "charges": 3
+      },
+      "awakened": {
+        "title": "Awakened",
+        "bonus": 2,
+        "charges": 6
+      },
+      "exalted": {
+        "title": "Exalted",
+        "bonus": 3,
+        "charges": 10
+      }
+    },
+    "affinityEvents": [
+      {
+        "id": "protected_nature",
+        "label": "Protected nature",
+        "delta": 20,
+        "category": "Growth"
+      },
+      {
+        "id": "saved_a_life",
+        "label": "Saved a life",
+        "delta": 20,
+        "category": "Life"
+      },
+      {
+        "id": "restored_barren_land",
+        "label": "Restored barren land",
+        "delta": 15,
+        "category": "Renewal"
+      },
+      {
+        "id": "needless_destruction",
+        "label": "Needless destruction",
+        "delta": -25,
+        "category": "Violation"
+      },
+      {
+        "id": "exploited_nature",
+        "label": "Exploited nature",
+        "delta": -20,
+        "category": "Violation"
+      },
+      {
+        "id": "burned_forest_intentionally",
+        "label": "Burned forest intentionally",
+        "delta": -25,
+        "category": "Violation"
+      }
+    ],
+    "hiddenRequirements": [
+      {
+        "id": "reach_1000",
+        "label": "Reach 1000 Resonance",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "restore_a_burned_place",
+        "label": "Restore a burned place.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "save_a_village_from_famine",
+        "label": "Save a village from famine.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "spare_an_enemy",
+        "label": "Spare an enemy.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "heal_100_people",
+        "label": "Heal 100 people.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "protect_a_sacred_tree",
+        "label": "Protect a sacred tree.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      }
+    ],
+    "features": {
+      "passives": [
+        "Living Sap: long rest restores PB×2 extra HP.",
+        "Nature's Blessing: healing received +PB.",
+        "Endless Spring: once/long rest first ally at 0 rises to 1 HP.",
+        "World Tree's Gift: immune poison and disease."
+      ],
+      "actives": [
+        "<strong>Verdant Bloom.</strong> <em>Action, 1 charge.</em> Cause plants and roots to surge in an area within 60 feet. Enemies treat the area as difficult terrain while allies move through it normally.",
+        "<strong>Nature's Embrace.</strong> <em>Bonus Action, 2 charges.</em> A creature within 30 feet regains 4d8 hit points.",
+        "<strong>Forest Guardian.</strong> <em>Action, 3 charges, 1 minute.</em> You project a protective growth aura. Allies in the aura gain resistance to one damage type chosen by the GM from the current threat.",
+        "<strong>Roots of Eternity.</strong> <em>Action, 4 charges.</em> A creature within 60 feet must make a Strength saving throw. On a failure, it is restrained by ancient roots for 1 minute."
+      ],
+      "avatar": "<strong>Avatar of Yggdrasil.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> Branches and living light surround you. You gain flying speed 30 feet with hover, resistance to acid, cold, fire, lightning, and poison damage, and allies who start their turn near you regain hit points equal to the relic bonus.",
+      "signature": "<strong>World Reborn.</strong> <em>Once per long rest.</em> Allies of your choice within 60 feet regain all hit points, end poisoned and diseased, and reduce exhaustion by 1. Enemies chosen by the GM in the renewal surge take 8d8 radiant or force damage."
+    },
+    "dreams": [
+      {
+        "id": "dream_1_heart_yggdrasil",
+        "stage": "dormant",
+        "affinityMin": 100,
+        "title": "The Leafless Tree",
+        "text": "A vision of the leafless tree reaches the bearer."
+      },
+      {
+        "id": "dream_2_heart_yggdrasil",
+        "stage": "awakened",
+        "affinityMin": 300,
+        "title": "The First Leaf",
+        "text": "A vision of the first leaf reaches the bearer."
+      },
+      {
+        "id": "dream_3_heart_yggdrasil",
+        "stage": "exalted",
+        "affinityMin": 750,
+        "title": "The Wind Voice",
+        "text": "A vision of the wind voice reaches the bearer."
+      },
+      {
+        "id": "dream_4_heart_yggdrasil",
+        "stage": "signature",
+        "affinityMin": 1000,
+        "title": "Eldryss",
+        "text": "A vision of eldryss reaches the bearer."
+      }
+    ],
+    "memories": [
+      {
+        "id": "the_first_seed",
+        "title": "The First Seed",
+        "locked": true,
+        "text": "Eldryss remembers the first seed."
+      },
+      {
+        "id": "roots_beneath_the_stars",
+        "title": "Roots Beneath the Stars",
+        "locked": true,
+        "text": "Eldryss remembers roots beneath the stars."
+      },
+      {
+        "id": "when_forests_sang",
+        "title": "When Forests Sang",
+        "locked": true,
+        "text": "Eldryss remembers when forests sang."
+      },
+      {
+        "id": "the_last_spring",
+        "title": "The Last Spring",
+        "locked": true,
+        "text": "Eldryss remembers the last spring."
+      }
+    ],
+    "quotes": {
+      "positive": [
+        "Good.",
+        "The path is remembered."
+      ],
+      "negative": [
+        "No.",
+        "The relic grows cold."
+      ],
+      "neutral": [
+        "Wait.",
+        "Choose."
+      ],
+      "signature": [
+        "I am Eldryss.",
+        "The Heart That Never Withered"
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Eldryss Awakens",
+      "text": [
+        "The relic speaks the name Eldryss.",
+        "The bearer understands: The Heart That Never Withered."
+      ]
+    },
+    "lore": {
+      "origin": "Eldryss is the living memory of Growth.",
+      "hiddenSorrow": "Eldryss remembers the first world-tree losing a single branch to save a burning forest below.",
+      "knownRumor": "Druids say the heart blooms only for those who understand that growth and grief share roots.",
+      "appearanceDormant": "A petrified seed or heartwood charm with one living green line at its center.",
+      "appearanceAwakened": "Leaves grow from it overnight and fade into light when plucked.",
+      "appearanceExalted": "A miniature canopy of spectral branches spreads behind the bearer in moments of healing.",
+      "appearanceSignature": "The heart becomes a living knot of root, leaf, and starlight, beating with the rhythm of distant forests."
+    },
+    "v1Checklist": {
+      "trueName": true,
+      "personality": true,
+      "moodMap": true,
+      "affinityEvents": true,
+      "hiddenRequirements": true,
+      "features": true,
+      "dreams": true,
+      "memories": true,
+      "quotes": true,
+      "signatureCeremony": true,
+      "lore": true,
+      "automationMetadata": true,
+      "needsPlaytest": false,
+      "relicCleanup": true
+    }
+  },
+  {
+    "id": "vestments_first_saint",
+    "name": "Vestments of the First Saint",
+    "class": "Cleric",
+    "virtue": "Faith",
+    "theme": "Compassion • Hope • Mercy",
+    "icon": "modules/the-first-relics/art/icons/v1/vestments-first-saint.png",
+    "releaseStatus": "stable",
+    "nativeWorkflow": true,
+    "trueName": {
+      "name": "Seraphel",
+      "title": "The Light That Refused to Fade",
+      "full": "Seraphel, The Light That Refused to Fade",
+      "unlockAffinity": 1000,
+      "revealed": false
+    },
+    "automationStatus": {
+      "passives": "Foundry Active Effects / GM adjudication",
+      "actives": "dnd5e Activities + MidiQOL",
+      "avatar": "dnd5e Activity / reminder",
+      "signature": "dnd5e Activity / GM adjudication",
+      "notes": [
+        "Primary workflow is Item Sheet -> Activities.",
+        "No player-facing macro is required.",
+        "Relic text received the v0.24.1 cleanup pass; remaining table calls are marked in ability text."
+      ]
+    },
+    "personality": {
+      "temperament": [
+        "Ancient",
+        "Judging",
+        "Patient",
+        "Willful"
+      ],
+      "likes": [
+        "Virtue-aligned choices",
+        "Sacrifice",
+        "Meaningful growth"
+      ],
+      "dislikes": [
+        "Cowardice",
+        "Cruelty",
+        "Empty power"
+      ],
+      "corePhrase": "Compassion",
+      "roleplayGuidance": "Seraphel answers faith expressed through mercy, courage, and service rather than doctrine alone. It dims when healing is withheld for pride or compassion is treated as weakness."
+    },
+    "moodMap": [
+      {
+        "min": 0,
+        "max": 99,
+        "mood": "Silent",
+        "description": "The vestments hang still, smelling faintly of candle smoke after prayers for the wounded."
+      },
+      {
+        "min": 100,
+        "max": 299,
+        "mood": "Watching",
+        "description": "Threaded light appears along the seams when the bearer comforts someone with no reward promised."
+      },
+      {
+        "min": 300,
+        "max": 499,
+        "mood": "Testing",
+        "description": "The vestments test whether faith remains when miracles are delayed and pain is inconvenient."
+      },
+      {
+        "min": 500,
+        "max": 749,
+        "mood": "Trusting",
+        "description": "The relic trusts the bearer with warmth that steadies frightened hands."
+      },
+      {
+        "min": 750,
+        "max": 999,
+        "mood": "Chosen",
+        "description": "The vestments accept the bearer as a servant of light before victory."
+      },
+      {
+        "min": 1000,
+        "max": 1000,
+        "mood": "Resonant",
+        "description": "A choir too distant to hear gathers in the cloth; Seraphel is ready to speak its true name."
+      }
+    ],
+    "affinity": {
+      "min": 0,
+      "max": 1000,
+      "thresholds": {
+        "dormant": 0,
+        "awakened": 300,
+        "exalted": 750,
+        "signature": 1000
+      },
+      "moods": [
+        "Silent",
+        "Watching",
+        "Testing",
+        "Trusting",
+        "Chosen",
+        "Resonant"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Dormant",
+        "bonus": 1,
+        "charges": 3
+      },
+      "awakened": {
+        "title": "Awakened",
+        "bonus": 2,
+        "charges": 6
+      },
+      "exalted": {
+        "title": "Exalted",
+        "bonus": 3,
+        "charges": 10
+      }
+    },
+    "affinityEvents": [
+      {
+        "id": "helped_a_stranger",
+        "label": "Helped a stranger",
+        "delta": 20,
+        "category": "Faith"
+      },
+      {
+        "id": "made_a_major_sacrifice",
+        "label": "Made a major sacrifice",
+        "delta": 20,
+        "category": "Mercy"
+      },
+      {
+        "id": "forgave_an_enemy",
+        "label": "Forgave an enemy",
+        "delta": 15,
+        "category": "Mercy"
+      },
+      {
+        "id": "used_power_cruelly",
+        "label": "Used power cruelly",
+        "delta": -25,
+        "category": "Violation"
+      },
+      {
+        "id": "refused_help_when_able",
+        "label": "Refused help when able",
+        "delta": -20,
+        "category": "Violation"
+      },
+      {
+        "id": "harmed_innocents",
+        "label": "Harmed innocents",
+        "delta": -25,
+        "category": "Violation"
+      }
+    ],
+    "hiddenRequirements": [
+      {
+        "id": "reach_1000",
+        "label": "Reach 1000 Resonance",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "bring_an_ally_back_from_death",
+        "label": "Bring an ally back from death.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "heal_1000_hp_total",
+        "label": "Heal 1000 HP total.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "spare_an_enemy",
+        "label": "Spare an enemy.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "be_the_last_healer_in_a_disaster",
+        "label": "Be the last healer in a disaster.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "help_without_reward",
+        "label": "Help without reward.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      }
+    ],
+    "features": {
+      "passives": [
+        "Gentle Light: allies within 30 ft advantage death saves.",
+        "Saint's Grace: healing caused +PB.",
+        "Beacon of Hope: allies advantage vs fear/charm.",
+        "Unyielding Spirit: reject one death effect per long rest."
+      ],
+      "actives": [
+        "<strong>Blessing.</strong> <em>Bonus Action, 1 charge.</em> An ally within 30 feet adds 1d4 to attack rolls, saving throws, and ability checks until the end of your next turn.",
+        "<strong>Cleansing Light.</strong> <em>Action, 2 charges.</em> End one poison, disease, frightened, or charmed condition affecting a creature within 30 feet.",
+        "<strong>Sanctuary of Dawn.</strong> <em>Action, 3 charges, 1 minute.</em> You create a 10-foot aura of sanctuary. Allies in the aura gain resistance to necrotic and radiant damage.",
+        "<strong>Wings of Mercy.</strong> <em>Action, 4 charges.</em> Up to three allies within 60 feet each regain 6d8 hit points. Wings of light carry the healing around cover at the GM's discretion."
+      ],
+      "avatar": "<strong>Saint Incarnate.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> Wings and vestments of light form around you. You gain flying speed 40 feet with hover, resistance to radiant damage, shed bright light, and allies near you regain hit points equal to the relic bonus at the start of their turns.",
+      "signature": "<strong>Miracle of the First Saint.</strong> <em>Once per long rest.</em> Allies of your choice within 60 feet are fully healed and cleansed of poison, disease, frightened, charmed, paralyzed, and stunned. One ally who died within the last minute may return to life at 1 hit point."
+    },
+    "dreams": [
+      {
+        "id": "dream_1_vestments_first_saint",
+        "stage": "dormant",
+        "affinityMin": 100,
+        "title": "The Empty Temple",
+        "text": "A vision of the empty temple reaches the bearer."
+      },
+      {
+        "id": "dream_2_vestments_first_saint",
+        "stage": "awakened",
+        "affinityMin": 300,
+        "title": "The Wounded Field",
+        "text": "A vision of the wounded field reaches the bearer."
+      },
+      {
+        "id": "dream_3_vestments_first_saint",
+        "stage": "exalted",
+        "affinityMin": 750,
+        "title": "The Light Returns",
+        "text": "A vision of the light returns reaches the bearer."
+      },
+      {
+        "id": "dream_4_vestments_first_saint",
+        "stage": "signature",
+        "affinityMin": 1000,
+        "title": "Seraphel",
+        "text": "A vision of seraphel reaches the bearer."
+      }
+    ],
+    "memories": [
+      {
+        "id": "the_first_prayer",
+        "title": "The First Prayer",
+        "locked": true,
+        "text": "Seraphel remembers the first prayer."
+      },
+      {
+        "id": "when_hope_returned",
+        "title": "When Hope Returned",
+        "locked": true,
+        "text": "Seraphel remembers when hope returned."
+      },
+      {
+        "id": "the_empty_cathedral",
+        "title": "The Empty Cathedral",
+        "locked": true,
+        "text": "Seraphel remembers the empty cathedral."
+      },
+      {
+        "id": "light_beyond_death",
+        "title": "Light Beyond Death",
+        "locked": true,
+        "text": "Seraphel remembers light beyond death."
+      }
+    ],
+    "quotes": {
+      "positive": [
+        "Good.",
+        "The path is remembered."
+      ],
+      "negative": [
+        "No.",
+        "The relic grows cold."
+      ],
+      "neutral": [
+        "Wait.",
+        "Choose."
+      ],
+      "signature": [
+        "I am Seraphel.",
+        "The Light That Refused to Fade"
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Seraphel Awakens",
+      "text": [
+        "The relic speaks the name Seraphel.",
+        "The bearer understands: The Light That Refused to Fade."
+      ]
+    },
+    "lore": {
+      "origin": "Seraphel is the living memory of Faith.",
+      "hiddenSorrow": "Seraphel remembers the saint who spent their final miracle on an enemy child and died unnamed.",
+      "knownRumor": "Temples disagree about Seraphel's doctrine, but every story agrees the vestments move toward suffering.",
+      "appearanceDormant": "A strip of white-gold cloth or stole that never stains where blood touches it.",
+      "appearanceAwakened": "Soft script appears in the weave after acts of mercy, then vanishes by dawn.",
+      "appearanceExalted": "A halo of cloth and light trails the bearer, folding itself around the wounded.",
+      "appearanceSignature": "The vestments become radiant robes of impossible softness, stitched with prayers in every known tongue."
+    },
+    "v1Checklist": {
+      "trueName": true,
+      "personality": true,
+      "moodMap": true,
+      "affinityEvents": true,
+      "hiddenRequirements": true,
+      "features": true,
+      "dreams": true,
+      "memories": true,
+      "quotes": true,
+      "signatureCeremony": true,
+      "lore": true,
+      "automationMetadata": true,
+      "needsPlaytest": false,
+      "relicCleanup": true
+    }
+  },
+  {
+    "id": "blood_first_dragon",
+    "name": "Blood of the First Dragon",
+    "class": "Sorcerer",
+    "virtue": "Will",
+    "theme": "Power • Evolution • Flame",
+    "icon": "modules/the-first-relics/art/icons/v1/blood-first-dragon.png",
+    "releaseStatus": "stable",
+    "nativeWorkflow": true,
+    "trueName": {
+      "name": "Vorathis",
+      "title": "The Flame That Refused Extinction",
+      "full": "Vorathis, The Flame That Refused Extinction",
+      "unlockAffinity": 1000,
+      "revealed": false
+    },
+    "automationStatus": {
+      "passives": "Foundry Active Effects / GM adjudication",
+      "actives": "dnd5e Activities + MidiQOL",
+      "avatar": "dnd5e Activity / reminder",
+      "signature": "dnd5e Activity / GM adjudication",
+      "notes": [
+        "Primary workflow is Item Sheet -> Activities.",
+        "No player-facing macro is required.",
+        "Relic text received the v0.24.1 cleanup pass; remaining table calls are marked in ability text."
+      ]
+    },
+    "personality": {
+      "temperament": [
+        "Ancient",
+        "Judging",
+        "Patient",
+        "Willful"
+      ],
+      "likes": [
+        "Virtue-aligned choices",
+        "Sacrifice",
+        "Meaningful growth"
+      ],
+      "dislikes": [
+        "Cowardice",
+        "Cruelty",
+        "Empty power"
+      ],
+      "corePhrase": "Power",
+      "roleplayGuidance": "Vorathis respects will that endures without surrendering to mindless destruction. It burns hotter when the bearer chooses purpose over rage and accepts the cost of power."
+    },
+    "moodMap": [
+      {
+        "min": 0,
+        "max": 99,
+        "mood": "Silent",
+        "description": "The blood is dark and still, waiting to learn what the bearer will burn for."
+      },
+      {
+        "min": 100,
+        "max": 299,
+        "mood": "Watching",
+        "description": "Heat rises beneath the relic when the bearer refuses fear without lashing out blindly."
+      },
+      {
+        "min": 300,
+        "max": 499,
+        "mood": "Testing",
+        "description": "The dragon-blood tests whether the bearer can carry wrath without becoming its servant."
+      },
+      {
+        "min": 500,
+        "max": 749,
+        "mood": "Trusting",
+        "description": "The relic trusts the bearer with a controlled flame that answers breath and heartbeat."
+      },
+      {
+        "min": 750,
+        "max": 999,
+        "mood": "Chosen",
+        "description": "The dragon-blood accepts the bearer as one whose will can survive its own fire."
+      },
+      {
+        "min": 1000,
+        "max": 1000,
+        "mood": "Resonant",
+        "description": "A first flame coils behind the bearer's eyes; Vorathis is ready to speak its true name."
+      }
+    ],
+    "affinity": {
+      "min": 0,
+      "max": 1000,
+      "thresholds": {
+        "dormant": 0,
+        "awakened": 300,
+        "exalted": 750,
+        "signature": 1000
+      },
+      "moods": [
+        "Silent",
+        "Watching",
+        "Testing",
+        "Trusting",
+        "Chosen",
+        "Resonant"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Dormant",
+        "bonus": 1,
+        "charges": 3
+      },
+      "awakened": {
+        "title": "Awakened",
+        "bonus": 2,
+        "charges": 6
+      },
+      "exalted": {
+        "title": "Exalted",
+        "bonus": 3,
+        "charges": 10
+      }
+    },
+    "affinityEvents": [
+      {
+        "id": "defeated_a_powerful_enemy",
+        "label": "Defeated a powerful enemy",
+        "delta": 20,
+        "category": "Will"
+      },
+      {
+        "id": "overcame_great_fear",
+        "label": "Overcame great fear",
+        "delta": 20,
+        "category": "Will"
+      },
+      {
+        "id": "rose_after_defeat",
+        "label": "Rose after defeat",
+        "delta": 15,
+        "category": "Growth"
+      },
+      {
+        "id": "feared_your_own_power",
+        "label": "Feared your own power",
+        "delta": -20,
+        "category": "Violation"
+      },
+      {
+        "id": "avoided_challenge",
+        "label": "Avoided challenge",
+        "delta": -20,
+        "category": "Violation"
+      },
+      {
+        "id": "used_power_on_innocents",
+        "label": "Used power on innocents",
+        "delta": -25,
+        "category": "Violation"
+      }
+    ],
+    "hiddenRequirements": [
+      {
+        "id": "reach_1000",
+        "label": "Reach 1000 Resonance",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "defeat_an_ancient_dragon",
+        "label": "Defeat an ancient dragon.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "return_from_0_hp_three_times",
+        "label": "Return from 0 HP three times.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "stop_a_major_threat_alone",
+        "label": "Stop a major threat alone.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "win_while_frightened",
+        "label": "Win while frightened.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "choose_self_sacrifice_over_a_city",
+        "label": "Choose self-sacrifice over a city.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      }
+    ],
+    "features": {
+      "passives": [
+        "Draconic Blood: max HP +1/level.",
+        "Ancient Scales: +1 AC.",
+        "Unyielding Will: advantage STR/CON saves.",
+        "Dragon Soul: fire/cold resistance and frightened immunity."
+      ],
+      "actives": [
+        "<strong>Draconic Roar.</strong> <em>Bonus Action, 1 charge.</em> One creature within 30 feet must make a Wisdom saving throw or be frightened of you until the end of your next turn.",
+        "<strong>Burning Blood.</strong> <em>Bonus Action, 2 charges, 1 minute.</em> Your weapon and spell attacks deal an extra 2d6 fire damage once per turn.",
+        "<strong>Wings of the First Dragon.</strong> <em>Action, 3 charges, 1 minute.</em> You gain flying speed 60 feet with hover as wings of elemental flame unfold from your back.",
+        "<strong>Primordial Breath.</strong> <em>Action, 4 charges.</em> Exhale a 60-foot cone of primordial fire. Creatures in the area make a Dexterity saving throw, taking 10d6 fire damage on a failure or half as much on a success."
+      ],
+      "avatar": "<strong>First Dragon Incarnate.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> You gain flying speed 80 feet with hover, resistance to fire, cold, and lightning damage, a frightful draconic presence, and once per turn your damage deals an extra 2d10 fire, cold, or lightning damage.",
+      "signature": "<strong>Heart of the First Flame.</strong> <em>Once per long rest, 1 minute.</em> You gain flying speed, resistance to all damage, advantage on attack rolls and saving throws, and your weapon and spell attacks score critical hits on a 19 or 20. When it ends, you gain one level of exhaustion."
+    },
+    "dreams": [
+      {
+        "id": "dream_1_blood_first_dragon",
+        "stage": "dormant",
+        "affinityMin": 100,
+        "title": "The Lone Sky",
+        "text": "A vision of the lone sky reaches the bearer."
+      },
+      {
+        "id": "dream_2_blood_first_dragon",
+        "stage": "awakened",
+        "affinityMin": 300,
+        "title": "The Burning Heart",
+        "text": "A vision of the burning heart reaches the bearer."
+      },
+      {
+        "id": "dream_3_blood_first_dragon",
+        "stage": "exalted",
+        "affinityMin": 750,
+        "title": "The First Flame",
+        "text": "A vision of the first flame reaches the bearer."
+      },
+      {
+        "id": "dream_4_blood_first_dragon",
+        "stage": "signature",
+        "affinityMin": 1000,
+        "title": "Vorathis",
+        "text": "A vision of vorathis reaches the bearer."
+      }
+    ],
+    "memories": [
+      {
+        "id": "the_first_flame",
+        "title": "The First Flame",
+        "locked": true,
+        "text": "Vorathis remembers the first flame."
+      },
+      {
+        "id": "before_dragons_ruled",
+        "title": "Before Dragons Ruled",
+        "locked": true,
+        "text": "Vorathis remembers before dragons ruled."
+      },
+      {
+        "id": "wings_against_the_void",
+        "title": "Wings Against the Void",
+        "locked": true,
+        "text": "Vorathis remembers wings against the void."
+      },
+      {
+        "id": "the_burning_sky",
+        "title": "The Burning Sky",
+        "locked": true,
+        "text": "Vorathis remembers the burning sky."
+      }
+    ],
+    "quotes": {
+      "positive": [
+        "Good.",
+        "The path is remembered."
+      ],
+      "negative": [
+        "No.",
+        "The relic grows cold."
+      ],
+      "neutral": [
+        "Wait.",
+        "Choose."
+      ],
+      "signature": [
+        "I am Vorathis.",
+        "The Flame That Refused Extinction"
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Vorathis Awakens",
+      "text": [
+        "The relic speaks the name Vorathis.",
+        "The bearer understands: The Flame That Refused Extinction."
+      ]
+    },
+    "lore": {
+      "origin": "Vorathis is the living memory of Will.",
+      "hiddenSorrow": "Vorathis remembers the first dragon choosing extinction over chains, and the mountain that became its pyre.",
+      "knownRumor": "Sorcerers say the blood refuses cowards and tyrants in equal measure; both waste fire.",
+      "appearanceDormant": "A ruby-dark vial, scale, or vein-like gem that warms near open flame.",
+      "appearanceAwakened": "The relic pulses like a second heart when the bearer refuses fear.",
+      "appearanceExalted": "Draconic script burns beneath its surface, visible through smoke and battle heat.",
+      "appearanceSignature": "The blood becomes liquid starlit flame, circling the bearer like a dragon around its hoard."
+    },
+    "v1Checklist": {
+      "trueName": true,
+      "personality": true,
+      "moodMap": true,
+      "affinityEvents": true,
+      "hiddenRequirements": true,
+      "features": true,
+      "dreams": true,
+      "memories": true,
+      "quotes": true,
+      "signatureCeremony": true,
+      "lore": true,
+      "automationMetadata": true,
+      "needsPlaytest": false,
+      "relicCleanup": true
+    }
+  },
+  {
+    "id": "lyre_first_song",
+    "name": "Lyre of the First Song",
+    "class": "Bard",
+    "virtue": "Creation",
+    "theme": "Inspiration • Harmony • Possibility",
+    "icon": "modules/the-first-relics/art/icons/v1/lyre-first-song.png",
+    "releaseStatus": "stable",
+    "nativeWorkflow": true,
+    "trueName": {
+      "name": "Elyndor",
+      "title": "The Song Before Stars",
+      "full": "Elyndor, The Song Before Stars",
+      "unlockAffinity": 1000,
+      "revealed": false
+    },
+    "automationStatus": {
+      "passives": "Foundry Active Effects / GM adjudication",
+      "actives": "dnd5e Activities + MidiQOL",
+      "avatar": "dnd5e Activity / reminder",
+      "signature": "dnd5e Activity / GM adjudication",
+      "notes": [
+        "Primary workflow is Item Sheet -> Activities.",
+        "No player-facing macro is required.",
+        "Relic text received the v0.24.1 cleanup pass; remaining table calls are marked in ability text."
+      ]
+    },
+    "personality": {
+      "temperament": [
+        "Ancient",
+        "Judging",
+        "Patient",
+        "Willful"
+      ],
+      "likes": [
+        "Virtue-aligned choices",
+        "Sacrifice",
+        "Meaningful growth"
+      ],
+      "dislikes": [
+        "Cowardice",
+        "Cruelty",
+        "Empty power"
+      ],
+      "corePhrase": "Inspiration",
+      "roleplayGuidance": "Elyndor honors creation that gives courage, memory, and shape to hope. It falls silent around mockery that breaks spirits or art used only to manipulate the vulnerable."
+    },
+    "moodMap": [
+      {
+        "min": 0,
+        "max": 99,
+        "mood": "Silent",
+        "description": "The lyre gives no note, but nearby silence feels arranged rather than empty."
+      },
+      {
+        "min": 100,
+        "max": 299,
+        "mood": "Watching",
+        "description": "A single harmonic answers when the bearer uses voice or art to strengthen another."
+      },
+      {
+        "min": 300,
+        "max": 499,
+        "mood": "Testing",
+        "description": "The lyre tests whether the bearer creates truth when lies would be easier to sing."
+      },
+      {
+        "min": 500,
+        "max": 749,
+        "mood": "Trusting",
+        "description": "The relic trusts the bearer with melodies that steady allies before fear can name itself."
+      },
+      {
+        "min": 750,
+        "max": 999,
+        "mood": "Chosen",
+        "description": "The lyre accepts the bearer as a maker whose song can carry others through darkness."
+      },
+      {
+        "min": 1000,
+        "max": 1000,
+        "mood": "Resonant",
+        "description": "The first note waits behind every sound; Elyndor is ready to speak its true name."
+      }
+    ],
+    "affinity": {
+      "min": 0,
+      "max": 1000,
+      "thresholds": {
+        "dormant": 0,
+        "awakened": 300,
+        "exalted": 750,
+        "signature": 1000
+      },
+      "moods": [
+        "Silent",
+        "Watching",
+        "Testing",
+        "Trusting",
+        "Chosen",
+        "Resonant"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Dormant",
+        "bonus": 1,
+        "charges": 3
+      },
+      "awakened": {
+        "title": "Awakened",
+        "bonus": 2,
+        "charges": 6
+      },
+      "exalted": {
+        "title": "Exalted",
+        "bonus": 3,
+        "charges": 10
+      }
+    },
+    "affinityEvents": [
+      {
+        "id": "inspired_a_community",
+        "label": "Inspired a community",
+        "delta": 20,
+        "category": "Creation"
+      },
+      {
+        "id": "resolved_conflict_through_art",
+        "label": "Resolved conflict through art",
+        "delta": 20,
+        "category": "Harmony"
+      },
+      {
+        "id": "created_something_new",
+        "label": "Created something new",
+        "delta": 15,
+        "category": "Creation"
+      },
+      {
+        "id": "destroyed_culture_intentionally",
+        "label": "Destroyed culture intentionally",
+        "delta": -25,
+        "category": "Violation"
+      },
+      {
+        "id": "extinguished_hope",
+        "label": "Extinguished hope",
+        "delta": -20,
+        "category": "Violation"
+      },
+      {
+        "id": "silenced_another_voice",
+        "label": "Silenced another voice",
+        "delta": -10,
+        "category": "Violation"
+      }
+    ],
+    "hiddenRequirements": [
+      {
+        "id": "reach_1000",
+        "label": "Reach 1000 Resonance",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "end_a_battle_through_words",
+        "label": "End a battle through words.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "restore_a_settlement_s_morale",
+        "label": "Restore a settlement's morale.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "make_peace_between_two_peoples",
+        "label": "Make peace between two peoples.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "restore_hope_to_a_broken_npc",
+        "label": "Restore hope to a broken NPC.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      },
+      {
+        "id": "create_or_preserve_a_tradition",
+        "label": "Create or preserve a tradition.",
+        "requiredFor": "signature",
+        "completed": false,
+        "secret": true
+      }
+    ],
+    "features": {
+      "passives": [
+        "Echo of Inspiration: allies within 30 ft gain relic bonus to checks.",
+        "Song of Courage: allies within 30 ft cannot be frightened.",
+        "Melody of Unity: allies within 30 ft add PB to saves.",
+        "Symphony Eternal: PB/long rest auto-succeed a failed concentration save."
+      ],
+      "actives": [
+        "<strong>Song of Rest.</strong> <em>Action, 1 charge.</em> Allies of your choice within 30 feet regain 2d8 hit points as the first chord restores breath and courage.",
+        "<strong>Ballad of Heroes.</strong> <em>Bonus Action, 2 charges, 1 minute.</em> You create a 30-foot aura. Allies in the aura gain +1 to attack and damage rolls.",
+        "<strong>Verse of Silence.</strong> <em>Action, 3 charges.</em> A creature within 60 feet must make a Wisdom saving throw. On a failure, it is silenced for 1 minute.",
+        "<strong>Chorus of Creation.</strong> <em>Action, 4 charges, 1 minute.</em> Allies in a 30-foot aura have advantage on saving throws, gain +2 AC, and gain temporary hit points equal to 10 + the relic bonus."
+      ],
+      "avatar": "<strong>First Song Incarnate.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> Music becomes visible around you. You gain flying speed 40 feet with hover, resistance to radiant and psychic damage, allies near you gain advantage against charm and fear, and your healing songs restore extra hit points equal to the relic bonus.",
+      "signature": "<strong>The First Song.</strong> <em>Once per long rest, 1 minute.</em> Allies of your choice within 60 feet gain advantage on saving throws and ability checks, +2 AC, +2 to attack rolls, and regeneration 10. Enemies of your choice must make a Wisdom saving throw or be charmed for the duration."
+    },
+    "dreams": [
+      {
+        "id": "dream_1_lyre_first_song",
+        "stage": "dormant",
+        "affinityMin": 100,
+        "title": "The First Note",
+        "text": "A vision of the first note reaches the bearer."
+      },
+      {
+        "id": "dream_2_lyre_first_song",
+        "stage": "awakened",
+        "affinityMin": 300,
+        "title": "Stars Become Song",
+        "text": "A vision of stars become song reaches the bearer."
+      },
+      {
+        "id": "dream_3_lyre_first_song",
+        "stage": "exalted",
+        "affinityMin": 750,
+        "title": "The Silent Relics",
+        "text": "A vision of the silent relics reaches the bearer."
+      },
+      {
+        "id": "dream_4_lyre_first_song",
+        "stage": "signature",
+        "affinityMin": 1000,
+        "title": "Elyndor",
+        "text": "A vision of elyndor reaches the bearer."
+      }
+    ],
+    "memories": [
+      {
+        "id": "before_stars_sang",
+        "title": "Before Stars Sang",
+        "locked": true,
+        "text": "Elyndor remembers before stars sang."
+      },
+      {
+        "id": "the_first_melody",
+        "title": "The First Melody",
+        "locked": true,
+        "text": "Elyndor remembers the first melody."
+      },
+      {
+        "id": "the_choir_of_creation",
+        "title": "The Choir of Creation",
+        "locked": true,
+        "text": "Elyndor remembers the choir of creation."
+      },
+      {
+        "id": "when_silence_ended",
+        "title": "When Silence Ended",
+        "locked": true,
+        "text": "Elyndor remembers when silence ended."
+      }
+    ],
+    "quotes": {
+      "positive": [
+        "Good.",
+        "The path is remembered."
+      ],
+      "negative": [
+        "No.",
+        "The relic grows cold."
+      ],
+      "neutral": [
+        "Wait.",
+        "Choose."
+      ],
+      "signature": [
+        "I am Elyndor.",
+        "The Song Before Stars"
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Elyndor Awakens",
+      "text": [
+        "The relic speaks the name Elyndor.",
+        "The bearer understands: The Song Before Stars."
+      ]
+    },
+    "lore": {
+      "origin": "Elyndor is the living memory of Creation.",
+      "hiddenSorrow": "Elyndor remembers the first song ending a war, and the singer who was forgotten once peace became ordinary.",
+      "knownRumor": "Bards claim the lyre cannot be tuned; it tunes the room, the heart, and sometimes history.",
+      "appearanceDormant": "A small lyre, string, or tuning key that hums faintly near honest grief.",
+      "appearanceAwakened": "New strings appear after songs that give courage to the afraid.",
+      "appearanceExalted": "Notes of colored light drift from it even when no hand touches the strings.",
+      "appearanceSignature": "The lyre becomes a constellation of strings and sound, each note echoing before it is played."
+    },
+    "v1Checklist": {
+      "trueName": true,
+      "personality": true,
+      "moodMap": true,
+      "affinityEvents": true,
+      "hiddenRequirements": true,
+      "features": true,
+      "dreams": true,
+      "memories": true,
+      "quotes": true,
+      "signatureCeremony": true,
+      "lore": true,
+      "automationMetadata": true,
+      "needsPlaytest": false,
+      "relicCleanup": true
+    }
+  }
+]
