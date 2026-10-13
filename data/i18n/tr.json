@@ -1929,5 +1929,441 @@
       "avatar": "Gölgeler Arasında Yürüyen",
       "signature": "Bir Adım Geride"
     }
+  },
+  "heart_yggdrasil": {
+    "name": "Yggdrasil'in Kalbi",
+    "class": "Druid",
+    "virtue": "Büyüme",
+    "theme": "Yaşam • Yenilenme • Denge",
+    "trueName": {
+      "name": "Eldryss",
+      "title": "Hiç Solmayan Kalp",
+      "full": "Eldryss, Hiç Solmayan Kalp"
+    },
+    "personality": {
+      "temperament": [
+        "Kadim",
+        "Yargılayıcı",
+        "Sabırlı",
+        "İradeli"
+      ],
+      "likes": [
+        "Erdemine uygun seçimler",
+        "Fedakârlık",
+        "Anlamlı gelişim"
+      ],
+      "dislikes": [
+        "Korkaklık",
+        "Zalimlik",
+        "Boş güç"
+      ],
+      "corePhrase": "Yaşam",
+      "roleplayGuidance": "Eldryss dengeyi koruyan büyümeye saygı duyar: iyileştirme, onarım, merhamet ve sabırlı yenilenme. İsrafçı yıkım ya da işine geldiği için alınan canlar karşısında solar."
+    },
+    "moodMap": [
+      {
+        "mood": "Sessiz",
+        "description": "Kurumuş bir tohum-kalp sessizce bekler; taşıyıcının seçimlerinin altındaki şefkati dinler."
+      },
+      {
+        "mood": "Gözlüyor",
+        "description": "Taşıyıcı başkalarının terk edeceği şeyleri onardığında relic'in üzerinde minik yeşil damarlar uyanır."
+      },
+      {
+        "mood": "Sınıyor",
+        "description": "Kalp, merhametin açlığa, öfkeye ve kayıp korkusuna dayanıp dayanamayacağını sınar."
+      },
+      {
+        "mood": "Güveniyor",
+        "description": "Kalp taşıyıcının nabzıyla birlikte atar ve yakındaki yaralı canlıları dengeler."
+      },
+      {
+        "mood": "Seçilmiş",
+        "description": "Relic taşıyıcıyı, yıkılmış şeylerin yeniden yeşerebileceği bir toprak olarak kabul eder."
+      },
+      {
+        "mood": "Yankılanan",
+        "description": "Kökler rüyaya ve kemiğe dolanır; Eldryss gerçek adını söylemeye hazırdır."
+      }
+    ],
+    "affinity": {
+      "moods": [
+        "Sessiz",
+        "Gözlüyor",
+        "Sınıyor",
+        "Güveniyor",
+        "Seçilmiş",
+        "Yankılanan"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Uykuda"
+      },
+      "awakened": {
+        "title": "Uyanmış"
+      },
+      "exalted": {
+        "title": "Yüceltilmiş"
+      }
+    },
+    "affinityEvents": {
+      "protected_nature": {
+        "label": "Doğayı korudu",
+        "category": "Büyüme"
+      },
+      "saved_a_life": {
+        "label": "Bir hayat kurtardı",
+        "category": "Yaşam"
+      },
+      "restored_barren_land": {
+        "label": "Çorak bir toprağı yeniden canlandırdı",
+        "category": "Yenilenme"
+      },
+      "needless_destruction": {
+        "label": "Gereksiz yıkım",
+        "category": "İhlal"
+      },
+      "exploited_nature": {
+        "label": "Doğayı sömürdü",
+        "category": "İhlal"
+      },
+      "burned_forest_intentionally": {
+        "label": "Bilerek orman yaktı",
+        "category": "İhlal"
+      }
+    },
+    "hiddenRequirements": {
+      "reach_1000": {
+        "label": "1000 Yakınlığa ulaş"
+      },
+      "restore_a_burned_place": {
+        "label": "Yanmış bir yeri yeniden canlandır."
+      },
+      "save_a_village_from_famine": {
+        "label": "Bir köyü kıtlıktan kurtar."
+      },
+      "spare_an_enemy": {
+        "label": "Bir düşmanı bağışla."
+      },
+      "heal_100_people": {
+        "label": "100 kişiyi iyileştir."
+      },
+      "protect_a_sacred_tree": {
+        "label": "Kutsal bir ağacı koru."
+      }
+    },
+    "features": {
+      "passives": [
+        "Yaşayan Özsu: uzun dinlenme, yeterlilik bonusunun 2 katı kadar ek Can Puanı yeniler.",
+        "Doğanın Kutsaması: aldığın iyileştirmeye yeterlilik bonusu eklenir.",
+        "Sonsuz Bahar: uzun dinlenme başına bir kez, 0'a düşen ilk müttefik 1 Can Puanıyla kalkar.",
+        "Dünya Ağacının Armağanı: zehre ve hastalığa bağışıklık."
+      ],
+      "actives": [
+        "<strong>Yeşil Çiçeklenme.</strong> <em>Aksiyon, 1 yük.</em> 60 fit içindeki bir alanda bitkilerin ve köklerin fışkırmasını sağlarsın. Düşmanlar alanı Zorlu Arazi sayar, müttefikler ise içinden normal şekilde geçer.",
+        "<strong>Doğanın Kucağı.</strong> <em>Bonus Aksiyon, 2 yük.</em> 30 fit içindeki bir yaratık 4d8 Can Puanı kazanır.",
+        "<strong>Orman Koruyucusu.</strong> <em>Aksiyon, 3 yük, 1 dakika.</em> Koruyucu bir büyüme aurası yayarsın. Auradaki müttefikler, GM'in mevcut tehditten seçtiği bir hasar türüne direnç kazanır.",
+        "<strong>Sonsuzluğun Kökleri.</strong> <em>Aksiyon, 4 yük.</em> 60 fit içindeki bir yaratık bir Kuvvet kurtarma atışı yapar. Başarısız olursa 1 dakika boyunca kadim köklerle Kısıtlanmış olur."
+      ],
+      "avatar": "<strong>Yggdrasil'in Avatarı.</strong> <em>Bonus Aksiyon, 8 yük, 1 dakika.</em> Dallar ve canlı ışık seni sarar. Havada asılı kalabildiğin 30 fit uçuş hızı ve asit, soğuk, ateş, yıldırım ve zehir hasarına direnç kazanırsın; turuna yanında başlayan müttefikler relic bonusu kadar Can Puanı kazanır.",
+      "signature": "<strong>Yeniden Doğan Dünya.</strong> <em>Uzun dinlenme başına bir kez.</em> 60 fit içinde seçtiğin müttefiklerin bütün Can Puanları yenilenir, Zehirlenmiş ve hastalık durumları sona erer ve bitkinlikleri 1 azalır. Yenilenme dalgasında GM'in seçtiği düşmanlar 8d8 ışınsal ya da kuvvet hasarı alır."
+    },
+    "dreams": {
+      "dream_1_heart_yggdrasil": {
+        "title": "Yapraksız Ağaç",
+        "text": "Taşıyıcıya yapraksız ağacın görüntüsü gelir."
+      },
+      "dream_2_heart_yggdrasil": {
+        "title": "İlk Yaprak",
+        "text": "Taşıyıcıya ilk yaprağın görüntüsü gelir."
+      },
+      "dream_3_heart_yggdrasil": {
+        "title": "Rüzgârın Sesi",
+        "text": "Taşıyıcıya rüzgârın sesinin görüntüsü gelir."
+      },
+      "dream_4_heart_yggdrasil": {
+        "title": "Eldryss",
+        "text": "Taşıyıcıya Eldryss'in görüntüsü gelir."
+      }
+    },
+    "memories": {
+      "the_first_seed": {
+        "title": "İlk Tohum",
+        "text": "Eldryss ilk tohumu hatırlar."
+      },
+      "roots_beneath_the_stars": {
+        "title": "Yıldızların Altındaki Kökler",
+        "text": "Eldryss yıldızların altındaki kökleri hatırlar."
+      },
+      "when_forests_sang": {
+        "title": "Ormanların Şarkı Söylediği Zamanlar",
+        "text": "Eldryss ormanların şarkı söylediği zamanları hatırlar."
+      },
+      "the_last_spring": {
+        "title": "Son Bahar",
+        "text": "Eldryss son baharı hatırlar."
+      }
+    },
+    "quotes": {
+      "positive": [
+        "İyi.",
+        "Yol hatırlanıyor."
+      ],
+      "negative": [
+        "Hayır.",
+        "Relic soğuyor."
+      ],
+      "neutral": [
+        "Bekle.",
+        "Seç."
+      ],
+      "signature": [
+        "Ben Eldryss'im.",
+        "Hiç Solmayan Kalp"
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Eldryss Uyanıyor",
+      "text": [
+        "Relic, Eldryss adını söyler.",
+        "Taşıyıcı anlar: Hiç Solmayan Kalp."
+      ]
+    },
+    "lore": {
+      "origin": "Eldryss, Büyümenin yaşayan hafızasıdır.",
+      "hiddenSorrow": "Eldryss, ilk dünya ağacının aşağıda yanan bir ormanı kurtarmak için tek bir dalını feda ettiğini hatırlar.",
+      "knownRumor": "Druidler kalbin yalnızca büyümenin ve kederin aynı kökleri paylaştığını anlayanlar için çiçek açtığını söyler.",
+      "appearanceDormant": "Ortasında tek bir canlı yeşil çizgi olan taşlaşmış bir tohum ya da öz odun muskası.",
+      "appearanceAwakened": "Bir gecede üzerinden yapraklar çıkar; koparıldıklarında ışığa karışıp kaybolurlar.",
+      "appearanceExalted": "İyileştirme anlarında taşıyıcının arkasında hayaletimsi dallardan küçük bir taç açılır.",
+      "appearanceSignature": "Kalp, uzak ormanların ritmiyle atan, kökten, yapraktan ve yıldız ışığından canlı bir düğüme dönüşür."
+    },
+    "abilities": {
+      "active1": "Yeşil Çiçeklenme",
+      "active2": "Doğanın Kucağı",
+      "active3": "Orman Koruyucusu",
+      "active4": "Sonsuzluğun Kökleri",
+      "avatar": "Yggdrasil'in Avatarı",
+      "signature": "Yeniden Doğan Dünya"
+    }
+  },
+  "vestments_first_saint": {
+    "name": "İlk Azizin Cüppesi",
+    "class": "Cleric",
+    "virtue": "İnanç",
+    "theme": "Şefkat • Umut • Merhamet",
+    "trueName": {
+      "name": "Seraphel",
+      "title": "Sönmeyi Reddeden Işık",
+      "full": "Seraphel, Sönmeyi Reddeden Işık"
+    },
+    "personality": {
+      "temperament": [
+        "Kadim",
+        "Yargılayıcı",
+        "Sabırlı",
+        "İradeli"
+      ],
+      "likes": [
+        "Erdemine uygun seçimler",
+        "Fedakârlık",
+        "Anlamlı gelişim"
+      ],
+      "dislikes": [
+        "Korkaklık",
+        "Zalimlik",
+        "Boş güç"
+      ],
+      "corePhrase": "Şefkat",
+      "roleplayGuidance": "Seraphel, yalnızca öğretiyle değil merhamet, cesaret ve hizmetle ifade edilen inanca karşılık verir. İyileştirme kibir yüzünden esirgendiğinde ya da şefkat zayıflık sayıldığında ışığı söner."
+    },
+    "moodMap": [
+      {
+        "mood": "Sessiz",
+        "description": "Cüppe hareketsiz asılı durur; yaralılar için edilen duaların ardından hafifçe mum dumanı kokar."
+      },
+      {
+        "mood": "Gözlüyor",
+        "description": "Taşıyıcı hiçbir karşılık vaat edilmeden birini teselli ettiğinde dikiş yerlerinde ışıktan iplikler belirir."
+      },
+      {
+        "mood": "Sınıyor",
+        "description": "Cüppe, mucizeler geciktiğinde ve acı zahmetli hâle geldiğinde inancın sürüp sürmediğini sınar."
+      },
+      {
+        "mood": "Güveniyor",
+        "description": "Relic taşıyıcıya, korkmuş elleri dengeleyen bir sıcaklıkla güvenir."
+      },
+      {
+        "mood": "Seçilmiş",
+        "description": "Cüppe taşıyıcıyı, zaferden önce ışığa hizmet eden biri olarak kabul eder."
+      },
+      {
+        "mood": "Yankılanan",
+        "description": "Duyulamayacak kadar uzak bir koro kumaşta toplanır; Seraphel gerçek adını söylemeye hazırdır."
+      }
+    ],
+    "affinity": {
+      "moods": [
+        "Sessiz",
+        "Gözlüyor",
+        "Sınıyor",
+        "Güveniyor",
+        "Seçilmiş",
+        "Yankılanan"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Uykuda"
+      },
+      "awakened": {
+        "title": "Uyanmış"
+      },
+      "exalted": {
+        "title": "Yüceltilmiş"
+      }
+    },
+    "affinityEvents": {
+      "helped_a_stranger": {
+        "label": "Bir yabancıya yardım etti",
+        "category": "İnanç"
+      },
+      "made_a_major_sacrifice": {
+        "label": "Büyük bir fedakârlık yaptı",
+        "category": "Merhamet"
+      },
+      "forgave_an_enemy": {
+        "label": "Bir düşmanı affetti",
+        "category": "Merhamet"
+      },
+      "used_power_cruelly": {
+        "label": "Gücünü zalimce kullandı",
+        "category": "İhlal"
+      },
+      "refused_help_when_able": {
+        "label": "Yardım edebilecekken etmedi",
+        "category": "İhlal"
+      },
+      "harmed_innocents": {
+        "label": "Masumlara zarar verdi",
+        "category": "İhlal"
+      }
+    },
+    "hiddenRequirements": {
+      "reach_1000": {
+        "label": "1000 Yakınlığa ulaş"
+      },
+      "bring_an_ally_back_from_death": {
+        "label": "Bir müttefiki ölümden geri getir."
+      },
+      "heal_1000_hp_total": {
+        "label": "Toplam 1000 Can Puanı iyileştir."
+      },
+      "spare_an_enemy": {
+        "label": "Bir düşmanı bağışla."
+      },
+      "be_the_last_healer_in_a_disaster": {
+        "label": "Bir felakette ayakta kalan son şifacı ol."
+      },
+      "help_without_reward": {
+        "label": "Karşılık beklemeden yardım et."
+      }
+    },
+    "features": {
+      "passives": [
+        "Yumuşak Işık: 30 fit içindeki müttefikler ölüm kurtarma atışlarında avantaj kazanır.",
+        "Azizin Lütfu: yaptığın iyileştirmeye yeterlilik bonusu eklenir.",
+        "Umut Işığı: müttefikler korkuya ve büyülenmeye karşı avantaj kazanır.",
+        "Yılmaz Ruh: uzun dinlenme başına bir ölüm etkisini reddedersin."
+      ],
+      "actives": [
+        "<strong>Kutsama.</strong> <em>Bonus Aksiyon, 1 yük.</em> 30 fit içindeki bir müttefik, bir sonraki turunun sonuna kadar saldırı atışlarına, kurtarma atışlarına ve yetenek kontrollerine 1d4 ekler.",
+        "<strong>Arındıran Işık.</strong> <em>Aksiyon, 2 yük.</em> 30 fit içindeki bir yaratığı etkileyen bir zehir, hastalık, Korkmuş ya da Büyülenmiş durumunu sona erdirirsin.",
+        "<strong>Şafak Sığınağı.</strong> <em>Aksiyon, 3 yük, 1 dakika.</em> 10 fitlik bir sığınak aurası yaratırsın. Auradaki müttefikler nekrotik ve ışınsal hasara direnç kazanır.",
+        "<strong>Merhametin Kanatları.</strong> <em>Aksiyon, 4 yük.</em> 60 fit içindeki en fazla üç müttefikin her biri 6d8 Can Puanı kazanır. Işıktan kanatlar, GM'in takdirine göre iyileştirmeyi siperin etrafından ulaştırır."
+      ],
+      "avatar": "<strong>Azizin Bedenlenişi.</strong> <em>Bonus Aksiyon, 8 yük, 1 dakika.</em> Etrafında ışıktan kanatlar ve cüppe belirir. Havada asılı kalabildiğin 40 fit uçuş hızı ve ışınsal hasara direnç kazanırsın, parlak ışık saçarsın ve yakınındaki müttefikler turlarının başında relic bonusu kadar Can Puanı kazanır.",
+      "signature": "<strong>İlk Azizin Mucizesi.</strong> <em>Uzun dinlenme başına bir kez.</em> 60 fit içinde seçtiğin müttefikler tamamen iyileşir ve zehirden, hastalıktan, Korkmuş, Büyülenmiş, Felçli ve Sersemlemiş durumlarından arınır. Son bir dakika içinde ölmüş bir müttefik 1 Can Puanıyla hayata dönebilir."
+    },
+    "dreams": {
+      "dream_1_vestments_first_saint": {
+        "title": "Boş Tapınak",
+        "text": "Taşıyıcıya boş tapınağın görüntüsü gelir."
+      },
+      "dream_2_vestments_first_saint": {
+        "title": "Yaralı Ova",
+        "text": "Taşıyıcıya yaralı ovanın görüntüsü gelir."
+      },
+      "dream_3_vestments_first_saint": {
+        "title": "Işık Geri Dönüyor",
+        "text": "Taşıyıcıya geri dönen ışığın görüntüsü gelir."
+      },
+      "dream_4_vestments_first_saint": {
+        "title": "Seraphel",
+        "text": "Taşıyıcıya Seraphel'in görüntüsü gelir."
+      }
+    },
+    "memories": {
+      "the_first_prayer": {
+        "title": "İlk Dua",
+        "text": "Seraphel ilk duayı hatırlar."
+      },
+      "when_hope_returned": {
+        "title": "Umudun Döndüğü Gün",
+        "text": "Seraphel umudun döndüğü günü hatırlar."
+      },
+      "the_empty_cathedral": {
+        "title": "Boş Katedral",
+        "text": "Seraphel boş katedrali hatırlar."
+      },
+      "light_beyond_death": {
+        "title": "Ölümün Ötesindeki Işık",
+        "text": "Seraphel ölümün ötesindeki ışığı hatırlar."
+      }
+    },
+    "quotes": {
+      "positive": [
+        "İyi.",
+        "Yol hatırlanıyor."
+      ],
+      "negative": [
+        "Hayır.",
+        "Relic soğuyor."
+      ],
+      "neutral": [
+        "Bekle.",
+        "Seç."
+      ],
+      "signature": [
+        "Ben Seraphel'im.",
+        "Sönmeyi Reddeden Işık"
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Seraphel Uyanıyor",
+      "text": [
+        "Relic, Seraphel adını söyler.",
+        "Taşıyıcı anlar: Sönmeyi Reddeden Işık."
+      ]
+    },
+    "lore": {
+      "origin": "Seraphel, İnancın yaşayan hafızasıdır.",
+      "hiddenSorrow": "Seraphel, son mucizesini bir düşman çocuğu için harcayıp adsız ölen azizi hatırlar.",
+      "knownRumor": "Tapınaklar Seraphel'in öğretisi konusunda anlaşamaz, ama her hikâye cüppenin acıya doğru yöneldiğinde birleşir.",
+      "appearanceDormant": "Kanın değdiği yerde asla leke tutmayan beyaz-altın bir kumaş şeridi ya da stola.",
+      "appearanceAwakened": "Merhamet eylemlerinden sonra dokumada yumuşak yazılar belirir, şafakla birlikte kaybolur.",
+      "appearanceExalted": "Kumaştan ve ışıktan bir hale taşıyıcının ardından süzülür ve yaralıların etrafına dolanır.",
+      "appearanceSignature": "Cüppe, bilinen her dilde dualarla işlenmiş, imkânsız yumuşaklıkta ışıltılı bir giysiye dönüşür."
+    },
+    "abilities": {
+      "active1": "Kutsama",
+      "active2": "Arındıran Işık",
+      "active3": "Şafak Sığınağı",
+      "active4": "Merhametin Kanatları",
+      "avatar": "Azizin Bedenlenişi",
+      "signature": "İlk Azizin Mucizesi"
+    }
   }
 }
