@@ -327,6 +327,13 @@ function TFRNativeEffectDuration(spec = {}, fallbackRounds = 10, fallbackSeconds
   };
 }
 
+/** Display name for a status id: the system status label (localized when available), else title case. */
+function TFRConditionLabel(statusId = "") {
+  const status = (globalThis.CONFIG?.statusEffects || []).find(s => s.id === statusId);
+  const name = status?.name ? globalThis.game?.i18n?.localize?.(status.name) || status.name : "";
+  return name || TFRTitleCaseStatus(statusId);
+}
+
 function TFRTitleCaseStatus(statusId = "") {
   const status = String(statusId || "").trim();
   return status ? status[0].toUpperCase() + status.slice(1) : "Relic Effect";

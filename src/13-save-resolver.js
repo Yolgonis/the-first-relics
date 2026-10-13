@@ -7,7 +7,7 @@ async function TFRCreateManualSaveResolverCard(pending) {
   if (!actor || !relic || !def || !spec?.condition) return null;
 
   const saveText = def.save ? TFRT("{ability} save", { ability: String(def.save).toUpperCase() }) : TFRT("saving throw");
-  const conditionText = TFREscapeHtml(spec.condition);
+  const conditionText = TFREscapeHtml(TFRConditionLabel(spec.condition));
   const abilityText = TFREscapeHtml(def.name);
   const itemText = TFREscapeHtml(relic.name);
   let resolverMessage = null;
@@ -119,7 +119,7 @@ async function TFRResolveSaveAwareManual(pendingId, action = "apply-targets") {
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor }),
       flags: TFRChatFlags({ saveAwareManualCleared: true, relicId: pending.relicId, slot: pending.slot, pendingId }),
-      content: `<h2>${TFREscapeHtml(def.name)}</h2><p>${TFRT("<strong>Save resolver:</strong> cleared. No {condition} condition was applied.", { condition: TFREscapeHtml(spec.condition) })}</p>`
+      content: `<h2>${TFREscapeHtml(def.name)}</h2><p>${TFRT("<strong>Save resolver:</strong> cleared. No {condition} condition was applied.", { condition: TFREscapeHtml(TFRConditionLabel(spec.condition)) })}</p>`
     });
     return { ok: true, cleared: true };
   }
@@ -136,7 +136,7 @@ async function TFRResolveSaveAwareManual(pendingId, action = "apply-targets") {
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
     flags: TFRChatFlags({ saveAwareManualResolved: true, relicId: pending.relicId, slot: pending.slot, pendingId, failed: names.length }),
-    content: `<h2>${TFREscapeHtml(def.name)}</h2><p>${TFRT("<strong>Manual save resolver:</strong> applied <strong>{condition}</strong> to {targets}.", { condition: TFREscapeHtml(spec.condition), targets: TFREscapeHtml(names.join(", ") || TFRT("no targets")) })}</p>`
+    content: `<h2>${TFREscapeHtml(def.name)}</h2><p>${TFRT("<strong>Manual save resolver:</strong> applied <strong>{condition}</strong> to {targets}.", { condition: TFREscapeHtml(TFRConditionLabel(spec.condition)), targets: TFREscapeHtml(names.join(", ") || TFRT("no targets")) })}</p>`
   });
   return { ok: true, applied: names };
 }
@@ -209,7 +209,7 @@ async function TFRFinalizeSaveAwareResult(pending, result, { source = "native-li
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
     flags: TFRChatFlags({ saveAwareResolved: true, relicId: pending.relicId, slot: pending.slot, failed: names.length, autoApplied: true, nativeLike: true }),
-    content: `<h2>${TFREscapeHtml(def.name)}</h2><p>${names.length ? TFRT("<strong>Native save resolver:</strong> applied <strong>{condition}</strong> to {targets}.", { condition: TFREscapeHtml(spec.condition), targets: names.map(TFREscapeHtml).join(", ") }) : TFRT("<strong>Native save resolver:</strong> all targets succeeded; no condition applied.")}</p>`
+    content: `<h2>${TFREscapeHtml(def.name)}</h2><p>${names.length ? TFRT("<strong>Native save resolver:</strong> applied <strong>{condition}</strong> to {targets}.", { condition: TFREscapeHtml(TFRConditionLabel(spec.condition)), targets: names.map(TFREscapeHtml).join(", ") }) : TFRT("<strong>Native save resolver:</strong> all targets succeeded; no condition applied.")}</p>`
   });
   return true;
 }

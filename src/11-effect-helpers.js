@@ -121,7 +121,7 @@ function TFRAbilityHelperChatContent({ relic, def, spec = {}, applied = false, s
   const relicName = TFREscapeHtml(relic?.name || "The First Relic");
   const kind = TFRAbilityHelperKind({ applied, saveQueued, spec });
   const status = saveQueued
-    ? TFRT("Waiting for the save roll and GM resolver before applying {condition}.", { condition: TFREscapeHtml(spec.condition || TFRT("the condition")) })
+    ? TFRT("Waiting for the save roll and GM resolver before applying {condition}.", { condition: TFREscapeHtml(spec.condition ? TFRConditionLabel(spec.condition) : TFRT("the condition")) })
     : applied
       ? TFRT("Module helper effects were applied or queued.")
       : TFRT("No direct game effect was applied by the module.");
