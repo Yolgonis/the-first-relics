@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.7
+
+- Resized all 60 painted relic PNGs (12 item icons and 48 stage illustrations) from 1254 px to 512 px, reducing the art folder from about 150 MB to about 27 MB. File names and paths are unchanged, so existing world and actor items keep their icons.
+
 ## v1.1.6
 
 - Increased the 1000-Affinity Final Form Universal Relic Bonus from `+4` to `+5` for all twelve relics.
