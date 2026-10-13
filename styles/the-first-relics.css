@@ -603,3 +603,31 @@
     flex: 1 1 120px;
   }
 }
+
+/* v1.1.9 DialogV2 layout: one scrollable body with fixed footer buttons */
+.application.tfr-dialog .window-content {
+  overflow: hidden;
+}
+
+.application.tfr-dialog .dialog-form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.application.tfr-dialog .dialog-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.application.tfr-dialog .form-footer {
+  flex: 0 0 auto;
+}
+
+/* Foundry v13 gives application buttons a fixed height; control buttons stack icon, label and hint. */
+.application .tfr-control-button {
+  height: auto;
+}

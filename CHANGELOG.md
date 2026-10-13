@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.1.9
+
+- Fixed the GM Control Panel layout under DialogV2: its markup was a nested `<form>`, which the browser discarded inside the dialog's own form, dropping the panel's styling. Control buttons now also grow to fit their icon, label and hint instead of using Foundry v13's fixed button height.
+- The GM Affinity Dashboard and Control Panel now scroll inside a fixed-height window with the Save / Sync / Close buttons pinned to the bottom.
+- Run Diagnostics now compares each relic copy against the activity count for its own stage. Previously every Dormant or Awakened copy was reported as an issue because it was compared against the Exalted count.
+- The scene-control button uses v13 `onChange` instead of the deprecated `onClick`.
+- The standalone Control Panel opener is GM-only, like the dashboard.
+
 ## v1.1.8
 
 - Moved the GM Affinity Dashboard and GM Control Panel from the deprecated v1 `Dialog` to Foundry v13 `DialogV2`, and replaced their jQuery wiring with plain DOM listeners. Behavior and layout are unchanged.

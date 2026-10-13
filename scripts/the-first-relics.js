@@ -1,6 +1,6 @@
 
 const TFR_MODULE_ID = "the-first-relics";
-const TFR_VERSION = "1.1.8";
+const TFR_VERSION = "1.1.9";
 const TFR_ATTUNEMENT_REFUSAL_FLAG = "refusesAttunement";
 const TFR_FINAL_FORM_BONUS = 5;
 const TFR_FINAL_FORM_CHARGES = 15;
@@ -2798,7 +2798,7 @@ function TFRRegisterToolbarButton() {
       icon: "fas fa-gem",
       button: true,
       visible: true,
-      onClick: () => TFROpenDashboard()
+      onChange: () => TFROpenDashboard()
     };
 
     // Foundry v13 object style.
@@ -3177,6 +3177,7 @@ await FirstRelics.syncAllInventoryStages()</pre>
   const field = (root, name) => root.querySelector(`[name='${name}']`);
 
   const dialog = new foundry.applications.api.DialogV2({
+    classes: ["tfr-dialog"],
     window: { title: "The First Relics — GM Affinity Dashboard", resizable: true },
     position: { width: 760, height: 720 },
     content,
@@ -5511,7 +5512,11 @@ async function TFRRunDiagnostics(options = {}) {
     const actor = game.actors.getName(TFRTestActorName(relic));
     const actorItem = actor?.items.find(it => it.getFlag("the-first-relics", "relicId") === relic.id || it.name === relic.name);
     const item = actorItem || worldItem;
-    const generated = TFRBuildActivities(relic, "exalted", i + 1, true);
+    // Compare against the item's own stage; a Dormant/Awakened copy legitimately has fewer
+    // activities than an Exalted one, so it must not count as a failure.
+    const itemStage = item?.getFlag("the-first-relics", "stage") || "dormant";
+    const itemSignature = !!item?.getFlag("the-first-relics", "signatureUnlocked");
+    const generated = TFRBuildActivities(relic, itemStage, i + 1, itemSignature);
     const expectedActivities = Object.keys(generated || {}).length;
     const actualActivities = TFRActivityCount(item);
     const iconOK = !!(item?.img || relic.icon) && !(item?.img || relic.icon).includes("item-bag.svg");
@@ -6995,7 +7000,7 @@ function TFRControlPanelResultHtml(result, fallbackLabel = "Action") {
 
 function TFRControlPanelHtmlV2() {
   return `
-    <form class="the-first-relics-control-panel tfr-control-panel-v2">
+    <div class="the-first-relics-control-panel tfr-control-panel-v2">
       <div class="tfr-control-status" data-tfr-control-status>Ready.</div>
       <div class="tfr-control-result tfr-control-result-neutral" data-tfr-control-result>
         <strong>No QA run yet.</strong>
@@ -7062,7 +7067,7 @@ function TFRControlPanelHtmlV2() {
           ${TFRControlButton("selectedRelicAbility:signature", "fa-solid fa-crown", "Use Signature", "Runs the selected relic's signature power.")}
         </div>
       </section>
-    </form>
+    </div>
   `;
 }
 
@@ -7172,9 +7177,11 @@ function TFRWireControlPanel(html) {
 }
 
 async function TFROpenControlPanel() {
+  if (!game.user.isGM) return ui.notifications.warn("The First Relics: GM only.");
   const dialog = new foundry.applications.api.DialogV2({
+    classes: ["tfr-dialog"],
     window: { title: "The First Relics — GM Control Panel", resizable: true },
-    position: { width: 680, height: "auto" },
+    position: { width: 680, height: 720 },
     content: TFRControlPanelHtmlV2(),
     buttons: [{ action: "close", label: "Close", default: true }]
   });
