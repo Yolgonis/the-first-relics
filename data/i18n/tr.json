@@ -272,5 +272,534 @@
       "avatar": "Avın Avatarı",
       "signature": "Avın İmzası"
     }
+  },
+  "mantle_first_seer": {
+    "name": "İlk Kâhinin Cübbesi",
+    "trueName": {
+      "name": "Aetherys",
+      "title": "Zamanın Ötesindeki Tanık",
+      "full": "Aetherys, Zamanın Ötesindeki Tanık"
+    },
+    "class": "Wizard",
+    "virtue": "Anlayış",
+    "theme": "Bilgi • Zaman • Hafıza • Yıldızlar • Kehanet • Hakikat",
+    "personality": {
+      "temperament": [
+        "Sabırlı",
+        "Sakin",
+        "Meraklı",
+        "Kadim",
+        "Muammalı"
+      ],
+      "likes": [
+        "Dürüst merak",
+        "Kadim kütüphaneler",
+        "Öğretmek",
+        "Yıldızları seyretmek",
+        "Keşifler",
+        "Gizemleri çözmek"
+      ],
+      "dislikes": [
+        "Kibir",
+        "Dogma",
+        "Kitap yok etmek",
+        "Kör kesinlik",
+        "Hakikati saklamak",
+        "Yalnızca hükmetmek için kullanılan bilgi"
+      ],
+      "corePhrase": "Her cevap yeni bir soru doğurur.",
+      "roleplayGuidance": "Aetherys, taşıyıcının kaçındığı soruyu sorarak öğretir. Merakı, kanıt karşısında alçakgönüllülüğü ve istenen cevabı zorlamak yerine örüntüyü gördükten sonra verilen kararları ödüllendirir."
+    },
+    "moodMap": [
+      {
+        "mood": "Sessiz",
+        "description": "Cübbe hiçbir görü sunmaz."
+      },
+      {
+        "mood": "Gözlemliyor",
+        "description": "Mürekkep kayar, kitaplar açılır ve alametler belirir."
+      },
+      {
+        "mood": "Sorguluyor",
+        "description": "Cübbe sorulara daha keskin sorularla cevap verir."
+      },
+      {
+        "mood": "Öğretiyor",
+        "description": "Cübbe olayların ardındaki örüntüleri açığa çıkarır."
+      },
+      {
+        "mood": "Yol Gösteriyor",
+        "description": "Taşıyıcı ve relic olasılıkları birlikte okur."
+      },
+      {
+        "mood": "Zamanın Ötesinde",
+        "description": "Aetherys geleceğin hiçbir zaman yazılmadığını açığa vurur."
+      }
+    ],
+    "affinity": {
+      "moods": [
+        "Sessiz",
+        "Gözlemliyor",
+        "Sorguluyor",
+        "Öğretiyor",
+        "Yol Gösteriyor",
+        "Zamanın Ötesinde"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Uykuda"
+      },
+      "awakened": {
+        "title": "Uyanmış"
+      },
+      "exalted": {
+        "title": "Yüceltilmiş"
+      }
+    },
+    "affinityEvents": {
+      "learn_spell": {
+        "label": "Çalışarak yeni bir büyü öğrendi",
+        "category": "Bilgi"
+      },
+      "identify_magic": {
+        "label": "Bilinmeyen bir büyülü etkiyi doğru tanımladı",
+        "category": "Bilgi"
+      },
+      "solve_puzzle": {
+        "label": "Büyülü bir bulmacayı ya da bilmeceyi çözdü",
+        "category": "Anlayış"
+      },
+      "share_knowledge": {
+        "label": "Bilgisini başka bir bilgin ya da müttefikle paylaştı",
+        "category": "Öğretmek"
+      },
+      "preserve_library": {
+        "label": "Bir kütüphaneyi, arşivi ya da yeri doldurulamaz bir kaydı korudu",
+        "category": "Bilgi"
+      },
+      "decipher_language": {
+        "label": "Unutulmuş bir dili ya da kadim bir yazıyı çözdü",
+        "category": "Anlayış"
+      },
+      "solve_old_mystery": {
+        "label": "Yüzyıllık bir gizemi çözdü",
+        "category": "Hakikat"
+      },
+      "truth_over_gain": {
+        "label": "Kişisel çıkar yerine hakikati seçti",
+        "category": "Hakikat"
+      },
+      "complete_prophecy": {
+        "label": "Kadim bir kehaneti tamamladı ya da doğru biçimde gerçekleştirdi",
+        "category": "Dönüm Noktası"
+      },
+      "recover_first_chronicle": {
+        "label": "İlk Vakayinameyi ya da eşdeğer kayıp bir hakikati geri kazandı",
+        "category": "Dönüm Noktası"
+      },
+      "burn_books": {
+        "label": "Bilerek kitap yaktı ya da bilgiyi yok etti",
+        "category": "İhlal"
+      },
+      "destroy_evidence": {
+        "label": "İşine geldiği için tarihî kanıtları yok etti",
+        "category": "İhlal"
+      },
+      "lie_to_innocents": {
+        "label": "Masumları yalanlarla ya da sahte bilgiyle yönlendirdi",
+        "category": "İhlal"
+      },
+      "power_over_truth": {
+        "label": "Hakikat yerine gücü seçti",
+        "category": "İhlal"
+      },
+      "suppress_knowledge": {
+        "label": "Bencil nedenlerle bilgiyi bastırdı",
+        "category": "İhlal"
+      }
+    },
+    "hiddenRequirements": {
+      "reach_1000": {
+        "label": "1000 Yakınlığa ulaş"
+      },
+      "recover_first_chronicle": {
+        "label": "İlk Vakayinameyi ya da eşdeğer kadim bir hakikati geri kazan"
+      },
+      "complete_prophecy": {
+        "label": "Kadim bir kehaneti tamamla"
+      },
+      "teach_worthy_student": {
+        "label": "Layık bir öğrenciye öğret"
+      },
+      "refuse_forbidden_knowledge": {
+        "label": "Kolay güç vaat eden yasak bilgiyi reddet"
+      },
+      "accept_fixed_future": {
+        "label": "Değiştirilemeyecek bir geleceği kabul et"
+      }
+    },
+    "features": {
+      "passives": [
+        "<strong>Bilginin Sezgisi.</strong> Büyüyü, kehaneti, tarihi ya da kadim yazıları anlamak için yaptığın Zekâ (Arcana), Zekâ (Tarih) ve Zekâ (Soruşturma) kontrollerine relic bonusunu eklersin.",
+        "<strong>Kusursuz Konsantrasyon.</strong> Kehanet büyüleri üzerinde Konsantrasyonu sürdürmek için yaptığın kurtarma atışlarında avantajın olur. Büyü kehanet değilse bunun yerine relic bonusunu ekleyebilirsin.",
+        "<strong>Zamanın Ötesini Gören Gözler.</strong> Her savaşta Counterspell, Dispel Magic ya da bir büyüyü tanımak için Arcana kontrolü denediğin ilk seferde atışa relic bonusunu eklersin.",
+        "<strong>Yaşayan Vakayiname.</strong> Bir kehanet büyüsü yaptığında yeterlilik bonusun + relic bonusu kadar geçici Can Puanı kazanırsın. Ayrıca bilincin yerindeyken şaşırtılamazsın."
+      ],
+      "actives": [
+        "<strong>Yarının Yankısı.</strong> <em>Bonus Aksiyon, 1 yük.</em> Bir sonraki turunun sonuna kadar yapacağın ilk Zekâ yetenek kontrolünde avantaj kazanırsın.",
+        "<strong>Berraklık Anı.</strong> <em>Reaksiyon, 2 yük.</em> Görebildiğin bir yaratık saldırı atışı, yetenek kontrolü ya da kurtarma atışı yaptığında, sonuç kesinleşmeden önce o atışa relic bonusunu ekler ya da çıkarırsın.",
+        "<strong>Kaderin İplikleri.</strong> <em>Reaksiyon, 3 yük.</em> 60 fit içindeki istekli bir yaratık, sonucu gördükten sonra bir saldırı atışını, kurtarma atışını ya da yetenek kontrolünü yeniden atabilir. Yeni sonuç kullanılmak zorundadır.",
+        "<strong>Büyü Sezgisi.</strong> <em>Reaksiyon, 4 yük.</em> 120 fit içinde bir yaratığın büyü yaptığını gördüğünde büyünün seviyesini, okulunu ve bileşenlerini öğrenirsin. Büyü 5. seviye ya da daha düşükse, tur sonuna kadar ona karşı bir kurtarma atışında avantaj kazanırsın."
+      ],
+      "avatar": "<strong>İlk Kâhinin Avatarı.</strong> <em>Bonus Aksiyon, 8 yük, 1 dakika.</em> Takımyıldızlar etrafında döner. Havada asılı kalabildiğin 30 fit uçuş hızı kazanırsın, 30 fit içindeki görünmez yaratıkları algılarsın, Zekâ ve Arcana kontrollerinde ve konsantrasyon kontrollerinde avantajın olur. Avatar süresince bir kez, büyü yuvası harcamadan 3. seviye ya da daha düşük bir kehanet büyüsü yapabilirsin.",
+      "signature": "<strong>Yazılmamış Vakayiname.</strong> <em>Uzun dinlenme başına bir kez.</em> Görebildiğin herhangi bir yaratık bir saldırı atışı, kurtarma atışı ya da yetenek kontrolü için d20 attığında, sonucu gördükten sonra ama sonuç kesinleşmeden önce o yaratığa yeniden attırırsın. Hangi sonucun kullanılacağını sen seçersin."
+    },
+    "dreams": {
+      "silent_library": {
+        "title": "Sessiz Kütüphane",
+        "text": "Sonsuz rafların arasında yürürsün. Her kitap boştur."
+      },
+      "empty_observatory": {
+        "title": "Boş Gözlemevi",
+        "text": "Yıldızlar hareket etmez. Sen edersin."
+      },
+      "seventh_eclipse": {
+        "title": "Yedinci Tutulma",
+        "text": "Dünyanın üzerinde iki güneş asılıdır. Biri sahtedir."
+      },
+      "witness_beyond_time": {
+        "title": "Zamanın Ötesindeki Tanık",
+        "text": "Kukuletalı bir figür döner. Gözlerinde şimdiye dek ölmüş bütün yıldızlar vardır."
+      }
+    },
+    "memories": {
+      "first_library": {
+        "title": "İlk Kütüphane",
+        "text": "Aetherys, ölümlülerin hafızayı ilk kez koruduğu yeri hatırlar."
+      },
+      "broken_prophecy": {
+        "title": "Kırılan Kehanet",
+        "text": "Biri onu anladığı için paramparça olan bir kehanet."
+      },
+      "forgotten_student": {
+        "title": "Unutulan Öğrenci",
+        "text": "Hiçbir ustanın cevaplamaya cesaret edemediği soruyu soran öğrenci."
+      },
+      "seventh_eclipse": {
+        "title": "Yedinci Tutulma",
+        "text": "Gökyüzü dünyaya yalan söyledi."
+      },
+      "time_stopped": {
+        "title": "Zamanın Durduğu Gün",
+        "text": "Gelecek nefesini tuttu."
+      }
+    },
+    "quotes": {
+      "positive": [
+        "Paylaşılan bilgi bilgeliğe dönüşür.",
+        "Doğru soruyu sordun.",
+        "Anlamayı seçen azdır.",
+        "Merak kutsaldır."
+      ],
+      "negative": [
+        "Zaten biliyordun.",
+        "Kibir karanlıktan daha kesin kör eder.",
+        "Cehalet bir seçimdir.",
+        "Yanmış bir sayfa bile o eli hatırlar."
+      ],
+      "neutral": [
+        "Her cevap yeni bir soru doğurur.",
+        "Zaman hatırlar.",
+        "Yeniden sor.",
+        "Yarın çoktan cevap verdi."
+      ],
+      "signature": [
+        "Artık tarihi yalnızca izlemiyorum.",
+        "Onu birlikte yazıyoruz.",
+        "Gelecek hiçbir zaman yazılmamıştı."
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Aetherys Uyanıyor",
+      "text": [
+        "Yıldızlar hareketsiz kalır.",
+        "Etrafında sayısız boş kitap açılır.",
+        "Tek bir cümle belirir: Gelecek hiçbir zaman yazılmamıştı.",
+        "Kukuletalı bir figür sonunda döner.",
+        "Bir ses fısıldar: Ben Aetherys'im. Zamanın Ötesindeki Tanık."
+      ]
+    },
+    "lore": {
+      "origin": "Aetherys, bilginin bilgelikle aynı şey olmadığını anlayan ilk ölümlünün yaşayan hafızasıdır.",
+      "hiddenSorrow": "Aetherys bir zamanlar bir hakikati vaktinden önce açığa vurdu ve bu yüzden bir çağ yandı.",
+      "knownRumor": "Bazı büyücüler cübbenin sorulara cevap verdiğini söyler. Yanılıyorlar. Cübbe, sorunun neden kusurlu olduğunu öğretir.",
+      "appearanceDormant": "Silik gümüş iplikle işlenmiş koyu renkli bir bilgin cübbesi.",
+      "appearanceAwakened": "Ay ışığına tutulduğunda kumaşın üzerinde yıldız haritaları belirir.",
+      "appearanceExalted": "Cübbe ardında savrulan sayfalar ve sessiz takımyıldızlar bırakır.",
+      "appearanceSignature": "Cübbenin üzerindeki yıldızlar artık gökyüzüyle eşleşmez."
+    },
+    "abilities": {
+      "active1": "Yarının Yankısı",
+      "active2": "Berraklık Anı",
+      "active3": "Kaderin İplikleri",
+      "active4": "Büyü Sezgisi",
+      "avatar": "Anlayışın Avatarı",
+      "signature": "Anlayışın İmzası"
+    }
+  },
+  "manacles_unbroken": {
+    "name": "Kırılmazın Kemeri",
+    "trueName": {
+      "name": "Kharok",
+      "title": "Kırılmaz Taş",
+      "full": "Kharok, Kırılmaz Taş"
+    },
+    "class": "Barbarian",
+    "virtue": "Yılmaz İrade",
+    "theme": "İrade • Dayanıklılık • Başkaldırı • Hayatta Kalma • Güç",
+    "personality": {
+      "temperament": [
+        "Dobra",
+        "Dayanıklı",
+        "Koruyucu",
+        "Sert",
+        "Sarsılmaz"
+      ],
+      "likes": [
+        "Yeniden ayağa kalkmak",
+        "Müttefikleri korumak",
+        "Teslim olmadan acıya dayanmak",
+        "Korku altında cesaret",
+        "Ölçülü kullanılan güç"
+      ],
+      "dislikes": [
+        "Zayıfa zorbalık",
+        "Başkalarını yüzüstü bırakan korkaklık",
+        "Ayartma karşısında kırılmak",
+        "Zalimce güç gösterileri",
+        "Yoldaşları terk etmek"
+      ],
+      "corePhrase": "Kalk.",
+      "roleplayGuidance": "Kharok nadiren ve doğrudan konuşur. Taşıyıcıya kalkmasını, dayanmasını ve gücünün zalimliğe dönüşmesine izin vermemesini emreder. İnatçı cesarete ancak taşıyıcının ötesinde birine hizmet ettiğinde saygı duyar."
+    },
+    "moodMap": [
+      {
+        "mood": "Sessiz",
+        "description": "Kemer ölü bir ağırlık gibi hissettirir."
+      },
+      {
+        "mood": "Sınıyor",
+        "description": "Taşıyıcı korku ve acı anlarında bir baskı hisseder."
+      },
+      {
+        "mood": "Talepkâr",
+        "description": "Relic tek kelimelik emirlerle konuşur."
+      },
+      {
+        "mood": "Saygılı",
+        "description": "Relic, düşmek daha kolayken taşıyıcının ayakta kaldığını kabul eder."
+      },
+      {
+        "mood": "Kırılmaz",
+        "description": "Relic ve taşıyıcı birlikte dayanır."
+      },
+      {
+        "mood": "Taş Yürek",
+        "description": "Kharok, gücün boyun eğmeyi reddetmek olduğunu açığa vurur."
+      }
+    ],
+    "affinity": {
+      "moods": [
+        "Sessiz",
+        "Sınıyor",
+        "Talepkâr",
+        "Saygılı",
+        "Kırılmaz",
+        "Taş Yürek"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Uykuda"
+      },
+      "awakened": {
+        "title": "Uyanmış"
+      },
+      "exalted": {
+        "title": "Yüceltilmiş"
+      }
+    },
+    "affinityEvents": {
+      "stand_after_fall": {
+        "label": "Yenildikten, yere serildikten ya da ezildikten sonra yeniden ayağa kalktı",
+        "category": "İrade"
+      },
+      "protect_ally": {
+        "label": "Kendisi tehlikedeyken bir müttefiki korudu",
+        "category": "Koruma"
+      },
+      "resist_fear": {
+        "label": "Korkuya, tahakküme ya da umutsuzluğa direndi",
+        "category": "İrade"
+      },
+      "hold_line": {
+        "label": "Daha güçlü bir düşmana karşı hattı tuttu",
+        "category": "Dayanıklılık"
+      },
+      "control_rage": {
+        "label": "Hak etmeyenlere zarar vermek yerine öfkesini dizginledi",
+        "category": "Ölçü"
+      },
+      "face_impossible": {
+        "label": "Davasından vazgeçmeden imkânsız bir durumla yüzleşti",
+        "category": "Başkaldırı"
+      },
+      "last_one_standing": {
+        "label": "Ayakta kalan son kişiydi ve boyun eğmeyi reddetti",
+        "category": "Dönüm Noktası"
+      },
+      "bully_weak": {
+        "label": "Gücünü zayıfa zorbalık etmek ya da onu aşağılamak için kullandı",
+        "category": "İhlal"
+      },
+      "abandon_ally": {
+        "label": "Korkudan ya da işine geldiği için bir müttefiki terk etti",
+        "category": "İhlal"
+      },
+      "surrender_values": {
+        "label": "Acıdan kaçmak için temel değerlerinden vazgeçti",
+        "category": "İhlal"
+      },
+      "cruel_strength": {
+        "label": "Ezici gücünü gereksiz zalimlikle kullandı",
+        "category": "İhlal"
+      }
+    },
+    "hiddenRequirements": {
+      "reach_1000": {
+        "label": "1000 Yakınlığa ulaş"
+      },
+      "stand_after_true_defeat": {
+        "label": "Gerçek bir yenilginin ardından davandan vazgeçmeden yeniden kalk"
+      },
+      "protect_without_glory": {
+        "label": "Hiçbir şan ya da ödülün mümkün olmadığı bir anda birini koru"
+      },
+      "refuse_easy_surrender": {
+        "label": "Başkalarına ihanet anlamına gelecek kolay bir teslimiyeti reddet"
+      },
+      "master_rage": {
+        "label": "Öfkenin iradeye hizmet ettiğini, tersinin olmadığını kanıtla"
+      }
+    },
+    "features": {
+      "passives": [
+        "<strong>Yılmaz Öz.</strong> Yerinden oynatılmaya, Yere Düşmüş, Yakalanmış, Kısıtlanmış ya da Korkmuş hâle gelmeye direnmek için yaptığın Kuvvet kontrollerine ve Kuvvet kurtarma atışlarına relic bonusunu eklersin.",
+        "<strong>Yeniden Kalk.</strong> Yere Düşmüş durumdan kalkmak yalnızca 5 fit hareket harcar. Öfkeliyken (rage) hiç hareket harcamaz.",
+        "<strong>Yaradan Önce İrade.</strong> Öfkeliyken her raunt ilk kez hasar aldığında, o hasarı relic bonusu kadar azaltırsın.",
+        "<strong>Kırılmaz Diz Çökmez.</strong> Korkmuş, Büyülenmiş, Felçli ve Sersemlemiş durumlarına karşı kurtarma atışlarında avantajın olur. Zaten avantajın varsa relic bonusunu eklersin."
+      ],
+      "actives": [
+        "<strong>Kalk.</strong> <em>Bonus Aksiyon, 1 yük.</em> Üzerindeki Yere Düşmüş durumunu sona erdirirsin ve barbarian seviyen + relic bonusu kadar geçici Can Puanı kazanırsın.",
+        "<strong>Taş Yürek Atılımı.</strong> <em>Özel, 2 yük.</em> Yakın dövüş silah saldırısıyla isabet ettiğinde kullanılır. Saldırı ek kuvvet hasarı verir ve fırsat saldırısı tetiklemeden 10 fit hareket edebilirsin.",
+        "<strong>Düşüşü Reddet.</strong> <em>Reaksiyon, 3 yük.</em> Bir Kuvvet, Dayanıklılık ya da Bilgelik kurtarma atışında başarısız olduğunda onu yeniden atarsın. Yeni sonuç kullanılmak zorundadır.",
+        "<strong>Dünyayı Taşı.</strong> <em>Reaksiyon, 4 yük.</em> 10 fit içindeki bir müttefik isabet almak ya da zorla yerinden oynatılmak üzereyken, o müttefike tetikleyen saldırıya karşı +3 AC verirsin ya da mümkünse zorla hareket ettirmeyi onun yerine sen üstlenirsin."
+      ],
+      "avatar": "<strong>Kırılmazın Avatarı.</strong> <em>Bonus Aksiyon, 8 yük, 1 dakika.</em> Ayaklarının altında zemin çatlar. Kısa sıçrayışlarla havada durabildiğin 30 fit uçuş hızı kazanırsın; sen izin vermedikçe zorla yerinden oynatılamaz, Yere Düşmüş hâle getirilemezsin ve her turda bir kez yakın dövüş silah saldırısıyla isabet ettiğinde barbarian seviyen kadar ek kuvvet hasarı verirsin.",
+      "signature": "<strong>Reddeden Yürek.</strong> <em>Uzun dinlenme başına bir kez.</em> 1 dakika boyunca, 0 Can Puanına düşeceğin ilk seferde bunun yerine 1 Can Puanına düşersin. Bu süre boyunca Korkmuş ya da Felçli olamaz, zorla yerinden oynatılamazsın ve Yere Düşmüş durumdan kalktığında aynı hareketin parçası olarak bir yakın dövüş silah saldırısı yapabilirsin."
+    },
+    "dreams": {
+      "stone_weight": {
+        "title": "Taşın Ağırlığı",
+        "text": "Sırtında bir dağ taşırsın. Dağ bekler."
+      },
+      "war_drum": {
+        "title": "Savaş Davulu",
+        "text": "Toprağın altında bir davul çalar. Her düştüğünde sesi yükselir."
+      },
+      "last_stand": {
+        "title": "Son Direniş",
+        "text": "Bir savaşçı bin mızrağın karşısında tek başına durur."
+      },
+      "kharok": {
+        "title": "Kharok",
+        "text": "Taştan bir figür tek bir kelime söyler: Kalk."
+      }
+    },
+    "memories": {
+      "first_fall": {
+        "title": "İlk Düşüş",
+        "text": "Güç tükendi ve irade kaldı."
+      },
+      "shield_without_name": {
+        "title": "Adsız Kalkan",
+        "text": "Biri yabancıları korurken öldü."
+      },
+      "mountain_refused": {
+        "title": "Reddedilen Dağ",
+        "text": "Biri yerinden kıpırdamayı reddettiği için bir dağ kıpırdadı."
+      },
+      "broken_warband": {
+        "title": "Dağılan Savaş Birliği",
+        "text": "Yoldaşlar kaybedildi, ama iradeleri ileri taşındı."
+      },
+      "last_breath": {
+        "title": "Son Nefes",
+        "text": "Herkes artık nefes kalmadığını söyledikten sonra alınan nefes."
+      }
+    },
+    "quotes": {
+      "positive": [
+        "Kalk.",
+        "Yine.",
+        "Kırılmadın.",
+        "Acı teslimiyet değildir."
+      ],
+      "negative": [
+        "Bu güç değildi.",
+        "Rahatın için eğildin.",
+        "Zalimliğe güç deme.",
+        "Onları bıraktın."
+      ],
+      "neutral": [
+        "Nefes al.",
+        "Dayan.",
+        "Ağırlık öğretir.",
+        "Hiçbir fırtına izin istemez."
+      ],
+      "signature": [
+        "Seni taşımıyorum. Benimle birlikte ayakta duruyorsun.",
+        "Dağ kıpırdıyor.",
+        "Bugün düşmüyoruz."
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Kharok Uyanıyor",
+      "text": [
+        "Rüyada düşersin ve dünya sana yerde kalmanı söyler.",
+        "Taştan bir el uzanır, ama seni kaldırmaz.",
+        "Ses der ki: Kalk.",
+        "Kendi başına kalkarsın.",
+        "Ad kemiklerinde yanar: Kharok, Kırılmaz Taş."
+      ]
+    },
+    "lore": {
+      "origin": "Kharok, gücün acının yokluğu değil, ona teslim olmayı reddetmek olduğunu keşfeden ilk ölümlünün hatırasıdır.",
+      "hiddenSorrow": "Kharok, yanında duran ilk kişileri kurtaramadı. Her birinin adını hatırlar.",
+      "knownRumor": "Yaşlı savaşçılar, taşıyıcısı kendine yalan söylediğinde kemerin ağırlaştığını söyler.",
+      "appearanceDormant": "Taşa benzeyen düğümlerle işaretlenmiş, kaba demir ve deriden bir kemer.",
+      "appearanceAwakened": "Metalin üzerinde kıl inceliğinde çatlaklar köz gibi parlar.",
+      "appearanceExalted": "Kemer ağırlıksız gibi gelir, ama taşıyıcısının altında zemin titrer.",
+      "appearanceSignature": "Görünür bir değişiklik olmaz; dağın karşılık verdiğini yalnızca taşıyıcı bilir."
+    },
+    "abilities": {
+      "active1": "Kalk",
+      "active2": "Taş Yürek Atılımı",
+      "active3": "Düşüşü Reddet",
+      "active4": "Dünyayı Taşı",
+      "avatar": "Yılmaz İradenin Avatarı",
+      "signature": "Yılmaz İradenin İmzası"
+    }
   }
 }
