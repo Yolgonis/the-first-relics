@@ -6,6 +6,7 @@
 - Chat cards from the save resolver, ability helpers, and the Cloak of the Feywilds helpers (Briar Snare, Arrow / Marked by the First Hunt, Nature's Pursuit, Avatar of the First Hunt, Blessing of Sylvara) and the relic journal intro are now translated (394 interface strings).
 - Activity detection, the Cloak chooser lock, and Fey Step handling also recognize localized ability names.
 - Fixed: the Cloak-only "Use Notes" line was shown on all twelve relic descriptions.
+- Development: the source now lives in 26 files under `src/` and is bundled into `scripts/the-first-relics.js` by `tools/build.cjs`. The shipped script is the same code plus comment markers.
 
 ## v1.2.0
 

@@ -24,6 +24,8 @@ if (-not $readme.Contains("# The First Relics v$version")) { $problems += "READM
 if (-not $readme.Contains("Current public version: ``$version``")) { $problems += "README.md 'Current public version' is not $version" }
 $changelog = Get-Content (Join-Path $root 'CHANGELOG.md') -Raw
 if (-not $changelog.Contains("## v$version")) { $problems += "CHANGELOG.md has no '## v$version' entry" }
+node (Join-Path $root 'tools/build.cjs') --check | Out-Null
+if ($LASTEXITCODE -ne 0) { $problems += "scripts/the-first-relics.js is out of date; run node tools/build.cjs" }
 node (Join-Path $root 'tools/i18n-extract.cjs') --check | Out-Null
 if ($LASTEXITCODE -ne 0) { $problems += "translations are incomplete; run node tools/i18n-extract.cjs and node tools/i18n-build-lang.cjs <lang>" }
 if ($problems) { throw "Release check failed:`n - " + ($problems -join "`n - ") }
