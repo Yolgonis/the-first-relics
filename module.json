@@ -9,7 +9,7 @@
   },
   "authors": [
     {
-      "name": "yolgonis"
+      "name": "Yolgonis"
     }
   ],
   "esmodules": [
@@ -18,7 +18,12 @@
   "styles": [
     "styles/the-first-relics.css"
   ],
-  "systems": [
-    "dnd5e"
-  ]
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system"
+      }
+    ]
+  }
 }
