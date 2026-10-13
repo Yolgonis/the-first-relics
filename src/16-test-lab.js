@@ -496,7 +496,7 @@ async function TFRRunReleaseCandidateCheck() {
     const manifest = JSON.parse(await TFRFetchModuleText("module.json"));
     addCheck("Manifest Version", manifest.version === TFR_VERSION, manifest.version || "missing", `expected ${TFR_VERSION}`);
     addCheck("Foundry Compatibility", manifest.compatibility?.minimum === "13" && !!manifest.compatibility?.verified, "Foundry v13", `verified ${manifest.compatibility?.verified || "missing"}`);
-    addCheck("dnd5e System", (manifest.systems || []).includes("dnd5e"), "dnd5e", "module declares dnd5e system");
+    addCheck("dnd5e System", (manifest.relationships?.systems || []).some(s => s?.id === "dnd5e") || (manifest.systems || []).includes("dnd5e"),"dnd5e", "module declares dnd5e system");
     addCheck("Entrypoints", (manifest.esmodules || []).includes("scripts/the-first-relics.js") && (manifest.styles || []).includes("styles/the-first-relics.css"), "module assets", "script and stylesheet declared");
   } catch (err) {
     addCheck("Manifest Read", false, "NEEDS ATTENTION", err?.message || String(err));

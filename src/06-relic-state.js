@@ -282,6 +282,13 @@ async function TFRAuditProgressiveAppearanceUnlocks() {
   return { ok: failed.length === 0, checked: rows.length, failed, rows };
 }
 
+/** True when a description shows the charge count, in English or the current language. */
+function TFRDescriptionShowsCharges(html, charges) {
+  const text = String(html || "");
+  const localized = TFRT("The relic has <strong>{charges} charges</strong> and regains all expended charges daily at dawn.", { charges }).match(/<strong>[^<]*<\/strong>/)?.[0];
+  return text.includes(`<strong>${charges} charges</strong>`) || (!!localized && text.includes(localized));
+}
+
 async function TFRAuditFinalFormBonuses() {
   const relics = await TFRLoadRelics();
   const rows = [];
@@ -306,9 +313,9 @@ async function TFRAuditFinalFormBonuses() {
     if (!finalForm.flags?.[TFR_MODULE_ID]?.finalForm) issues.push("Final Form flag missing at 1000");
     if (!/Final Form Relic Bonus$/i.test(TFRRelicBonusEffect(finalForm)?.name || "")) issues.push("Final Form effect name missing");
     if (!finalForm.system?.description?.value?.includes(`<strong>+${TFR_FINAL_FORM_BONUS} AC</strong>`)) issues.push(`Final Form description does not show +${TFR_FINAL_FORM_BONUS} AC`);
-    if (!finalForm.system?.description?.value?.includes(`<strong>${TFR_FINAL_FORM_CHARGES} charges</strong>`)) issues.push(`Final Form description does not show ${TFR_FINAL_FORM_CHARGES} charges`);
+    if (!TFRDescriptionShowsCharges(finalForm.system?.description?.value, TFR_FINAL_FORM_CHARGES)) issues.push(`Final Form description does not show ${TFR_FINAL_FORM_CHARGES} charges`);
     if (exalted.system?.description?.value?.includes(`<strong>+${TFR_FINAL_FORM_BONUS} AC</strong>`)) issues.push(`+${TFR_FINAL_FORM_BONUS} appears before 1000`);
-    if (exalted.system?.description?.value?.includes(`<strong>${TFR_FINAL_FORM_CHARGES} charges</strong>`)) issues.push(`${TFR_FINAL_FORM_CHARGES} charges appear before 1000`);
+    if (TFRDescriptionShowsCharges(exalted.system?.description?.value, TFR_FINAL_FORM_CHARGES)) issues.push(`${TFR_FINAL_FORM_CHARGES} charges appear before 1000`);
 
     rows.push({
       relic: relic.name,
@@ -352,7 +359,7 @@ async function TFRSyncFinalFormItems() {
         && TFRHasUniversalRelicBonus(item, TFR_FINAL_FORM_BONUS)
         && Number(item.system?.uses?.max) === TFR_FINAL_FORM_CHARGES
         && String(item.system?.description?.value || "").includes(`<strong>+${TFR_FINAL_FORM_BONUS} AC</strong>`)
-        && String(item.system?.description?.value || "").includes(`<strong>${TFR_FINAL_FORM_CHARGES} charges</strong>`);
+        && TFRDescriptionShowsCharges(String(item.system?.description?.value || ""), TFR_FINAL_FORM_CHARGES);
       if (ready) continue;
       const rebuilt = await TFRUpdateRelicItem(item, "exalted", true);
       rows.push({ relic: relic.name, location: item.parent?.name || "World Item Directory", item: rebuilt?.name || item.name, synced: !!rebuilt });
