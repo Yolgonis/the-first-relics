@@ -1,0 +1,276 @@
+{
+  "cloak_feywilds": {
+    "name": "Peri Yolları Pelerini",
+    "trueName": {
+      "name": "Sylvara",
+      "title": "İlk Ormanın Fısıltısı",
+      "full": "Sylvara, İlk Ormanın Fısıltısı"
+    },
+    "class": "Ranger",
+    "virtue": "Av",
+    "theme": "Peri • Doğa • Av • Denge",
+    "personality": {
+      "temperament": [
+        "Sabırlı",
+        "Koruyucu",
+        "Dikkatli",
+        "Kadim",
+        "Yalnızca doğaya aykırı avlara karşı acımasız"
+      ],
+      "likes": [
+        "Masumlara merhamet",
+        "Saygılı avcılık",
+        "Doğayı korumak",
+        "Sabır",
+        "Denge",
+        "İsraf etmeden iz sürmek"
+      ],
+      "dislikes": [
+        "Zalimlik",
+        "Özensizce kullanılan ateş",
+        "Gereksiz öldürmek",
+        "Orman yok etmek",
+        "Açgözlülük",
+        "Vahşi doğanın bozulması"
+      ],
+      "corePhrase": "Orman her adımı hatırlar.",
+      "roleplayGuidance": "Sylvara emir vermez. İzler, hatırlar ve yargılar. İsteklere değil, seçimlere karşılık verir."
+    },
+    "moodMap": [
+      {
+        "mood": "Sessiz",
+        "description": "Pelerin soğuk ve mesafelidir. Hiç rüya göstermez."
+      },
+      {
+        "mood": "Gözlüyor",
+        "description": "Pelerin taşıyıcısını fark eder. Yapraklar bazen ona doğru döner."
+      },
+      {
+        "mood": "Meraklı",
+        "description": "Pelerin içgüdüler ve küçük işaretlerle karşılık vermeye başlar."
+      },
+      {
+        "mood": "Saygılı",
+        "description": "Relic taşıyıcıyı gerçek bir avcı olarak tanır."
+      },
+      {
+        "mood": "Bağlı",
+        "description": "Orman taşıyıcıyla birlikte hareket eder, ancak gerçek ad mühürlü kalır."
+      },
+      {
+        "mood": "Avla Bütünleşmiş",
+        "description": "Sylvara gerçek adını açığa vurur. Taşıyıcı artık avda yalnız değildir."
+      }
+    ],
+    "affinity": {
+      "moods": [
+        "Sessiz",
+        "Gözlüyor",
+        "Meraklı",
+        "Saygılı",
+        "Bağlı",
+        "Avla Bütünleşmiş"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Uykuda"
+      },
+      "awakened": {
+        "title": "Uyanmış"
+      },
+      "exalted": {
+        "title": "Yüceltilmiş"
+      }
+    },
+    "affinityEvents": {
+      "protect_wild_creature": {
+        "label": "Yaralı bir vahşi yaratığı korudu",
+        "category": "Doğa"
+      },
+      "protect_grove": {
+        "label": "Kutsal bir koruyu ya da kadim bir ağacı korudu",
+        "category": "Doğa"
+      },
+      "clean_hunt": {
+        "label": "Gereksiz zalimlik yapmadan bir avı tamamladı",
+        "category": "Av"
+      },
+      "track_prey": {
+        "label": "Bir sorunu iz sürme ve sabırla çözdü",
+        "category": "Av"
+      },
+      "spare_nature_spirit": {
+        "label": "Bir peri ya da doğa ruhunu bağışladı veya ona yardım etti",
+        "category": "Peri"
+      },
+      "destroy_anomaly": {
+        "label": "Doğayı tehdit eden anomali kaynaklı bozulmayı yok etti",
+        "category": "Bozulma"
+      },
+      "protect_weak_in_wild": {
+        "label": "Vahşi doğada güçsüz bir yolcuyu, hayvanı ya da ruhu korudu",
+        "category": "Koruma"
+      },
+      "refuse_wasteful_reward": {
+        "label": "Doğal dengeye zarar verecek bir ödülü reddetti",
+        "category": "Denge"
+      },
+      "complete_first_hunt": {
+        "label": "Anlamlı bir avı kaba kuvvetle değil, sabırla tamamladı",
+        "category": "Dönüm Noktası"
+      },
+      "kill_for_sport": {
+        "label": "Eğlence ya da zevk için öldürdü",
+        "category": "İhlal"
+      },
+      "burn_forest": {
+        "label": "Canlı doğayı yaktı ya da kirletti",
+        "category": "İhlal"
+      },
+      "betray_fey": {
+        "label": "Bir periye ya da orman koruyucusuna sebepsiz yere ihanet etti",
+        "category": "İhlal"
+      },
+      "torture_prey": {
+        "label": "Avlanan yaratığa gereksiz acı çektirdi",
+        "category": "İhlal"
+      },
+      "ignore_corruption": {
+        "label": "Müdahale etmek mümkünken vahşi doğada yayılan bir bozulmayı görmezden geldi",
+        "category": "İhlal"
+      }
+    },
+    "hiddenRequirements": {
+      "reach_1000": {
+        "label": "1000 Yakınlığa ulaş"
+      },
+      "protect_elder_tree": {
+        "label": "Yaşlı Ağacı ya da benzer kadimlikte bir doğa ruhunu koru"
+      },
+      "complete_first_hunt": {
+        "label": "İlk Avı gereksiz zalimlik yapmadan tamamla"
+      },
+      "refuse_archfey_gift": {
+        "label": "Kabul etmek dengeye ihanet olacaksa bir Archfey'in armağanını reddet"
+      },
+      "never_kill_for_pleasure": {
+        "label": "Relic tarafından seçildikten sonra asla zevk için öldürme"
+      }
+    },
+    "features": {
+      "passives": [
+        "<strong>Avcı İçgüdüsü.</strong> Yaratıkların izini sürmek için yaptığın Bilgelik (Hayatta Kalma) kontrollerine ve görme, işitme ya da kokuya dayanan Bilgelik (Algı) kontrollerine relic bonusunu eklersin.",
+        "<strong>Vahşi Doğanın Yolu.</strong> Bitkiler, çamur, kar, kökler ya da doğal arazinin oluşturduğu büyülü olmayan Zorlu Arazi seni yavaşlatmaz.",
+        "<strong>Yırtıcının Sabrı.</strong> Turunda hareket etmezsen, bir sonraki turunun sonuna kadar yaptığın ilk menzilli silah saldırısı relic aşama bonusu kadar ek kuvvet hasarı verir.",
+        "<strong>Ebedi Av.</strong> Hunter's Mark ya da benzer bir ranger özelliğiyle işaretlediğin bir yaratık aynı düzlemde olduğu sürece onun yönünü her zaman bilirsin. Hedef, senin iz sürmene karşı görünmezlikten yararlanamaz."
+      ],
+      "actives": [
+        "<strong>Fey Step.</strong> <em>Bonus Aksiyon, 1 yük.</em> Görebildiğin boş bir noktaya 60 fit kadar ışınlanırsın. Işınlandıktan sonra fırsat saldırısı tetiklemeden 10 fit hareket edebilirsin. <strong>Midi:</strong> Utility Activity yükleri harcar ve kullanımı sohbete yazar; token hareketi elle yapılır.",
+        "<strong>İlk Avın Oku.</strong> <em>Özel, 2 yük.</em> Menzilli bir silah saldırısıyla isabet ettiğinde kullanılır. Saldırı ek kuvvet hasarı verir. Hedef, bir sonraki turunun başına kadar sana karşı görünmezlikten yararlanamaz. <strong>Midi:</strong> Damage Activity ek kuvvet hasarını atar.",
+        "<strong>Doğanın Takibi.</strong> <em>Bonus Aksiyon, 3 yük, 1 dakika.</em> Hızın 10 fit artar, büyülü olmayan Zorlu Araziyi yok sayarsın ve uzun menzildeki menzilli saldırıların dezavantaj almaz. <strong>Midi:</strong> Utility Activity, Doğanın Takibi eşya efektini uygulayabilir.",
+        "<strong>Diken Tuzağı.</strong> <em>Aksiyon, 4 yük.</em> 60 fit içindeki bir yaratık, relic DC'ne karşı bir Kuvvet kurtarma atışı yapar. Başarısız olursa bir sonraki turunun sonuna kadar peri sarmaşıklarıyla Kısıtlanmış olur. <strong>Midi:</strong> Save Activity bir STR kurtarma atışı ister; durum otomatik uygulanmazsa Restrained'i Foundry'nin normal durum araçlarıyla uygula."
+      ],
+      "avatar": "<strong>İlk Avın Avatarı.</strong> <em>Bonus Aksiyon, 8 yük, 1 dakika.</em> Hayaletimsi boynuzlar, zümrüt yapraklar ve peri ışıkları seni sarar. 40 fit uçuş hızı kazanırsın, havada asılı kalabilirsin, büyülü olmayan Zorlu Araziyi yok sayarsın, menzilli silah saldırılarında yarım ve dörtte üç siperi yok sayarsın ve işaretlediğin bir yaratığa karşı saldırılarında avantajın olur. Hayvanlar, büyüyle zorlanmadıkça ya da onlara doğrudan zarar vermedikçe sana düşman olmaz. Ağaçlar, kökler ve çalılar yolundan çekilir. <strong>Otomasyon:</strong> Avatar Yardımcısı uçuş/havada durma ve temel bonusları uygular; arazi, siper, hayvanlar ve işaretli hedefe avantaj GM tarafından yönetilir.",
+      "signature": "<strong>Sylvara'nın Kutsaması: İlk Ormanın Fısıltısı.</strong> <em>Uzun dinlenme başına bir kez.</em> 1 dakika boyunca orman seninle birlikte avlanır. İşaretlediğin bir yaratık aynı düzlemde ve 1 mil içindeyse tam yerini bilirsin. Görünmezlik, sıradan saklanma, büyülü olmayan siper ve doğal arazi o yaratığı senden gizleyemez. Bu süre içinde işaretli yaratığa karşı yaptığın ilk başarılı menzilli silah saldırısı ek kuvvet hasarı verir. İşaretli yaratık süre bitmeden 0 HP'ye düşerse, yük harcamadan hemen bir kez Fey Step kullanabilirsin. <strong>Otomasyon:</strong> imza aktivitesi hasarı atar; iz sürme, gizlenmeyi aşma ve ücretsiz Fey Step GM tarafından yönetilir."
+    },
+    "dreams": {
+      "silent_forest": {
+        "title": "Sessiz Orman",
+        "text": "Hiçbir kuşun ötmediği bir orman görürsün rüyanda. Her ağaç sana sırtını dönmüştür. Uyandığında avucunun içinde tek bir yeşil yaprak durur."
+      },
+      "white_stag": {
+        "title": "Beyaz Geyik",
+        "text": "Gümüş ağaçların arasından beyaz bir geyik seni izler. Silahını çekmezsin. Geyik bir kez başını eğer, sonra sisin içinde kaybolur."
+      },
+      "first_huntress": {
+        "title": "İlk Avcı Kadın",
+        "text": "Yapraklara ve ay ışığına bürünmüş bir kadın görürsün. Bir ok bırakır, ama ava değil. Yaralı bir hayvanın boynundaki zinciri vurur."
+      },
+      "true_name": {
+        "title": "Sylvara",
+        "text": "Dünya susar. Kadim orman eğilmeden diz çöker. Bir ses fısıldar: 'Artık orman için avlanmıyorsun. Orman seninle avlanıyor.'"
+      }
+    },
+    "memories": {
+      "first_mercy": {
+        "title": "İlk Merhamet",
+        "text": "Relic, taşıyıcısının gurur yerine merhameti seçtiği günü hatırlar."
+      },
+      "elder_tree": {
+        "title": "Yaşlı Ağaç",
+        "text": "Relic, ateşten ve baltadan korunan kadim kökleri hatırlar."
+      },
+      "corrupted_stag": {
+        "title": "Bozulmuş Geyik",
+        "text": "Relic, bozulmayı nefret duymadan sona erdiren avı hatırlar."
+      },
+      "dryad_refusal": {
+        "title": "Reddedilen Armağan",
+        "text": "Relic, denge uğruna reddedilen armağanı hatırlar."
+      },
+      "true_name_spoken": {
+        "title": "Söylenen Gerçek Ad",
+        "text": "Relic, Sylvara'nın artık gizli olmadığı anı hatırlar."
+      }
+    },
+    "quotes": {
+      "positive": [
+        "Orman fark etti.",
+        "Saygıyla avlandın.",
+        "Ok zalim değildi.",
+        "Merhamet zayıflık değildir. Ölçüdür.",
+        "Yol, onu yaralamayanlara açılır."
+      ],
+      "negative": [
+        "Ağaçlar izledi. Ve ağladılar.",
+        "Bu bir av değildi. İsraftı.",
+        "Ateş, onu besleyen eli hatırlar.",
+        "Bugün gürültülü adımlarla yürüdün.",
+        "Orman zalimliği unutmaz."
+      ],
+      "neutral": [
+        "Orman her adımı hatırlar.",
+        "Sabır ilk oktur.",
+        "Her avın ölmesi gerekmez.",
+        "Oku bırakmadan önce dinle.",
+        "Vahşi doğa izliyor."
+      ],
+      "signature": [
+        "Artık iki değiliz.",
+        "Artık orman için avlanmıyorsun. Orman seninle avlanıyor.",
+        "Adım Sylvara. Onu yalnızca yapraklar dinlerken hatırla."
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Sylvara Uyanıyor",
+      "text": [
+        "Rüzgâr durur.",
+        "Yapraklar yerden yükselir, ama hiçbiri düşmez.",
+        "Bir kalp atışı boyunca her kuş, her hayvan, her dal sana döner.",
+        "Sisin içinden beyaz bir geyik çıkar ve başını eğer.",
+        "Hiçbir krallıktan daha yaşlı bir ses fısıldar:",
+        "Artık orman için avlanmıyorsun.",
+        "Orman seninle avlanıyor.",
+        "Gerçek ad zihninde usulca yanar: Sylvara, İlk Ormanın Fısıltısı."
+      ]
+    },
+    "lore": {
+      "origin": "Sylvara'nın, ölümlü avcılarla canlı vahşi doğa arasındaki ilk antlaşmadan doğan en eski İlk Relic'lerden biri olduğuna inanılır.",
+      "hiddenSorrow": "Sylvara, kendini değil kutsal bir hayvanı kurtarmayı seçen ilk taşıyıcısını koruyamadı.",
+      "knownRumor": "Bazı avcılar pelerinin ganimet peşindekilere yardım etmediğini söyler. Yalnızca avlanmakla öldürmek arasındaki farkı anlayanlara karşılık verir.",
+      "appearanceDormant": "Silik yaprak desenli dikişleri olan, eskimiş yeşil bir pelerin.",
+      "appearanceAwakened": "Etek boyunca zümrüt damarlar ve peri yazısı belirir.",
+      "appearanceExalted": "Pelerin ardında sis ve savrulan yapraklar bırakır. Gölgesinde ay ışığından boynuzlar belirir.",
+      "appearanceSignature": "Pelerin ilk bakışta değişmemiştir, ama her canlı orman taşıyıcısını tanır."
+    },
+    "abilities": {
+      "active1": "Fey Step",
+      "active2": "İlk Avın Oku",
+      "active3": "Doğanın Takibi",
+      "active4": "Diken Tuzağı",
+      "avatar": "Avın Avatarı",
+      "signature": "Avın İmzası"
+    }
+  }
+}

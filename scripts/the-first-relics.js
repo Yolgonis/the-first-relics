@@ -107,9 +107,87 @@ const TFRNotifyWarn = message => TFRNotify("warn", message);
 const TFRNotifyError = message => TFRNotify("error", message);
 
 
+/**
+ * Relic data in the world's language. data/relics.json is the canonical English source;
+ * data/i18n/<lang>.json overlays translated text by relic id (see TFRApplyContentOverlay).
+ */
 async function TFRLoadRelics() {
+  const relics = await TFRLoadCanonicalRelics();
+  const overlay = await TFRContentOverlay();
+  return overlay ? relics.map(relic => TFRApplyContentOverlay(relic, overlay[relic.id])) : relics;
+}
+
+/** Untranslated English relic data. */
+async function TFRLoadCanonicalRelics() {
   const response = await fetch("modules/the-first-relics/data/relics.json");
   return response.json();
+}
+
+let TFR_CONTENT_OVERLAY_PROMISE = null;
+
+/** Loads data/i18n/<lang>.json once per session; null for English or a missing file. */
+function TFRContentOverlay() {
+  const lang = globalThis.game?.i18n?.lang || "en";
+  if (lang === "en") return Promise.resolve(null);
+  TFR_CONTENT_OVERLAY_PROMISE ??= fetch(`modules/${TFR_MODULE_ID}/data/i18n/${lang}.json`)
+    .then(response => (response.ok ? response.json() : null))
+    .then(overlay => {
+      if (overlay) TFRRegisterLocalizedIdentifiers(overlay);
+      return overlay;
+    })
+    .catch(() => null);
+  return TFR_CONTENT_OVERLAY_PROMISE;
+}
+
+/**
+ * Replaces text in a relic with its translation. Only strings that already exist in the
+ * English data are replaced; ids, numbers and other mechanics are never touched.
+ * Arrays of objects with an `id` are translated by id, other arrays by index.
+ * The overlay's `abilities` map (slot -> name) becomes `relic.abilityNames`.
+ */
+function TFRApplyContentOverlay(relic, overlay) {
+  if (!overlay) return relic;
+  const localized = TFRMergeTranslatedText(relic, overlay);
+  if (overlay.abilities) localized.abilityNames = { ...overlay.abilities };
+  return localized;
+}
+
+const TFR_FEY_STEP_NAMES = new Set(["fey step"]);
+
+/**
+ * A few Cloak of Fey Paths helpers recognise the item and its abilities by name
+ * (legacy items without flags, dnd5e chat cards). Teach them the translated names too.
+ */
+function TFRRegisterLocalizedIdentifiers(overlay) {
+  const cloak = overlay?.cloak_feywilds;
+  if (!cloak) return;
+  if (cloak.name) TFR_CLOAK_ITEM_NAMES.add(cloak.name);
+  for (const [slot, name] of Object.entries(cloak.abilities || {})) {
+    if (name) TFR_CLOAK_ABILITY_SLOTS_BY_LABEL[String(name).trim().toLowerCase()] = slot;
+  }
+  if (cloak.abilities?.active1) TFR_FEY_STEP_NAMES.add(String(cloak.abilities.active1).trim().toLowerCase());
+}
+
+function TFRMergeTranslatedText(base, translated) {
+  if (translated === undefined || translated === null) return base;
+  if (typeof base === "string") return typeof translated === "string" && translated ? translated : base;
+  if (Array.isArray(base)) {
+    if (Array.isArray(translated)) return base.map((value, index) => TFRMergeTranslatedText(value, translated[index]));
+    if (typeof translated === "object") {
+      return base.map(value => (value && typeof value === "object" && "id" in value)
+        ? TFRMergeTranslatedText(value, translated[value.id])
+        : value);
+    }
+    return base;
+  }
+  if (base && typeof base === "object" && typeof translated === "object") {
+    const merged = { ...base };
+    for (const [key, value] of Object.entries(translated)) {
+      if (key in base && key !== "id") merged[key] = TFRMergeTranslatedText(base[key], value);
+    }
+    return merged;
+  }
+  return base;
 }
 
 function TFRMode(name) {
@@ -163,8 +241,8 @@ function TFRAttunementForStage(stage) {
 
 function TFRAttunementText(stage) {
   return stage === "exalted"
-    ? "The relic has become part of its bearer and no longer requires attunement."
-    : "This relic requires attunement.";
+    ? TFRT("The relic has become part of its bearer and no longer requires attunement.")
+    : TFRT("This relic requires attunement.");
 }
 
 
@@ -391,7 +469,7 @@ function TFRSealTrueNameText(relic, text, signatureUnlocked = false) {
   let sealed = String(text || "");
   if (signatureUnlocked) return sealed;
   for (const token of TFRTrueNameTokens(relic)) {
-    sealed = sealed.replace(new RegExp(TFREscapeRegExp(token), "gi"), "[True Name Sealed]");
+    sealed = sealed.replace(new RegExp(TFREscapeRegExp(token), "gi"), TFRT("[True Name Sealed]"));
   }
   return sealed;
 }
@@ -416,8 +494,8 @@ function TFRRelicMoodHtml(relic, stage, signatureUnlocked = false) {
   if (!current) return "";
 
   return `
-    <h3>Revealed Relic Signs</h3>
-    <p><strong>Current Presence:</strong> ${current.mood}</p>
+    <h3 data-tfr-section="signs">${TFRT("Revealed Relic Signs")}</h3>
+    <p><strong>${TFRT("Current Presence:")}</strong> ${current.mood}</p>
     <p><em>${TFRSealTrueNameText(relic, current.description, signatureUnlocked)}</em></p>
   `;
 }
@@ -426,10 +504,10 @@ function TFRRelicUnlockedAppearanceEntries(relic, stage, signatureUnlocked = fal
   const lore = relic?.lore || {};
   const stageRank = stage === "exalted" ? 2 : stage === "awakened" ? 1 : 0;
   return [
-    { label: "Dormant", text: lore.appearanceDormant, unlocked: stageRank >= 0 },
-    { label: "Awakened", text: lore.appearanceAwakened, unlocked: stageRank >= 1 },
-    { label: "Exalted", text: lore.appearanceExalted, unlocked: stageRank >= 2 },
-    { label: "Final Form", text: lore.appearanceSignature, unlocked: TFRIsFinalForm(stage, signatureUnlocked) }
+    { label: TFRT("Dormant"), text: lore.appearanceDormant, unlocked: stageRank >= 0 },
+    { label: TFRT("Awakened"), text: lore.appearanceAwakened, unlocked: stageRank >= 1 },
+    { label: TFRT("Exalted"), text: lore.appearanceExalted, unlocked: stageRank >= 2 },
+    { label: TFRT("Final Form"), text: lore.appearanceSignature, unlocked: TFRIsFinalForm(stage, signatureUnlocked) }
   ].filter(entry => entry.unlocked && entry.text);
 }
 
@@ -437,7 +515,7 @@ function TFRRelicAppearanceHtml(relic, stage, signatureUnlocked = false) {
   const entries = TFRRelicUnlockedAppearanceEntries(relic, stage, signatureUnlocked);
   if (!entries.length) return "";
   return `
-    <h3>Revealed Manifestations</h3>
+    <h3>${TFRT("Revealed Manifestations")}</h3>
     <ul>${entries.map(entry => `<li><strong>${entry.label}.</strong> ${entry.text}</li>`).join("")}</ul>
   `;
 }
@@ -446,18 +524,18 @@ function TFRRelicGmSecretsHtml(relic) {
   const moodRows = (Array.isArray(relic?.moodMap) ? relic.moodMap : [])
     .map(entry => `<li><strong>${entry.min}-${entry.max} ${entry.mood}.</strong> ${entry.description}</li>`)
     .join("");
-  const likes = relic?.personality?.likes?.length ? `<p><strong>Likes:</strong> ${relic.personality.likes.join(", ")}</p>` : "";
-  const dislikes = relic?.personality?.dislikes?.length ? `<p><strong>Dislikes:</strong> ${relic.personality.dislikes.join(", ")}</p>` : "";
-  const guidance = relic?.personality?.roleplayGuidance ? `<p><strong>Roleplay Guidance:</strong> ${relic.personality.roleplayGuidance}</p>` : "";
+  const likes = relic?.personality?.likes?.length ? `<p><strong>${TFRT("Likes:")}</strong> ${relic.personality.likes.join(", ")}</p>` : "";
+  const dislikes = relic?.personality?.dislikes?.length ? `<p><strong>${TFRT("Dislikes:")}</strong> ${relic.personality.dislikes.join(", ")}</p>` : "";
+  const guidance = relic?.personality?.roleplayGuidance ? `<p><strong>${TFRT("Roleplay Guidance:")}</strong> ${relic.personality.roleplayGuidance}</p>` : "";
   if (!moodRows && !likes && !dislikes && !guidance) return "";
 
   return `
     <section class="tfr-gm-relic-notes" data-tfr-gm-notes="true">
-      <h3>GM Relic Notes</h3>
+      <h3>${TFRT("GM Relic Notes")}</h3>
       ${guidance}
       ${likes}
       ${dislikes}
-      ${moodRows ? `<h4>Full Affinity Mood Map</h4><ul>${moodRows}</ul>` : ""}
+      ${moodRows ? `<h4>${TFRT("Full Affinity Mood Map")}</h4><ul>${moodRows}</ul>` : ""}
     </section>
   `;
 }
@@ -474,7 +552,7 @@ function TFRRemovePlayerMoodHistory(element) {
   const root = TFRRelicDescriptionRoot(element);
   if (!root) return;
   const heading = Array.from(root.querySelectorAll("h3"))
-    .find(node => node.textContent?.trim() === "Revealed Relic Signs");
+    .find(node => node.dataset?.tfrSection === "signs" || node.textContent?.trim() === "Revealed Relic Signs");
   if (!heading) return;
 
   let node = heading.nextElementSibling;
@@ -747,48 +825,48 @@ function TFRBuildDescription(relic, stage, signatureUnlocked = false) {
   <div class="first-relics-item-description">
     <h2>${relic.name}</h2>
 
-    <p><em>Artifact${stage === "exalted" ? "" : `, requires attunement by a ${relic.class}`}</em></p>
-    <p><strong>Attunement:</strong> ${TFRAttunementText(stage)}</p>
-    <p><strong>Form:</strong> ${stageData.title}</p>
-    <p><strong>Virtue:</strong> ${relic.virtue}</p>
-    <p><strong>Theme:</strong> ${relic.theme}</p>
-    ${relic.trueName ? `<p><strong>True Name:</strong> ${signatureUnlocked ? relic.trueName.full : "???"}</p>` : ""}
+    <p><em>${stage === "exalted" ? TFRT("Artifact") : TFRT("Artifact, requires attunement by a {className}", { className: relic.class })}</em></p>
+    <p><strong>${TFRT("Attunement:")}</strong> ${TFRAttunementText(stage)}</p>
+    <p><strong>${TFRT("Form:")}</strong> ${stageData.title}</p>
+    <p><strong>${TFRT("Virtue:")}</strong> ${relic.virtue}</p>
+    <p><strong>${TFRT("Theme:")}</strong> ${relic.theme}</p>
+    ${relic.trueName ? `<p><strong>${TFRT("True Name:")}</strong> ${signatureUnlocked ? relic.trueName.full : "???"}</p>` : ""}
     ${TFRRelicMoodHtml(relic, stage, signatureUnlocked)}
     ${TFRRelicAppearanceHtml(relic, stage, signatureUnlocked)}
 
-    <h3>Universal Relic Bonus</h3>
+    <h3>${TFRT("Universal Relic Bonus")}</h3>
     <ul>
-      <li><strong>+${b} AC</strong></li>
-      <li><strong>+${b} to all saving throws</strong></li>
-      <li><strong>+${b} Spell Save DC</strong>, if the bearer has Spellcasting or Pact Magic</li>
-      <li><strong>+${b} spell attack rolls</strong>, if the bearer uses spell attacks</li>
-      <li><strong>+${b} weapon attack and weapon damage rolls</strong>, if the bearer uses weapons or unarmed strikes</li>
+      <li><strong>${TFRT("+{bonus} AC", { bonus: b })}</strong></li>
+      <li><strong>${TFRT("+{bonus} to all saving throws", { bonus: b })}</strong></li>
+      <li>${TFRT("<strong>+{bonus} Spell Save DC</strong>, if the bearer has Spellcasting or Pact Magic", { bonus: b })}</li>
+      <li>${TFRT("<strong>+{bonus} spell attack rolls</strong>, if the bearer uses spell attacks", { bonus: b })}</li>
+      <li>${TFRT("<strong>+{bonus} weapon attack and weapon damage rolls</strong>, if the bearer uses weapons or unarmed strikes", { bonus: b })}</li>
     </ul>
-    ${TFRIsFinalForm(stage, signatureUnlocked) ? `<p><strong>Final Form:</strong> At 1000 Affinity, perfect harmony raises every Universal Relic Bonus to <strong>+${TFR_FINAL_FORM_BONUS}</strong> and maximum charges to <strong>${TFR_FINAL_FORM_CHARGES}</strong>.</p>` : ""}
+    ${TFRIsFinalForm(stage, signatureUnlocked) ? `<p>${TFRT("<strong>Final Form:</strong> At 1000 Affinity, perfect harmony raises every Universal Relic Bonus to <strong>+{bonus}</strong> and maximum charges to <strong>{charges}</strong>.", { bonus: TFR_FINAL_FORM_BONUS, charges: TFR_FINAL_FORM_CHARGES })}</p>` : ""}
 
-    <h3>Charges</h3>
-    <p>The relic has <strong>${stageData.charges} charges</strong> and regains all expended charges daily at dawn.</p>
+    <h3>${TFRT("Charges")}</h3>
+    <p>${TFRT("The relic has <strong>{charges} charges</strong> and regains all expended charges daily at dawn.", { charges: stageData.charges })}</p>
 
-    <h3>Unlocked Passive Features</h3>
+    <h3>${TFRT("Unlocked Passive Features")}</h3>
     <ul>${passives.map(p => `<li>${p}</li>`).join("")}</ul>
 
-    <h3>Unlocked Active Features</h3>
+    <h3>${TFRT("Unlocked Active Features")}</h3>
     <ul>${actives.map(a => `<li>${a}</li>`).join("")}</ul>
 
     ${stage === "exalted" ? `
-      <h3>Avatar Form</h3>
+      <h3>${TFRT("Avatar Form")}</h3>
       <p>${f.avatar}</p>
-      <h3>Signature Ability</h3>
+      <h3>${TFRT("Signature Ability")}</h3>
       ${signatureUnlocked ? `<p>${f.signature}</p>` : `
-        <p class="tfr-locked"><strong>Sealed.</strong> The relic has accepted you as its Exalted bearer, but its final power remains locked.</p>
-        <p class="tfr-locked">Reach <strong>1000 Affinity</strong> to awaken the relic's true name and unlock its Signature Ability.</p>
+        <p class="tfr-locked">${TFRT("<strong>Sealed.</strong> The relic has accepted you as its Exalted bearer, but its final power remains locked.")}</p>
+        <p class="tfr-locked">${TFRT("Reach <strong>1000 Affinity</strong> to awaken the relic's true name and unlock its Signature Ability.")}</p>
       `}
     ` : ""}
 
-    <h3>Use Notes</h3>
-    <p><strong>Automated:</strong> charges, universal bonuses, damage rolls, and avatar helper effects.</p>
-    <p><strong>Automated:</strong> charges, universal bonuses, Fey Step movement, Cloak helper effects, and Briar Snare restrained helper.</p>
-    <p><strong>Manual:</strong> prone, darkness templates, forced rerolls, and complex edge cases may still require GM resolution.</p>
+    <h3>${TFRT("Use Notes")}</h3>
+    <p>${TFRT("<strong>Automated:</strong> charges, universal bonuses, damage rolls, and avatar helper effects.")}</p>
+    ${relic.id === "cloak_feywilds" ? `<p>${TFRT("<strong>Automated:</strong> Fey Step movement, Cloak helper effects, and Briar Snare restrained helper.")}</p>` : ""}
+    <p>${TFRT("<strong>Manual:</strong> prone, darkness templates, forced rerolls, and complex edge cases may still require GM resolution.")}</p>
   </div>`;
   return TFRSealTrueNameText(relic, description, signatureUnlocked);
 }
@@ -1320,7 +1398,9 @@ function TFRAbilityDefinitions() {
 }
 
 function TFRGetAbilityDefinition(relic, slot) {
-  return TFRAbilityDefinitions()[relic.id]?.[slot] || null;
+  const def = TFRAbilityDefinitions()[relic.id]?.[slot] || null;
+  const localizedName = relic?.abilityNames?.[slot];
+  return def && localizedName ? { ...def, name: localizedName } : def;
 }
 
 function TFRActivityDescription(relic, slot) {
@@ -2193,18 +2273,18 @@ function TFRBuildJournalOverview(relics) {
   const list = relics.map(r => `<li><strong>${r.name}</strong> - ${r.class}, ${r.virtue}</li>`).join("");
   return `
     <h1>The First Relics</h1>
-    <p>Relics are living wills from the First Age. They choose their bearers and awaken through virtue, not ownership.</p>
-    <p>A relic may refuse attunement when a bearer's choices violate its nature. Final Form is therefore never guaranteed: it is the culmination of 1000 Affinity and a bond the relic still willingly accepts.</p>
-    <h2>Relic Progression</h2>
+    <p>${TFRT("Relics are living wills from the First Age. They choose their bearers and awaken through virtue, not ownership.")}</p>
+    <p>${TFRT("A relic may refuse attunement when a bearer's choices violate its nature. Final Form is therefore never guaranteed: it is the culmination of 1000 Affinity and a bond the relic still willingly accepts.")}</p>
+    <h2>${TFRT("Relic Progression")}</h2>
     <ul>
-      <li><strong>Dormant.</strong> +1 Universal Relic Bonus and 3 charges.</li>
-      <li><strong>Awakened.</strong> +2 Universal Relic Bonus and 6 charges.</li>
-      <li><strong>Exalted.</strong> +3 Universal Relic Bonus and 10 charges from 750–999 Affinity.</li>
-      <li><strong>Final Form.</strong> +5 Universal Relic Bonus and 15 charges at 1000 Affinity; the true name and Signature Ability are revealed.</li>
+      <li>${TFRT("<strong>Dormant.</strong> +1 Universal Relic Bonus and 3 charges.")}</li>
+      <li>${TFRT("<strong>Awakened.</strong> +2 Universal Relic Bonus and 6 charges.")}</li>
+      <li>${TFRT("<strong>Exalted.</strong> +3 Universal Relic Bonus and 10 charges from 750–999 Affinity.")}</li>
+      <li>${TFRT("<strong>Final Form.</strong> +5 Universal Relic Bonus and 15 charges at 1000 Affinity; the true name and Signature Ability are revealed.")}</li>
     </ul>
-    <h2>Known Relics</h2>
+    <h2>${TFRT("Known Relics")}</h2>
     <ul>${list}</ul>
-    <blockquote><p><strong>A Relic never belongs to its bearer. The bearer belongs to the Relic.</strong></p></blockquote>
+    <blockquote><p><strong>${TFRT("A Relic never belongs to its bearer. The bearer belongs to the Relic.")}</strong></p></blockquote>
   `;
 }
 
@@ -2212,8 +2292,8 @@ function TFRBuildRelicJournalContent(relic) {
   const finalFormData = TFRGetStageData(relic, "exalted", true);
   const stageRows = [...TFR_STAGES.map(stage => {
     const data = TFRGetStageData(relic, stage);
-    return `<li><strong>${data.title || TFRStageTitle(stage)}.</strong> Bonus +${data.bonus}, ${data.charges} charges.</li>`;
-  }), `<li><strong>${finalFormData.title}.</strong> Bonus +${finalFormData.bonus}, ${finalFormData.charges} charges at 1000 Affinity.</li>`].join("");
+    return `<li><strong>${data.title || TFRStageTitle(stage)}.</strong> ${TFRT("Bonus +{bonus}, {charges} charges.", { bonus: data.bonus, charges: data.charges })}</li>`;
+  }), `<li><strong>${finalFormData.title}.</strong> ${TFRT("Bonus +{bonus}, {charges} charges at 1000 Affinity.", { bonus: finalFormData.bonus, charges: finalFormData.charges })}</li>`].join("");
   const moodRows = (Array.isArray(relic.moodMap) ? relic.moodMap : [])
     .map(entry => `<li><strong>${entry.min}-${entry.max} ${entry.mood}.</strong> ${entry.description}</li>`)
     .join("");
@@ -2222,48 +2302,48 @@ function TFRBuildRelicJournalContent(relic) {
   const personality = relic.personality || {};
   const lore = relic.lore || {};
   const loreRows = [
-    lore.knownRumor ? `<p><strong>Known Rumor:</strong> ${lore.knownRumor}</p>` : "",
-    lore.origin ? `<p><strong>Origin:</strong> ${lore.origin}</p>` : "",
-    lore.hiddenSorrow ? `<p><strong>Hidden Sorrow:</strong> ${lore.hiddenSorrow}</p>` : ""
+    lore.knownRumor ? `<p><strong>${TFRT("Known Rumor:")}</strong> ${lore.knownRumor}</p>` : "",
+    lore.origin ? `<p><strong>${TFRT("Origin:")}</strong> ${lore.origin}</p>` : "",
+    lore.hiddenSorrow ? `<p><strong>${TFRT("Hidden Sorrow:")}</strong> ${lore.hiddenSorrow}</p>` : ""
   ].filter(Boolean).join("");
   const appearanceRows = [
-    lore.appearanceDormant ? `<li><strong>Dormant.</strong> ${lore.appearanceDormant}</li>` : "",
-    lore.appearanceAwakened ? `<li><strong>Awakened.</strong> ${lore.appearanceAwakened}</li>` : "",
-    lore.appearanceExalted ? `<li><strong>Exalted.</strong> ${lore.appearanceExalted}</li>` : "",
-    lore.appearanceSignature ? `<li><strong>Final Form.</strong> ${lore.appearanceSignature}</li>` : ""
+    lore.appearanceDormant ? `<li><strong>${TFRT("Dormant")}.</strong> ${lore.appearanceDormant}</li>` : "",
+    lore.appearanceAwakened ? `<li><strong>${TFRT("Awakened")}.</strong> ${lore.appearanceAwakened}</li>` : "",
+    lore.appearanceExalted ? `<li><strong>${TFRT("Exalted")}.</strong> ${lore.appearanceExalted}</li>` : "",
+    lore.appearanceSignature ? `<li><strong>${TFRT("Final Form")}.</strong> ${lore.appearanceSignature}</li>` : ""
   ].filter(Boolean).join("");
 
   return `
     <h1>${relic.name}</h1>
-    <p><strong>Class:</strong> ${relic.class}</p>
-    <p><strong>Virtue:</strong> ${relic.virtue}</p>
-    <p><strong>Theme:</strong> ${relic.theme}</p>
-    ${relic.trueName?.full ? `<p><strong>True Name:</strong> ${relic.trueName.full}</p>` : ""}
+    <p><strong>${TFRT("Class:")}</strong> ${relic.class}</p>
+    <p><strong>${TFRT("Virtue:")}</strong> ${relic.virtue}</p>
+    <p><strong>${TFRT("Theme:")}</strong> ${relic.theme}</p>
+    ${relic.trueName?.full ? `<p><strong>${TFRT("True Name:")}</strong> ${relic.trueName.full}</p>` : ""}
 
-    <h2>Stage Summary</h2>
+    <h2>${TFRT("Stage Summary")}</h2>
     <ul>${stageRows}</ul>
 
-    ${loreRows ? `<h2>Relic Lore</h2>${loreRows}` : ""}
-    ${appearanceRows ? `<h2>Manifestations</h2><ul>${appearanceRows}</ul>` : ""}
+    ${loreRows ? `<h2>${TFRT("Relic Lore")}</h2>${loreRows}` : ""}
+    ${appearanceRows ? `<h2>${TFRT("Manifestations")}</h2><ul>${appearanceRows}</ul>` : ""}
 
-    <h2>GM Notes</h2>
-    ${personality.temperament?.length ? `<p><strong>Temperament:</strong> ${personality.temperament.join(", ")}</p>` : ""}
-    ${personality.corePhrase ? `<p><strong>Core Phrase:</strong> <em>${personality.corePhrase}</em></p>` : ""}
-    ${personality.roleplayGuidance ? `<p><strong>Roleplay Guidance:</strong> ${personality.roleplayGuidance}</p>` : ""}
-    ${personality.likes?.length ? `<p><strong>Likes:</strong> ${personality.likes.join(", ")}</p>` : ""}
-    ${personality.dislikes?.length ? `<p><strong>Dislikes:</strong> ${personality.dislikes.join(", ")}</p>` : ""}
+    <h2>${TFRT("GM Notes")}</h2>
+    ${personality.temperament?.length ? `<p><strong>${TFRT("Temperament:")}</strong> ${personality.temperament.join(", ")}</p>` : ""}
+    ${personality.corePhrase ? `<p><strong>${TFRT("Core Phrase:")}</strong> <em>${personality.corePhrase}</em></p>` : ""}
+    ${personality.roleplayGuidance ? `<p><strong>${TFRT("Roleplay Guidance:")}</strong> ${personality.roleplayGuidance}</p>` : ""}
+    ${personality.likes?.length ? `<p><strong>${TFRT("Likes:")}</strong> ${personality.likes.join(", ")}</p>` : ""}
+    ${personality.dislikes?.length ? `<p><strong>${TFRT("Dislikes:")}</strong> ${personality.dislikes.join(", ")}</p>` : ""}
 
-    <h2>Full Affinity Mood Map</h2>
+    <h2>${TFRT("Full Affinity Mood Map")}</h2>
     <ul>${moodRows}</ul>
 
-    <h2>Passive Features</h2>
+    <h2>${TFRT("Passive Features")}</h2>
     <ul>${passives}</ul>
 
-    <h2>Active Features</h2>
+    <h2>${TFRT("Active Features")}</h2>
     <ul>${actives}</ul>
 
-    ${relic.features?.avatar ? `<h2>Avatar Form</h2><p>${relic.features.avatar}</p>` : ""}
-    ${relic.features?.signature ? `<h2>Signature Ability</h2><p>${relic.features.signature}</p>` : ""}
+    ${relic.features?.avatar ? `<h2>${TFRT("Avatar Form")}</h2><p>${relic.features.avatar}</p>` : ""}
+    ${relic.features?.signature ? `<h2>${TFRT("Signature Ability")}</h2><p>${relic.features.signature}</p>` : ""}
   `;
 }
 
@@ -2728,11 +2808,11 @@ async function TFRSetRelicAffinity(relicId, value, reason = "") {
     data.timeline.push({
       time: Date.now(),
       value: data.value,
-      reason: `Final Form awakened. Universal relic bonuses increased to +${TFR_FINAL_FORM_BONUS}, maximum charges increased to ${TFR_FINAL_FORM_CHARGES}, the Signature Ability unlocked, and the relic revealed its true name.`
+      reason: TFRT("Final Form awakened. Universal relic bonuses increased to +{bonus}, maximum charges increased to {charges}, the Signature Ability unlocked, and the relic revealed its true name.", { bonus: TFR_FINAL_FORM_BONUS, charges: TFR_FINAL_FORM_CHARGES })
     });
 
     ChatMessage.create({
-      content: `<div class="first-relics-note"><h1>Final Form Awakened</h1><h2>${relic.name}</h2><p>The relic reaches perfect harmony at 1000 Affinity. Its Universal Relic Bonus becomes +${TFR_FINAL_FORM_BONUS}, its maximum charges become ${TFR_FINAL_FORM_CHARGES}, its true name is revealed, and its Signature Ability is no longer sealed.</p></div>`
+      content: `<div class="first-relics-note"><h1>${TFRT("Final Form Awakened")}</h1><h2>${relic.name}</h2><p>${TFRT("The relic reaches perfect harmony at 1000 Affinity. Its Universal Relic Bonus becomes +{bonus}, its maximum charges become {charges}, its true name is revealed, and its Signature Ability is no longer sealed.", { bonus: TFR_FINAL_FORM_BONUS, charges: TFR_FINAL_FORM_CHARGES })}</p></div>`
     });
   }
 
@@ -2759,6 +2839,19 @@ function TFRMoodFromAffinity(value) {
   if (value <= 649) return "Curious";
   if (value <= 849) return "Satisfied";
   return "Resonating";
+}
+
+/** Display label for a stored mood id (moods are saved in English in relic state). */
+function TFRMoodLabel(mood) {
+  const labels = {
+    Rejected: TFRT("Rejected"),
+    Silent: TFRT("Silent"),
+    Watching: TFRT("Watching"),
+    Curious: TFRT("Curious"),
+    Satisfied: TFRT("Satisfied"),
+    Resonating: TFRT("Resonating")
+  };
+  return labels[mood] ?? mood;
 }
 
 function TFRStageFromAffinity(value) {
@@ -2962,7 +3055,7 @@ async function TFRUnlockMemory(relicId, memoryId, note = "") {
   await TFRAddTimeline(relicId, "Memory Unlocked", memory.title, note);
 
   ChatMessage.create({
-    content: `<div class="first-relics-note"><h2>Memory Unlocked</h2><h3>${TFREscapeHtml(relic.name)}</h3><p><strong>${TFREscapeHtml(memory.title)}</strong></p><p>${TFREscapeHtml(memory.text || "")}</p></div>`
+    content: `<div class="first-relics-note"><h2>${TFRT("Memory Unlocked")}</h2><h3>${TFREscapeHtml(relic.name)}</h3><p><strong>${TFREscapeHtml(memory.title)}</strong></p><p>${TFREscapeHtml(memory.text || "")}</p></div>`
   });
 
   return data;
@@ -3010,7 +3103,7 @@ function TFRRenderDashboardSummary(relic, data) {
     <div class="tfr-summary-grid">
       <div class="tfr-summary-card"><span>${TFRT("Affinity")}</span><strong>${data.value || 0}/1000</strong></div>
       <div class="tfr-summary-card"><span>${TFRT("Stage")}</span><strong>${TFREscapeHtml(TFRStageLabel(displayStage))}</strong></div>
-      <div class="tfr-summary-card"><span>${TFRT("Mood")}</span><strong>${TFREscapeHtml(mood)}</strong></div>
+      <div class="tfr-summary-card"><span>${TFRT("Mood")}</span><strong>${TFREscapeHtml(TFRMoodLabel(mood))}</strong></div>
       <div class="tfr-summary-card"><span>${TFRT("Signature")}</span><strong>${TFREscapeHtml(signature)}</strong></div>
     </div>
   `;
@@ -3171,7 +3264,7 @@ async function TFROpenDashboard(relicId = null) {
         <div class="tfr-affinity-bar">
           <div class="tfr-affinity-fill" style="width:${Math.clamp(data.value || 0, 0, 1000) / 10}%"></div>
         </div>
-        <p><strong>${TFRT("Mood:")}</strong> ${data.mood || TFRMoodFromAffinity(data.value)}</p>
+        <p><strong>${TFRT("Mood:")}</strong> ${TFRMoodLabel(data.mood || TFRMoodFromAffinity(data.value))}</p>
         <p><strong>${TFRT("Suggested Stage:")}</strong> ${TFRStageLabel(TFRDisplayStage(TFRStageFromAffinity(data.value), TFRSignatureUnlockedFromAffinity(data.value)))}</p>
         <p><strong>${TFRT("Current Recorded Stage:")}</strong> ${TFRStageLabel(TFRDisplayStage(data.stage || "dormant", data.signatureUnlocked))}</p>
         <p><strong>${TFRT("Signature:")}</strong> ${data.signatureUnlocked ? TFRT("Unlocked") : TFRT("Sealed")}</p>
@@ -4857,6 +4950,15 @@ function TFRRelicAbilityFromChatMessage(message, actor = null) {
     // REACTION + SELF or BONUS ACTION + 30 FT + 1 SPACE.
     const inferred = TFRInferRelicSlotFromChatBadges(relicId, item, haystack);
     if (inferred) return inferred;
+
+    // Fallback for translated worlds, where ability names and badge text are not English:
+    // dnd5e records the used activity on its chat card, and the activity carries its slot flag.
+    const activityId = (game.i18n?.lang || "en") !== "en" ? message.flags?.dnd5e?.activity?.id : null;
+    const flaggedActivity = activityId ? item.system?.activities?.get?.(activityId) : null;
+    const flaggedSlot = flaggedActivity ? TFRGetActivitySlot(flaggedActivity) : null;
+    if (flaggedSlot && slots[flaggedSlot]) {
+      return { relicId, slot: flaggedSlot, name: flaggedActivity.name || slots[flaggedSlot].name, score: 100 };
+    }
   }
   return null;
 }
@@ -8658,7 +8760,9 @@ function TFRLockCloakChoiceButtons(root, item, labelSelector) {
   for (const button of root.querySelectorAll("button")) {
     const labelElement = labelSelector === "button" ? button : button.querySelector(".name");
     const label = String(labelElement?.textContent || "").trim();
-    const slot = TFR_CLOAK_ABILITY_SLOTS_BY_LABEL[label.toLowerCase()];
+    // Prefer the activity's own slot flag; fall back to the (possibly translated) label.
+    const activity = button.dataset.activityId ? item.system?.activities?.get?.(button.dataset.activityId) : null;
+    const slot = (activity && TFRGetActivitySlot(activity, label)) || TFR_CLOAK_ABILITY_SLOTS_BY_LABEL[label.toLowerCase()];
     if (slot && TFRRelicFeaturesAreBlocked(item)) {
       button.disabled = true;
       button.classList.add("tfr-locked-activity");
@@ -8684,10 +8788,10 @@ function TFRLooksLikeFeyStepChatMessage(message, actor = null) {
   const actorHasCloak = !!TFRFindActorRelicItem(actor, "cloak_feywilds") || !!actor?.items?.find?.(TFRIsCloakItem);
   if (!actorHasCloak) return false;
 
-  const namesRelic = text.includes("cloak of fey paths") || text.includes("cloak of verdant paths") || text.includes("cloak of feywilds")
-    || flagText.includes("cloak of fey paths") || flagText.includes("cloak of verdant paths") || flagText.includes("cloak of feywilds")
+  const cloakNames = [...TFR_CLOAK_ITEM_NAMES].map(name => name.toLowerCase());
+  const namesRelic = cloakNames.some(name => text.includes(name) || flagText.includes(name))
     || flagText.includes("cloak_feywilds");
-  const namesAbility = text.includes("fey step") || flagText.includes("fey step");
+  const namesAbility = [...TFR_FEY_STEP_NAMES].some(name => text.includes(name) || flagText.includes(name));
   const looksLikeTeleport = (text.includes("60 ft") || text.includes("60ft") || flagText.includes("60"))
     && (text.includes("1 space") || text.includes("space") || flagText.includes("space"));
 
