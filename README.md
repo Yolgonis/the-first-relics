@@ -30,10 +30,10 @@ The relic item icons in `art/icons/v1/` are AI-assisted painted PNG assets prepa
 
 ## Installation
 
-1. Copy the `the-first-relics` folder into your Foundry `Data/modules/` directory.
-2. Restart or refresh Foundry.
-3. Enable **The First Relics** in your world.
-4. As GM, open the module dashboard or run:
+1. In your Foundry `Data/modules/` directory, create a folder named `the-first-relics`.
+2. Extract the release zip into that folder, so that `module.json` sits directly inside `Data/modules/the-first-relics/`.
+3. Restart Foundry, then enable **The First Relics** in your world under **Manage Modules**.
+4. As GM, open the dashboard from the gem button in the Token controls, or run:
 
 ```js
 await FirstRelics.createAll()
@@ -54,21 +54,6 @@ await FirstRelics.runReleaseCheck()
 ```
 
 A clean public build should report `RELEASE READY`.
-
-## Packaging for Patreon or itch.io
-
-Use the contents of this folder as the module root when creating the upload zip. Do not include local development folders such as `.git`, `.agents`, or `.codex`; `.itchignore` is included for Butler uploads and is also a useful checklist for Patreon release files.
-
-Suggested zip contents:
-
-- `module.json`
-- `README.md`
-- `CHANGELOG.md`
-- `LICENSE.md`
-- `scripts/`
-- `styles/`
-- `data/`
-- `art/`
 
 ## Version
 

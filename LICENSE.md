@@ -1,6 +1,6 @@
 # The First Relics License
 
-Copyright (c) 2026 yolgonis. All rights reserved.
+Copyright (c) 2026 Yolgonis. All rights reserved.
 
 Purchasing or receiving this package grants you a personal license to install and use The First Relics in your own Foundry Virtual Tabletop games.
 
