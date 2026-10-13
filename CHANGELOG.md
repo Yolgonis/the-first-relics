@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.10
+
+- The GM Affinity Dashboard no longer overflows horizontally inside its window. An old minimum width written for the v1 dialog (760 px) was wider than the DialogV2 content area, which cut off right-aligned text and added a horizontal scrollbar.
+
 ## v1.1.9
 
 - Fixed the GM Control Panel layout under DialogV2: its markup was a nested `<form>`, which the browser discarded inside the dialog's own form, dropping the panel's styling. Control buttons now also grow to fit their icon, label and hint instead of using Foundry v13's fixed button height.

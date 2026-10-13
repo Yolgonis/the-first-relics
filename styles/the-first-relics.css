@@ -619,8 +619,15 @@
 .application.tfr-dialog .dialog-content {
   flex: 1 1 auto;
   min-height: 0;
+  overflow-x: hidden;
   overflow-y: auto;
   padding-right: 8px;
+}
+
+/* The old v1 dialog sized itself to its content; inside DialogV2 the window sets the width. */
+.application.tfr-dialog .tfr-dashboard-tabs {
+  min-width: 0;
+  max-width: none;
 }
 
 .application.tfr-dialog .form-footer {
