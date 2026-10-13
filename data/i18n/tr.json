@@ -1493,5 +1493,441 @@
       "avatar": "Ebedî Kral",
       "signature": "Dünya Diz Çökecek"
     }
+  },
+  "bands_inner_dragon": {
+    "name": "İçsel Ejderin Bileklikleri",
+    "class": "Monk",
+    "virtue": "Disiplin",
+    "theme": "Öz Hâkimiyet • Denge • Kusursuzluk",
+    "trueName": {
+      "name": "Ryushen",
+      "title": "Zincirsiz Ejder",
+      "full": "Ryushen, Zincirsiz Ejder"
+    },
+    "personality": {
+      "temperament": [
+        "Kadim",
+        "Yargılayıcı",
+        "Sabırlı",
+        "İradeli"
+      ],
+      "likes": [
+        "Erdemine uygun seçimler",
+        "Fedakârlık",
+        "Anlamlı gelişim"
+      ],
+      "dislikes": [
+        "Korkaklık",
+        "Zalimlik",
+        "Boş güç"
+      ],
+      "corePhrase": "Öz Hâkimiyet",
+      "roleplayGuidance": "Ryushen zalimlik içermeyen disipline ve gösterişsiz güce değer verir. Pratiğe, sabra, ölçüye ve başarısızlıktan sonra kazanılan zaferlere karşılık verir."
+    },
+    "moodMap": [
+      {
+        "mood": "Sessiz",
+        "description": "Bileklikler serin bir taş gibi durur; nefesle hareketin uyum içine girmesini bekler."
+      },
+      {
+        "mood": "Gözlüyor",
+        "description": "Taşıyıcının dürtü yerine sabrı seçtiği anların ardından yavaş bir nabız gelir."
+      },
+      {
+        "mood": "Sınıyor",
+        "description": "Bileklikler, acı, hakaret ya da korku ritmi bozduğunda denetimin sürüp sürmediğini sınar."
+      },
+      {
+        "mood": "Güveniyor",
+        "description": "Bileklikler taşıyıcıyla birlikte hareket eder; düşünce yetişmeden gereksiz hareketi düzeltir."
+      },
+      {
+        "mood": "Seçilmiş",
+        "description": "Relic taşıyıcıyı, dersin kendisine dönüşebilecek bir öğrenci olarak kabul eder."
+      },
+      {
+        "mood": "Yankılanan",
+        "description": "Taşıyıcının nefesinin içinde bir ejder soluk verir; Ryushen gerçek adını söylemeye hazırdır."
+      }
+    ],
+    "affinity": {
+      "moods": [
+        "Sessiz",
+        "Gözlüyor",
+        "Sınıyor",
+        "Güveniyor",
+        "Seçilmiş",
+        "Yankılanan"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Uykuda"
+      },
+      "awakened": {
+        "title": "Uyanmış"
+      },
+      "exalted": {
+        "title": "Yüceltilmiş"
+      }
+    },
+    "affinityEvents": {
+      "chose_patience_over_force": {
+        "label": "Güç yerine sabrı seçti",
+        "category": "Disiplin"
+      },
+      "defeated_enemy_nonlethally": {
+        "label": "Bir düşmanı öldürmeden yendi",
+        "category": "Denetim"
+      },
+      "learned_from_failure": {
+        "label": "Başarısızlıktan ders çıkardı",
+        "category": "Gelişim"
+      },
+      "lost_control": {
+        "label": "Kontrolünü kaybetti",
+        "category": "İhlal"
+      },
+      "acted_from_rage": {
+        "label": "Öfkeyle hareket etti",
+        "category": "İhlal"
+      },
+      "used_power_for_show": {
+        "label": "Gücünü gösteriş için kullandı",
+        "category": "İhlal"
+      }
+    },
+    "hiddenRequirements": {
+      "reach_1000": {
+        "label": "1000 Yakınlığa ulaş"
+      },
+      "defeat_an_enemy_without_killing": {
+        "label": "Bir düşmanı öldürmeden yen."
+      },
+      "take_no_damage_in_three_combats": {
+        "label": "Üç savaşta hiç hasar alma."
+      },
+      "defeat_someone_after_losing_to_them": {
+        "label": "Sana yenildiğin birini sonradan yen."
+      },
+      "spend_a_long_rest_in_silence": {
+        "label": "Bir uzun dinlenmeyi sessizlik içinde geçir."
+      },
+      "spend_meaningful_time_training": {
+        "label": "Anlamlı bir süreyi antrenmanla geçir."
+      }
+    },
+    "features": {
+      "passives": [
+        "Odaklanmış Zihin: Konsantrasyon kurtarma atışlarında avantaj.",
+        "Kusursuz Hareket: her raunt sana karşı yapılan ilk fırsat saldırısı dezavantajlıdır.",
+        "Sınırların Ötesindeki Beden: +10 hız ve çift zıplama.",
+        "Akış Hâli: uzun dinlenme başına bir kez başarısız bir Kuvvet, Çeviklik ya da Dayanıklılık kurtarma atışını yeniden at."
+      ],
+      "actives": [
+        "<strong>Ejder Nefesi.</strong> <em>Bonus Aksiyon, 1 yük, 1 dakika.</em> Büyülü olmayan Zorlu Araziyi yok sayarsın, yürüme hızına eşit tırmanma hızı kazanırsın ve Çeviklik (Akrobasi) kontrollerine relic bonusunu eklersin.",
+        "<strong>Demir Ruh.</strong> <em>Reaksiyon, 2 yük.</em> Bir kurtarma atışında başarısız olduğunda onu yeniden atarsın. Yeni sonuç kullanılmak zorundadır.",
+        "<strong>Yüz Form.</strong> <em>Aksiyon, 3 yük, 1 dakika.</em> Kuvvet (Atletizm) ve Çeviklik (Akrobasi) kontrollerinde avantajın olur ve Etkisiz değilken AC'n 2 artar.",
+        "<strong>Kusursuz Darbe.</strong> <em>Aksiyon, 4 yük.</em> Bir sonraki turunun sonuna kadar bir sonraki isabetine odaklanırsın. İsabet ederse saldırı kritik vuruş olur."
+      ],
+      "avatar": "<strong>İçsel Ejderin Tezahürü.</strong> <em>Bonus Aksiyon, 8 yük, 1 dakika.</em> Kollarına ve bacaklarına yarı saydam bir ejder dolanır. Havada asılı kalabildiğin 40 fit uçuş hızı, kuvvet hasarına direnç ve +5 fit erişim kazanırsın; her turda bir kez silahsız saldırın ya da monk silahınla isabetin ek 2d10 kuvvet hasarı verir.",
+      "signature": "<strong>Zincirsiz Ejder.</strong> <em>Uzun dinlenme başına bir kez, 1 dakika.</em> Saldırı atışlarında ve kurtarma atışlarında avantaj kazanırsın, hızın iki katına çıkar, ezici, delici, kesici ve kuvvet hasarına direnç kazanırsın ve Sersemlemiş ile Kısıtlanmış durumlarına bağışık olursun."
+    },
+    "dreams": {
+      "dream_1_bands_inner_dragon": {
+        "title": "Sessiz Dağ",
+        "text": "Taşıyıcıya sessiz dağın görüntüsü gelir."
+      },
+      "dream_2_bands_inner_dragon": {
+        "title": "Meditasyon Yapan Ejder",
+        "text": "Taşıyıcıya meditasyon yapan ejderin görüntüsü gelir."
+      },
+      "dream_3_bands_inner_dragon": {
+        "title": "İçerideki Selam",
+        "text": "Taşıyıcıya içerideki selamın görüntüsü gelir."
+      },
+      "dream_4_bands_inner_dragon": {
+        "title": "Ryushen",
+        "text": "Taşıyıcıya Ryushen'in görüntüsü gelir."
+      }
+    },
+    "memories": {
+      "the_mountain_that_waited": {
+        "title": "Bekleyen Dağ",
+        "text": "Ryushen bekleyen dağı hatırlar."
+      },
+      "one_thousand_strikes": {
+        "title": "Bin Darbe",
+        "text": "Ryushen bin darbeyi hatırlar."
+      },
+      "the_silent_dragon": {
+        "title": "Sessiz Ejder",
+        "text": "Ryushen sessiz ejderi hatırlar."
+      },
+      "the_perfect_breath": {
+        "title": "Kusursuz Nefes",
+        "text": "Ryushen kusursuz nefesi hatırlar."
+      }
+    },
+    "quotes": {
+      "positive": [
+        "İyi.",
+        "Yol hatırlanıyor."
+      ],
+      "negative": [
+        "Hayır.",
+        "Relic soğuyor."
+      ],
+      "neutral": [
+        "Bekle.",
+        "Seç."
+      ],
+      "signature": [
+        "Ben Ryushen'im.",
+        "Zincirsiz Ejder"
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Ryushen Uyanıyor",
+      "text": [
+        "Relic, Ryushen adını söyler.",
+        "Taşıyıcı anlar: Zincirsiz Ejder."
+      ]
+    },
+    "lore": {
+      "origin": "Ryushen, Disiplinin yaşayan hafızasıdır.",
+      "hiddenSorrow": "Ryushen, her düelloyu kazanan ama tapınak yanmadan önce merhameti öğretemeyen ustayı hatırlar.",
+      "knownRumor": "Monklar, bilekliklerin gösteriş için takıldığında sıkıştığını ve ancak dürüst bir pratikten sonra gevşediğini söyler.",
+      "appearanceDormant": "Kusursuz dengelenmiş, çizilmesi neredeyse imkânsız, sade demir antrenman bileklikleri.",
+      "appearanceAwakened": "Taşıyıcı acının içinden yavaşça nefes aldığında pul benzeri ek yerleri belirir.",
+      "appearanceExalted": "Silik bir ejder silueti taşıyıcının hareketlerini yarım kalp atışı geriden izler.",
+      "appearanceSignature": "Bileklikler gümüş pullardan ve ılık nefesten oluşan canlı halkalara dönüşür; şiddet başlayana kadar ağırlıksızdır."
+    },
+    "abilities": {
+      "active1": "Ejder Nefesi",
+      "active2": "Demir Ruh",
+      "active3": "Yüz Form",
+      "active4": "Kusursuz Darbe",
+      "avatar": "İçsel Ejderin Tezahürü",
+      "signature": "Zincirsiz Ejder"
+    }
+  },
+  "cloak_shadowfell": {
+    "name": "Gölge Örtüsünün Pelerini",
+    "class": "Rogue",
+    "virtue": "Kurnazlık",
+    "theme": "Gölge • Sırlar • Sabır",
+    "trueName": {
+      "name": "Noctyra",
+      "title": "Hiç Uyumayan Gölge",
+      "full": "Noctyra, Hiç Uyumayan Gölge"
+    },
+    "personality": {
+      "temperament": [
+        "Kadim",
+        "Yargılayıcı",
+        "Sabırlı",
+        "İradeli"
+      ],
+      "likes": [
+        "Erdemine uygun seçimler",
+        "Fedakârlık",
+        "Anlamlı gelişim"
+      ],
+      "dislikes": [
+        "Korkaklık",
+        "Zalimlik",
+        "Boş güç"
+      ],
+      "corePhrase": "Gölge",
+      "roleplayGuidance": "Noctyra sabrı, bilgiyi ve tehlikeyi panik başlamadan bitiren temiz planları ödüllendirir. Gösterişe, gereksiz yalanlara ve zekâ kılığına girmiş zalimliğe güvenmez."
+    },
+    "moodMap": [
+      {
+        "mood": "Sessiz",
+        "description": "Pelerin ışığı sessizce içer; taşıyıcının da bekleyebilip bekleyemeyeceğini görmek ister."
+      },
+      {
+        "mood": "Gözlüyor",
+        "description": "Taşıyıcı harekete geçmeden önce bilgi topladığında eteği gizli çıkışlara doğru kıpırdar."
+      },
+      {
+        "mood": "Sınıyor",
+        "description": "Pelerin, masumları açığa çıkaracak cazip kestirmeler sunarak planları sınar."
+      },
+      {
+        "mood": "Güveniyor",
+        "description": "Pelerin taşıyıcıya, kalp atışını dinleyen gölgelerden gizleyecek kadar güvenir."
+      },
+      {
+        "mood": "Seçilmiş",
+        "description": "Relic taşıyıcıyı, doğru ana kadar kınında kalabilen bir kılıç olarak kabul eder."
+      },
+      {
+        "mood": "Yankılanan",
+        "description": "Her gölge yüzünü taşıyıcıya döner; Noctyra gerçek adını söylemeye hazırdır."
+      }
+    ],
+    "affinity": {
+      "moods": [
+        "Sessiz",
+        "Gözlüyor",
+        "Sınıyor",
+        "Güveniyor",
+        "Seçilmiş",
+        "Yankılanan"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Uykuda"
+      },
+      "awakened": {
+        "title": "Uyanmış"
+      },
+      "exalted": {
+        "title": "Yüceltilmiş"
+      }
+    },
+    "affinityEvents": {
+      "solved_conflict_unseen": {
+        "label": "Bir çatışmayı görünmeden çözdü",
+        "category": "Kurnazlık"
+      },
+      "gained_advantage_through_information": {
+        "label": "Bilgi sayesinde üstünlük kazandı",
+        "category": "Sırlar"
+      },
+      "set_an_effective_ambush": {
+        "label": "Etkili bir pusu kurdu",
+        "category": "Sabır"
+      },
+      "drew_needless_attention": {
+        "label": "Gereksiz yere dikkat çekti",
+        "category": "İhlal"
+      },
+      "attacked_without_plan": {
+        "label": "Plansız saldırdı",
+        "category": "İhlal"
+      },
+      "deceived_innocents": {
+        "label": "Masumları kandırdı",
+        "category": "İhlal"
+      }
+    },
+    "hiddenRequirements": {
+      "reach_1000": {
+        "label": "1000 Yakınlığa ulaş"
+      },
+      "complete_a_mission_without_combat": {
+        "label": "Bir görevi savaşmadan tamamla."
+      },
+      "defeat_a_boss_through_a_plan": {
+        "label": "Bir boss'u bir planla yen."
+      },
+      "remain_unseen_across_three_combats": {
+        "label": "Üç savaş boyunca görünmeden kal."
+      },
+      "rescue_an_ally_unseen": {
+        "label": "Bir müttefiki görünmeden kurtar."
+      },
+      "disable_an_enemy_without_killing": {
+        "label": "Bir düşmanı öldürmeden etkisiz hâle getir."
+      }
+    },
+    "features": {
+      "passives": [
+        "Gölge Yürüyüşçüsü: loş ışıkta ve karanlıkta Gizlilikte avantaj.",
+        "Sessizlik Örtüsü: sessiz hareket ve fark edilmeye karşı avantaj.",
+        "Karanlıkla Bir: loş ışıkta ve karanlıkta +2 AC.",
+        "Görünmeyen Avcı: ilk saldırı avantajlıdır ve +2d8 nekrotik hasar verir."
+      ],
+      "actives": [
+        "<strong>Gölge Adımı.</strong> <em>Bonus Aksiyon, 1 yük.</em> Loş ışıkta ya da karanlıkta görebildiğin boş bir noktaya 30 fit kadar ışınlanırsın.",
+        "<strong>Silinip Git.</strong> <em>Reaksiyon, 2 yük.</em> Bir saldırının ya da etkinin hedefi olduğunda, bir sonraki turunun sonuna kadar ya da saldırana veya büyü yapana kadar Görünmez olursun.",
+        "<strong>Yaşayan Karanlık.</strong> <em>Aksiyon, 3 yük.</em> 60 fit içinde bir noktada büyülü bir karanlık alanı yaratırsın. Taşıyıcı bu karanlığın içini görebilir.",
+        "<strong>Sessizlikten Gelen Ölüm.</strong> <em>Aksiyon, 4 yük.</em> Erişimindeki bir yaratığa silah saldırısı yaparsın. İsabet edersen ek 8d6 nekrotik hasar verirsin; GM Sersemlemiş olmaya direnmek için bir kurtarma atışı isteyebilir."
+      ],
+      "avatar": "<strong>Gölgeler Arasında Yürüyen.</strong> <em>Bonus Aksiyon, 8 yük, 1 dakika.</em> Havada asılı kalabildiğin 40 fit uçuş hızı ve nekrotik hasara direnç kazanırsın; loş ışıkta ya da karanlıkta bonus aksiyonla Görünmez olabilirsin ve hareketin fırsat saldırısı tetiklemez.",
+      "signature": "<strong>Bir Adım Geride.</strong> <em>Uzun dinlenme başına bir kez, 1 dakika.</em> Her turunun başında 60 fit içindeki bir gölgeye ışınlanabilirsin. Her ışınlanmadan sonra yaptığın ilk saldırı avantajlıdır ve isabet ederse ek 10d6 nekrotik hasar verir."
+    },
+    "dreams": {
+      "dream_1_cloak_shadowfell": {
+        "title": "Ay Işığı Olmayan Şehir",
+        "text": "Taşıyıcıya ay ışığı olmayan şehrin görüntüsü gelir."
+      },
+      "dream_2_cloak_shadowfell": {
+        "title": "Alınmayan Taç",
+        "text": "Taşıyıcıya alınmayan tacın görüntüsü gelir."
+      },
+      "dream_3_cloak_shadowfell": {
+        "title": "Konuşan Gölgeler",
+        "text": "Taşıyıcıya konuşan gölgelerin görüntüsü gelir."
+      },
+      "dream_4_cloak_shadowfell": {
+        "title": "Noctyra",
+        "text": "Taşıyıcıya Noctyra'nın görüntüsü gelir."
+      }
+    },
+    "memories": {
+      "the_city_without_light": {
+        "title": "Işıksız Şehir",
+        "text": "Noctyra ışıksız şehri hatırlar."
+      },
+      "when_silence_won": {
+        "title": "Sessizliğin Kazandığı Gün",
+        "text": "Noctyra sessizliğin kazandığı günü hatırlar."
+      },
+      "the_unseen_queen": {
+        "title": "Görünmeyen Kraliçe",
+        "text": "Noctyra görünmeyen kraliçeyi hatırlar."
+      },
+      "the_last_shadow": {
+        "title": "Son Gölge",
+        "text": "Noctyra son gölgeyi hatırlar."
+      }
+    },
+    "quotes": {
+      "positive": [
+        "İyi.",
+        "Yol hatırlanıyor."
+      ],
+      "negative": [
+        "Hayır.",
+        "Relic soğuyor."
+      ],
+      "neutral": [
+        "Bekle.",
+        "Seç."
+      ],
+      "signature": [
+        "Ben Noctyra'yım.",
+        "Hiç Uyumayan Gölge"
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Noctyra Uyanıyor",
+      "text": [
+        "Relic, Noctyra adını söyler.",
+        "Taşıyıcı anlar: Hiç Uyumayan Gölge."
+      ]
+    },
+    "lore": {
+      "origin": "Noctyra, Kurnazlığın yaşayan hafızasıdır.",
+      "hiddenSorrow": "Noctyra, kusursuz bir planın bir krallığı kurtardığı ve planı yapanı karanlıkta unutulmuş bıraktığı geceyi hatırlar.",
+      "knownRumor": "Hırsızlar, pelerinin ne zaman vurmaması gerektiğini bilenleri seçtiğini fısıldar.",
+      "appearanceDormant": "Meşale ışığını asla doğrudan yakalamayan mat siyah bir pelerin tokası ya da kumaş şeridi.",
+      "appearanceAwakened": "Kıvrımları imkânsız bir derinlik gösterir, sanki kumaşın içinde ikinci bir oda bekliyordur.",
+      "appearanceExalted": "Gölgeler sadık muhbirler gibi taşıyıcıya yapışır, müttefiklerden uzağa eğilir.",
+      "appearanceSignature": "Pelerin omuzlara örtülmüş yıldızsız bir gökyüzüne dönüşür; içinde sessiz ayak sesleri dolaşır."
+    },
+    "abilities": {
+      "active1": "Gölge Adımı",
+      "active2": "Silinip Git",
+      "active3": "Yaşayan Karanlık",
+      "active4": "Sessizlikten Gelen Ölüm",
+      "avatar": "Gölgeler Arasında Yürüyen",
+      "signature": "Bir Adım Geride"
+    }
   }
 }
