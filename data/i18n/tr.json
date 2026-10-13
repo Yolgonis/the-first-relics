@@ -2365,5 +2365,441 @@
       "avatar": "Azizin Bedenlenişi",
       "signature": "İlk Azizin Mucizesi"
     }
+  },
+  "blood_first_dragon": {
+    "name": "İlk Ejderin Kanı",
+    "class": "Sorcerer",
+    "virtue": "İrade",
+    "theme": "Güç • Evrim • Alev",
+    "trueName": {
+      "name": "Vorathis",
+      "title": "Yok Olmayı Reddeden Alev",
+      "full": "Vorathis, Yok Olmayı Reddeden Alev"
+    },
+    "personality": {
+      "temperament": [
+        "Kadim",
+        "Yargılayıcı",
+        "Sabırlı",
+        "İradeli"
+      ],
+      "likes": [
+        "Erdemine uygun seçimler",
+        "Fedakârlık",
+        "Anlamlı gelişim"
+      ],
+      "dislikes": [
+        "Korkaklık",
+        "Zalimlik",
+        "Boş güç"
+      ],
+      "corePhrase": "Güç",
+      "roleplayGuidance": "Vorathis, akılsız yıkıma teslim olmadan dayanan iradeye saygı duyar. Taşıyıcı öfke yerine amacı seçip gücün bedelini kabul ettiğinde daha harlı yanar."
+    },
+    "moodMap": [
+      {
+        "mood": "Sessiz",
+        "description": "Kan koyu ve durgundur; taşıyıcının ne uğruna yanacağını öğrenmeyi bekler."
+      },
+      {
+        "mood": "Gözlüyor",
+        "description": "Taşıyıcı körü körüne saldırmadan korkuyu reddettiğinde relic'in altında ısı yükselir."
+      },
+      {
+        "mood": "Sınıyor",
+        "description": "Ejder kanı, taşıyıcının gazabı onun hizmetkârı olmadan taşıyıp taşıyamayacağını sınar."
+      },
+      {
+        "mood": "Güveniyor",
+        "description": "Relic taşıyıcıya, nefese ve kalp atışına karşılık veren denetimli bir alev emanet eder."
+      },
+      {
+        "mood": "Seçilmiş",
+        "description": "Ejder kanı taşıyıcıyı, iradesi kendi ateşinden sağ çıkabilecek biri olarak kabul eder."
+      },
+      {
+        "mood": "Yankılanan",
+        "description": "Taşıyıcının gözlerinin ardında ilk alev kıvrılır; Vorathis gerçek adını söylemeye hazırdır."
+      }
+    ],
+    "affinity": {
+      "moods": [
+        "Sessiz",
+        "Gözlüyor",
+        "Sınıyor",
+        "Güveniyor",
+        "Seçilmiş",
+        "Yankılanan"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Uykuda"
+      },
+      "awakened": {
+        "title": "Uyanmış"
+      },
+      "exalted": {
+        "title": "Yüceltilmiş"
+      }
+    },
+    "affinityEvents": {
+      "defeated_a_powerful_enemy": {
+        "label": "Güçlü bir düşmanı yendi",
+        "category": "İrade"
+      },
+      "overcame_great_fear": {
+        "label": "Büyük bir korkunun üstesinden geldi",
+        "category": "İrade"
+      },
+      "rose_after_defeat": {
+        "label": "Yenilgiden sonra yeniden kalktı",
+        "category": "Gelişim"
+      },
+      "feared_your_own_power": {
+        "label": "Kendi gücünden korktu",
+        "category": "İhlal"
+      },
+      "avoided_challenge": {
+        "label": "Meydan okumadan kaçtı",
+        "category": "İhlal"
+      },
+      "used_power_on_innocents": {
+        "label": "Gücünü masumlara karşı kullandı",
+        "category": "İhlal"
+      }
+    },
+    "hiddenRequirements": {
+      "reach_1000": {
+        "label": "1000 Yakınlığa ulaş"
+      },
+      "defeat_an_ancient_dragon": {
+        "label": "Kadim bir ejderhayı yen."
+      },
+      "return_from_0_hp_three_times": {
+        "label": "0 Can Puanından üç kez geri dön."
+      },
+      "stop_a_major_threat_alone": {
+        "label": "Büyük bir tehdidi tek başına durdur."
+      },
+      "win_while_frightened": {
+        "label": "Korkmuşken kazan."
+      },
+      "choose_self_sacrifice_over_a_city": {
+        "label": "Bir şehir uğruna kendini feda etmeyi seç."
+      }
+    },
+    "features": {
+      "passives": [
+        "Ejder Kanı: seviye başına +1 en yüksek Can Puanı.",
+        "Kadim Pullar: +1 AC.",
+        "Yılmaz İrade: Kuvvet ve Dayanıklılık kurtarma atışlarında avantaj.",
+        "Ejder Ruhu: ateş ve soğuk hasarına direnç, Korkmuş durumuna bağışıklık."
+      ],
+      "actives": [
+        "<strong>Ejder Kükremesi.</strong> <em>Bonus Aksiyon, 1 yük.</em> 30 fit içindeki bir yaratık bir Bilgelik kurtarma atışı yapar; başarısız olursa bir sonraki turunun sonuna kadar senden Korkmuş olur.",
+        "<strong>Yanan Kan.</strong> <em>Bonus Aksiyon, 2 yük, 1 dakika.</em> Silah ve büyü saldırıların her turda bir kez ek 2d6 ateş hasarı verir.",
+        "<strong>İlk Ejderin Kanatları.</strong> <em>Aksiyon, 3 yük, 1 dakika.</em> Sırtından elementel alevden kanatlar açılırken havada asılı kalabildiğin 60 fit uçuş hızı kazanırsın.",
+        "<strong>İlksel Nefes.</strong> <em>Aksiyon, 4 yük.</em> 60 fitlik bir koni hâlinde ilksel ateş solursun. Alandaki yaratıklar bir Çeviklik kurtarma atışı yapar; başarısız olursa 10d6 ateş hasarı, başarılı olursa yarısını alır."
+      ],
+      "avatar": "<strong>İlk Ejderin Bedenlenişi.</strong> <em>Bonus Aksiyon, 8 yük, 1 dakika.</em> Havada asılı kalabildiğin 80 fit uçuş hızı, ateş, soğuk ve yıldırım hasarına direnç ve korku salan bir ejder heybeti kazanırsın; her turda bir kez hasarın ek 2d10 ateş, soğuk ya da yıldırım hasarı verir.",
+      "signature": "<strong>İlk Alevin Kalbi.</strong> <em>Uzun dinlenme başına bir kez, 1 dakika.</em> Uçuş hızı, bütün hasarlara direnç ve saldırı atışlarında ve kurtarma atışlarında avantaj kazanırsın; silah ve büyü saldırıların 19 ya da 20'de kritik vuruş yapar. Etki sona erdiğinde bir bitkinlik seviyesi kazanırsın."
+    },
+    "dreams": {
+      "dream_1_blood_first_dragon": {
+        "title": "Yalnız Gökyüzü",
+        "text": "Taşıyıcıya yalnız gökyüzünün görüntüsü gelir."
+      },
+      "dream_2_blood_first_dragon": {
+        "title": "Yanan Kalp",
+        "text": "Taşıyıcıya yanan kalbin görüntüsü gelir."
+      },
+      "dream_3_blood_first_dragon": {
+        "title": "İlk Alev",
+        "text": "Taşıyıcıya ilk alevin görüntüsü gelir."
+      },
+      "dream_4_blood_first_dragon": {
+        "title": "Vorathis",
+        "text": "Taşıyıcıya Vorathis'in görüntüsü gelir."
+      }
+    },
+    "memories": {
+      "the_first_flame": {
+        "title": "İlk Alev",
+        "text": "Vorathis ilk alevi hatırlar."
+      },
+      "before_dragons_ruled": {
+        "title": "Ejderhalar Hüküm Sürmeden Önce",
+        "text": "Vorathis ejderhaların hüküm sürmediği zamanları hatırlar."
+      },
+      "wings_against_the_void": {
+        "title": "Boşluğa Karşı Kanatlar",
+        "text": "Vorathis boşluğa karşı açılan kanatları hatırlar."
+      },
+      "the_burning_sky": {
+        "title": "Yanan Gökyüzü",
+        "text": "Vorathis yanan gökyüzünü hatırlar."
+      }
+    },
+    "quotes": {
+      "positive": [
+        "İyi.",
+        "Yol hatırlanıyor."
+      ],
+      "negative": [
+        "Hayır.",
+        "Relic soğuyor."
+      ],
+      "neutral": [
+        "Bekle.",
+        "Seç."
+      ],
+      "signature": [
+        "Ben Vorathis'im.",
+        "Yok Olmayı Reddeden Alev"
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Vorathis Uyanıyor",
+      "text": [
+        "Relic, Vorathis adını söyler.",
+        "Taşıyıcı anlar: Yok Olmayı Reddeden Alev."
+      ]
+    },
+    "lore": {
+      "origin": "Vorathis, İradenin yaşayan hafızasıdır.",
+      "hiddenSorrow": "Vorathis, zincirler yerine yok olmayı seçen ilk ejderi ve onun odun yığınına dönüşen dağı hatırlar.",
+      "knownRumor": "Büyücüler kanın korkakları ve tiranları aynı ölçüde reddettiğini söyler; ikisi de ateşi israf eder.",
+      "appearanceDormant": "Açık aleve yaklaştığında ısınan koyu yakut renkli bir şişe, pul ya da damar benzeri bir mücevher.",
+      "appearanceAwakened": "Taşıyıcı korkuyu reddettiğinde relic ikinci bir kalp gibi atar.",
+      "appearanceExalted": "Yüzeyinin altında ejder yazısı yanar; duman ve savaş sıcağında görünür.",
+      "appearanceSignature": "Kan, yıldız ışığıyla parlayan sıvı bir aleve dönüşür ve hazinesinin etrafında dolaşan bir ejder gibi taşıyıcının çevresinde döner."
+    },
+    "abilities": {
+      "active1": "Ejder Kükremesi",
+      "active2": "Yanan Kan",
+      "active3": "İlk Ejderin Kanatları",
+      "active4": "İlksel Nefes",
+      "avatar": "İlk Ejderin Bedenlenişi",
+      "signature": "İlk Alevin Kalbi"
+    }
+  },
+  "lyre_first_song": {
+    "name": "İlk Şarkının Liri",
+    "class": "Bard",
+    "virtue": "Yaratım",
+    "theme": "İlham • Ahenk • Olasılık",
+    "trueName": {
+      "name": "Elyndor",
+      "title": "Yıldızlardan Önceki Şarkı",
+      "full": "Elyndor, Yıldızlardan Önceki Şarkı"
+    },
+    "personality": {
+      "temperament": [
+        "Kadim",
+        "Yargılayıcı",
+        "Sabırlı",
+        "İradeli"
+      ],
+      "likes": [
+        "Erdemine uygun seçimler",
+        "Fedakârlık",
+        "Anlamlı gelişim"
+      ],
+      "dislikes": [
+        "Korkaklık",
+        "Zalimlik",
+        "Boş güç"
+      ],
+      "corePhrase": "İlham",
+      "roleplayGuidance": "Elyndor, umuda cesaret, hafıza ve biçim veren yaratıma saygı duyar. Ruhları kıran alay ya da yalnızca savunmasızları yönlendirmek için kullanılan sanat karşısında susar."
+    },
+    "moodMap": [
+      {
+        "mood": "Sessiz",
+        "description": "Lir hiç nota vermez, ama yakındaki sessizlik boş değil, düzenlenmiş gibi gelir."
+      },
+      {
+        "mood": "Gözlüyor",
+        "description": "Taşıyıcı sesini ya da sanatını başkasını güçlendirmek için kullandığında tek bir armonik karşılık verir."
+      },
+      {
+        "mood": "Sınıyor",
+        "description": "Lir, yalanları söylemek daha kolayken taşıyıcının hakikati yaratıp yaratmadığını sınar."
+      },
+      {
+        "mood": "Güveniyor",
+        "description": "Relic taşıyıcıya, korku kendine ad koyamadan müttefikleri dengeleyen ezgiler emanet eder."
+      },
+      {
+        "mood": "Seçilmiş",
+        "description": "Lir taşıyıcıyı, şarkısı başkalarını karanlığın içinden taşıyabilecek bir yaratıcı olarak kabul eder."
+      },
+      {
+        "mood": "Yankılanan",
+        "description": "İlk nota her sesin ardında bekler; Elyndor gerçek adını söylemeye hazırdır."
+      }
+    ],
+    "affinity": {
+      "moods": [
+        "Sessiz",
+        "Gözlüyor",
+        "Sınıyor",
+        "Güveniyor",
+        "Seçilmiş",
+        "Yankılanan"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Uykuda"
+      },
+      "awakened": {
+        "title": "Uyanmış"
+      },
+      "exalted": {
+        "title": "Yüceltilmiş"
+      }
+    },
+    "affinityEvents": {
+      "inspired_a_community": {
+        "label": "Bir topluluğa ilham verdi",
+        "category": "Yaratım"
+      },
+      "resolved_conflict_through_art": {
+        "label": "Bir çatışmayı sanatla çözdü",
+        "category": "Ahenk"
+      },
+      "created_something_new": {
+        "label": "Yeni bir şey yarattı",
+        "category": "Yaratım"
+      },
+      "destroyed_culture_intentionally": {
+        "label": "Bilerek bir kültürü yok etti",
+        "category": "İhlal"
+      },
+      "extinguished_hope": {
+        "label": "Umudu söndürdü",
+        "category": "İhlal"
+      },
+      "silenced_another_voice": {
+        "label": "Başka bir sesi susturdu",
+        "category": "İhlal"
+      }
+    },
+    "hiddenRequirements": {
+      "reach_1000": {
+        "label": "1000 Yakınlığa ulaş"
+      },
+      "end_a_battle_through_words": {
+        "label": "Bir savaşı sözle bitir."
+      },
+      "restore_a_settlement_s_morale": {
+        "label": "Bir yerleşimin moralini yerine getir."
+      },
+      "make_peace_between_two_peoples": {
+        "label": "İki halk arasında barış sağla."
+      },
+      "restore_hope_to_a_broken_npc": {
+        "label": "Yıkılmış bir NPC'ye umudunu geri ver."
+      },
+      "create_or_preserve_a_tradition": {
+        "label": "Bir gelenek yarat ya da koru."
+      }
+    },
+    "features": {
+      "passives": [
+        "İlhamın Yankısı: 30 fit içindeki müttefikler kontrollerine relic bonusunu ekler.",
+        "Cesaret Şarkısı: 30 fit içindeki müttefikler Korkmuş olamaz.",
+        "Birlik Ezgisi: 30 fit içindeki müttefikler kurtarma atışlarına yeterlilik bonusunu ekler.",
+        "Ebedî Senfoni: uzun dinlenme başına yeterlilik bonusu kadar kez başarısız bir Konsantrasyon kurtarma atışı otomatik başarılı sayılır."
+      ],
+      "actives": [
+        "<strong>Dinlenme Şarkısı.</strong> <em>Aksiyon, 1 yük.</em> İlk akor nefesi ve cesareti yerine getirirken 30 fit içinde seçtiğin müttefikler 2d8 Can Puanı kazanır.",
+        "<strong>Kahramanlar Baladı.</strong> <em>Bonus Aksiyon, 2 yük, 1 dakika.</em> 30 fitlik bir aura yaratırsın. Auradaki müttefikler saldırı ve hasar atışlarına +1 ekler.",
+        "<strong>Sessizlik Dizesi.</strong> <em>Aksiyon, 3 yük.</em> 60 fit içindeki bir yaratık bir Bilgelik kurtarma atışı yapar. Başarısız olursa 1 dakika boyunca susturulur.",
+        "<strong>Yaratım Korosu.</strong> <em>Aksiyon, 4 yük, 1 dakika.</em> 30 fitlik bir auradaki müttefikler kurtarma atışlarında avantaj, +2 AC ve 10 + relic bonusu kadar geçici Can Puanı kazanır."
+      ],
+      "avatar": "<strong>İlk Şarkının Bedenlenişi.</strong> <em>Bonus Aksiyon, 8 yük, 1 dakika.</em> Müzik etrafında görünür hâle gelir. Havada asılı kalabildiğin 40 fit uçuş hızı ve ışınsal ve psişik hasara direnç kazanırsın; yakınındaki müttefikler büyülenmeye ve korkuya karşı avantaj kazanır ve iyileştirici şarkıların relic bonusu kadar ek Can Puanı yeniler.",
+      "signature": "<strong>İlk Şarkı.</strong> <em>Uzun dinlenme başına bir kez, 1 dakika.</em> 60 fit içinde seçtiğin müttefikler kurtarma atışlarında ve yetenek kontrollerinde avantaj, +2 AC, saldırı atışlarına +2 ve 10 yenilenme kazanır. Seçtiğin düşmanlar bir Bilgelik kurtarma atışı yapar; başarısız olanlar süre boyunca Büyülenmiş olur."
+    },
+    "dreams": {
+      "dream_1_lyre_first_song": {
+        "title": "İlk Nota",
+        "text": "Taşıyıcıya ilk notanın görüntüsü gelir."
+      },
+      "dream_2_lyre_first_song": {
+        "title": "Şarkıya Dönüşen Yıldızlar",
+        "text": "Taşıyıcıya şarkıya dönüşen yıldızların görüntüsü gelir."
+      },
+      "dream_3_lyre_first_song": {
+        "title": "Sessiz Relic'ler",
+        "text": "Taşıyıcıya sessiz relic'lerin görüntüsü gelir."
+      },
+      "dream_4_lyre_first_song": {
+        "title": "Elyndor",
+        "text": "Taşıyıcıya Elyndor'un görüntüsü gelir."
+      }
+    },
+    "memories": {
+      "before_stars_sang": {
+        "title": "Yıldızlar Şarkı Söylemeden Önce",
+        "text": "Elyndor yıldızların henüz şarkı söylemediği zamanları hatırlar."
+      },
+      "the_first_melody": {
+        "title": "İlk Ezgi",
+        "text": "Elyndor ilk ezgiyi hatırlar."
+      },
+      "the_choir_of_creation": {
+        "title": "Yaratılış Korosu",
+        "text": "Elyndor yaratılış korosunu hatırlar."
+      },
+      "when_silence_ended": {
+        "title": "Sessizliğin Bittiği An",
+        "text": "Elyndor sessizliğin bittiği anı hatırlar."
+      }
+    },
+    "quotes": {
+      "positive": [
+        "İyi.",
+        "Yol hatırlanıyor."
+      ],
+      "negative": [
+        "Hayır.",
+        "Relic soğuyor."
+      ],
+      "neutral": [
+        "Bekle.",
+        "Seç."
+      ],
+      "signature": [
+        "Ben Elyndor'um.",
+        "Yıldızlardan Önceki Şarkı"
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Elyndor Uyanıyor",
+      "text": [
+        "Relic, Elyndor adını söyler.",
+        "Taşıyıcı anlar: Yıldızlardan Önceki Şarkı."
+      ]
+    },
+    "lore": {
+      "origin": "Elyndor, Yaratımın yaşayan hafızasıdır.",
+      "hiddenSorrow": "Elyndor, bir savaşı bitiren ilk şarkıyı ve barış sıradanlaşınca unutulan şarkıcıyı hatırlar.",
+      "knownRumor": "Ozanlar lirin akort edilemeyeceğini söyler; o odayı, kalbi ve bazen tarihi akort eder.",
+      "appearanceDormant": "Dürüst bir kederin yakınında hafifçe uğuldayan küçük bir lir, tel ya da akort anahtarı.",
+      "appearanceAwakened": "Korkanlara cesaret veren şarkılardan sonra yeni teller belirir.",
+      "appearanceExalted": "Hiçbir el tellere dokunmasa bile ondan renkli ışıktan notalar süzülür.",
+      "appearanceSignature": "Lir tellerden ve sesten bir takımyıldıza dönüşür; her nota çalınmadan önce yankılanır."
+    },
+    "abilities": {
+      "active1": "Dinlenme Şarkısı",
+      "active2": "Kahramanlar Baladı",
+      "active3": "Sessizlik Dizesi",
+      "active4": "Yaratım Korosu",
+      "avatar": "İlk Şarkının Bedenlenişi",
+      "signature": "İlk Şarkı"
+    }
   }
 }
