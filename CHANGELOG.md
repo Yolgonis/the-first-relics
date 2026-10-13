@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.8
+
+- Moved the GM Affinity Dashboard and GM Control Panel from the deprecated v1 `Dialog` to Foundry v13 `DialogV2`, and replaced their jQuery wiring with plain DOM listeners. Behavior and layout are unchanged.
+- Replaced the deprecated `FormApplication` settings-menu shim with an `ApplicationV2` shim that opens the dashboard.
+- Cloak of Fey Paths locked-activity guards now also hook dnd5e 5's `ActivityChoiceDialog`, which replaced the old activity chooser; previously the guard only ran on legacy `Dialog` choosers.
+
 ## v1.1.7
 
 - Resized all 60 painted relic PNGs (12 item icons and 48 stage illustrations) from 1254 px to 512 px, reducing the art folder from about 150 MB to about 27 MB. File names and paths are unchanged, so existing world and actor items keep their icons.

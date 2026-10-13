@@ -1,6 +1,6 @@
 
 const TFR_MODULE_ID = "the-first-relics";
-const TFR_VERSION = "1.1.7";
+const TFR_VERSION = "1.1.8";
 const TFR_ATTUNEMENT_REFUSAL_FLAG = "refusesAttunement";
 const TFR_FINAL_FORM_BONUS = 5;
 const TFR_FINAL_FORM_CHARGES = 15;
@@ -2834,19 +2834,11 @@ function TFRRegisterSettings() {
     label: "Open Dashboard",
     hint: "Open The First Relics GM-only Affinity Dashboard.",
     icon: "fas fa-gem",
-    type: class TFRDashboardSettingsShim extends FormApplication {
-      static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-          title: "The First Relics",
-          id: "the-first-relics-dashboard-shim",
-          template: "templates/apps/blank.html",
-          width: 1,
-          height: 1
-        });
-      }
-      async _render(force, options) {
+    // The settings menu only opens the dashboard; it has no window of its own.
+    type: class TFRDashboardSettingsShim extends foundry.applications.api.ApplicationV2 {
+      async render() {
         TFROpenDashboard();
-        return this.close();
+        return this;
       }
     },
     restricted: true
@@ -3047,16 +3039,14 @@ function TFRRenderMemories(relic, data) {
 
 
 function TFRActivateDashboardTab(html, tab = "overview") {
-  const root = html?.jquery ? html : $(html);
+  const root = TFRSheetHtmlElement(html);
+  if (!root) return;
   const safeTab = tab || "overview";
-  root.find(".tfr-tab-button").removeClass("active");
-  root.find(`.tfr-tab-button[data-tab="${safeTab}"]`).addClass("active");
-  root.find(".tfr-tab-panel").removeClass("active");
-  const panel = root.find(`.tfr-tab-panel[data-panel="${safeTab}"]`);
-  if (panel.length) panel.addClass("active");
-  else {
-    root.find('.tfr-tab-button[data-tab="overview"]').addClass("active");
-    root.find('.tfr-tab-panel[data-panel="overview"]').addClass("active");
+  root.querySelectorAll(".tfr-tab-button").forEach(b => b.classList.toggle("active", b.dataset.tab === safeTab));
+  root.querySelectorAll(".tfr-tab-panel").forEach(p => p.classList.toggle("active", p.dataset.panel === safeTab));
+  if (!root.querySelector(`.tfr-tab-panel[data-panel="${safeTab}"]`)) {
+    root.querySelector('.tfr-tab-button[data-tab="overview"]')?.classList.add("active");
+    root.querySelector('.tfr-tab-panel[data-panel="overview"]')?.classList.add("active");
     TFR_DASHBOARD_LAST_TAB = "overview";
   }
 }
@@ -3184,28 +3174,34 @@ await FirstRelics.syncAllInventoryStages()</pre>
   </div>
   `;
 
-  const dialog = new Dialog({
-    title: "The First Relics — GM Affinity Dashboard",
+  const field = (root, name) => root.querySelector(`[name='${name}']`);
+
+  const dialog = new foundry.applications.api.DialogV2({
+    window: { title: "The First Relics — GM Affinity Dashboard", resizable: true },
+    position: { width: 760, height: 720 },
     content,
-    buttons: {
-      save: {
+    buttons: [
+      {
+        action: "save",
         label: "Save",
-        callback: async html => {
-          const selectedRelic = html.find("[name='relic']").val();
+        default: true,
+        callback: async (event, button, app) => {
+          const root = app.element;
+          const selectedRelic = field(root, "relic")?.value;
           const selectedRelicData = await TFRGetRelicById(selectedRelic);
-          const selectedEventId = html.find("[name='affinityEvent']").val();
+          const selectedEventId = field(root, "affinityEvent")?.value;
           const selectedEvent = selectedEventId ? TFRGetAffinityEvent(selectedRelicData, selectedEventId) : null;
-          const currentValue = Number(html.find("[name='affinity']").val() || 0);
-          const noteText = html.find("[name='note']").val();
-          const refusesAttunement = !!html.find("[name='refusesAttunement']").prop("checked");
+          const currentValue = Number(field(root, "affinity")?.value || 0);
+          const noteText = field(root, "note")?.value;
+          const refusesAttunement = !!field(root, "refusesAttunement")?.checked;
 
           await TFRSetRelicAttunementRefusal(selectedRelic, refusesAttunement);
 
           const beforeSaveState = await TFRGetRelicState(selectedRelic);
           beforeSaveState.requirements = beforeSaveState.requirements || {};
           for (const req of (selectedRelicData.hiddenRequirements || [])) {
-            const input = html.find(`[data-req-id="${req.id}"]`);
-            if (input.length) beforeSaveState.requirements[req.id] = !!input.prop("checked");
+            const input = root.querySelector(`[data-req-id="${req.id}"]`);
+            if (input) beforeSaveState.requirements[req.id] = !!input.checked;
           }
           await TFRSetRelicState(selectedRelic, beforeSaveState);
 
@@ -3220,51 +3216,50 @@ await FirstRelics.syncAllInventoryStages()</pre>
           }
         }
       },
-      sync: {
+      {
+        action: "sync",
         label: "Sync Item Stage",
-        callback: async html => {
-          const selectedRelic = html.find("[name='relic']").val();
-          const value = Number(html.find("[name='affinity']").val() || 0);
+        callback: async (event, button, app) => {
+          const selectedRelic = field(app.element, "relic")?.value;
+          const value = Number(field(app.element, "affinity")?.value || 0);
           await TFRSetRelicAffinity(selectedRelic, value, "Manual stage sync from dashboard");
         }
       },
-      close: { label: "Close" }
-    },
-    render: html => {
-      html.find("[name='relic']").on("change", ev => {
-        const r = html.find("[name='relic']").val();
-        dialog.close();
-        TFROpenDashboard(r);
-      });
+      { action: "close", label: "Close" }
+    ]
+  });
 
-      html.find(".tfr-tab-button").on("click", ev => {
-        const tab = ev.currentTarget.dataset.tab || "overview";
-        TFR_DASHBOARD_LAST_TAB = tab;
-        TFRActivateDashboardTab(html, tab);
-      });
+  await dialog.render({ force: true });
+  const root = dialog.element;
 
-      html.find("[name='refusesAttunement']").on("change", ev => {
-        $(ev.currentTarget).closest(".tfr-attunement-control").toggleClass("is-refusing", !!ev.currentTarget.checked);
-      });
+  field(root, "relic")?.addEventListener("change", ev => {
+    dialog.close();
+    TFROpenDashboard(ev.currentTarget.value);
+  });
 
-      TFRActivateDashboardTab(html, TFR_DASHBOARD_LAST_TAB);
-      html.find('.tfr-tab-panel[data-panel="control"] > p:first-child').remove();
-      TFRWireControlPanel(html);
+  root.querySelectorAll(".tfr-tab-button").forEach(button => button.addEventListener("click", ev => {
+    const tab = ev.currentTarget.dataset.tab || "overview";
+    TFR_DASHBOARD_LAST_TAB = tab;
+    TFRActivateDashboardTab(root, tab);
+  }));
 
-      html.find("[data-delta]").on("click", ev => {
-        const input = html.find("[name='affinity']");
-        const current = Number(input.val() || 0);
-        const delta = Number(ev.currentTarget.dataset.delta || 0);
-        input.val(Math.clamp(current + delta, 0, 1000));
-        const pct = Number(input.val()) / 10;
-        html.find(".tfr-affinity-fill").css("width", `${pct}%`);
-      });
+  field(root, "refusesAttunement")?.addEventListener("change", ev => {
+    ev.currentTarget.closest(".tfr-attunement-control")?.classList.toggle("is-refusing", !!ev.currentTarget.checked);
+  });
 
-    },
-    default: "save"
-  }, { width: 760, height: 720, resizable: true });
+  TFRActivateDashboardTab(root, TFR_DASHBOARD_LAST_TAB);
+  root.querySelector('.tfr-tab-panel[data-panel="control"] > p:first-child')?.remove();
+  TFRWireControlPanel(root);
 
-  dialog.render(true);
+  root.querySelectorAll("[data-delta]").forEach(button => button.addEventListener("click", ev => {
+    const input = field(root, "affinity");
+    if (!input) return;
+    const current = Number(input.value || 0);
+    const delta = Number(ev.currentTarget.dataset.delta || 0);
+    input.value = Math.clamp(current + delta, 0, 1000);
+    const fill = root.querySelector(".tfr-affinity-fill");
+    if (fill) fill.style.width = `${Number(input.value) / 10}%`;
+  }));
 }
 
 
@@ -7138,7 +7133,7 @@ async function TFRRunControlPanelAction(action, context = {}) {
 }
 
 function TFRWireControlPanel(html) {
-  const root = html?.jquery ? html[0] : html;
+  const root = TFRSheetHtmlElement(html);
   if (!root) return;
 
   const status = root.querySelector("[data-tfr-control-status]");
@@ -7177,24 +7172,15 @@ function TFRWireControlPanel(html) {
 }
 
 async function TFROpenControlPanel() {
-  const dialog = new Dialog(
-    {
-      title: "The First Relics — GM Control Panel",
-      content: TFRControlPanelHtmlV2(),
-      buttons: {
-        close: { label: "Close" }
-      },
-      default: "close",
-      render: html => TFRWireControlPanel(html)
-    },
-    {
-      width: 680,
-      height: "auto",
-      resizable: true
-    }
-  );
+  const dialog = new foundry.applications.api.DialogV2({
+    window: { title: "The First Relics — GM Control Panel", resizable: true },
+    position: { width: 680, height: "auto" },
+    content: TFRControlPanelHtmlV2(),
+    buttons: [{ action: "close", label: "Close", default: true }]
+  });
 
-  dialog.render(true);
+  await dialog.render({ force: true });
+  TFRWireControlPanel(dialog.element);
   return dialog;
 }
 
@@ -8582,8 +8568,16 @@ function TFRRegisterRelicActivityGateHooks() {
   ];
   for (const hook of hooks) Hooks.on(hook, TFRBlockLockedActivity);
 
+  // dnd5e 5 opens ActivityChoiceDialog (ApplicationV2) for items with several activities;
+  // renderDialog is kept for older Dialog-based choosers.
+  Hooks.on("renderActivityChoiceDialog", (app, html) => {
+    const item = app?.item;
+    if (!item || !TFR_CLOAK_ITEM_NAMES.has(String(item.name || "").trim())) return;
+    TFRLockCloakChoiceButtons(TFRSheetHtmlElement(html), item, "[data-activity-id] .name");
+  });
+
   Hooks.on("renderDialog", (app, html) => {
-    const root = html?.jquery ? html[0] : html;
+    const root = TFRSheetHtmlElement(html);
     if (!root) return;
     const title = String(app?.title || "").trim();
     if (!TFR_CLOAK_ITEM_NAMES.has(title)) return;
@@ -8591,24 +8585,28 @@ function TFRRegisterRelicActivityGateHooks() {
     const actor = TFRResolveActor(null);
     const item = TFRGetActorRelicItem(actor, "cloak_feywilds");
     if (!item) return;
+    TFRLockCloakChoiceButtons(root, item, "button");
+  });
+}
 
-    const buttons = Array.from(root.querySelectorAll("button"));
-    for (const button of buttons) {
-      const label = String(button.textContent || "").trim();
-      const slot = TFR_CLOAK_ABILITY_SLOTS_BY_LABEL[label.toLowerCase()];
-      if (slot && TFRRelicFeaturesAreBlocked(item)) {
-        button.disabled = true;
-        button.classList.add("tfr-locked-activity");
-        button.title = "Unavailable: the relic refuses attunement.";
-        continue;
-      }
-      const info = TFRLockedRelicActivityInfo(item, slot, label);
-      if (!info) continue;
+function TFRLockCloakChoiceButtons(root, item, labelSelector) {
+  if (!root) return;
+  for (const button of root.querySelectorAll("button")) {
+    const labelElement = labelSelector === "button" ? button : button.querySelector(".name");
+    const label = String(labelElement?.textContent || "").trim();
+    const slot = TFR_CLOAK_ABILITY_SLOTS_BY_LABEL[label.toLowerCase()];
+    if (slot && TFRRelicFeaturesAreBlocked(item)) {
       button.disabled = true;
       button.classList.add("tfr-locked-activity");
-      button.title = `Locked: requires ${info.required}.`;
+      button.title = "Unavailable: the relic refuses attunement.";
+      continue;
     }
-  });
+    const info = TFRLockedRelicActivityInfo(item, slot, label);
+    if (!info) continue;
+    button.disabled = true;
+    button.classList.add("tfr-locked-activity");
+    button.title = `Locked: requires ${info.required}.`;
+  }
 }
 
 function TFRLooksLikeFeyStepChatMessage(message, actor = null) {
