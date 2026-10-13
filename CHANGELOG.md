@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.2.0
+
+- Added interface localization with English and Turkish language files. The GM Affinity Dashboard, GM Control Panel, status labels, and 180+ notifications now follow Foundry's language setting (290 strings).
+- English source text stays in the code; `lang/en.json` is generated from it, so new strings cannot be forgotten. Relic content (names, powers, lore, chat cards) remains English for now.
+- Two notifications that were written in Turkish in the source are now English in the source with Turkish translations.
+
 ## v1.1.10
 
 - The GM Affinity Dashboard no longer overflows horizontally inside its window. An old minimum width written for the v1 dialog (760 px) was wider than the DialogV2 content area, which cut off right-aligned text and added a horizontal scrollbar.

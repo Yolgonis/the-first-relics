@@ -1,6 +1,6 @@
 
 const TFR_MODULE_ID = "the-first-relics";
-const TFR_VERSION = "1.1.10";
+const TFR_VERSION = "1.2.0";
 const TFR_ATTUNEMENT_REFUSAL_FLAG = "refusesAttunement";
 const TFR_FINAL_FORM_BONUS = 5;
 const TFR_FINAL_FORM_CHARGES = 15;
@@ -18,6 +18,33 @@ const TFR_SAVE_AWARE_TIMEOUT_MS = 60000;
 const TFR_SAVE_AWARE_NATIVE_DELAY_MS = 1200;
 const TFR_SAVE_AWARE_WORKFLOW_CACHE_MS = 15000;
 const TFR_SAVE_AWARE_WORKFLOWS = [];
+
+/**
+ * Translate a user-facing English string.
+ * The English text stays in the code as the source of truth; its translation key is a
+ * stable hash of that text, so tools/i18n-extract.cjs can regenerate lang/en.json and
+ * report missing translations. Use {name} placeholders instead of template literals.
+ * @param {string} text            English source text (must be a plain string literal).
+ * @param {object} [data]          Values for {placeholders}.
+ * @returns {string}
+ */
+function TFRT(text, data) {
+  const key = `${TFR_MODULE_ID}.${TFRTranslationKey(text)}`;
+  const i18n = globalThis.game?.i18n;
+  if (i18n?.has?.(key, false)) return data ? i18n.format(key, data) : i18n.localize(key);
+  if (!data) return text;
+  return text.replace(/\{(\w+)\}/g, (match, name) => (name in data ? String(data[name]) : match));
+}
+
+/** FNV-1a hash of the English text; must match tools/i18n-extract.cjs. */
+function TFRTranslationKey(text) {
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < text.length; i++) {
+    hash ^= text.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193) >>> 0;
+  }
+  return `t${hash.toString(36)}`;
+}
 // v1.1.6: Final Form grants +5 universal relic bonuses and raises maximum charges to 15.
 // v1.1.5: 1000 Affinity unlocks Final Form and raises universal relic bonuses to +4.
 // v1.1.4: Preserve and restore the exact world relic state around Playtest Lab runs.
@@ -114,6 +141,17 @@ function TFRGetStageData(relic, stage, signatureUnlocked = false) {
 
 function TFRDisplayStage(stage, signatureUnlocked = false) {
   return TFRIsFinalForm(stage, signatureUnlocked) ? "final form" : stage;
+}
+
+/** Translated label for a stage id; stage ids themselves stay English in flags and data. */
+function TFRStageLabel(stage) {
+  const labels = {
+    dormant: TFRT("dormant"),
+    awakened: TFRT("awakened"),
+    exalted: TFRT("exalted"),
+    "final form": TFRT("final form")
+  };
+  return labels[stage] ?? stage;
 }
 
 
@@ -488,7 +526,7 @@ function TFRRelicFeaturesAreBlocked(item) {
 }
 
 function TFRWarnRelicFeaturesBlocked(item, label = "Relic ability") {
-  TFRNotifyWarn(`${item?.name || "The relic"} refuses attunement. ${label} cannot be used until the GM allows attunement.`);
+  TFRNotifyWarn(TFRT("{itemName} refuses attunement. {label} cannot be used until the GM allows attunement.", { itemName: item?.name || TFRT("The relic"), label: label }));
 }
 
 function TFRBlockRelicFeatureUse(item, label = "Relic ability") {
@@ -510,7 +548,7 @@ function TFRPendingDocumentChange(changes, path) {
 
 function TFRNotifyAttunementRefusal(item, userId, message) {
   if (!userId || userId === game.user?.id) {
-    TFRNotifyWarn(message || `${item?.name || "The relic"} refuses to attune to this bearer.`);
+    TFRNotifyWarn(message || TFRT("{itemName} refuses to attune to this bearer.", { itemName: item?.name || TFRT("The relic") }));
   }
 }
 
@@ -582,13 +620,13 @@ async function TFRResolveRelicItem(itemOrUuid = null) {
 
 async function TFRSetAttunementRefusal(itemOrUuid, refuses = true) {
   if (!game.user?.isGM) {
-    TFRNotifyWarn("The First Relics: Only the GM can change a relic's attunement consent.");
+    TFRNotifyWarn(TFRT("The First Relics: Only the GM can change a relic's attunement consent."));
     return false;
   }
 
   const item = await TFRResolveRelicItem(itemOrUuid);
   if (!TFRIsRelicItem(item)) {
-    TFRNotifyWarn("The First Relics: Relic item not found.");
+    TFRNotifyWarn(TFRT("The First Relics: Relic item not found."));
     return false;
   }
 
@@ -602,21 +640,21 @@ async function TFRSetAttunementRefusal(itemOrUuid, refuses = true) {
   await item.update(update);
   TFRNotifyInfo(
     refusing
-      ? `${item.name} now refuses attunement; its active features and passive bonuses are suppressed.`
-      : `${item.name} is willing to accept attunement again.`
+      ? TFRT("{itemName} now refuses attunement; its active features and passive bonuses are suppressed.", { itemName: item.name })
+      : TFRT("{itemName} is willing to accept attunement again.", { itemName: item.name })
   );
   return item;
 }
 
 async function TFRSetRelicAttunementRefusal(relicId, refuses = true) {
   if (!game.user?.isGM) {
-    TFRNotifyWarn("The First Relics: Only the GM can change a relic's attunement consent.");
+    TFRNotifyWarn(TFRT("The First Relics: Only the GM can change a relic's attunement consent."));
     return false;
   }
 
   const relic = await TFRGetRelicById(relicId);
   if (!relic) {
-    TFRNotifyWarn(`The First Relics: Relic not found: ${relicId}`);
+    TFRNotifyWarn(TFRT("The First Relics: Relic not found: {relicId}", { relicId: relicId }));
     return false;
   }
 
@@ -642,12 +680,12 @@ async function TFRSetRelicAttunementRefusal(relicId, refuses = true) {
   }
 
   if (failures.length) {
-    TFRNotifyWarn(`${relic.name}: consent was saved, but ${failures.length} item copy/copies could not be updated.`);
+    TFRNotifyWarn(TFRT("{relicName}: consent was saved, but {failuresCount} item copy/copies could not be updated.", { relicName: relic.name, failuresCount: failures.length }));
   } else {
     TFRNotifyInfo(
       refusing
-        ? `${relic.name} now refuses attunement; its active features and passive bonuses are suppressed. ${copies.length} item copy/copies synchronized.`
-        : `${relic.name} now accepts attunement. ${copies.length} item copy/copies synchronized.`
+        ? TFRT("{relicName} now refuses attunement; its active features and passive bonuses are suppressed. {copiesCount} item copy/copies synchronized.", { relicName: relic.name, copiesCount: copies.length })
+        : TFRT("{relicName} now accepts attunement. {copiesCount} item copy/copies synchronized.", { relicName: relic.name, copiesCount: copies.length })
     );
   }
   return data;
@@ -1476,8 +1514,8 @@ async function TFRAuditActivityTemplates() {
 
   console.table(rows);
   const missing = rows.filter(r => !r.ability || !r.template);
-  if (missing.length) ui.notifications.warn(`The First Relics Template Audit: ${missing.length} issue(s).`);
-  else ui.notifications.info("The First Relics Activity Template Audit passed.");
+  if (missing.length) ui.notifications.warn(TFRT("The First Relics Template Audit: {missingCount} issue(s).", { missingCount: missing.length }));
+  else ui.notifications.info(TFRT("The First Relics Activity Template Audit passed."));
   return rows;
 }
 
@@ -1835,7 +1873,7 @@ function TFRBuildItem(relic, stage, index, signatureUnlocked = false) {
 }
 
 async function TFRCreateRelics() {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const relics = await TFRLoadRelics();
   const worldState = TFRGetWorldState();
   const toCreate = [];
@@ -1848,9 +1886,9 @@ async function TFRCreateRelics() {
     }
     index++;
   }
-  if (!toCreate.length) return ui.notifications.info("The First Relics: No new relics to create.");
+  if (!toCreate.length) return ui.notifications.info(TFRT("The First Relics: No new relics to create."));
   const created = await Item.createDocuments(toCreate, { renderSheet: false, render: false });
-  ui.notifications.info(`The First Relics: ${created.length} living relic items created.`);
+  ui.notifications.info(TFRT("The First Relics: {createdCount} living relic items created.", { createdCount: created.length }));
   return created;
 }
 
@@ -2070,7 +2108,7 @@ async function TFRUpdateRelicItem(item, stage, signatureUnlockedOverride = null)
   // existing activity collection in place.
   try {
     const rebuilt = await TFRRebuildRelicItemDocument(item, relic, stage, signatureUnlocked);
-    ui.notifications.info(`${relic.name} rebuilt as ${stageData.title}.`);
+    ui.notifications.info(TFRT("{relicName} rebuilt as {stageDataTitle}.", { relicName: relic.name, stageDataTitle: stageData.title }));
     return rebuilt;
   } catch (rebuildError) {
     console.warn("The First Relics | Clean item rebuild failed, falling back to field update.", rebuildError);
@@ -2094,7 +2132,7 @@ async function TFRUpdateRelicItem(item, stage, signatureUnlockedOverride = null)
   await TFRSyncRelicBonusEffect(item, relic, stage, signatureUnlocked);
   await TFRClearLockedActivities(item, allowedSlots);
 
-  ui.notifications.info(`${relic.name} upgraded to ${stageData.title}.`);
+  ui.notifications.info(TFRT("{relicName} upgraded to {stageDataTitle}.", { relicName: relic.name, stageDataTitle: stageData.title }));
   return item;
 }
 
@@ -2111,7 +2149,7 @@ async function TFRDowngradeItem(item) {
 }
 
 async function TFRCreateJournalLegacy() {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   if (game.journal.getName("The First Relics - Lore")) return;
   const relics = await TFRLoadRelics();
   const list = relics.map(r => `<li><strong>${r.name}</strong> — ${r.class}, ${r.virtue}</li>`).join("");
@@ -2230,7 +2268,7 @@ function TFRBuildRelicJournalContent(relic) {
 }
 
 async function TFRCreateJournal(options = {}) {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const notify = options.notify !== false;
   const relics = await TFRLoadRelics();
   const pages = [
@@ -2245,7 +2283,7 @@ async function TFRCreateJournal(options = {}) {
       ownership: { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE },
       pages
     });
-    if (notify) ui.notifications.info("The First Relics: Lore journal created.");
+    if (notify) ui.notifications.info(TFRT("The First Relics: Lore journal created."));
     return journal;
   }
 
@@ -2262,7 +2300,7 @@ async function TFRCreateJournal(options = {}) {
     else created.push(pageData);
   }
   if (created.length) await journal.createEmbeddedDocuments("JournalEntryPage", created, { render: false });
-  if (notify) ui.notifications.info("The First Relics: Lore journal updated.");
+  if (notify) ui.notifications.info(TFRT("The First Relics: Lore journal updated."));
   return journal;
 }
 
@@ -2272,7 +2310,7 @@ async function TFRSyncExistingLoreJournal() {
 }
 
 async function TFRCreateAll() {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const createdRelics = await TFRCreateRelics();
   const createdJournal = await TFRCreateJournal();
   return { createdRelics, createdJournal };
@@ -2293,7 +2331,7 @@ async function TFRSetAffinity(actor, relicId, value, reason = "") {
   data.value = Math.clamp(Number(value) || 0, 0, 1000);
   if (reason) data.timeline.push({ time: Date.now(), value: data.value, reason });
   await actor.setFlag("the-first-relics", `affinity.${relicId}`, data);
-  ui.notifications.info(`Affinity updated: ${actor.name} / ${relicId} = ${data.value}`);
+  ui.notifications.info(TFRT("Affinity updated: {actorName} / {relicId} = {dataValue}", { actorName: actor.name, relicId: relicId, dataValue: data.value }));
 }
 
 async function TFRAdjustAffinity(actor, relicId, delta, reason = "") {
@@ -2305,7 +2343,7 @@ async function TFRAdjustAffinity(actor, relicId, delta, reason = "") {
 
 async function TFRDeleteAll() {
   await TFRDeleteFeatureItems();
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const itemIds = game.items.filter(i => i.system?.source?.custom === "The First Relics" || i.flags?.["the-first-relics"]?.relicId).map(i => i.id);
   if (itemIds.length) await Item.deleteDocuments(itemIds);
   for (const j of game.journal.filter(j => j.name === "The First Relics - Lore")) await j.delete();
@@ -2313,7 +2351,7 @@ async function TFRDeleteAll() {
     if (actor.getFlag("the-first-relics", "affinity")) await actor.unsetFlag("the-first-relics", "affinity");
   }
   await TFRSetWorldState({});
-  ui.notifications.info("The First Relics: deleted all relic items, lore journal, actor affinity data, and world relic state.");
+  ui.notifications.info(TFRT("The First Relics: deleted all relic items, lore journal, actor affinity data, and world relic state."));
 }
 
 
@@ -2639,14 +2677,14 @@ async function TFRSyncFinalFormItems() {
     }
   }
 
-  if (rows.length) TFRNotifyInfo(`The First Relics: ${rows.length} Final Form item copy/copies synchronized to +${TFR_FINAL_FORM_BONUS} and ${TFR_FINAL_FORM_CHARGES} charges.`);
+  if (rows.length) TFRNotifyInfo(TFRT("The First Relics: {rowsCount} Final Form item copy/copies synchronized to +{TFR_FINAL_FORM_BONUS} and {TFR_FINAL_FORM_CHARGES} charges.", { rowsCount: rows.length, TFR_FINAL_FORM_BONUS: TFR_FINAL_FORM_BONUS, TFR_FINAL_FORM_CHARGES: TFR_FINAL_FORM_CHARGES }));
   return rows;
 }
 
 async function TFRUpdateAllRelicCopies(relic, stage, signatureUnlocked = false) {
   const copies = TFRFindAllRelicItemCopies(relic);
   if (!copies.length) {
-    ui.notifications.warn(`The First Relics: No item copies found for ${relic.name}.`);
+    ui.notifications.warn(TFRT("The First Relics: No item copies found for {relicName}.", { relicName: relic.name }));
     return [];
   }
 
@@ -2665,7 +2703,7 @@ async function TFRUpdateAllRelicCopies(relic, stage, signatureUnlocked = false) 
 
 async function TFRSetRelicAffinity(relicId, value, reason = "") {
   const relic = await TFRGetRelicById(relicId);
-  if (!relic) return ui.notifications.warn(`The First Relics: Relic not found: ${relicId}`);
+  if (!relic) return ui.notifications.warn(TFRT("The First Relics: Relic not found: {relicId}", { relicId: relicId }));
 
   const data = await TFRGetRelicState(relicId);
   const previousStage = data.stage || "dormant";
@@ -2702,7 +2740,7 @@ async function TFRSetRelicAffinity(relicId, value, reason = "") {
 
   const copies = await TFRUpdateAllRelicCopies(relic, data.stage, data.signatureUnlocked);
   if (copies.length) {
-    ui.notifications.info(`${relic.name}: stage synced to ${TFRDisplayStage(data.stage, data.signatureUnlocked)} on ${copies.length} item copy/copies.`);
+    ui.notifications.info(TFRT("{relicName}: stage synced to {value} on {copiesCount} item copy/copies.", { relicName: relic.name, value: TFRDisplayStage(data.stage, data.signatureUnlocked), copiesCount: copies.length }));
   }
 
   return data;
@@ -2752,7 +2790,7 @@ async function TFRSyncStageFromAffinity(actor, relicId, value, reason = "Affinit
 
   const relic = await TFRGetRelicById(relicId);
   if (!relic) {
-    ui.notifications.warn(`The First Relics: Relic data not found for ${relicId}`);
+    ui.notifications.warn(TFRT("The First Relics: Relic data not found for {relicId}", { relicId: relicId }));
     return null;
   }
 
@@ -2778,10 +2816,10 @@ async function TFRSyncStageFromAffinity(actor, relicId, value, reason = "Affinit
     const itemSignatureUnlocked = !!item.getFlag("the-first-relics", "signatureUnlocked");
     if (itemStage !== stage || itemSignatureUnlocked !== data.signatureUnlocked) {
       await TFRUpdateRelicItem(item, stage, data.signatureUnlocked);
-      ui.notifications.info(`${relic.name}: Affinity threshold reached. Stage set to ${TFRDisplayStage(stage, data.signatureUnlocked)}.`);
+      ui.notifications.info(TFRT("{relicName}: Affinity threshold reached. Stage set to {value}.", { relicName: relic.name, value: TFRDisplayStage(stage, data.signatureUnlocked) }));
     }
   } else {
-    ui.notifications.warn(`The First Relics: Relic item not found for ${relic.name}. Stage saved on actor only.`);
+    ui.notifications.warn(TFRT("The First Relics: Relic item not found for {relicName}. Stage saved on actor only.", { relicName: relic.name }));
   }
 
   return stage;
@@ -2892,11 +2930,11 @@ async function TFRAddTimeline(relicId, type, label, note = "") {
 }
 
 async function TFRSetRequirement(relicId, requirementId, completed = true, note = "") {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const relic = await TFRGetRelicById(relicId);
-  if (!relic) return ui.notifications.warn(`Relic not found: ${relicId}`);
+  if (!relic) return ui.notifications.warn(TFRT("Relic not found: {relicId}", { relicId: relicId }));
   const req = (relic.hiddenRequirements || []).find(r => r.id === requirementId);
-  if (!req) return ui.notifications.warn(`Requirement not found: ${requirementId}`);
+  if (!req) return ui.notifications.warn(TFRT("Requirement not found: {requirementId}", { requirementId: requirementId }));
 
   const data = await TFRGetRelicState(relicId);
   data.requirements = data.requirements || {};
@@ -2904,16 +2942,18 @@ async function TFRSetRequirement(relicId, requirementId, completed = true, note 
   await TFRSetRelicState(relicId, data);
   await TFRAddTimeline(relicId, completed ? "Requirement Completed" : "Requirement Cleared", req.label, note);
 
-  ui.notifications.info(`${relic.name}: ${req.label} ${completed ? "completed" : "cleared"}.`);
+  ui.notifications.info(completed
+    ? TFRT("{relicName}: {reqLabel} completed.", { relicName: relic.name, reqLabel: req.label })
+    : TFRT("{relicName}: {reqLabel} cleared.", { relicName: relic.name, reqLabel: req.label }));
   return data;
 }
 
 async function TFRUnlockMemory(relicId, memoryId, note = "") {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const relic = await TFRGetRelicById(relicId);
-  if (!relic) return ui.notifications.warn(`Relic not found: ${relicId}`);
+  if (!relic) return ui.notifications.warn(TFRT("Relic not found: {relicId}", { relicId: relicId }));
   const memory = (relic.memories || []).find(m => m.id === memoryId);
-  if (!memory) return ui.notifications.warn(`Memory not found: ${memoryId}`);
+  if (!memory) return ui.notifications.warn(TFRT("Memory not found: {memoryId}", { memoryId: memoryId }));
 
   const data = await TFRGetRelicState(relicId);
   data.memoriesUnlocked = data.memoriesUnlocked || {};
@@ -2929,11 +2969,11 @@ async function TFRUnlockMemory(relicId, memoryId, note = "") {
 }
 
 async function TFRSendDream(relicId, dreamId, whisperToActorName = "") {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const relic = await TFRGetRelicById(relicId);
-  if (!relic) return ui.notifications.warn(`Relic not found: ${relicId}`);
+  if (!relic) return ui.notifications.warn(TFRT("Relic not found: {relicId}", { relicId: relicId }));
   const dream = (relic.dreams || []).find(d => d.id === dreamId);
-  if (!dream) return ui.notifications.warn(`Dream not found: ${dreamId}`);
+  if (!dream) return ui.notifications.warn(TFRT("Dream not found: {dreamId}", { dreamId: dreamId }));
 
   const data = await TFRGetRelicState(relicId);
   data.dreamsSent = data.dreamsSent || {};
@@ -2964,14 +3004,14 @@ function TFRRenderDashboardSummary(relic, data) {
   const stage = data.stage || TFRStageFromAffinity(data.value || 0);
   const displayStage = TFRDisplayStage(stage, data.signatureUnlocked);
   const mood = data.mood || TFRMoodFromAffinity(data.value || 0);
-  const signature = data.signatureUnlocked ? "Unlocked" : "Sealed";
+  const signature = data.signatureUnlocked ? TFRT("Unlocked") : TFRT("Sealed");
 
   return `
     <div class="tfr-summary-grid">
-      <div class="tfr-summary-card"><span>Affinity</span><strong>${data.value || 0}/1000</strong></div>
-      <div class="tfr-summary-card"><span>Stage</span><strong>${TFREscapeHtml(displayStage)}</strong></div>
-      <div class="tfr-summary-card"><span>Mood</span><strong>${TFREscapeHtml(mood)}</strong></div>
-      <div class="tfr-summary-card"><span>Signature</span><strong>${TFREscapeHtml(signature)}</strong></div>
+      <div class="tfr-summary-card"><span>${TFRT("Affinity")}</span><strong>${data.value || 0}/1000</strong></div>
+      <div class="tfr-summary-card"><span>${TFRT("Stage")}</span><strong>${TFREscapeHtml(TFRStageLabel(displayStage))}</strong></div>
+      <div class="tfr-summary-card"><span>${TFRT("Mood")}</span><strong>${TFREscapeHtml(mood)}</strong></div>
+      <div class="tfr-summary-card"><span>${TFRT("Signature")}</span><strong>${TFREscapeHtml(signature)}</strong></div>
     </div>
   `;
 }
@@ -2983,8 +3023,8 @@ function TFRRenderDashboardAttunementConsent(data) {
       <label class="tfr-attunement-toggle">
         <input type="checkbox" name="refusesAttunement" ${refusing ? "checked" : ""}>
         <span>
-          <strong>Relic Refuses Attunement</strong>
-          <small>While enabled, no bearer can attune or use this relic, and its passive bonuses are suppressed. Press Save to apply.</small>
+          <strong>${TFRT("Relic Refuses Attunement")}</strong>
+          <small>${TFRT("While enabled, no bearer can attune or use this relic, and its passive bonuses are suppressed. Press Save to apply.")}</small>
         </span>
       </label>
       <i class="fa-solid fa-brain" aria-hidden="true"></i>
@@ -2997,7 +3037,7 @@ function TFRRenderRequirements(relic, data) {
   const reqs = relic.hiddenRequirements || [];
   if (!reqs.length) return "";
   return `
-    <h3>Hidden Requirements</h3>
+    <h3>${TFRT("Hidden Requirements")}</h3>
     <ul class="tfr-hidden-reqs">
       ${reqs.map(req => {
         const checked = data.requirements?.[req.id] ? "checked" : "";
@@ -3011,12 +3051,12 @@ function TFRRenderDreams(relic, data) {
   const dreams = relic.dreams || [];
   if (!dreams.length) return "";
   return `
-    <h3>Dreams</h3>
+    <h3>${TFRT("Dreams")}</h3>
     <ul class="tfr-dreams">
       ${dreams.map(d => {
         const sent = data.dreamsSent?.[d.id];
-        const sentText = sent ? ` <em>sent ${new Date(sent).toLocaleDateString()}</em>` : "";
-        return `<li><strong>${TFREscapeHtml(d.title)}</strong> — ${TFREscapeHtml(d.stage)}, ${d.affinityMin}+ affinity${sentText}<br><button type="button" data-dream-id="${TFREscapeHtml(d.id)}">Send Dream</button></li>`;
+        const sentText = sent ? ` <em>${TFRT("sent {date}", { date: new Date(sent).toLocaleDateString() })}</em>` : "";
+        return `<li><strong>${TFREscapeHtml(d.title)}</strong> — ${TFREscapeHtml(TFRStageLabel(d.stage))}, ${TFRT("{value}+ affinity", { value: d.affinityMin })}${sentText}<br><button type="button" data-dream-id="${TFREscapeHtml(d.id)}">${TFRT("Send Dream")}</button></li>`;
       }).join("")}
     </ul>
   `;
@@ -3026,11 +3066,11 @@ function TFRRenderMemories(relic, data) {
   const memories = relic.memories || [];
   if (!memories.length) return "";
   return `
-    <h3>Memories</h3>
+    <h3>${TFRT("Memories")}</h3>
     <ul class="tfr-memories">
       ${memories.map(m => {
         const unlocked = !!data.memoriesUnlocked?.[m.id];
-        return `<li><strong>${unlocked ? "◆" : "◇"} ${TFREscapeHtml(m.title)}</strong>${unlocked ? `<br>${TFREscapeHtml(m.text || "")}` : ""}<br><button type="button" data-memory-id="${TFREscapeHtml(m.id)}">${unlocked ? "Show Again" : "Unlock Memory"}</button></li>`;
+        return `<li><strong>${unlocked ? "◆" : "◇"} ${TFREscapeHtml(m.title)}</strong>${unlocked ? `<br>${TFREscapeHtml(m.text || "")}` : ""}<br><button type="button" data-memory-id="${TFREscapeHtml(m.id)}">${unlocked ? TFRT("Show Again") : TFRT("Unlock Memory")}</button></li>`;
       }).join("")}
     </ul>
   `;
@@ -3058,7 +3098,7 @@ function TFRSafeCssToken(value, fallback = "overview") {
 
 async function TFROpenDashboard(relicId = null) {
   if (!game.user.isGM) {
-    ui.notifications.warn("The First Relics: Affinity Dashboard sadece GM tarafından görülebilir.");
+    ui.notifications.warn(TFRT("The First Relics: only the GM can open the Affinity Dashboard."));
     return;
   }
 
@@ -3066,7 +3106,7 @@ async function TFROpenDashboard(relicId = null) {
   const relic = relics.find(r => r.id === relicId) || relics[0];
 
   if (!relic) {
-    ui.notifications.warn("The First Relics: Dashboard için relic bulunamadı.");
+    ui.notifications.warn(TFRT("The First Relics: no relic found for the dashboard."));
     return;
   }
 
@@ -3079,13 +3119,13 @@ async function TFROpenDashboard(relicId = null) {
 
   const timeline = (data.timeline || []).slice(-10).reverse().map(t => {
     const date = t.time ? new Date(t.time).toLocaleString() : "";
-    return `<li><strong>${date}</strong> — ${t.reason || "No note"} <em>(${t.value})</em></li>`;
+    return `<li><strong>${date}</strong> — ${t.reason || TFRT("No note")} <em>(${t.value})</em></li>`;
   }).join("");
 
   const content = `
   <div class="tfr-dashboard tfr-dashboard-resizable tfr-dashboard-tabs" data-active-tab="${TFRSafeCssToken(TFR_DASHBOARD_LAST_TAB)}">
     <div class="form-group tfr-relic-picker">
-      <label>Relic</label>
+      <label>${TFRT("Relic")}</label>
       <select name="relic">${relicOptions}</select>
     </div>
 
@@ -3093,32 +3133,32 @@ async function TFROpenDashboard(relicId = null) {
     ${TFRRenderDashboardSummary(relic, data)}
 
     <nav class="tfr-tabs-nav">
-      <button type="button" class="tfr-tab-button active" data-tab="overview">Overview</button>
-      <button type="button" class="tfr-tab-button" data-tab="affinity">Affinity</button>
-      <button type="button" class="tfr-tab-button" data-tab="control">Control Panel</button>
-      <button type="button" class="tfr-tab-button" data-tab="debug">Debug</button>
+      <button type="button" class="tfr-tab-button active" data-tab="overview">${TFRT("Overview")}</button>
+      <button type="button" class="tfr-tab-button" data-tab="affinity">${TFRT("Affinity")}</button>
+      <button type="button" class="tfr-tab-button" data-tab="control">${TFRT("Control Panel")}</button>
+      <button type="button" class="tfr-tab-button" data-tab="debug">${TFRT("Debug")}</button>
     </nav>
 
     <section class="tfr-tab-panel active" data-panel="overview">
-      <p><strong>Unique Relic:</strong> This relic exists only once in the world.</p>
-      <p><strong>Virtue:</strong> ${relic.virtue}</p>
-      <p><strong>Theme:</strong> ${relic.theme || ""}</p>
-      <p><strong>Affinity Rule:</strong> This relic gains or loses affinity through its own virtue-specific events.</p>
+      <p><strong>${TFRT("Unique Relic:")}</strong> ${TFRT("This relic exists only once in the world.")}</p>
+      <p><strong>${TFRT("Virtue:")}</strong> ${relic.virtue}</p>
+      <p><strong>${TFRT("Theme:")}</strong> ${relic.theme || ""}</p>
+      <p><strong>${TFRT("Affinity Rule:")}</strong> ${TFRT("This relic gains or loses affinity through its own virtue-specific events.")}</p>
       ${TFRRenderDashboardAttunementConsent(data)}
-      ${relic.trueName ? `<p><strong>True Name:</strong> ${data.signatureUnlocked ? relic.trueName.full : "???"}</p>` : ""}
+      ${relic.trueName ? `<p><strong>${TFRT("True Name:")}</strong> ${data.signatureUnlocked ? relic.trueName.full : "???"}</p>` : ""}
 
       ${relic.personality ? `
         <div class="tfr-personality-box">
-          <p><strong>Personality:</strong> ${relic.personality.temperament.join(", ")}</p>
-          <p><strong>Likes:</strong> ${relic.personality.likes.join(", ")}</p>
-          <p><strong>Dislikes:</strong> ${relic.personality.dislikes.join(", ")}</p>
+          <p><strong>${TFRT("Personality:")}</strong> ${relic.personality.temperament.join(", ")}</p>
+          <p><strong>${TFRT("Likes:")}</strong> ${relic.personality.likes.join(", ")}</p>
+          <p><strong>${TFRT("Dislikes:")}</strong> ${relic.personality.dislikes.join(", ")}</p>
           <p><em>${relic.personality.corePhrase}</em></p>
         </div>
       ` : ""}
 
       ${relic.automationStatus ? `
         <div class="tfr-automation-box">
-          <p><strong>Automation:</strong> Passives ${relic.automationStatus.passives}, Actives ${relic.automationStatus.actives}, Avatar ${relic.automationStatus.avatar}, Signature ${relic.automationStatus.signature}</p>
+          <p><strong>${TFRT("Automation:")}</strong> ${TFRT("Passives {passives}, Actives {actives}, Avatar {avatar}, Signature {signature}", relic.automationStatus)}</p>
           <ul>${(relic.automationStatus.notes || []).map(n => `<li>${n}</li>`).join("")}</ul>
         </div>
       ` : ""}
@@ -3126,15 +3166,15 @@ async function TFROpenDashboard(relicId = null) {
 
     <section class="tfr-tab-panel" data-panel="affinity">
       <div class="tfr-affinity-box">
-        <label>Affinity</label>
+        <label>${TFRT("Affinity")}</label>
         <input type="number" name="affinity" min="0" max="1000" value="${data.value || 0}">
         <div class="tfr-affinity-bar">
           <div class="tfr-affinity-fill" style="width:${Math.clamp(data.value || 0, 0, 1000) / 10}%"></div>
         </div>
-        <p><strong>Mood:</strong> ${data.mood || TFRMoodFromAffinity(data.value)}</p>
-        <p><strong>Suggested Stage:</strong> ${TFRDisplayStage(TFRStageFromAffinity(data.value), TFRSignatureUnlockedFromAffinity(data.value))}</p>
-        <p><strong>Current Recorded Stage:</strong> ${TFRDisplayStage(data.stage || "dormant", data.signatureUnlocked)}</p>
-        <p><strong>Signature:</strong> ${data.signatureUnlocked ? "Unlocked" : "Sealed"}</p>
+        <p><strong>${TFRT("Mood:")}</strong> ${data.mood || TFRMoodFromAffinity(data.value)}</p>
+        <p><strong>${TFRT("Suggested Stage:")}</strong> ${TFRStageLabel(TFRDisplayStage(TFRStageFromAffinity(data.value), TFRSignatureUnlockedFromAffinity(data.value)))}</p>
+        <p><strong>${TFRT("Current Recorded Stage:")}</strong> ${TFRStageLabel(TFRDisplayStage(data.stage || "dormant", data.signatureUnlocked))}</p>
+        <p><strong>${TFRT("Signature:")}</strong> ${data.signatureUnlocked ? TFRT("Unlocked") : TFRT("Sealed")}</p>
       </div>
 
       <div class="tfr-delta-row">
@@ -3147,16 +3187,16 @@ async function TFROpenDashboard(relicId = null) {
       </div>
 
       <div class="form-group">
-        <label>Relic-Specific Affinity Event</label>
+        <label>${TFRT("Relic-Specific Affinity Event")}</label>
         <select name="affinityEvent">
-          <option value="">Manual / No preset event</option>
+          <option value="">${TFRT("Manual / No preset event")}</option>
           ${TFREventOptions(relic)}
         </select>
       </div>
 
       <div class="form-group">
-        <label>Timeline Note</label>
-        <textarea name="note" placeholder="Example: Protected the sacred grove, freed prisoners, solved prophecy..."></textarea>
+        <label>${TFRT("Timeline Note")}</label>
+        <textarea name="note" placeholder="${TFRT("Example: Protected the sacred grove, freed prisoners, solved prophecy...")}"></textarea>
       </div>
     </section>
 
@@ -3165,9 +3205,9 @@ async function TFROpenDashboard(relicId = null) {
     </section>
 
     <section class="tfr-tab-panel" data-panel="debug">
-      <h3>Debug / Maintenance</h3>
-      <p>Use the dialog buttons below for Save and Sync Item Stage.</p>
-      <p>Console helpers:</p>
+      <h3>${TFRT("Debug / Maintenance")}</h3>
+      <p>${TFRT("Use the dialog buttons below for Save and Sync Item Stage.")}</p>
+      <p>${TFRT("Console helpers:")}</p>
       <pre>await FirstRelics.auditInventorySync()
 await FirstRelics.syncAllInventoryStages()</pre>
     </section>
@@ -3178,13 +3218,13 @@ await FirstRelics.syncAllInventoryStages()</pre>
 
   const dialog = new foundry.applications.api.DialogV2({
     classes: ["tfr-dialog"],
-    window: { title: "The First Relics — GM Affinity Dashboard", resizable: true },
+    window: { title: TFRT("The First Relics — GM Affinity Dashboard"), resizable: true },
     position: { width: 760, height: 720 },
     content,
     buttons: [
       {
         action: "save",
-        label: "Save",
+        label: TFRT("Save"),
         default: true,
         callback: async (event, button, app) => {
           const root = app.element;
@@ -3219,14 +3259,14 @@ await FirstRelics.syncAllInventoryStages()</pre>
       },
       {
         action: "sync",
-        label: "Sync Item Stage",
+        label: TFRT("Sync Item Stage"),
         callback: async (event, button, app) => {
           const selectedRelic = field(app.element, "relic")?.value;
           const value = Number(field(app.element, "affinity")?.value || 0);
           await TFRSetRelicAffinity(selectedRelic, value, "Manual stage sync from dashboard");
         }
       },
-      { action: "close", label: "Close" }
+      { action: "close", label: TFRT("Close") }
     ]
   });
 
@@ -3265,11 +3305,11 @@ await FirstRelics.syncAllInventoryStages()</pre>
 
 
 async function TFRApplyAffinityEvent(relicId, eventId, extraNote = "") {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const relic = await TFRGetRelicById(relicId);
-  if (!relic) return ui.notifications.warn(`The First Relics: Relic not found: ${relicId}`);
+  if (!relic) return ui.notifications.warn(TFRT("The First Relics: Relic not found: {relicId}", { relicId: relicId }));
   const event = TFRGetAffinityEvent(relic, eventId);
-  if (!event) return ui.notifications.warn(`The First Relics: Event not found: ${eventId}`);
+  if (!event) return ui.notifications.warn(TFRT("The First Relics: Event not found: {eventId}", { eventId: eventId }));
   const state = await TFRGetRelicState(relicId);
   const newValue = Math.clamp((Number(state.value) || 0) + Number(event.delta || 0), 0, 1000);
   const sign = event.delta >= 0 ? "+" : "";
@@ -3321,9 +3361,9 @@ async function TFRAuditRelics() {
 
   const failed = rows.filter(r => !r.ok);
   if (failed.length) {
-    ui.notifications.warn(`The First Relics Audit: ${failed.length} relic(s) have missing data. Check console.`);
+    ui.notifications.warn(TFRT("The First Relics Audit: {failedCount} relic(s) have missing data. Check console.", { failedCount: failed.length }));
   } else {
-    ui.notifications.info("The First Relics Audit: all loaded relics have required data.");
+    ui.notifications.info(TFRT("The First Relics Audit: all loaded relics have required data."));
   }
 
   return rows;
@@ -3336,7 +3376,7 @@ async function TFRAuditMidiEffects() {
   const relics = await TFRLoadRelics();
   const cloak = relics.find(r => r.id === "cloak_feywilds");
   if (!cloak) {
-    ui.notifications.warn(`${TFR_CLOAK_DISPLAY_NAME} not found.`);
+    ui.notifications.warn(TFRT("{TFR_CLOAK_DISPLAY_NAME} not found.", { TFR_CLOAK_DISPLAY_NAME: TFR_CLOAK_DISPLAY_NAME }));
     return [];
   }
   const acts = TFRBuildActivities(cloak, "exalted", 1, true);
@@ -3349,7 +3389,7 @@ async function TFRAuditMidiEffects() {
     damage: !!a.damage
   }));
   console.table(rows);
-  ui.notifications.info("Midi effect audit complete. Check console.");
+  ui.notifications.info(TFRT("Midi effect audit complete. Check console."));
   return rows;
 }
 
@@ -3380,7 +3420,7 @@ async function TFRAuditActivities() {
   }
 
   console.table(rows);
-  ui.notifications.info("The First Relics Activity Audit complete. Check console.");
+  ui.notifications.info(TFRT("The First Relics Activity Audit complete. Check console."));
   return rows;
 }
 
@@ -3429,7 +3469,7 @@ async function TFRSpendRelicCharges(item, charges) {
   const max = Number(item.system?.uses?.max || 0);
   const remaining = Math.max(max - spent, 0);
   if (remaining < charges) {
-    ui.notifications.warn(`${item.name}: Not enough charges. Required ${charges}, remaining ${remaining}.`);
+    ui.notifications.warn(TFRT("{itemName}: Not enough charges. Required {charges}, remaining {remaining}.", { itemName: item.name, charges: charges, remaining: remaining }));
     return false;
   }
   await item.update({ "system.uses.spent": spent + charges });
@@ -3604,12 +3644,12 @@ async function TFRApplyRestrainedCondition(sourceActor, targetActorOrToken = nul
   const { targetActor, targetToken } = TFRResolveActorTokenForEffect(targetActorOrToken);
 
   if (!targetActor) {
-    ui.notifications.warn("Briar Snare: target one creature before applying Restrained.");
+    ui.notifications.warn(TFRT("Briar Snare: target one creature before applying Restrained."));
     return null;
   }
 
   if (TFRActorHasCondition(targetActor, "restrained")) {
-    ui.notifications.info(`${targetActor.name} is already Restrained.`);
+    ui.notifications.info(TFRT("{targetActorName} is already Restrained.", { targetActorName: targetActor.name }));
     return targetActor.effects?.find(e => String(e.name || e.label || "").toLowerCase().includes("restrained")) || null;
   }
 
@@ -3625,7 +3665,7 @@ async function TFRApplyRestrainedCondition(sourceActor, targetActorOrToken = nul
   }
 
   if (toggled && TFRActorHasCondition(targetActor, "restrained")) {
-    ui.notifications.info(`Briar Snare: Restrained applied to ${targetActor.name}.`);
+    ui.notifications.info(TFRT("Briar Snare: Restrained applied to {targetActorName}.", { targetActorName: targetActor.name }));
     return targetActor.effects?.find(e => {
       const statuses = e.statuses instanceof Set ? Array.from(e.statuses) : Array.from(e.statuses || []);
       return statuses.includes("restrained") || String(e.name || e.label || "").toLowerCase().includes("restrained");
@@ -3633,7 +3673,7 @@ async function TFRApplyRestrainedCondition(sourceActor, targetActorOrToken = nul
   }
 
   const [created] = await targetActor.createEmbeddedDocuments("ActiveEffect", [TFRRestrainedEffectData(sourceActor, item)], { render: false });
-  ui.notifications.info(`Briar Snare: Restrained applied to ${targetActor.name}.`);
+  ui.notifications.info(TFRT("Briar Snare: Restrained applied to {targetActorName}.", { targetActorName: targetActor.name }));
   return created;
 }
 
@@ -3745,14 +3785,14 @@ async function TFRApplyStatusCondition(sourceActor, targetActorOrToken = null, i
   const status = String(statusId || "").toLowerCase();
 
   if (!targetActor) {
-    ui.notifications.warn(`${label}: target one creature first.`);
+    ui.notifications.warn(TFRT("{label}: target one creature first.", { label: label }));
     return null;
   }
 
   const isTimed = TFRIsTimedEffectDuration(rounds, seconds) || !!options?.expireOnTurnEnd;
 
   if (status && TFRActorHasCondition(targetActor, status) && !isTimed) {
-    ui.notifications.info(`${targetActor.name} already has ${status}.`);
+    ui.notifications.info(TFRT("{targetActorName} already has {status}.", { targetActorName: targetActor.name, status: status }));
     return TFRFindActorConditionEffects(targetActor, status)[0] || null;
   }
 
@@ -3772,7 +3812,7 @@ async function TFRApplyStatusCondition(sourceActor, targetActorOrToken = null, i
     }
 
     if (toggled && (!status || TFRActorHasCondition(targetActor, status))) {
-      ui.notifications.info(`${label}: ${status || "effect"} applied to ${targetActor.name}.`);
+      ui.notifications.info(TFRT("{label}: {value} applied to {targetActorName}.", { label: label, value: status || "effect", targetActorName: targetActor.name }));
       return TFRFindActorConditionEffects(targetActor, status)[0] || true;
     }
   }
@@ -3783,7 +3823,7 @@ async function TFRApplyStatusCondition(sourceActor, targetActorOrToken = null, i
   const [created] = await targetActor.createEmbeddedDocuments("ActiveEffect", [
     TFRStatusEffectData(status, label, sourceActor, item, rounds, seconds, changes, options)
   ]);
-  ui.notifications.info(`${label}: applied to ${targetActor.name}.`);
+  ui.notifications.info(TFRT("{label}: applied to {targetActorName}.", { label: label, targetActorName: targetActor.name }));
   return created;
 }
 
@@ -4046,7 +4086,7 @@ async function TFRQueueSaveAwareCondition(actor, relicId, slot, options = {}) {
     stillPending.warned = true;
     TFR_SAVE_AWARE_PENDING.set(id, stillPending);
     await TFRCreateManualSaveResolverCard(stillPending);
-    ui.notifications.warn(`${def.name}: save resolver is pending. Target failed save creature(s), then use the resolver card.`);
+    ui.notifications.warn(TFRT("{defName}: save resolver is pending. Target failed save creature(s), then use the resolver card.", { defName: def.name }));
   }, TFR_SAVE_AWARE_TIMEOUT_MS);
 
   return { queued: true, id, ability: def.name, chatMessage: null };
@@ -4057,10 +4097,10 @@ function TFRCurrentTargetRefs() {
 }
 
 async function TFRResolveSaveAwareManual(pendingId, action = "apply-targets") {
-  if (!game.user?.isGM) return ui.notifications.warn("The First Relics: GM only.");
+  if (!game.user?.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const pending = TFR_SAVE_AWARE_PENDING.get(pendingId);
   if (!pending) {
-    ui.notifications.warn("The First Relics: this save resolver is no longer pending. It may have already resolved automatically or been cleared.");
+    ui.notifications.warn(TFRT("The First Relics: this save resolver is no longer pending. It may have already resolved automatically or been cleared."));
     return { ok: false, issue: "not pending" };
   }
   const actor = game.actors?.get?.(pending.actorId) || game.actors?.getName?.(pending.actorName) || null;
@@ -4069,7 +4109,7 @@ async function TFRResolveSaveAwareManual(pendingId, action = "apply-targets") {
   const def = relic ? TFRGetAbilityDefinition(relic, pending.slot) : null;
   const spec = TFRRelicAbilityRuntimeSpec(pending.relicId, pending.slot);
   if (!actor || !relic || !item || !def || !spec?.condition) {
-    ui.notifications.warn("The First Relics: save resolver data is missing. Check console.");
+    ui.notifications.warn(TFRT("The First Relics: save resolver data is missing. Check console."));
     console.warn("The First Relics | save resolver missing data", { pending, actor, relic, item, def, spec });
     return { ok: false, issue: "missing data" };
   }
@@ -4086,7 +4126,7 @@ async function TFRResolveSaveAwareManual(pendingId, action = "apply-targets") {
 
   const refs = TFRCurrentTargetRefs();
   if (!refs.length) {
-    ui.notifications.warn(`${def.name}: target the creature(s) that failed the save, then press Apply again.`);
+    ui.notifications.warn(TFRT("{defName}: target the creature(s) that failed the save, then press Apply again.", { defName: def.name }));
     return { ok: false, issue: "no targets" };
   }
 
@@ -4116,7 +4156,7 @@ function TFRRegisterSaveAwareChatButtons() {
       await TFRResolveSaveAwareManual(pendingId, action);
     } catch (err) {
       console.error("The First Relics | save resolver button failed", err);
-      ui.notifications.error("The First Relics save resolver failed. Check console.");
+      ui.notifications.error(TFRT("The First Relics save resolver failed. Check console."));
     } finally {
       button.disabled = false;
     }
@@ -4237,7 +4277,7 @@ function TFRAuditSaveAwarePending() {
     messageId: p.messageId || ""
   }));
   console.table(rows);
-  ui.notifications.info(`The First Relics: ${rows.length} pending save-aware helper(s).`);
+  ui.notifications.info(TFRT("The First Relics: {rowsCount} pending save-aware helper(s).", { rowsCount: rows.length }));
   return rows;
 }
 
@@ -4256,7 +4296,7 @@ async function TFRApplyTempHp(actor, amount, label = "Temporary Hit Points") {
   const current = Number(actor.system?.attributes?.hp?.temp || 0) || 0;
   const next = Math.max(current, Number(amount));
   if (next > current) await actor.update({ "system.attributes.hp.temp": next });
-  ui.notifications.info(`${label}: ${actor.name} has ${next} temp HP.`);
+  ui.notifications.info(TFRT("{label}: {actorName} has {next} temp HP.", { label: label, actorName: actor.name, next: next }));
   return true;
 }
 
@@ -4264,7 +4304,7 @@ async function TFRApplyVerdantSnare(actor, targetActor = null, item = null, opti
   const targetToken = TFRGetSelectedTargetToken();
   const target = targetActor || targetToken?.actor || null;
   if (!target) {
-    ui.notifications.warn("Briar Snare: target one creature first.");
+    ui.notifications.warn(TFRT("Briar Snare: target one creature first."));
     return null;
   }
 
@@ -4283,7 +4323,7 @@ async function TFRApplyVerdantSnare(actor, targetActor = null, item = null, opti
 
 async function TFRApplyCloakMark(sourceActor, targetActor) {
   if (!sourceActor || !targetActor) {
-    ui.notifications.warn(`${TFR_CLOAK_DISPLAY_NAME}: select a target token first.`);
+    ui.notifications.warn(TFRT("{TFR_CLOAK_DISPLAY_NAME}: select a target token first.", { TFR_CLOAK_DISPLAY_NAME: TFR_CLOAK_DISPLAY_NAME }));
     return null;
   }
   const effect = TFREffectData(
@@ -4593,7 +4633,7 @@ function TFRRelicAbilityRuntimeSpec(relicId, slot) {
 
 async function TFRExecuteRelicTeleport({ token = null, actor = null, relicId, slot, consumeCharges = false, message = null } = {}) {
   token = token || (actor ? TFRTokenForActor(actor) : TFRSelectedToken());
-  if (!token) { ui.notifications.warn("Relic teleport: select the bearer's token first."); return { ok: false, issue: "No token" }; }
+  if (!token) { ui.notifications.warn(TFRT("Relic teleport: select the bearer's token first.")); return { ok: false, issue: "No token" }; }
   actor = actor || token.actor;
   const relics = await TFRLoadRelics();
   const relic = relics.find(r => r.id === relicId);
@@ -4603,10 +4643,10 @@ async function TFRExecuteRelicTeleport({ token = null, actor = null, relicId, sl
   if (TFRBlockRelicFeatureUse(item, def.name || "Relic teleport")) return { ok: false, issue: "Attunement refused" };
   const range = def.range || 30;
   const from = TFRTokenCenter(token);
-  const destination = await TFRPickCanvasPointWithRange({ origin: from, rangeFeet: range, message: message || `${def.name}: click a destination within ${range} ft. Press Esc to cancel.` });
+  const destination = await TFRPickCanvasPointWithRange({ origin: from, rangeFeet: range, message: message || TFRT("{defName}: click a destination within {range} ft. Press Esc to cancel.", { defName: def.name, range }) });
   if (!destination) return { ok: false, issue: "Cancelled" };
   const distance = TFRDistanceFeet(from, destination);
-  if (distance > range + 0.001) { ui.notifications.warn(`${def.name}: destination is ${distance.toFixed(1)} ft away, max is ${range} ft.`); return { ok: false, issue: "Out of range" }; }
+  if (distance > range + 0.001) { ui.notifications.warn(TFRT("{defName}: destination is {distance} ft away, max is {range} ft.", { defName: def.name, distance: distance.toFixed(1), range: range })); return { ok: false, issue: "Out of range" }; }
   if (consumeCharges && !(await TFRSpendRelicCharges(item, def.charges || 0))) return { ok: false, issue: "Not enough charges" };
   const topLeft = TFRDestinationTopLeftForToken(token, destination);
   const restoreTeleportVisual = await TFRPlaySimpleTeleportAnimation(token, destination);
@@ -4645,7 +4685,7 @@ async function TFRApplyRelicAbilityRuntime(actor, relicId, slot, options = {}) {
   if (spec.removeSelf?.length) { await TFRRemoveActorConditions(actor, spec.removeSelf); applied = true; }
   if (spec.selfEffect && effect) { if (spec.rounds || spec.seconds) effect.duration = { ...(effect.duration || {}), rounds: spec.rounds, seconds: spec.seconds }; await TFRApplyOrRefreshEffect(actor, effect); applied = true; }
   if (spec.conditionSelf) { await TFRApplyStatusCondition(actor, actor, item, spec.conditionSelf, spec.selfName || `${def?.name} — ${relic.name}`, spec.rounds || 10, spec.seconds || 60, [], { expireOnTurnEnd: !!spec.expireOnTurnEnd }); applied = true; }
-  if (spec.targetEffect) { if (!targetActor) ui.notifications.warn(`${def?.name || "Relic ability"}: target one creature first for the helper effect.`); else if (effect) { if (spec.rounds || spec.seconds) effect.duration = { ...(effect.duration || {}), rounds: spec.rounds, seconds: spec.seconds }; await TFRApplyOrRefreshEffect(targetActor, effect); applied = true; } }
+  if (spec.targetEffect) { if (!targetActor) ui.notifications.warn(TFRT("{value}: target one creature first for the helper effect.", { value: def?.name || "Relic ability" })); else if (effect) { if (spec.rounds || spec.seconds) effect.duration = { ...(effect.duration || {}), rounds: spec.rounds, seconds: spec.seconds }; await TFRApplyOrRefreshEffect(targetActor, effect); applied = true; } }
   let saveQueued = false;
   let saveQueueResult = null;
   if (spec.condition) {
@@ -4655,7 +4695,7 @@ async function TFRApplyRelicAbilityRuntime(actor, relicId, slot, options = {}) {
       saveQueued = !!saveQueueResult?.queued;
       applied = applied || saveQueued;
     } else if (!targetActor) {
-      ui.notifications.warn(`${def?.name || "Relic ability"}: target one creature first for the condition helper.`);
+      ui.notifications.warn(TFRT("{value}: target one creature first for the condition helper.", { value: def?.name || "Relic ability" }));
     } else {
       const changes = foundry.utils.deepClone(spec.extraTargetChanges || []);
       await TFRApplyStatusCondition(actor, targetToken || targetActor, item, spec.condition, spec.targetName || `${def?.name} — ${relic.name}`, spec.rounds || 10, spec.seconds || 60, changes, { expireOnTurnEnd: !!spec.expireOnTurnEnd });
@@ -4663,7 +4703,7 @@ async function TFRApplyRelicAbilityRuntime(actor, relicId, slot, options = {}) {
       applied = true;
     }
   }
-  if (spec.removeTarget?.length) { if (!targetActor) ui.notifications.warn(`${def?.name || "Relic ability"}: target a creature to run cleanup helper.`); else { await TFRRemoveActorConditions(targetActor, spec.removeTarget); applied = true; } }
+  if (spec.removeTarget?.length) { if (!targetActor) ui.notifications.warn(TFRT("{value}: target a creature to run cleanup helper.", { value: def?.name || "Relic ability" })); else { await TFRRemoveActorConditions(targetActor, spec.removeTarget); applied = true; } }
   if (spec.tempHp) { const bonus = TFRRelicStageBonusFromItem(relic, item); let amount = 0; if (spec.tempHp === "level+bonus") amount = TFRActorTotalLevel(actor) + bonus; else if (spec.tempHp === "10+bonus") amount = 10 + bonus; else amount = Number(spec.tempHp) || 0; if (amount > 0) { await TFRApplyTempHp(actor, amount, def?.name || "Relic Temp HP"); applied = true; } }
 
   if (saveQueued) {
@@ -4684,18 +4724,18 @@ async function TFRApplyRelicAbilityRuntime(actor, relicId, slot, options = {}) {
 
 async function TFRUseSelectedRelicAbility(relicId, slot, options = {}) {
   if (!relicId) {
-    ui.notifications.warn("Selected Relic Quick Actions: dashboard'dan bir relic seçili olmalı.");
+    ui.notifications.warn(TFRT("Selected Relic Quick Actions: select a relic in the dashboard first."));
     return { ok: false, issue: "No relic selected" };
   }
   const actor = TFRSelectedActor();
   if (!actor) {
-    ui.notifications.warn("Selected Relic Quick Actions: bearer token'ı seç.");
+    ui.notifications.warn(TFRT("Selected Relic Quick Actions: select the bearer's token."));
     return { ok: false, issue: "No actor selected" };
   }
   const item = TFRFindActorRelicItem(actor, relicId);
   if (!item) {
     const relic = await TFRGetRelicById(relicId);
-    ui.notifications.warn(`${actor.name} üzerinde ${relic?.name || relicId} bulunamadı.`);
+    ui.notifications.warn(TFRT("{value} was not found on {actorName}.", { value: relic?.name || relicId, actorName: actor.name }));
     return { ok: false, issue: "Actor does not have selected relic" };
   }
   return TFRUseRelicAbility(actor, relicId, slot, options);
@@ -4703,13 +4743,13 @@ async function TFRUseSelectedRelicAbility(relicId, slot, options = {}) {
 
 async function TFRUseRelicAbility(actorOrId, relicId, slot, options = {}) {
   const actor = TFRResolveActor(actorOrId);
-  if (!actor) return ui.notifications.warn("The First Relics: no actor selected.");
+  if (!actor) return ui.notifications.warn(TFRT("The First Relics: no actor selected."));
   const item = TFRFindActorRelicItem(actor, relicId);
-  if (!item) return ui.notifications.warn(`${actor.name} does not have ${relicId}.`);
+  if (!item) return ui.notifications.warn(TFRT("{actorName} does not have {relicId}.", { actorName: actor.name, relicId: relicId }));
   if (TFRBlockRelicFeatureUse(item, slot || "Relic ability")) return { ok: false, issue: "Attunement refused" };
   const stage = TFRRelicItemStage(item);
   const signatureUnlocked = TFRRelicItemSignatureUnlocked(item);
-  if (!TFRIsAbilitySlotUnlocked(stage, slot, signatureUnlocked)) { const required = slot === "signature" ? "Signature unlock / 1000 affinity" : `${TFRStageTitle(TFRRequiredStageForSlot(slot))} stage`; ui.notifications.warn(`${slot} is locked. ${item.name} is currently ${TFRStageTitle(stage)}; required: ${required}.`); return { ok: false, issue: "Locked" }; }
+  if (!TFRIsAbilitySlotUnlocked(stage, slot, signatureUnlocked)) { const required = slot === "signature" ? "Signature unlock / 1000 affinity" : `${TFRStageTitle(TFRRequiredStageForSlot(slot))} stage`; ui.notifications.warn(TFRT("{slot} is locked. {itemName} is currently {value}; required: {required}.", { slot: slot, itemName: item.name, value: TFRStageTitle(stage), required: required })); return { ok: false, issue: "Locked" }; }
   if (options.spendCharges === true) { const relics = await TFRLoadRelics(); const relic = relics.find(r => r.id === relicId); const def = relic ? TFRGetAbilityDefinition(relic, slot) : null; if (def?.charges && !(await TFRSpendRelicCharges(item, def.charges))) return { ok: false, issue: "Not enough charges" }; }
   return TFRApplyRelicAbilityRuntime(actor, relicId, slot, options);
 }
@@ -4848,15 +4888,15 @@ async function TFRAuditAllRelicEffectAutomation() {
     }
   }
   console.table(rows);
-  ui.notifications.info("The First Relics: all relic effect automation audit printed to console.");
+  ui.notifications.info(TFRT("The First Relics: all relic effect automation audit printed to console."));
   return rows;
 }
 
 async function TFRUseCloakAbility(actorOrId, abilityId, options = {}) {
   const actor = TFRResolveActor(actorOrId);
-  if (!actor) return ui.notifications.warn(`${TFR_CLOAK_DISPLAY_NAME}: no actor selected.`);
+  if (!actor) return ui.notifications.warn(TFRT("{TFR_CLOAK_DISPLAY_NAME}: no actor selected.", { TFR_CLOAK_DISPLAY_NAME: TFR_CLOAK_DISPLAY_NAME }));
   const item = TFRGetActorRelicItem(actor, "cloak_feywilds");
-  if (!item) return ui.notifications.warn(`${actor.name} does not have ${TFR_CLOAK_DISPLAY_NAME}.`);
+  if (!item) return ui.notifications.warn(TFRT("{actorName} does not have {TFR_CLOAK_DISPLAY_NAME}.", { actorName: actor.name, TFR_CLOAK_DISPLAY_NAME: TFR_CLOAK_DISPLAY_NAME }));
 
   const abilities = {
     feyStep: { charges: 1, label: "Fey Step", slot: "active1" },
@@ -4867,7 +4907,7 @@ async function TFRUseCloakAbility(actorOrId, abilityId, options = {}) {
     signature: { charges: 0, label: "Blessing of Sylvara", slot: "signature" }
   };
   const ability = abilities[abilityId];
-  if (!ability) return ui.notifications.warn(`Unknown Cloak ability: ${abilityId}`);
+  if (!ability) return ui.notifications.warn(TFRT("Unknown Cloak ability: {abilityId}", { abilityId: abilityId }));
   if (TFRBlockRelicFeatureUse(item, ability.label)) return { ok: false, issue: "Attunement refused", actor: actor.name, ability: ability.label };
 
   const state = await TFRGetRelicState("cloak_feywilds");
@@ -4878,7 +4918,7 @@ async function TFRUseCloakAbility(actorOrId, abilityId, options = {}) {
     const required = ability.slot === "signature"
       ? "Signature unlock / 1000 affinity"
       : `${TFRStageTitle(TFRRequiredStageForSlot(ability.slot))} stage`;
-    ui.notifications.warn(`${ability.label} is locked. ${item.name} is currently ${TFRStageTitle(stage)}; required: ${required}.`);
+    ui.notifications.warn(TFRT("{abilityLabel} is locked. {itemName} is currently {value}; required: {required}.", { abilityLabel: ability.label, itemName: item.name, value: TFRStageTitle(stage), required: required }));
     return { ok: false, issue: "Locked", actor: actor.name, ability: ability.label, stage, required };
   }
 
@@ -4886,7 +4926,7 @@ async function TFRUseCloakAbility(actorOrId, abilityId, options = {}) {
 
   if (abilityId === "feyStep") {
     const token = TFRTokenForActor(actor);
-    if (!token) return ui.notifications.warn(`${TFR_CLOAK_DISPLAY_NAME}: select the bearer's token before using Fey Step.`);
+    if (!token) return ui.notifications.warn(TFRT("{TFR_CLOAK_DISPLAY_NAME}: select the bearer's token before using Fey Step.", { TFR_CLOAK_DISPLAY_NAME: TFR_CLOAK_DISPLAY_NAME }));
     return TFRExecuteFeyStep({ token, consumeCharges: spendCharges });
   }
 
@@ -4936,8 +4976,8 @@ async function TFRAuditCloakAutomation() {
     ["TFRSpendRelicCharges", typeof TFRSpendRelicCharges === "function"]
   ];
   console.table(checks.map(([name, ok]) => ({ name, ok })));
-  if (checks.some(c => !c[1])) ui.notifications.warn("Cloak automation audit failed. Check console.");
-  else ui.notifications.info("Cloak automation helpers are available.");
+  if (checks.some(c => !c[1])) ui.notifications.warn(TFRT("Cloak automation audit failed. Check console."));
+  else ui.notifications.info(TFRT("Cloak automation helpers are available."));
   return checks;
 }
 
@@ -4982,8 +5022,8 @@ async function TFRAuditNative() {
   }
   console.table(rows);
   const failed = rows.filter(r => !r.typeOK || !r.damageOK || !r.healOK || !r.noWrongDamage || !r.saveOK || !r.targetOK || !r.macroOK || !r.consumeOK || !r.nativeEffectOK);
-  if (failed.length) ui.notifications.warn(`The First Relics Native Audit: ${failed.length} issue(s). Check console.`);
-  else ui.notifications.info("The First Relics Native Audit: ability design mapping is valid.");
+  if (failed.length) ui.notifications.warn(TFRT("The First Relics Native Audit: {failedCount} issue(s). Check console.", { failedCount: failed.length }));
+  else ui.notifications.info(TFRT("The First Relics Native Audit: ability design mapping is valid."));
   return rows;
 }
 
@@ -5013,7 +5053,7 @@ async function TFRAuditTargeting() {
   }
 
   console.table(rows);
-  ui.notifications.info("The First Relics Targeting Audit complete. Check console.");
+  ui.notifications.info(TFRT("The First Relics Targeting Audit complete. Check console."));
   return rows;
 }
 
@@ -5051,7 +5091,7 @@ async function TFRAuditInventorySync() {
   }
 
   console.table(rows);
-  ui.notifications.info("The First Relics Inventory Sync Audit complete. Check console.");
+  ui.notifications.info(TFRT("The First Relics Inventory Sync Audit complete. Check console."));
   return rows;
 }
 
@@ -5067,7 +5107,7 @@ async function TFRSyncAllInventoryStages() {
   }
 
   console.table(result);
-  ui.notifications.info("The First Relics: all inventory relic stages synced.");
+  ui.notifications.info(TFRT("The First Relics: all inventory relic stages synced."));
   return result;
 }
 
@@ -5132,8 +5172,8 @@ async function TFRAuditStageSyncSafety() {
 
   console.table(rows);
   const failed = rows.filter(row => !row.ok);
-  if (failed.length) ui.notifications.warn(`Stage sync safety audit found ${failed.length} issue(s). Check console.`);
-  else ui.notifications.info("Stage sync safety audit passed.");
+  if (failed.length) ui.notifications.warn(TFRT("Stage sync safety audit found {failedCount} issue(s). Check console.", { failedCount: failed.length }));
+  else ui.notifications.info(TFRT("Stage sync safety audit passed."));
   return rows;
 }
 
@@ -5165,7 +5205,7 @@ async function TFRAuditAbilityDesign() {
     index++;
   }
   console.table(rows);
-  ui.notifications.info("Ability design audit complete. Check console.");
+  ui.notifications.info(TFRT("Ability design audit complete. Check console."));
   return rows;
 }
 
@@ -5188,7 +5228,7 @@ async function TFRAuditProgression() {
     });
   }
   console.table(rows);
-  ui.notifications.info("The First Relics Progression Audit complete. Check console.");
+  ui.notifications.info(TFRT("The First Relics Progression Audit complete. Check console."));
   return rows;
 }
 
@@ -5234,19 +5274,19 @@ async function TFRGetOrCreateTestFolder(type = "Actor") {
 }
 
 async function TFRDeleteTestLab() {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics Test Lab: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
   const folderIds = game.folders.filter(f => f.name === TFR_TEST_LAB_FOLDER && f.type === "Actor").map(f => f.id);
   const actors = game.actors.filter(a => a.getFlag("the-first-relics", "testLab") || folderIds.includes(a.folder?.id));
   if (actors.length) await Actor.deleteDocuments(actors.map(a => a.id));
   for (const f of game.folders.filter(f => f.name === TFR_TEST_LAB_FOLDER)) {
     try { await f.delete(); } catch (err) { console.warn("Could not delete Test Lab folder", err); }
   }
-  ui.notifications.info(`The First Relics Test Lab deleted: ${actors.length} actors.`);
+  ui.notifications.info(TFRT("The First Relics Test Lab deleted: {actorsCount} actors.", { actorsCount: actors.length }));
   return { actors: actors.length };
 }
 
 async function TFRRestoreAfterTestLab() {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics Test Lab: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
   await TFRDeleteTestLab();
   const backup = TFRGetTestLabBackupState();
   if (backup) {
@@ -5256,15 +5296,15 @@ async function TFRRestoreAfterTestLab() {
     // every real copy against the restored stages before discarding the backup.
     await TFRSyncAllInventoryStages();
     await TFRSetTestLabBackupState(null);
-    ui.notifications.info("The First Relics Test Lab restored: actors deleted, previous relic state restored, and item stages synchronized.");
+    ui.notifications.info(TFRT("The First Relics Test Lab restored: actors deleted, previous relic state restored, and item stages synchronized."));
     return { restored: true };
   }
-  ui.notifications.info("The First Relics Test Lab restored: actors deleted. No backup state was present.");
+  ui.notifications.info(TFRT("The First Relics Test Lab restored: actors deleted. No backup state was present."));
   return { restored: false };
 }
 
 async function TFRResetTestLab(options = {}) {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics Test Lab: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
   const backup = TFRGetTestLabBackupState() || TFRGetWorldState();
   await TFRSetTestLabBackupState(backup);
   await TFRDeleteTestLab();
@@ -5410,7 +5450,7 @@ async function TFRPrepareRelicForTestActor(actor, relic, stage = "exalted", affi
 
 
 async function TFRCreateTestLab(options = {}) {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics Test Lab: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
   const stage = options.stage || "exalted";
   const affinity = Number(options.affinity ?? 1000);
 
@@ -5422,7 +5462,7 @@ async function TFRCreateTestLab(options = {}) {
   // Create missing world relic items automatically so the lab can be run directly.
   const missingWorldItems = relics.filter(r => !game.items.find(i => i.getFlag("the-first-relics", "relicId") === r.id || i.name === r.name));
   if (missingWorldItems.length) {
-    ui.notifications.info(`The First Relics Test Lab: creating ${missingWorldItems.length} missing world relic item(s).`);
+    ui.notifications.info(TFRT("The First Relics Test Lab: creating {missingWorldItemsCount} missing world relic item(s).", { missingWorldItemsCount: missingWorldItems.length }));
     await TFRCreateAll();
   }
 
@@ -5443,7 +5483,7 @@ async function TFRCreateTestLab(options = {}) {
   }
 
   console.table(rows);
-  ui.notifications.info(`The First Relics Test Lab created: ${rows.length} actors with relics.`);
+  ui.notifications.info(TFRT("The First Relics Test Lab created: {rowsCount} actors with relics.", { rowsCount: rows.length }));
   return rows;
 }
 
@@ -5492,8 +5532,8 @@ async function TFRAuditTestLab() {
 
   console.table(rows);
   const failed = rows.filter(r => !r.ok);
-  if (failed.length) ui.notifications.warn(`The First Relics Test Lab: ${failed.length} issue(s). Check console.`);
-  else ui.notifications.info("The First Relics Test Lab audit passed.");
+  if (failed.length) ui.notifications.warn(TFRT("The First Relics Test Lab: {failedCount} issue(s). Check console.", { failedCount: failed.length }));
+  else ui.notifications.info(TFRT("The First Relics Test Lab audit passed."));
   return rows;
 }
 
@@ -5550,8 +5590,8 @@ async function TFRRunDiagnostics(options = {}) {
   };
   console.log("========== THE FIRST RELICS DIAGNOSTICS ==========");
   console.table([summary]);
-  if (failed.length) TFRNotifyWarn(`The First Relics Diagnostics: ${failed.length} issue(s). Check console.`);
-  else TFRNotifyInfo("The First Relics Diagnostics: READY FOR PLAYTEST.");
+  if (failed.length) TFRNotifyWarn(TFRT("The First Relics Diagnostics: {failedCount} issue(s). Check console.", { failedCount: failed.length }));
+  else TFRNotifyInfo(TFRT("The First Relics Diagnostics: READY FOR PLAYTEST."));
   return { summary, rows };
 }
 
@@ -5605,9 +5645,9 @@ async function TFRRunPlaytestHealthCheck() {
       "Run Rebuild Existing Relics after replacing the module folder.",
       "Review issue tables above before testing selected relic quick actions."
     ]);
-    TFRNotifyWarn(`The First Relics Playtest Health Check: ${issues} issue(s). Check console.`);
+    TFRNotifyWarn(TFRT("The First Relics Playtest Health Check: {issues} issue(s). Check console.", { issues: issues }));
   } else {
-    TFRNotifyInfo("The First Relics Playtest Health Check: PLAYTEST STABLE.");
+    TFRNotifyInfo(TFRT("The First Relics Playtest Health Check: PLAYTEST STABLE."));
   }
   return { summary, checks, diagnostics, qaMatrix, runtimeCoverage, relicCleanup, testLabRows };
 }
@@ -5739,8 +5779,8 @@ async function TFRRunReleaseCandidateCheck() {
   console.table(checks);
   console.table([summary]);
   if (issues.length) console.table(issues);
-  if (issues.length) TFRNotifyWarn(`The First Relics Release Check: ${issues.length} issue(s). Check console.`);
-  else TFRNotifyInfo("The First Relics Release Check: RELEASE READY.");
+  if (issues.length) TFRNotifyWarn(TFRT("The First Relics Release Check: {issuesCount} issue(s). Check console.", { issuesCount: issues.length }));
+  else TFRNotifyInfo(TFRT("The First Relics Release Check: RELEASE READY."));
   return { summary, checks, issues, playtest, stageSafetyRows, trueNameAudit, appearanceAudit, finalFormAudit };
 }
 
@@ -5802,8 +5842,8 @@ async function TFRAuditRelicCleanup() {
   console.table(rows);
   console.table([summary]);
   if (issues.length) console.table(issues);
-  if (issues.length) TFRNotifyWarn(`The First Relics Relic Cleanup Audit: ${issues.length} issue(s). Check console.`);
-  else TFRNotifyInfo("The First Relics Relic Cleanup Audit passed.");
+  if (issues.length) TFRNotifyWarn(TFRT("The First Relics Relic Cleanup Audit: {issuesCount} issue(s). Check console.", { issuesCount: issues.length }));
+  else TFRNotifyInfo(TFRT("The First Relics Relic Cleanup Audit passed."));
   return { summary, rows, issues };
 }
 
@@ -5900,8 +5940,8 @@ async function TFRAuditRelicQAMatrix() {
   console.table(rows);
   console.table([summary]);
   if (issues.length) console.table(issues);
-  if (issues.length) TFRNotifyWarn(`The First Relics QA Matrix: ${issues.length} issue(s). Check console.`);
-  else TFRNotifyInfo(`The First Relics QA Matrix: ${rows.length} activities checked.`);
+  if (issues.length) TFRNotifyWarn(TFRT("The First Relics QA Matrix: {issuesCount} issue(s). Check console.", { issuesCount: issues.length }));
+  else TFRNotifyInfo(TFRT("The First Relics QA Matrix: {rowsCount} activities checked.", { rowsCount: rows.length }));
   return { summary, rows, issues };
 }
 
@@ -6066,8 +6106,8 @@ async function TFRAuditRuntimeCoverage() {
   console.table(rows);
   console.table([summary]);
   if (issues.length) console.table(issues);
-  if (issues.length) TFRNotifyWarn(`The First Relics Runtime Coverage Audit: ${issues.length} issue(s). Check console.`);
-  else TFRNotifyInfo(`The First Relics Runtime Coverage Audit passed: ${rows.length} activities checked.`);
+  if (issues.length) TFRNotifyWarn(TFRT("The First Relics Runtime Coverage Audit: {issuesCount} issue(s). Check console.", { issuesCount: issues.length }));
+  else TFRNotifyInfo(TFRT("The First Relics Runtime Coverage Audit passed: {rowsCount} activities checked.", { rowsCount: rows.length }));
   return { summary, rows, issues };
 }
 
@@ -6095,7 +6135,7 @@ async function TFRResetRelicWorldState(value = 0, stage = "dormant", signatureUn
 
 
 async function TFRResetTestLabSafe() {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics Test Lab: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
 
   await TFRDeleteTestLab();
   await TFRResetRelicWorldState(0, "dormant", false);
@@ -6115,7 +6155,7 @@ async function TFRResetTestLabSafe() {
 
     let worldItem = game.items.find(i => i.getFlag("the-first-relics", "relicId") === relic.id || i.name === relic.name);
     if (!worldItem) {
-      ui.notifications.warn(`The First Relics Test Lab: missing world item for ${relic.name}.`);
+      ui.notifications.warn(TFRT("The First Relics Test Lab: missing world item for {relicName}.", { relicName: relic.name }));
       continue;
     }
 
@@ -6162,13 +6202,13 @@ async function TFRResetTestLabSafe() {
   await TFRResetRelicWorldState(0, "dormant", false);
 
   console.table(rows);
-  ui.notifications.info("The First Relics Test Lab reset to dormant / 0 affinity.");
+  ui.notifications.info(TFRT("The First Relics Test Lab reset to dormant / 0 affinity."));
   return rows;
 }
 
 
 async function TFRCreatePlaytestLabSafe() {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics Test Lab: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
   const labFolderIds = game.folders
     .filter(folder => folder.type === "Actor" && folder.name === TFR_TEST_LAB_FOLDER)
     .map(folder => folder.id);
@@ -6185,21 +6225,21 @@ async function TFRCreatePlaytestLabSafe() {
   await TFRDeleteTestLab();
   await TFRResetRelicWorldState(1000, "exalted", true);
   const rows = await TFRCreateTestLab({ stage: "exalted", affinity: 1000, preserveBackup: true });
-  ui.notifications.info("The First Relics Playtest Lab created at exalted / 1000 affinity.");
+  ui.notifications.info(TFRT("The First Relics Playtest Lab created at exalted / 1000 affinity."));
   return rows;
 }
 
 
 async function TFRRestoreAfterTestLabSafe() {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics Test Lab: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
   return TFRRestoreAfterTestLab();
 }
 
 
 async function TFRDestroyTestLabSafe() {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics Test Lab: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
   await TFRDeleteTestLab();
-  ui.notifications.info("The First Relics Test Lab destroyed. Relic world state unchanged.");
+  ui.notifications.info(TFRT("The First Relics Test Lab destroyed. Relic world state unchanged."));
   return true;
 }
 
@@ -6313,8 +6353,8 @@ async function TFRAuditActivitiesDetailed() {
   };
   console.table([coverage]);
   const issues = rows.filter(r => r.issue).concat(summaryRows.filter(r => r.issue));
-  if (issues.length) ui.notifications.warn(`The First Relics Activity Audit: ${issues.length} issue(s). Check console.`);
-  else ui.notifications.info(`The First Relics Activity Audit passed: ${totalActual}/${totalExpected} current item activities checked.`);
+  if (issues.length) ui.notifications.warn(TFRT("The First Relics Activity Audit: {issuesCount} issue(s). Check console.", { issuesCount: issues.length }));
+  else ui.notifications.info(TFRT("The First Relics Activity Audit passed: {totalActual}/{totalExpected} current item activities checked.", { totalActual: totalActual, totalExpected: totalExpected }));
   return { coverage, summaryRows, rows, issues };
 }
 
@@ -6324,7 +6364,7 @@ async function TFRInspectRelicActivities(relicIdOrName) {
   const relic = relics.find(r => r.id.toLowerCase() === query || r.name.toLowerCase() === query || r.name.toLowerCase().includes(query));
 
   if (!relic) {
-    ui.notifications.warn(`The First Relics: relic not found for "${relicIdOrName}".`);
+    ui.notifications.warn(TFRT("The First Relics: relic not found for \"{relicIdOrName}\".", { relicIdOrName: relicIdOrName }));
     return [];
   }
 
@@ -6333,7 +6373,7 @@ async function TFRInspectRelicActivities(relicIdOrName) {
     || game.items.find(i => i.getFlag("the-first-relics", "relicId") === relic.id || i.name === relic.name);
 
   if (!item) {
-    ui.notifications.warn(`The First Relics: item not found for ${relic.name}.`);
+    ui.notifications.warn(TFRT("The First Relics: item not found for {relicName}.", { relicName: relic.name }));
     return [];
   }
 
@@ -6344,7 +6384,7 @@ async function TFRInspectRelicActivities(relicIdOrName) {
   }));
 
   console.table(rows);
-  ui.notifications.info(`The First Relics: inspected ${rows.length} activities for ${relic.name}.`);
+  ui.notifications.info(TFRT("The First Relics: inspected {rowsCount} activities for {relicName}.", { rowsCount: rows.length, relicName: relic.name }));
   return rows;
 }
 
@@ -6501,8 +6541,8 @@ async function TFRAuditSprint1() {
 
   console.table(rows);
   const failed = rows.filter(r => !r.ok);
-  if (failed.length) ui.notifications.warn(`The First Relics Sprint 1 Audit: ${failed.length} issue(s). Check console.`);
-  else ui.notifications.info("The First Relics Sprint 1 Audit passed.");
+  if (failed.length) ui.notifications.warn(TFRT("The First Relics Sprint 1 Audit: {failedCount} issue(s). Check console.", { failedCount: failed.length }));
+  else ui.notifications.info(TFRT("The First Relics Sprint 1 Audit passed."));
   return rows;
 }
 
@@ -6647,16 +6687,16 @@ async function TFRAuditAutomationEngine() {
 
   console.table(rows);
   const failed = rows.filter(r => !r.ready);
-  if (failed.length) ui.notifications.warn(`The First Relics Automation Engine: ${failed.length} issue(s). Check console.`);
-  else ui.notifications.info("The First Relics Automation Engine audit passed.");
+  if (failed.length) ui.notifications.warn(TFRT("The First Relics Automation Engine: {failedCount} issue(s). Check console.", { failedCount: failed.length }));
+  else ui.notifications.info(TFRT("The First Relics Automation Engine audit passed."));
   return rows;
 }
 
 async function TFRTestAutomationEngine(relicId, slot = "active1") {
   const result = await TFRAutomation.dryRun(relicId, slot);
   console.table([result]);
-  if (result.ok) ui.notifications.info(`Automation dry run OK: ${result.relic} / ${result.activity}`);
-  else ui.notifications.warn(`Automation dry run failed: ${result.relic || relicId} / ${slot}`);
+  if (result.ok) ui.notifications.info(TFRT("Automation dry run OK: {relic} / {activity}", { relic: result.relic, activity: result.activity }));
+  else ui.notifications.warn(TFRT("Automation dry run failed: {value} / {slot}", { value: result.relic || relicId, slot: slot }));
   return result;
 }
 
@@ -6751,7 +6791,7 @@ async function TFRConsumeItemCharges(item, amount = 1) {
 }
 
 
-async function TFRPickCanvasPoint({ message = "Click a destination on the canvas." } = {}) {
+async function TFRPickCanvasPoint({ message = TFRT("Click a destination on the canvas.") } = {}) {
   ui.notifications.info(message);
 
   return new Promise((resolve, reject) => {
@@ -6826,23 +6866,23 @@ function TFRSetFeyStepInFlight(key, active) {
 }
 
 async function TFRExecuteFeyStep(options = {}) {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics: Fey Step automation currently requires GM.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: Fey Step automation currently requires GM."));
 
   const token = options.token || TFRSelectedToken();
   if (!token) {
-    ui.notifications.warn("Fey Step: select one token first.");
+    ui.notifications.warn(TFRT("Fey Step: select one token first."));
     return { ok: false, issue: "No selected token" };
   }
 
   const actor = token.actor;
   if (!actor) {
-    ui.notifications.warn("Fey Step: selected token has no actor.");
+    ui.notifications.warn(TFRT("Fey Step: selected token has no actor."));
     return { ok: false, issue: "Selected token has no actor" };
   }
 
   const tokenKey = TFRFeyStepTokenKey(token, actor);
   if (TFRIsFeyStepInFlight(tokenKey)) {
-    ui.notifications.warn("Fey Step: this token already has an active destination picker.");
+    ui.notifications.warn(TFRT("Fey Step: this token already has an active destination picker."));
     return { ok: false, issue: "Fey Step already in progress", actor: actor.name };
   }
 
@@ -6854,7 +6894,7 @@ async function TFRExecuteFeyStep(options = {}) {
     const item = TFRFindActorRelicItem(actor, "cloak_feywilds");
 
     if (!item) {
-      ui.notifications.warn(`${actor.name} does not have ${TFR_CLOAK_DISPLAY_NAME}.`);
+      ui.notifications.warn(TFRT("{actorName} does not have {TFR_CLOAK_DISPLAY_NAME}.", { actorName: actor.name, TFR_CLOAK_DISPLAY_NAME: TFR_CLOAK_DISPLAY_NAME }));
       return { ok: false, issue: `Actor does not have ${TFR_CLOAK_DISPLAY_NAME}`, actor: actor.name };
     }
     if (TFRBlockRelicFeatureUse(item, "Fey Step")) {
@@ -6876,19 +6916,19 @@ async function TFRExecuteFeyStep(options = {}) {
       destination = await TFRPickCanvasPointWithRange({
         origin: from,
         rangeFeet: maxRange,
-        message: `Fey Step: click a destination within ${maxRange} ft. Press Esc to cancel.`
+        message: TFRT("Fey Step: click a destination within {maxRange} ft. Press Esc to cancel.", { maxRange })
       });
     }
 
     if (!destination) {
-      ui.notifications.info("Fey Step cancelled.");
+      ui.notifications.info(TFRT("Fey Step cancelled."));
       return { ok: false, issue: "Cancelled", actor: actor.name };
     }
 
     const distance = TFRDistanceFeet(from, destination);
 
     if (distance > maxRange + 0.001) {
-      ui.notifications.warn(`Fey Step: destination is ${distance.toFixed(1)} ft away, max is ${maxRange} ft.`);
+      ui.notifications.warn(TFRT("Fey Step: destination is {distance} ft away, max is {maxRange} ft.", { distance: distance.toFixed(1), maxRange: maxRange }));
       return {
         ok: false,
         issue: "Destination out of range",
@@ -6901,13 +6941,13 @@ async function TFRExecuteFeyStep(options = {}) {
     if (shouldConsumeCharges) {
       const remaining = TFRGetItemCharges(item);
       if (remaining !== null && remaining < charges) {
-        ui.notifications.warn(`Fey Step: not enough charges. Need ${charges}, have ${remaining}.`);
+        ui.notifications.warn(TFRT("Fey Step: not enough charges. Need {charges}, have {remaining}.", { charges: charges, remaining: remaining }));
         return { ok: false, issue: "Not enough charges", actor: actor.name, remaining, charges };
       }
 
       const consumed = await TFRConsumeItemCharges(item, charges);
       if (!consumed) {
-        ui.notifications.warn("Fey Step: charge consumption failed.");
+        ui.notifications.warn(TFRT("Fey Step: charge consumption failed."));
         return { ok: false, issue: "Charge consumption failed", actor: actor.name };
       }
       spentCharges = charges;
@@ -6928,7 +6968,7 @@ async function TFRExecuteFeyStep(options = {}) {
       reason: `${actor.name} used Fey Step (${distance.toFixed(1)} ft).${shouldConsumeCharges ? "" : " Charges were already consumed by dnd5e."}`
     });
 
-    ui.notifications.info(`${actor.name} used Fey Step.`);
+    ui.notifications.info(TFRT("{actorName} used Fey Step.", { actorName: actor.name }));
     return {
       ok: true,
       relic: TFR_CLOAK_DISPLAY_NAME,
@@ -6972,15 +7012,15 @@ function TFRControlPanelResultSummary(result, fallbackLabel = "Action") {
       ? "ready"
       : "neutral";
   const facts = [];
-  if (summary.version !== undefined) facts.push(`Version: ${summary.version}`);
-  if (summary.relics !== undefined) facts.push(`Relics: ${summary.relics}`);
-  if (summary.activities !== undefined) facts.push(`Activities: ${summary.activities}`);
-  if (summary.checks !== undefined) facts.push(`Checks: ${summary.checks}`);
-  if (summary.cleaned !== undefined) facts.push(`Cleaned: ${summary.cleaned}`);
-  if (summary.native !== undefined) facts.push(`Native: ${summary.native}`);
-  if (summary.module !== undefined) facts.push(`Module: ${summary.module}`);
-  if (summary.manualReminder !== undefined) facts.push(`Manual reminders: ${summary.manualReminder}`);
-  facts.push(`Issues: ${issueCount}`);
+  if (summary.version !== undefined) facts.push(TFRT("Version: {value}", { value: summary.version }));
+  if (summary.relics !== undefined) facts.push(TFRT("Relics: {value}", { value: summary.relics }));
+  if (summary.activities !== undefined) facts.push(TFRT("Activities: {value}", { value: summary.activities }));
+  if (summary.checks !== undefined) facts.push(TFRT("Checks: {value}", { value: summary.checks }));
+  if (summary.cleaned !== undefined) facts.push(TFRT("Cleaned: {value}", { value: summary.cleaned }));
+  if (summary.native !== undefined) facts.push(TFRT("Native: {value}", { value: summary.native }));
+  if (summary.module !== undefined) facts.push(TFRT("Module: {value}", { value: summary.module }));
+  if (summary.manualReminder !== undefined) facts.push(TFRT("Manual reminders: {value}", { value: summary.manualReminder }));
+  facts.push(TFRT("Issues: {value}", { value: issueCount }));
   return {
     label: fallbackLabel,
     status,
@@ -6990,10 +7030,24 @@ function TFRControlPanelResultSummary(result, fallbackLabel = "Action") {
   };
 }
 
+/** Display label for an audit status; the English status itself stays the machine-readable value. */
+function TFRStatusLabel(status) {
+  const labels = {
+    "READY": TFRT("READY"),
+    "READY FOR PLAYTEST": TFRT("READY FOR PLAYTEST"),
+    "RELEASE READY": TFRT("RELEASE READY"),
+    "NEEDS ATTENTION": TFRT("NEEDS ATTENTION"),
+    "PASSED": TFRT("PASSED"),
+    "COMPLETE": TFRT("COMPLETE"),
+    "DONE": TFRT("DONE")
+  };
+  return labels[String(status || "").toUpperCase()] ?? status;
+}
+
 function TFRControlPanelResultHtml(result, fallbackLabel = "Action") {
   const data = TFRControlPanelResultSummary(result, fallbackLabel);
   return `
-    <strong>${TFREscapeHtml(data.status)}</strong>
+    <strong>${TFREscapeHtml(TFRStatusLabel(data.status))}</strong>
     <span>${TFREscapeHtml(data.facts.join(" | "))}</span>
   `;
 }
@@ -7001,70 +7055,70 @@ function TFRControlPanelResultHtml(result, fallbackLabel = "Action") {
 function TFRControlPanelHtmlV2() {
   return `
     <div class="the-first-relics-control-panel tfr-control-panel-v2">
-      <div class="tfr-control-status" data-tfr-control-status>Ready.</div>
+      <div class="tfr-control-status" data-tfr-control-status>${TFRT("Ready.")}</div>
       <div class="tfr-control-result tfr-control-result-neutral" data-tfr-control-result>
-        <strong>No QA run yet.</strong>
-        <span>Run Playtest Health Check for a dashboard readiness summary.</span>
+        <strong>${TFRT("No QA run yet.")}</strong>
+        <span>${TFRT("Run Playtest Health Check for a dashboard readiness summary.")}</span>
       </div>
 
       <section class="tfr-control-section">
         <div class="tfr-control-section-header">
-          <h2>World Setup</h2>
-          <p>Create, rebuild, and verify relic item copies.</p>
+          <h2>${TFRT("World Setup")}</h2>
+          <p>${TFRT("Create, rebuild, and verify relic item copies.")}</p>
         </div>
         <div class="tfr-control-grid">
-          ${TFRControlButton("createAll", "fa-solid fa-plus", "Create Missing World Items", "Adds relic world items and journal if missing.")}
-          ${TFRControlButton("syncAllInventoryStages", "fa-solid fa-arrows-rotate", "Rebuild Existing Relics", "Refreshes actor/world item copies for the current module version.")}
-          ${TFRControlButton("auditInventorySync", "fa-solid fa-list-check", "Audit Inventory Sync", "Reports actor/world relic stage mismatches.")}
-          ${TFRControlButton("auditStageSyncSafety", "fa-solid fa-shield-halved", "Audit Stage Rebuild Safety", "Checks item copies before stage rebuild work.")}
+          ${TFRControlButton("createAll", "fa-solid fa-plus", TFRT("Create Missing World Items"), TFRT("Adds relic world items and journal if missing."))}
+          ${TFRControlButton("syncAllInventoryStages", "fa-solid fa-arrows-rotate", TFRT("Rebuild Existing Relics"), TFRT("Refreshes actor/world item copies for the current module version."))}
+          ${TFRControlButton("auditInventorySync", "fa-solid fa-list-check", TFRT("Audit Inventory Sync"), TFRT("Reports actor/world relic stage mismatches."))}
+          ${TFRControlButton("auditStageSyncSafety", "fa-solid fa-shield-halved", TFRT("Audit Stage Rebuild Safety"), TFRT("Checks item copies before stage rebuild work."))}
         </div>
       </section>
 
       <section class="tfr-control-section">
         <div class="tfr-control-section-header">
-          <h2>Test Lab</h2>
-          <p>Build or clean temporary playtest actors.</p>
+          <h2>${TFRT("Test Lab")}</h2>
+          <p>${TFRT("Build or clean temporary playtest actors.")}</p>
         </div>
         <div class="tfr-control-grid">
-          ${TFRControlButton("createPlaytestLab", "fa-solid fa-flask", "Create Playtest Lab", "Builds exalted test actors at 1000 affinity.")}
-          ${TFRControlButton("resetTestLab", "fa-solid fa-rotate-left", "Reset Test Lab", "Returns lab relics to dormant / 0 affinity.")}
-          ${TFRControlButton("restoreAfterTestLab", "fa-solid fa-broom", "Clean Test Lab", "Removes lab actors and restores the exact pre-lab world state.")}
-          ${TFRControlButton("auditTestLab", "fa-solid fa-magnifying-glass", "Audit Test Lab", "Reports current test lab actors and relic items.")}
+          ${TFRControlButton("createPlaytestLab", "fa-solid fa-flask", TFRT("Create Playtest Lab"), TFRT("Builds exalted test actors at 1000 affinity."))}
+          ${TFRControlButton("resetTestLab", "fa-solid fa-rotate-left", TFRT("Reset Test Lab"), TFRT("Returns lab relics to dormant / 0 affinity."))}
+          ${TFRControlButton("restoreAfterTestLab", "fa-solid fa-broom", TFRT("Clean Test Lab"), TFRT("Removes lab actors and restores the exact pre-lab world state."))}
+          ${TFRControlButton("auditTestLab", "fa-solid fa-magnifying-glass", TFRT("Audit Test Lab"), TFRT("Reports current test lab actors and relic items."))}
         </div>
       </section>
 
       <section class="tfr-control-section">
         <div class="tfr-control-section-header">
-          <h2>Audits</h2>
-          <p>Console reports for generated relic data.</p>
+          <h2>${TFRT("Audits")}</h2>
+          <p>${TFRT("Console reports for generated relic data.")}</p>
         </div>
         <div class="tfr-control-grid">
-          ${TFRControlButton("runDiagnostics", "fa-solid fa-stethoscope", "Run Diagnostics", "General module health report.")}
-          ${TFRControlButton("runPlaytestHealthCheck", "fa-solid fa-heart-pulse", "Playtest Health Check", "Runs diagnostics, QA matrix, runtime coverage, and test lab audits.")}
-          ${TFRControlButton("runReleaseCheck", "fa-solid fa-award", "Release Check", "Verifies playtest health, manifest, docs, and public API readiness.")}
-          ${TFRControlButton("auditRelicQAMatrix", "fa-solid fa-clipboard-check", "12 Relic QA Matrix", "Build-level coverage report for every relic power.")}
-          ${TFRControlButton("auditFinalFormBonuses", "fa-solid fa-gem", "Final Form +5 / 15 Audit", "Verifies that +5 and 15 charges unlock only at 1000 Affinity for all twelve relics.")}
-          ${TFRControlButton("auditProgressiveAppearances", "fa-solid fa-eye", "Progressive Player Lore Audit", "Verifies that each manifestation appears only at its proper Affinity stage and GM lore stays hidden.")}
-          ${TFRControlButton("auditRuntimeCoverage", "fa-solid fa-code-compare", "Runtime Coverage Audit", "Compares definitions, generated activities, and helper specs.")}
-          ${TFRControlButton("auditRelicCleanup", "fa-solid fa-scroll", "Relic Cleanup Audit", "Checks relic text for placeholders, short forms, and missing lore guidance.")}
-          ${TFRControlButton("auditNative", "fa-solid fa-layer-group", "Native Activity Audit", "Checks native dnd5e activity data and effect references.")}
-          ${TFRControlButton("auditActivitiesDetailed", "fa-solid fa-table-list", "Detailed Activity Audit", "Lists generated activity type, target, range, save, damage, and healing.")}
-          ${TFRControlButton("auditAllRelicEffects", "fa-solid fa-bolt", "Effect Automation Audit", "Lists helper effects, save conditions, cleanup, and teleport coverage.")}
+          ${TFRControlButton("runDiagnostics", "fa-solid fa-stethoscope", TFRT("Run Diagnostics"), TFRT("General module health report."))}
+          ${TFRControlButton("runPlaytestHealthCheck", "fa-solid fa-heart-pulse", TFRT("Playtest Health Check"), TFRT("Runs diagnostics, QA matrix, runtime coverage, and test lab audits."))}
+          ${TFRControlButton("runReleaseCheck", "fa-solid fa-award", TFRT("Release Check"), TFRT("Verifies playtest health, manifest, docs, and public API readiness."))}
+          ${TFRControlButton("auditRelicQAMatrix", "fa-solid fa-clipboard-check", TFRT("12 Relic QA Matrix"), TFRT("Build-level coverage report for every relic power."))}
+          ${TFRControlButton("auditFinalFormBonuses", "fa-solid fa-gem", TFRT("Final Form +5 / 15 Audit"), TFRT("Verifies that +5 and 15 charges unlock only at 1000 Affinity for all twelve relics."))}
+          ${TFRControlButton("auditProgressiveAppearances", "fa-solid fa-eye", TFRT("Progressive Player Lore Audit"), TFRT("Verifies that each manifestation appears only at its proper Affinity stage and GM lore stays hidden."))}
+          ${TFRControlButton("auditRuntimeCoverage", "fa-solid fa-code-compare", TFRT("Runtime Coverage Audit"), TFRT("Compares definitions, generated activities, and helper specs."))}
+          ${TFRControlButton("auditRelicCleanup", "fa-solid fa-scroll", TFRT("Relic Cleanup Audit"), TFRT("Checks relic text for placeholders, short forms, and missing lore guidance."))}
+          ${TFRControlButton("auditNative", "fa-solid fa-layer-group", TFRT("Native Activity Audit"), TFRT("Checks native dnd5e activity data and effect references."))}
+          ${TFRControlButton("auditActivitiesDetailed", "fa-solid fa-table-list", TFRT("Detailed Activity Audit"), TFRT("Lists generated activity type, target, range, save, damage, and healing."))}
+          ${TFRControlButton("auditAllRelicEffects", "fa-solid fa-bolt", TFRT("Effect Automation Audit"), TFRT("Lists helper effects, save conditions, cleanup, and teleport coverage."))}
         </div>
       </section>
 
       <section class="tfr-control-section">
         <div class="tfr-control-section-header">
-          <h2>Selected Relic</h2>
-          <p>Select a bearer token, then run the dashboard relic's powers.</p>
+          <h2>${TFRT("Selected Relic")}</h2>
+          <p>${TFRT("Select a bearer token, then run the dashboard relic's powers.")}</p>
         </div>
         <div class="tfr-control-grid tfr-control-grid-compact">
-          ${TFRControlButton("selectedRelicAbility:active1", "fa-solid fa-1", "Use Active 1", "Runs the selected relic's first dormant power.")}
-          ${TFRControlButton("selectedRelicAbility:active2", "fa-solid fa-2", "Use Active 2", "Runs the selected relic's second dormant power.")}
-          ${TFRControlButton("selectedRelicAbility:active3", "fa-solid fa-3", "Use Active 3", "Runs the selected relic's first awakened power.")}
-          ${TFRControlButton("selectedRelicAbility:active4", "fa-solid fa-4", "Use Active 4", "Runs the selected relic's second awakened power.")}
-          ${TFRControlButton("selectedRelicAbility:avatar", "fa-solid fa-person-rays", "Use Avatar", "Runs the selected relic's avatar power.")}
-          ${TFRControlButton("selectedRelicAbility:signature", "fa-solid fa-crown", "Use Signature", "Runs the selected relic's signature power.")}
+          ${TFRControlButton("selectedRelicAbility:active1", "fa-solid fa-1", TFRT("Use Active 1"), TFRT("Runs the selected relic's first dormant power."))}
+          ${TFRControlButton("selectedRelicAbility:active2", "fa-solid fa-2", TFRT("Use Active 2"), TFRT("Runs the selected relic's second dormant power."))}
+          ${TFRControlButton("selectedRelicAbility:active3", "fa-solid fa-3", TFRT("Use Active 3"), TFRT("Runs the selected relic's first awakened power."))}
+          ${TFRControlButton("selectedRelicAbility:active4", "fa-solid fa-4", TFRT("Use Active 4"), TFRT("Runs the selected relic's second awakened power."))}
+          ${TFRControlButton("selectedRelicAbility:avatar", "fa-solid fa-person-rays", TFRT("Use Avatar"), TFRT("Runs the selected relic's avatar power."))}
+          ${TFRControlButton("selectedRelicAbility:signature", "fa-solid fa-crown", TFRT("Use Signature"), TFRT("Runs the selected relic's signature power."))}
         </div>
       </section>
     </div>
@@ -7130,10 +7184,10 @@ async function TFRRunControlPanelAction(action, context = {}) {
       return await TFRUseSelectedRelicAbility(context?.relicId, slot, { spendCharges: true, fromControlPanel: true });
     }
 
-    ui.notifications.warn(`Unknown The First Relics action: ${action}`);
+    ui.notifications.warn(TFRT("Unknown The First Relics action: {action}", { action: action }));
   } catch (err) {
     console.error(`The First Relics action failed: ${action}`, err);
-    ui.notifications.error(`The First Relics action failed: ${action}. Check console.`);
+    ui.notifications.error(TFRT("The First Relics action failed: {action}. Check console.", { action: action }));
   }
 }
 
@@ -7158,16 +7212,19 @@ function TFRWireControlPanel(html) {
     button.addEventListener("click", async event => {
       event.preventDefault();
       const action = button.dataset.tfrAction;
+      const label = button.querySelector("strong")?.textContent.trim() || button.textContent.trim();
       buttons.forEach(b => b.disabled = true);
       button.classList.add("tfr-action-running");
-      setStatus(`Running: ${button.textContent.trim()}...`);
+      setStatus(TFRT("Running: {action}...", { action: label }));
       try {
         const relicInput = root.querySelector("[name='relic']");
         const result = await TFRRunControlPanelAction(action, { relicId: relicInput?.value || null });
-        const resultSummary = TFRControlPanelResultSummary(result, button.textContent.trim());
+        const resultSummary = TFRControlPanelResultSummary(result, label);
         const ok = resultSummary.tone !== "warn";
-        setStatus(ok ? `${resultSummary.status}: ${button.textContent.trim()}.` : `${resultSummary.status}: ${resultSummary.issueCount} issue(s). Check console.`);
-        setResult(result, button.textContent.trim());
+        setStatus(ok
+          ? TFRT("{status}: {action}.", { status: TFRStatusLabel(resultSummary.status), action: label })
+          : TFRT("{status}: {count} issue(s). Check console.", { status: TFRStatusLabel(resultSummary.status), count: resultSummary.issueCount }));
+        setResult(result, label);
       } finally {
         button.classList.remove("tfr-action-running");
         buttons.forEach(b => b.disabled = false);
@@ -7177,13 +7234,13 @@ function TFRWireControlPanel(html) {
 }
 
 async function TFROpenControlPanel() {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const dialog = new foundry.applications.api.DialogV2({
     classes: ["tfr-dialog"],
-    window: { title: "The First Relics — GM Control Panel", resizable: true },
+    window: { title: TFRT("The First Relics — GM Control Panel"), resizable: true },
     position: { width: 680, height: 720 },
     content: TFRControlPanelHtmlV2(),
-    buttons: [{ action: "close", label: "Close", default: true }]
+    buttons: [{ action: "close", label: TFRT("Close"), default: true }]
   });
 
   await dialog.render({ force: true });
@@ -7346,7 +7403,7 @@ async function TFRApplyMistyStepTemplateToRelicItem(item) {
 }
 
 async function TFRApplySystemTemplates() {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
 
   const targets = [];
 
@@ -7376,8 +7433,8 @@ async function TFRApplySystemTemplates() {
 
   console.table(rows);
   const failed = rows.filter(r => !r.ok);
-  if (failed.length) ui.notifications.warn(`The First Relics System Templates: ${failed.length} issue(s). Check console.`);
-  else ui.notifications.info(`The First Relics System Templates applied to ${rows.length} item(s).`);
+  if (failed.length) ui.notifications.warn(TFRT("The First Relics System Templates: {failedCount} issue(s). Check console.", { failedCount: failed.length }));
+  else ui.notifications.info(TFRT("The First Relics System Templates applied to {rowsCount} item(s).", { rowsCount: rows.length }));
   return rows;
 }
 
@@ -7592,7 +7649,7 @@ async function TFRCreateFeyStepFeatureItemForActor(actor) {
 }
 
 async function TFRCreateFeatureItems() {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
 
   const actors = game.actors.filter(a => a.items.some(TFRIsCloakItem));
   const rows = [];
@@ -7608,8 +7665,8 @@ async function TFRCreateFeatureItems() {
 
   console.table(rows);
   const failed = rows.filter(r => !r.ok);
-  if (failed.length) ui.notifications.warn(`The First Relics Feature Items: ${failed.length} issue(s). Check console.`);
-  else ui.notifications.info(`The First Relics Feature Items created for ${rows.length} actor(s).`);
+  if (failed.length) ui.notifications.warn(TFRT("The First Relics Feature Items: {failedCount} issue(s). Check console.", { failedCount: failed.length }));
+  else ui.notifications.info(TFRT("The First Relics Feature Items created for {rowsCount} actor(s).", { rowsCount: rows.length }));
   return rows;
 }
 
@@ -7646,8 +7703,8 @@ async function TFRAuditFeatureItems() {
 
   console.table(rows);
   const failed = rows.filter(r => !r.hasFeatureItem);
-  if (failed.length) ui.notifications.warn(`The First Relics Feature Item Audit: ${failed.length} missing feature item(s).`);
-  else ui.notifications.info("The First Relics Feature Item Audit passed.");
+  if (failed.length) ui.notifications.warn(TFRT("The First Relics Feature Item Audit: {failedCount} missing feature item(s).", { failedCount: failed.length }));
+  else ui.notifications.info(TFRT("The First Relics Feature Item Audit passed."));
   return rows;
 }
 
@@ -7675,7 +7732,7 @@ function TFRFeatureTemplateDefinitions() {
 async function TFRResolveTemplate(templateName) {
   const template = await TFRFindSystemItemTemplateByName(templateName);
   if (!template) {
-    ui.notifications.warn(`The First Relics: template not found: ${templateName}`);
+    ui.notifications.warn(TFRT("The First Relics: template not found: {templateName}", { templateName: templateName }));
     return null;
   }
 
@@ -7864,7 +7921,7 @@ async function TFRCreateResolvedFeyStepForActor(actor) {
 }
 
 async function TFRCreateResolvedTemplateItems() {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
 
   const actors = game.actors.filter(a =>
     a.items.some(TFRIsCloakItem)
@@ -7882,8 +7939,8 @@ async function TFRCreateResolvedTemplateItems() {
 
   console.table(rows);
   const failed = rows.filter(r => !r.ok);
-  if (failed.length) ui.notifications.warn(`The First Relics Resolver: ${failed.length} issue(s). Check console.`);
-  else ui.notifications.info(`The First Relics Resolver created ${rows.length} resolved template item(s).`);
+  if (failed.length) ui.notifications.warn(TFRT("The First Relics Resolver: {failedCount} issue(s). Check console.", { failedCount: failed.length }));
+  else ui.notifications.info(TFRT("The First Relics Resolver created {rowsCount} resolved template item(s).", { rowsCount: rows.length }));
   return rows;
 }
 
@@ -7912,8 +7969,8 @@ async function TFRAuditResolvedTemplateItems() {
   }
 
   console.table(rows);
-  if (!rows.length) ui.notifications.warn("The First Relics Resolver Audit: no resolved template items found.");
-  else ui.notifications.info("The First Relics Resolver Audit complete.");
+  if (!rows.length) ui.notifications.warn(TFRT("The First Relics Resolver Audit: no resolved template items found."));
+  else ui.notifications.info(TFRT("The First Relics Resolver Audit complete."));
   return rows;
 }
 
@@ -8119,7 +8176,7 @@ async function TFRCreateSpellbookFeyStepForActor(actor) {
 }
 
 async function TFRCreateSpellbookFeatures() {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
 
   const actors = game.actors.filter(a =>
     a.items.some(TFRIsCloakItem)
@@ -8137,8 +8194,8 @@ async function TFRCreateSpellbookFeatures() {
 
   console.table(rows);
   const failed = rows.filter(r => !r.ok);
-  if (failed.length) ui.notifications.warn(`The First Relics Spellbook Features: ${failed.length} issue(s). Check console.`);
-  else ui.notifications.info(`The First Relics Spellbook Features created for ${rows.length} actor(s).`);
+  if (failed.length) ui.notifications.warn(TFRT("The First Relics Spellbook Features: {failedCount} issue(s). Check console.", { failedCount: failed.length }));
+  else ui.notifications.info(TFRT("The First Relics Spellbook Features created for {rowsCount} actor(s).", { rowsCount: rows.length }));
   return rows;
 }
 
@@ -8168,8 +8225,8 @@ async function TFRAuditSpellbookFeatures() {
   }
 
   console.table(rows);
-  if (!rows.length) ui.notifications.warn("The First Relics Spellbook Feature Audit: no spellbook features found.");
-  else ui.notifications.info("The First Relics Spellbook Feature Audit complete.");
+  if (!rows.length) ui.notifications.warn(TFRT("The First Relics Spellbook Feature Audit: no spellbook features found."));
+  else ui.notifications.info(TFRT("The First Relics Spellbook Feature Audit complete."));
   return rows;
 }
 
@@ -8190,7 +8247,7 @@ function TFRIsRelicGeneratedActorItem(item) {
 }
 
 async function TFRDeleteFeatureItems() {
-  if (!game.user.isGM) return ui.notifications.warn("The First Relics: GM only.");
+  if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
 
   const rows = [];
 
@@ -8207,7 +8264,7 @@ async function TFRDeleteFeatureItems() {
   }
 
   console.table(rows);
-  ui.notifications.info(`The First Relics: deleted ${rows.reduce((n, r) => n + r.deleted, 0)} generated feature item(s).`);
+  ui.notifications.info(TFRT("The First Relics: deleted {value} generated feature item(s).", { value: rows.reduce((n, r) => n + r.deleted, 0) }));
   return rows;
 }
 
@@ -8232,8 +8289,8 @@ async function TFRAuditGeneratedFeatureItems() {
   }
 
   console.table(rows);
-  if (!rows.length) ui.notifications.info("The First Relics: no generated feature items found.");
-  else ui.notifications.warn(`The First Relics: ${rows.length} generated feature item(s) found.`);
+  if (!rows.length) ui.notifications.info(TFRT("The First Relics: no generated feature items found."));
+  else ui.notifications.warn(TFRT("The First Relics: {rowsCount} generated feature item(s) found.", { rowsCount: rows.length }));
   return rows;
 }
 
@@ -8290,7 +8347,7 @@ function TFRDrawRangeCircle(origin, rangeFeet) {
   return g;
 }
 
-async function TFRPickCanvasPointWithRange({ origin, rangeFeet = 60, message = "Click a destination." } = {}) {
+async function TFRPickCanvasPointWithRange({ origin, rangeFeet = 60, message = TFRT("Click a destination.") } = {}) {
   ui.notifications.info(message);
 
   const ring = TFRDrawRangeCircle(origin, rangeFeet);
@@ -8553,7 +8610,7 @@ function TFRLockedRelicActivityInfo(item, slot, label = "Relic ability") {
 
 function TFRWarnLockedRelicActivity(info) {
   if (!info) return;
-  ui.notifications.warn(`${info.label} is locked. ${info.item.name} is currently ${TFRStageTitle(info.stage)}; required: ${info.required}.`);
+  ui.notifications.warn(TFRT("{infoLabel} is locked. {itemName} is currently {value}; required: {required}.", { infoLabel: info.label, itemName: info.item.name, value: TFRStageTitle(info.stage), required: info.required }));
 }
 
 function TFRBlockLockedActivity(activity, ...args) {
@@ -8689,7 +8746,7 @@ function TFRRegisterFeyStepChatAutomation() {
 
         const token = TFRTokenFromChatMessage(message, actor);
         if (!token) {
-          ui.notifications.warn(`Fey Step: ${actor.name} için sahnede kaynak token bulunamadı. Token seçip GM Dashboard > Control Panel > Fey Step kullan.`);
+          ui.notifications.warn(TFRT("Fey Step: no source token for {actorName} on the scene. Select a token and use GM Dashboard > Control Panel > Fey Step.", { actorName: actor.name }));
           return;
         }
 

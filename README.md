@@ -1,4 +1,4 @@
-# The First Relics v1.1.10
+# The First Relics v1.2.0
 
 The First Relics is a Foundry VTT module for dnd5e campaigns. It adds twelve evolving legendary relics with affinity progression, staged powers, true-name unlocks, GM dashboard tools, dnd5e activities, and custom item art.
 
@@ -7,6 +7,11 @@ The First Relics is a Foundry VTT module for dnd5e campaigns. It adds twelve evo
 - Foundry Virtual Tabletop v13, verified on 13.351.
 - dnd5e system.
 - Midi-QOL is recommended for the richest automation coverage, but the module keeps manual reminder paths for powers that need GM adjudication.
+
+## Languages
+
+- English and Turkish (Türkçe) interface: the GM dashboard, control panel, and notifications follow Foundry's language setting.
+- Relic content (names, powers, lore) is currently English.
 
 ## Included Content
 
@@ -57,7 +62,7 @@ A clean public build should report `RELEASE READY`.
 
 ## Version
 
-Current public version: `1.1.10`.
+Current public version: `1.2.0`.
 
 See `CHANGELOG.md` for the full development history.
 
