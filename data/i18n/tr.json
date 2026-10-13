@@ -801,5 +801,697 @@
       "avatar": "Yılmaz İradenin Avatarı",
       "signature": "Yılmaz İradenin İmzası"
     }
+  },
+  "chains_patron": {
+    "name": "Hamiyin Zincirleri",
+    "trueName": {
+      "name": "Mordrath",
+      "title": "Hırsın Bedeli",
+      "full": "Mordrath, Hırsın Bedeli"
+    },
+    "class": "Warlock",
+    "virtue": "Hırs",
+    "theme": "Güç • Antlaşma • Bedel • İrade • Yasak Seçim",
+    "personality": {
+      "temperament": [
+        "Hesapçı",
+        "Sabırlı",
+        "Ayartıcı",
+        "Tehlikeli biçimde dürüst",
+        "Asla cömert değil"
+      ],
+      "likes": [
+        "Ödenmiş bedeller",
+        "Amaçlı hırs",
+        "Daha güçlü kudretleri alt etmek",
+        "Gözü açık tutulan pazarlıklar",
+        "Kulluk etmeden elde edilen güç"
+      ],
+      "dislikes": [
+        "Güç için yalvarmak",
+        "Düşüncesizce edilen yeminler",
+        "Masumları ucuza feda etmek",
+        "Alçakgönüllülük kılığına girmiş korkaklık",
+        "Sonucunu kabul etmeden pazarlık bozmak"
+      ],
+      "corePhrase": "Her armağan bir bedel ister.",
+      "roleplayGuidance": "Mordrath yalan söylemez. Taşıyıcının ne kadar hakikati kaldırabileceğine onun karar vermesine izin verir."
+    },
+    "moodMap": [
+      {
+        "mood": "Sessiz",
+        "description": "Zincirler soğuk ve cansız asılı durur."
+      },
+      {
+        "mood": "İlgili",
+        "description": "Seçimlerin bir bedeli olduğunda taşıyıcı halkaların kıpırdadığını duyar."
+      },
+      {
+        "mood": "Pazarlıkta",
+        "description": "Zincirler her kararı bir pazarlık olarak sunar."
+      },
+      {
+        "mood": "Yatırım Yapmış",
+        "description": "Relic açlık yerine biçim kazanmış bir hırs görür."
+      },
+      {
+        "mood": "Bedelle Bağlı",
+        "description": "Taşıyıcı ile relic arasındaki antlaşma neredeyse tamamlanmıştır."
+      },
+      {
+        "mood": "Tamamen Ödenmiş",
+        "description": "Mordrath en büyük bedelin insanın gerçekten ne istediğini bilmesi olduğunu açığa vurur."
+      }
+    ],
+    "affinity": {
+      "moods": [
+        "Sessiz",
+        "İlgili",
+        "Pazarlıkta",
+        "Yatırım Yapmış",
+        "Bedelle Bağlı",
+        "Tamamen Ödenmiş"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Uykuda"
+      },
+      "awakened": {
+        "title": "Uyanmış"
+      },
+      "exalted": {
+        "title": "Yüceltilmiş"
+      }
+    },
+    "affinityEvents": {
+      "pay_price": {
+        "label": "Güç karşılığında anlamlı bir bedeli kabul etti",
+        "category": "Antlaşma"
+      },
+      "outwit_patron": {
+        "label": "Bir hamiyi, iblisi ya da antlaşmaya bağlı bir düşmanı alt etti",
+        "category": "Hırs"
+      },
+      "break_bad_bargain": {
+        "label": "Adaletsiz bir pazarlığı bozdu ya da tersine çevirdi",
+        "category": "İrade"
+      },
+      "protect_free_will": {
+        "label": "Birinin özgür iradesini bir antlaşmadan ya da lanetten korudu",
+        "category": "İrade"
+      },
+      "claim_forbidden_power": {
+        "label": "Yasak bir gücü onun hizmetkârı olmadan elde etti",
+        "category": "Güç"
+      },
+      "keep_costly_oath": {
+        "label": "Pahalıya mal olduğunda bile pazarlığına sadık kaldı",
+        "category": "Antlaşma"
+      },
+      "deny_free_power": {
+        "label": "Gizli bedeli kabul edilemez olduğu için bedava gücü reddetti",
+        "category": "Dönüm Noktası"
+      },
+      "become_servile": {
+        "label": "Bir hamiyin talebine hiç direnmeden tamamen boyun eğdi",
+        "category": "İhlal"
+      },
+      "sacrifice_innocent": {
+        "label": "Güç için bir masumu feda etti",
+        "category": "İhlal"
+      },
+      "break_own_word": {
+        "label": "Yeminle bağladığı kendi pazarlığını düşüncesizce bozdu",
+        "category": "İhlal"
+      },
+      "waste_power": {
+        "label": "Zorlukla kazandığı gücü küçük zalimlikler ya da kibir için harcadı",
+        "category": "İhlal"
+      }
+    },
+    "hiddenRequirements": {
+      "reach_1000": {
+        "label": "1000 Yakınlığa ulaş"
+      },
+      "refuse_free_power": {
+        "label": "Dürüst bir bedel olmadan sunulan gücü reddet"
+      },
+      "outwit_greater_patron": {
+        "label": "Daha güçlü bir hamiyi, iblisi ya da antlaşma sahibini alt et"
+      },
+      "pay_cost_self": {
+        "label": "Anlamlı bir bedeli bir masuma yüklemek yerine kendin öde"
+      },
+      "define_ambition": {
+        "label": "Gerçekten ne istediğini ve onun için neyi feda etmeyeceğini adlandır"
+      }
+    },
+    "features": {
+      "passives": [
+        "<strong>Ödünç Güç.</strong> Her turda bir kez Eldritch Blast, bir antlaşma silahı ya da bir warlock büyüsüyle hasar verdiğinde, bir hasar atışına relic bonusunu eklersin.",
+        "<strong>Küçük Harfleri Oku.</strong> Antlaşmalar, iblisler, hamiler, sözleşmeler, lanetler ya da yasak büyüyle ilgili Karizma (Aldatma), Karizma (İkna) ve Zekâ (Arcana) kontrollerine relic bonusunu eklersin.",
+        "<strong>Ödenen Bedel.</strong> Düşman bir yaratığı 0 Can Puanına düşürdüğünde warlock seviyen + relic bonusu kadar geçici Can Puanı kazanırsın.",
+        "<strong>Bedelden Başka Efendi Yok.</strong> Hamiler, iblisler, göksel varlıklar ya da antlaşmaya bağlı varlıklar tarafından Büyülenmeye, tahakküm altına alınmaya ya da büyüyle zorlanmaya karşı kurtarma atışlarında avantajın olur."
+      ],
+      "actives": [
+        "<strong>Hamiyin Bakışı.</strong> <em>Bonus Aksiyon, 1 yük.</em> 60 fit içinde bir yaratık seçersin. Bir sonraki turunun sonuna kadar onun bir antlaşmaya, lanete, yemine ya da düzlem ötesi bir etkiye bağlı olup olmadığını sezersin.",
+        "<strong>Ödünç Yıkım.</strong> <em>Özel, 2 yük.</em> Eldritch Blast, bir antlaşma silahı ya da bir warlock büyüsüyle isabet ettiğinde kullanılır. Saldırı ya da büyü ek nekrotik hasar verir.",
+        "<strong>Bağlayan Zincir.</strong> <em>Aksiyon, 3 yük.</em> 60 fit içindeki bir yaratık bir Kuvvet kurtarma atışı yapar. Başarısız olursa bir sonraki turunun sonuna kadar hayaletimsi zincirlerle Kısıtlanmış olur. <strong>Midi:</strong> Save Activity bir STR kurtarma atışı ister; durum otomatik uygulanmazsa Restrained'i Foundry'nin normal durum araçlarıyla uygula.",
+        "<strong>Farkı Öde.</strong> <em>Reaksiyon, 4 yük.</em> Bir kurtarma atışında başarısız olduğunda, warlock seviyen kadar nekrotik hasar alarak kurtarma atışını yeniden atarsın. Yeni sonuç kullanılmak zorundadır."
+      ],
+      "avatar": "<strong>Antlaşmanın Avatarı.</strong> <em>Bonus Aksiyon, 8 yük, 1 dakika.</em> Siyah-altın zincirler etrafında döner. Havada asılı kalabildiğin 30 fit uçuş hızı ve nekrotik hasara direnç kazanırsın; her turda bir kez Eldritch Blast, bir antlaşma silahı ya da bir warlock büyüsüyle hasar verdiğinde warlock seviyen kadar ek nekrotik hasar verirsin.",
+      "signature": "<strong>Sonsuzluğun Bedeli.</strong> <em>Uzun dinlenme başına bir kez.</em> 60 fit içinde seni duyabilen bir yaratık seçersin. GM'in onayladığı bir bedel teklif edersin. Hedef bir Karizma kurtarma atışı yapar. Başarısız olursa 1 dakika boyunca Mordrath'ın zincirleriyle Kısıtlanmış olur ve ışınlanmadan ya da görünmezlikten yararlanamaz. Süre içinde bir kez, kurtulmayı başaramadığında harcanmış 5. seviye ya da daha düşük bir warlock büyü yuvasını geri kazanabilirsin. <strong>Midi:</strong> Save Activity bir CHA kurtarma atışı ister; süren antlaşma etkileri GM'e ya da Midi'ye bağlıdır."
+    },
+    "dreams": {
+      "empty_contract": {
+        "title": "Boş Sözleşme",
+        "text": "Boş bir sayfaya adını imzalarsın. Mürekkep, yazmadan önce ne istediğini sorar."
+      },
+      "thousand_chains": {
+        "title": "Bin Zincir",
+        "text": "Kara bir gökyüzünden bin zincir sarkar. Her biri farklı bir vaat fısıldar."
+      },
+      "auction_of_souls": {
+        "title": "Ruhların Mezatı",
+        "text": "Kimse altın teklif etmez. Herkes anılarını, adlarını ve geleceklerini teklif eder."
+      },
+      "mordrath": {
+        "title": "Mordrath",
+        "text": "Kırık zincirlere bürünmüş bir figür sıcaklıktan yoksun bir gülümsemeyle bakar. 'Sonunda,' der. 'Neyi ödemeye razı olduğunu biliyorsun.'"
+      }
+    },
+    "memories": {
+      "first_bargain": {
+        "title": "İlk Pazarlık",
+        "text": "Mordrath, kaderin sunduğundan fazlasını isteyen ilk ölümlüyü hatırlar."
+      },
+      "price_unpaid": {
+        "title": "Ödenmeyen Bedel",
+        "text": "Mordrath, armağan diye alınan gücün yol açtığı yıkımı hatırlar."
+      },
+      "patron_outwitted": {
+        "title": "Alt Edilen Hami",
+        "text": "Bir hami, sözleşmelerin iki yönlü kesebileceğini öğrendi."
+      },
+      "name_sold": {
+        "title": "Satılan Ad",
+        "text": "Bir warlock adını sattı ve gücü neden istediğini unuttu."
+      },
+      "final_clause": {
+        "title": "Son Madde",
+        "text": "Kimsenin sonuna kadar okumadığı madde."
+      }
+    },
+    "quotes": {
+      "positive": [
+        "Adil bir bedel.",
+        "Artık değerin ne olduğunu anlıyorsun.",
+        "Körü körüne alınan güç, onu alana sahip olur.",
+        "Gözlerin açık ödedin."
+      ],
+      "negative": [
+        "Ucuz.",
+        "Açlığı hırs sandın.",
+        "Bu bir pazarlık değildi. Dilenmekti.",
+        "Senin olmayanı sattın."
+      ],
+      "neutral": [
+        "Her armağan bir bedel ister.",
+        "Daha dikkatli oku.",
+        "Ne istiyorsun?",
+        "Hiçbir şey bedava değildir. Reddetmek bile.",
+        "Seç."
+      ],
+      "signature": [
+        "Tamamen ödendi.",
+        "Zincir senin hapishanen değil. İmzan.",
+        "Şimdi sonsuzlukla pazarlık et."
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Mordrath Uyanıyor",
+      "text": [
+        "Yakındaki her alev kara yanar.",
+        "Bileğine bir zincir dolanır, ama sıkmaz.",
+        "Bir ses sorar: Ne istiyorsun?",
+        "Cevap verirsin ve dünya bedeli bekler.",
+        "Zincir kendi kilidini açar.",
+        "Taşa çarpan metal gibi bir ad çınlar: Mordrath, Hırsın Bedeli."
+      ]
+    },
+    "lore": {
+      "origin": "Mordrath, güç talep eden ve her armağanın bedelinin ödenmesi gerektiğini kabul eden ilk ölümlünün hatırasıdır.",
+      "hiddenSorrow": "Mordrath bir zamanlar bir taşıyıcının zalimleşmeden güç alabileceğine inanmıştı. Yanılmıştı ve bedelini hatırlıyor.",
+      "knownRumor": "Warlocklar bu zincirlerin bir hamiye ait olmadığını fısıldar. Hamileri korkutan birine aitmiş.",
+      "appearanceDormant": "Omuzlukta, kemerde ya da bilekte sarılı taşınan kısa, kararmış zincir halkaları.",
+      "appearanceAwakened": "Bir pazarlık dile getirildiğinde halkaların üzerinde altın yazılar belirir.",
+      "appearanceExalted": "Zincirler ağırlıksızca süzülür, hiç yere değmez.",
+      "appearanceSignature": "Her halkada bir ad vardır, ama taşıyıcı yalnızca birini okuyabilir: kendi adını."
+    },
+    "abilities": {
+      "active1": "Hamiyin Bakışı",
+      "active2": "Ödünç Yıkım",
+      "active3": "Bağlayan Zincir",
+      "active4": "Farkı Öde",
+      "avatar": "Hırsın Avatarı",
+      "signature": "Hırsın İmzası"
+    }
+  },
+  "aegis_dawn": {
+    "name": "Şafağın Kalkanı",
+    "class": "Fighter",
+    "virtue": "Koruma",
+    "theme": "Şafak • Kararlılık • Kalkan",
+    "trueName": {
+      "name": "Sol'Kaer",
+      "title": "Hiç Düşmeyen Kalkan",
+      "full": "Sol'Kaer, Hiç Düşmeyen Kalkan"
+    },
+    "personality": {
+      "temperament": [
+        "Kadim",
+        "Yargılayıcı",
+        "Sabırlı",
+        "İradeli"
+      ],
+      "likes": [
+        "Erdemine uygun seçimler",
+        "Fedakârlık",
+        "Anlamlı gelişim"
+      ],
+      "dislikes": [
+        "Korkaklık",
+        "Zalimlik",
+        "Boş güç"
+      ],
+      "corePhrase": "Şafak",
+      "roleplayGuidance": "Sol'Kaer, geri çekilmek daha kolayken hattı tutan koruyucuları ödüllendirir. Bencil cesaret karşısında soğur; en güçlü karşılığı, taşıyıcı gerçek bir bedel ödeyerek başkasını koruduğunda verir."
+    },
+    "moodMap": [
+      {
+        "mood": "Sessiz",
+        "description": "Tehlike çaresizlere yöneldiğinde kalkanın kenarında soluk bir sıcaklık toplanır."
+      },
+      {
+        "mood": "Gözlüyor",
+        "description": "Taşıyıcı güvenlik yerine görevi seçtiğinde kalkan kısa şafak ışığı parıltılarıyla karşılık verir."
+      },
+      {
+        "mood": "Sınıyor",
+        "description": "Kalkan, taşıyıcının şan izlediği için değil, doğru olduğu için koruyup korumadığını sınar."
+      },
+      {
+        "mood": "Güveniyor",
+        "description": "Relic, barındırdığı her canı hatırlayan bir duvar gibi taşıyıcıyı dengede tutar."
+      },
+      {
+        "mood": "Seçilmiş",
+        "description": "Kalkan taşıyıcıyı, zarar ile masumlar arasındaki son hat olarak kabul eder."
+      },
+      {
+        "mood": "Yankılanan",
+        "description": "Şafak ışığı taşıyıcının kolunda toplanır; Sol'Kaer gerçek adını söylemeye hazırdır."
+      }
+    ],
+    "affinity": {
+      "moods": [
+        "Sessiz",
+        "Gözlüyor",
+        "Sınıyor",
+        "Güveniyor",
+        "Seçilmiş",
+        "Yankılanan"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Uykuda"
+      },
+      "awakened": {
+        "title": "Uyanmış"
+      },
+      "exalted": {
+        "title": "Yüceltilmiş"
+      }
+    },
+    "affinityEvents": {
+      "saved_an_ally_from_death": {
+        "label": "Bir müttefiki ölümden kurtardı",
+        "category": "Koruma"
+      },
+      "protected_someone_weaker": {
+        "label": "Kendinden zayıf birini korudu",
+        "category": "Koruma"
+      },
+      "held_the_line_below_25_hp": {
+        "label": "Canı %25'in altındayken hattı tuttu",
+        "category": "Kararlılık"
+      },
+      "abandoned_innocents": {
+        "label": "Masumları terk etti",
+        "category": "İhlal"
+      },
+      "left_someone_to_die": {
+        "label": "Birini ölüme terk etti",
+        "category": "İhlal"
+      },
+      "fled_from_fear": {
+        "label": "Korkudan kaçtı",
+        "category": "İhlal"
+      }
+    },
+    "hiddenRequirements": {
+      "reach_1000": {
+        "label": "1000 Yakınlığa ulaş"
+      },
+      "save_an_ally_from_death_three_times": {
+        "label": "Bir müttefiki üç kez ölümden kurtar."
+      },
+      "win_a_boss_battle_below_10_hp": {
+        "label": "Canın 10'un altındayken bir boss savaşını kazan."
+      },
+      "protect_a_civilian_without_reward": {
+        "label": "Bir sivili karşılık beklemeden koru."
+      },
+      "refuse_to_abandon_a_battlefield": {
+        "label": "Bir savaş alanını terk etmeyi reddet."
+      },
+      "end_a_battle_as_the_last_one_standing": {
+        "label": "Bir savaşı ayakta kalan son kişi olarak bitir."
+      }
+    },
+    "features": {
+      "passives": [
+        "Şafağın Dayanıklılığı: ilk raunt relic bonusu kadar AC.",
+        "Yıkılmaz Duvar: yakınındaki müttefikler fırsat saldırılarına direnir.",
+        "Koruyucunun Yükü: uzun dinlenme başına yeterlilik bonusu kadar kez bir müttefike yapılan saldırıyı kendine yöneltirsin.",
+        "İlk Işık: uzun dinlenme başına bir kez 0 yerine 1 Can Puanına düşersin."
+      ],
+      "actives": [
+        "<strong>Sağlam Dur.</strong> <em>Bonus Aksiyon, 1 yük.</em> Bir sonraki turunun başına kadar itilmeye, Yere Düşmüş, Yakalanmış ya da Kısıtlanmış hâle gelmeye direnmek için yaptığın kontrollere ve kurtarma atışlarına relic bonusunu eklersin.",
+        "<strong>Şafak Bariyeri.</strong> <em>Reaksiyon, 2 yük.</em> 30 fit içindeki bir müttefik bir saldırıyla vurulduğunda, ona tetikleyen saldırıya karşı +4 AC verirsin; bu isabeti ıskalamaya çevirebilir.",
+        "<strong>Kararlılık Kalesi.</strong> <em>Aksiyon, 3 yük, 1 dakika.</em> 10 fitlik bir aura yayarsın. Sen ve auradaki müttefikler Korkmuş ya da Büyülenmiş olmaya karşı kurtarma atışlarında avantaj kazanırsınız.",
+        "<strong>Karanlığı Kır.</strong> <em>Aksiyon, 4 yük.</em> 30 fit içindeki bir iblis ya da ölümsüz bir Dayanıklılık kurtarma atışı yapar. Başarısız olursa ışınsal hasar alır ve bir sonraki turunun sonuna kadar Kör olur."
+      ],
+      "avatar": "<strong>Şafağın Bedenlenişi.</strong> <em>Bonus Aksiyon, 8 yük, 1 dakika.</em> Gün doğumundan bir zırhla parlarsın. Havada asılı kalabildiğin 30 fit uçuş hızı ve ezici, delici ve kesici hasara direnç kazanırsın, parlak ışık saçarsın ve her turda bir kez silah isabetin ek 2d8 ışınsal hasar verir.",
+      "signature": "<strong>Son Gün Doğumu.</strong> <em>Uzun dinlenme başına bir kez.</em> 30 fit içinde seçtiğin müttefikler 30 Can Puanı kazanır ve Korkmuş ile Büyülenmiş durumları sona erer. Bir sonraki turunun sonuna kadar, etkilenen her müttefik 0 Can Puanına düşeceği ilk seferde bunun yerine 1'e düşer. Sen bir bitkinlik seviyesi kazanırsın."
+    },
+    "dreams": {
+      "dream_1_aegis_dawn": {
+        "title": "Beyaz Ova",
+        "text": "Taşıyıcıya beyaz ovanın görüntüsü gelir."
+      },
+      "dream_2_aegis_dawn": {
+        "title": "Kırık Kalkan",
+        "text": "Taşıyıcıya kırık kalkanın görüntüsü gelir."
+      },
+      "dream_3_aegis_dawn": {
+        "title": "Son Duvar",
+        "text": "Taşıyıcıya son duvarın görüntüsü gelir."
+      },
+      "dream_4_aegis_dawn": {
+        "title": "Sol'Kaer",
+        "text": "Taşıyıcıya Sol'Kaer'in görüntüsü gelir."
+      }
+    },
+    "memories": {
+      "the_last_wall": {
+        "title": "Son Duvar",
+        "text": "Sol'Kaer son duvarı hatırlar."
+      },
+      "a_child_behind_the_shield": {
+        "title": "Kalkanın Ardındaki Çocuk",
+        "text": "Sol'Kaer kalkanın ardındaki çocuğu hatırlar."
+      },
+      "the_day_the_sun_did_not_rise": {
+        "title": "Güneşin Doğmadığı Gün",
+        "text": "Sol'Kaer güneşin doğmadığı günü hatırlar."
+      },
+      "sol_kaer_s_final_stand": {
+        "title": "Sol'Kaer'in Son Direnişi",
+        "text": "Sol'Kaer kendi son direnişini hatırlar."
+      }
+    },
+    "quotes": {
+      "positive": [
+        "İyi.",
+        "Yol hatırlanıyor."
+      ],
+      "negative": [
+        "Hayır.",
+        "Relic soğuyor."
+      ],
+      "neutral": [
+        "Bekle.",
+        "Seç."
+      ],
+      "signature": [
+        "Ben Sol'Kaer'im.",
+        "Hiç Düşmeyen Kalkan"
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Sol'Kaer Uyanıyor",
+      "text": [
+        "Relic, Sol'Kaer adını söyler.",
+        "Taşıyıcı anlar: Hiç Düşmeyen Kalkan."
+      ]
+    },
+    "lore": {
+      "origin": "Sol'Kaer, Korumanın yaşayan hafızasıdır.",
+      "hiddenSorrow": "Sol'Kaer, şafağa kadar dayanan kale kapısını ve taşıyıcısının yetişemediği tek çocuğu hatırlar.",
+      "knownRumor": "Yaşlı askerler kalkanın yalnızca tek bir direnişin bir nesli değiştirebileceği kuşatmalardan önce ortaya çıktığını söyler.",
+      "appearanceDormant": "Beyaz-altın bir kalkan göbeği ya da kol plakası; yalnızca yakınlarda biri korktuğunda ısınır.",
+      "appearanceAwakened": "Taşıyıcı araya her girdiğinde yüzeyine kıl inceliğinde güneş patlamaları yayılır.",
+      "appearanceExalted": "Kalkanın etrafında ısı vermeyen bir şafak ateşi halkası yanar ve düşmanların ardına uzun gölgeler düşürür.",
+      "appearanceSignature": "Kalkan, kenarları saydam ve hatırlanan yeminlerle ağır bir ilk ışık diskine dönüşür."
+    },
+    "abilities": {
+      "active1": "Sağlam Dur",
+      "active2": "Şafak Bariyeri",
+      "active3": "Kararlılık Kalesi",
+      "active4": "Karanlığı Kır",
+      "avatar": "Şafağın Bedenlenişi",
+      "signature": "Son Gün Doğumu"
+    }
+  },
+  "crown_conqueror": {
+    "name": "Fatihin Tacı",
+    "class": "Paladin",
+    "virtue": "Egemenlik",
+    "theme": "Düzen • Liderlik • Otorite",
+    "trueName": {
+      "name": "Aurex",
+      "title": "Kralları Birleştiren Taç",
+      "full": "Aurex, Kralları Birleştiren Taç"
+    },
+    "personality": {
+      "temperament": [
+        "Kadim",
+        "Yargılayıcı",
+        "Sabırlı",
+        "İradeli"
+      ],
+      "likes": [
+        "Erdemine uygun seçimler",
+        "Fedakârlık",
+        "Anlamlı gelişim"
+      ],
+      "dislikes": [
+        "Korkaklık",
+        "Zalimlik",
+        "Boş güç"
+      ],
+      "corePhrase": "Düzen",
+      "roleplayGuidance": "Aurex hizmet, ölçü ve hesap verebilirlikle kazanılmış otoriteye saygı duyar. Kibir için hükmetmeyi reddeder ve taşıyıcının buyruğu altındaki takipçilerin güçlenip güçlenmediğini sorar."
+    },
+    "moodMap": [
+      {
+        "mood": "Sessiz",
+        "description": "Taç ağır ve sessizdir; taşıyıcının önce kendine hükmedip hükmetmediğini tartar."
+      },
+      {
+        "mood": "Gözlüyor",
+        "description": "Tutulan sözlerin ve sömürmek yerine koruyan emirlerin ardından alçak bir altın yankı gelir."
+      },
+      {
+        "mood": "Sınıyor",
+        "description": "Taç, taşıyıcıyı gurur, merhamet ve sorumluluk arasındaki zor seçimlerle sınar."
+      },
+      {
+        "mood": "Güveniyor",
+        "description": "Taç, muhalefeti ezmeye ihtiyaç duymadan yol gösterebilen bir sesi tanır."
+      },
+      {
+        "mood": "Seçilmiş",
+        "description": "Relic taşıyıcıyı, güç tarafından tüketilmeden onu taşıyabilecek biri olarak kabul eder."
+      },
+      {
+        "mood": "Yankılanan",
+        "description": "Görünmez saray erkânından bir halka susar; Aurex gerçek adını söylemeye hazırdır."
+      }
+    ],
+    "affinity": {
+      "moods": [
+        "Sessiz",
+        "Gözlüyor",
+        "Sınıyor",
+        "Güveniyor",
+        "Seçilmiş",
+        "Yankılanan"
+      ]
+    },
+    "stages": {
+      "dormant": {
+        "title": "Uykuda"
+      },
+      "awakened": {
+        "title": "Uyanmış"
+      },
+      "exalted": {
+        "title": "Yüceltilmiş"
+      }
+    },
+    "affinityEvents": {
+      "led_a_group_successfully": {
+        "label": "Bir grubu başarıyla yönetti",
+        "category": "Liderlik"
+      },
+      "resolved_conflict_without_bloodshed": {
+        "label": "Bir çatışmayı kan dökmeden çözdü",
+        "category": "Düzen"
+      },
+      "earned_voluntary_loyalty": {
+        "label": "Gönüllü bir sadakat kazandı",
+        "category": "Egemenlik"
+      },
+      "abused_authority": {
+        "label": "Otoritesini kötüye kullandı",
+        "category": "İhlal"
+      },
+      "avoided_responsibility": {
+        "label": "Sorumluluktan kaçtı",
+        "category": "İhlal"
+      },
+      "abandoned_followers": {
+        "label": "Takipçilerini terk etti",
+        "category": "İhlal"
+      }
+    },
+    "hiddenRequirements": {
+      "reach_1000": {
+        "label": "1000 Yakınlığa ulaş"
+      },
+      "end_a_battle_without_killing": {
+        "label": "Bir savaşı kimseyi öldürmeden bitir."
+      },
+      "defend_a_settlement": {
+        "label": "Bir yerleşimi savun."
+      },
+      "gain_voluntary_support_of_five_npcs": {
+        "label": "Beş NPC'nin gönüllü desteğini kazan."
+      },
+      "solve_a_crisis_through_diplomacy": {
+        "label": "Bir krizi diplomasiyle çöz."
+      },
+      "take_responsibility_for_an_ally_s_mistake": {
+        "label": "Bir müttefikin hatasının sorumluluğunu üstlen."
+      }
+    },
+    "features": {
+      "passives": [
+        "Kraliyet Varlığı: 30 fit içindeki müttefikler Bilgelik kurtarma atışlarına relic bonusunu ekler.",
+        "Düzenin Sancağı: savaş başında yeterlilik bonusun kadar müttefik geçici Can Puanı kazanır.",
+        "Komutanın Kararlılığı: uzun dinlenme başına yeterlilik bonusu kadar kez bir müttefik başarısız kurtarma atışını yeniden atar.",
+        "Hükümdar Aurası: müttefikler büyülenmeye ve korkuya karşı avantaj kazanır."
+      ],
+      "actives": [
+        "<strong>Toparlan.</strong> <em>Bonus Aksiyon, 1 yük.</em> 30 fit içinde seni duyabilen müttefikleri seçersin. Her biri fırsat saldırısı tetiklemeden hızının yarısı kadar hareket edebilir.",
+        "<strong>Kraliyet Fermanı.</strong> <em>Aksiyon, 2 yük.</em> 60 fit içindeki bir yaratık bir Bilgelik kurtarma atışı yapar. Başarısız olursa bir sonraki turunun sonuna kadar emrine uymak zorunda kalır.",
+        "<strong>Yıkılmaz Sancak.</strong> <em>Aksiyon, 3 yük, 1 dakika.</em> 10 fitlik bir komuta aurası yayarsın. Auradaki müttefikler seni görebildikleri ya da duyabildikleri sürece +2 AC kazanır.",
+        "<strong>Kralların Yürüyüşü.</strong> <em>Aksiyon, 4 yük.</em> 30 fit içinde seni duyabilen müttefikleri seçersin. Masa emri çözerken her biri hemen hareket edebilir ya da bir silah saldırısı yapabilir."
+      ],
+      "avatar": "<strong>Ebedî Kral.</strong> <em>Bonus Aksiyon, 8 yük, 1 dakika.</em> Etrafında hayaletimsi bir pelerin ve taç belirir. Havada asılı kalabildiğin 30 fit uçuş hızı ve psişik hasara direnç kazanırsın; 30 fit içindeki müttefikler korkuya ve büyülenmeye karşı kurtarma atışlarına relic bonusunu ekler.",
+      "signature": "<strong>Dünya Diz Çökecek.</strong> <em>Uzun dinlenme başına bir kez.</em> 60 fit içinde seçtiğin düşmanlar bir Bilgelik kurtarma atışı yapar. Başarısız olan yaratık 1 dakika boyunca Korkmuş ve Yere Düşmüş olur, hızı 0'a iner ve reaksiyon kullanamaz."
+    },
+    "dreams": {
+      "dream_1_crown_conqueror": {
+        "title": "Boş Taht",
+        "text": "Taşıyıcıya boş tahtın görüntüsü gelir."
+      },
+      "dream_2_crown_conqueror": {
+        "title": "Yıkık Şehir",
+        "text": "Taşıyıcıya yıkık şehrin görüntüsü gelir."
+      },
+      "dream_3_crown_conqueror": {
+        "title": "Hak Edilmiş Taç",
+        "text": "Taşıyıcıya hak edilmiş tacın görüntüsü gelir."
+      },
+      "dream_4_crown_conqueror": {
+        "title": "Aurex",
+        "text": "Taşıyıcıya Aurex'in görüntüsü gelir."
+      }
+    },
+    "memories": {
+      "the_empty_throne": {
+        "title": "Boş Taht",
+        "text": "Aurex boş tahtı hatırlar."
+      },
+      "the_last_king": {
+        "title": "Son Kral",
+        "text": "Aurex son kralı hatırlar."
+      },
+      "when_crowns_were_earned": {
+        "title": "Tacın Hak Edildiği Zamanlar",
+        "text": "Aurex tacın hak edildiği zamanları hatırlar."
+      },
+      "the_first_kingdom": {
+        "title": "İlk Krallık",
+        "text": "Aurex ilk krallığı hatırlar."
+      }
+    },
+    "quotes": {
+      "positive": [
+        "İyi.",
+        "Yol hatırlanıyor."
+      ],
+      "negative": [
+        "Hayır.",
+        "Relic soğuyor."
+      ],
+      "neutral": [
+        "Bekle.",
+        "Seç."
+      ],
+      "signature": [
+        "Ben Aurex'im.",
+        "Kralları Birleştiren Taç"
+      ]
+    },
+    "signatureCeremony": {
+      "title": "Aurex Uyanıyor",
+      "text": [
+        "Relic, Aurex adını söyler.",
+        "Taşıyıcı anlar: Kralları Birleştiren Taç."
+      ]
+    },
+    "lore": {
+      "origin": "Aurex, Egemenliğin yaşayan hafızasıdır.",
+      "hiddenSorrow": "Aurex, kralı güven yerine itaati seçtiği için bölünen ilk krallığı hatırlar.",
+      "knownRumor": "Ozanlar, tacın yönettiği halkın yanında diz çökemeyen hiçbir hükümdarı kabul etmediğini söyler.",
+      "appearanceDormant": "Kararmış bir taç parçası ya da komuta madalyonu; emirler zalimleştiğinde ağırlaşır.",
+      "appearanceAwakened": "Kenarında, özgürce verilmiş yeminleri kaydeden minik yazılar belirir.",
+      "appearanceExalted": "Komuta anlarında taşıyıcının üzerinde, yalnızca yansıyan ışıkta görülebilen hayalî bir taç süzülür.",
+      "appearanceSignature": "Aurex, birleşmiş pek çok taçtan oluşan tam bir altın taca dönüşür; her ucu kaldırılmış bir sancak biçimindedir."
+    },
+    "abilities": {
+      "active1": "Toparlan",
+      "active2": "Kraliyet Fermanı",
+      "active3": "Yıkılmaz Sancak",
+      "active4": "Kralların Yürüyüşü",
+      "avatar": "Ebedî Kral",
+      "signature": "Dünya Diz Çökecek"
+    }
   }
 }
