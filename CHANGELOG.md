@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.3.0
+
+- Added Turkish relic content: names, true names, features, ability names, lore, dreams, memories, mood maps, affinity events, hidden requirements, quotes, and the signature ceremony for all twelve relics (1427 strings). Content is loaded from `data/i18n/<lang>.json` as an overlay on the English data; ids, numbers, and automation data never change.
+- Chat cards from the save resolver, ability helpers, and the Cloak of the Feywilds helpers (Briar Snare, Arrow / Marked by the First Hunt, Nature's Pursuit, Avatar of the First Hunt, Blessing of Sylvara) and the relic journal intro are now translated (394 interface strings).
+- Activity detection, the Cloak chooser lock, and Fey Step handling also recognize localized ability names.
+- Fixed: the Cloak-only "Use Notes" line was shown on all twelve relic descriptions.
+
 ## v1.2.0
 
 - Added interface localization with English and Turkish language files. The GM Affinity Dashboard, GM Control Panel, status labels, and 180+ notifications now follow Foundry's language setting (290 strings).

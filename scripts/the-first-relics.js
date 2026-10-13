@@ -1,6 +1,6 @@
 
 const TFR_MODULE_ID = "the-first-relics";
-const TFR_VERSION = "1.2.0";
+const TFR_VERSION = "1.3.0";
 const TFR_ATTUNEMENT_REFUSAL_FLAG = "refusesAttunement";
 const TFR_FINAL_FORM_BONUS = 5;
 const TFR_FINAL_FORM_CHARGES = 15;
@@ -2241,11 +2241,11 @@ async function TFRCreateJournalLegacy() {
       text: {
         format: 1,
         content: `
-          <h1>The First Relics</h1>
-          <p>Relics are living wills from the First Age. They choose their bearers and awaken through virtue, not ownership.</p>
-          <h2>Known Relics</h2>
+          <h1>${TFRT("The First Relics")}</h1>
+          <p>${TFRT("Relics are living wills from the First Age. They choose their bearers and awaken through virtue, not ownership.")}</p>
+          <h2>${TFRT("Known Relics")}</h2>
           <ul>${list}</ul>
-          <blockquote><p><strong>A Relic never belongs to its bearer. The bearer belongs to the Relic.</strong></p></blockquote>
+          <blockquote><p><strong>${TFRT("A Relic never belongs to its bearer. The bearer belongs to the Relic.")}</strong></p></blockquote>
         `
       }
     }]
@@ -3627,21 +3627,31 @@ function TFRAbilityHelperKind({ applied = false, saveQueued = false, spec = {} }
   return "Helper";
 }
 
+function TFRHelperKindLabel(kind) {
+  const labels = {
+    "Save Resolver": TFRT("Save Resolver"),
+    "Module Helper": TFRT("Module Helper"),
+    "Manual Reminder": TFRT("Manual Reminder"),
+    "Helper": TFRT("Helper")
+  };
+  return labels[kind] || kind;
+}
+
 function TFRAbilityHelperChatContent({ relic, def, spec = {}, applied = false, saveQueued = false } = {}) {
   const ability = TFREscapeHtml(def?.name || "Relic Ability");
   const relicName = TFREscapeHtml(relic?.name || "The First Relic");
   const kind = TFRAbilityHelperKind({ applied, saveQueued, spec });
   const status = saveQueued
-    ? `Waiting for the save roll and GM resolver before applying ${TFREscapeHtml(spec.condition || "the condition")}.`
+    ? TFRT("Waiting for the save roll and GM resolver before applying {condition}.", { condition: TFREscapeHtml(spec.condition || TFRT("the condition")) })
     : applied
-      ? "Module helper effects were applied or queued."
-      : "No direct game effect was applied by the module.";
-  const note = spec.note ? `<li><strong>Manual Reminder.</strong> ${TFREscapeHtml(spec.note)}</li>` : "";
+      ? TFRT("Module helper effects were applied or queued.")
+      : TFRT("No direct game effect was applied by the module.");
+  const note = spec.note ? `<li><strong>${TFRT("Manual Reminder.")}</strong> ${TFREscapeHtml(spec.note)}</li>` : "";
 
   return `
     <div class="tfr-ability-helper-card" data-tfr-helper-kind="${TFREscapeHtml(kind)}">
       <h2>${ability}</h2>
-      <p><strong>${relicName}</strong> - ${TFREscapeHtml(kind)}</p>
+      <p><strong>${relicName}</strong> - ${TFREscapeHtml(TFRHelperKindLabel(kind))}</p>
       <ul>
         <li>${status}</li>
         ${note}
@@ -4099,7 +4109,7 @@ async function TFRCreateManualSaveResolverCard(pending) {
   const spec = TFRRelicAbilityRuntimeSpec(pending.relicId, pending.slot);
   if (!actor || !relic || !def || !spec?.condition) return null;
 
-  const saveText = def.save ? `${String(def.save).toUpperCase()} save` : "saving throw";
+  const saveText = def.save ? TFRT("{ability} save", { ability: String(def.save).toUpperCase() }) : TFRT("saving throw");
   const conditionText = TFREscapeHtml(spec.condition);
   const abilityText = TFREscapeHtml(def.name);
   const itemText = TFREscapeHtml(relic.name);
@@ -4111,11 +4121,11 @@ async function TFRCreateManualSaveResolverCard(pending) {
       content: `
         <div class="tfr-save-resolver" data-tfr-save-pending="${pending.id}">
           <h2>${abilityText}</h2>
-          <p><strong>${itemText}</strong> requires a ${TFREscapeHtml(saveText)} before applying <strong>${conditionText}</strong>.</p>
-          <p>After the save roll is visible, target only the creature(s) that failed, then press the apply button. If all targets succeeded, clear it.</p>
+          <p>${TFRT("<strong>{item}</strong> requires a {save} before applying <strong>{condition}</strong>.", { item: itemText, save: TFREscapeHtml(saveText), condition: conditionText })}</p>
+          <p>${TFRT("After the save roll is visible, target only the creature(s) that failed, then press the apply button. If all targets succeeded, clear it.")}</p>
           <div class="tfr-save-resolver-buttons" style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;">
-            <button type="button" data-tfr-save-action="apply-targets" data-tfr-pending-id="${pending.id}">Apply ${conditionText} to Targeted Failed Save(s)</button>
-            <button type="button" data-tfr-save-action="clear" data-tfr-pending-id="${pending.id}">No Effect / Clear</button>
+            <button type="button" data-tfr-save-action="apply-targets" data-tfr-pending-id="${pending.id}">${TFRT("Apply {condition} to Targeted Failed Save(s)", { condition: conditionText })}</button>
+            <button type="button" data-tfr-save-action="clear" data-tfr-pending-id="${pending.id}">${TFRT("No Effect / Clear")}</button>
           </div>
         </div>`
     });
@@ -4212,7 +4222,7 @@ async function TFRResolveSaveAwareManual(pendingId, action = "apply-targets") {
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor }),
       flags: TFRChatFlags({ saveAwareManualCleared: true, relicId: pending.relicId, slot: pending.slot, pendingId }),
-      content: `<h2>${TFREscapeHtml(def.name)}</h2><p><strong>Save resolver:</strong> cleared. No ${TFREscapeHtml(spec.condition)} condition was applied.</p>`
+      content: `<h2>${TFREscapeHtml(def.name)}</h2><p>${TFRT("<strong>Save resolver:</strong> cleared. No {condition} condition was applied.", { condition: TFREscapeHtml(spec.condition) })}</p>`
     });
     return { ok: true, cleared: true };
   }
@@ -4229,7 +4239,7 @@ async function TFRResolveSaveAwareManual(pendingId, action = "apply-targets") {
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
     flags: TFRChatFlags({ saveAwareManualResolved: true, relicId: pending.relicId, slot: pending.slot, pendingId, failed: names.length }),
-    content: `<h2>${TFREscapeHtml(def.name)}</h2><p><strong>Manual save resolver:</strong> applied <strong>${TFREscapeHtml(spec.condition)}</strong> to ${TFREscapeHtml(names.join(", ") || "no targets")}.</p>`
+    content: `<h2>${TFREscapeHtml(def.name)}</h2><p>${TFRT("<strong>Manual save resolver:</strong> applied <strong>{condition}</strong> to {targets}.", { condition: TFREscapeHtml(spec.condition), targets: TFREscapeHtml(names.join(", ") || TFRT("no targets")) })}</p>`
   });
   return { ok: true, applied: names };
 }
@@ -4302,7 +4312,7 @@ async function TFRFinalizeSaveAwareResult(pending, result, { source = "native-li
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
     flags: TFRChatFlags({ saveAwareResolved: true, relicId: pending.relicId, slot: pending.slot, failed: names.length, autoApplied: true, nativeLike: true }),
-    content: `<h2>${TFREscapeHtml(def.name)}</h2><p><strong>Native save resolver:</strong> ${names.length ? `applied <strong>${TFREscapeHtml(spec.condition)}</strong> to ${names.map(TFREscapeHtml).join(", ")}.` : "all targets succeeded; no condition applied."}</p>`
+    content: `<h2>${TFREscapeHtml(def.name)}</h2><p>${names.length ? TFRT("<strong>Native save resolver:</strong> applied <strong>{condition}</strong> to {targets}.", { condition: TFREscapeHtml(spec.condition), targets: names.map(TFREscapeHtml).join(", ") }) : TFRT("<strong>Native save resolver:</strong> all targets succeeded; no condition applied.")}</p>`
   });
   return true;
 }
@@ -4403,13 +4413,13 @@ async function TFRApplyVerdantSnare(actor, targetActor = null, item = null, opti
 
   const effect = await TFRApplyRestrainedCondition(actor, targetToken || target, item);
   const note = options.fromDnd5eCard
-    ? "dnd5e consumed the resource. Restrained was applied as a GM helper; remove it if the target succeeds its save."
-    : "Restrained was applied as a GM helper; remove it if the target succeeds its save.";
+    ? TFRT("dnd5e consumed the resource. Restrained was applied as a GM helper; remove it if the target succeeds its save.")
+    : TFRT("Restrained was applied as a GM helper; remove it if the target succeeds its save.");
 
   return ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
     flags: TFRChatFlags({ ability: "verdantSnare", targetActorId: target.id }),
-    content: `<h2>Briar Snare</h2><p>Target: ${target.name}. ${note}</p>`
+    content: `<h2>${TFRT("Briar Snare")}</h2><p>${TFRT("Target: {target}.", { target: target.name })} ${note}</p>`
   });
 }
 
@@ -4429,7 +4439,7 @@ async function TFRApplyCloakMark(sourceActor, targetActor) {
   ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor: sourceActor }),
     flags: TFRChatFlags({ ability: "arrowFirstHunt", targetActorId: targetActor.id }),
-    content: `<h2>Marked by the First Hunt</h2><p>${targetActor.name} is marked by ${sourceActor.name}. Resolve invisibility denial, tracking, Avatar advantage, and Signature interactions manually where needed.</p>`
+    content: `<h2>${TFRT("Marked by the First Hunt")}</h2><p>${TFRT("{target} is marked by {source}. Resolve invisibility denial, tracking, Avatar advantage, and Signature interactions manually where needed.", { target: targetActor.name, source: sourceActor.name })}</p>`
   });
   return created;
 }
@@ -4445,7 +4455,7 @@ async function TFRApplyNaturePursuit(actor, item) {
   ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
     flags: TFRChatFlags({ ability: "naturesPursuit" }),
-    content: `<h2>Nature's Pursuit</h2><p>${actor.name}'s speed increases by 10 ft for 1 minute. Ignore nonmagical difficult terrain and long-range disadvantage manually where needed.</p>`
+    content: `<h2>${TFRT("Nature's Pursuit")}</h2><p>${TFRT("{actor}'s speed increases by 10 ft for 1 minute. Ignore nonmagical difficult terrain and long-range disadvantage manually where needed.", { actor: actor.name })}</p>`
   });
 }
 
@@ -4464,7 +4474,7 @@ async function TFRApplyCloakAvatar(actor, item) {
   ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
     flags: TFRChatFlags({ ability: "avatar" }),
-    content: `<h2>Avatar of the First Hunt</h2><p>${actor.name} manifests Sylvara's hunt. Fly 40 ft, hover, and helper bonuses are applied. Resolve marked target advantage, cover ignore, beast behavior, and terrain narration manually.</p>`
+    content: `<h2>${TFRT("Avatar of the First Hunt")}</h2><p>${TFRT("{actor} manifests Sylvara's hunt. Fly 40 ft, hover, and helper bonuses are applied. Resolve marked target advantage, cover ignore, beast behavior, and terrain narration manually.", { actor: actor.name })}</p>`
   });
 }
 
@@ -5049,7 +5059,7 @@ async function TFRUseCloakAbility(actorOrId, abilityId, options = {}) {
     return ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor }),
       flags: TFRChatFlags({ ability: "arrowFirstHunt" }),
-      content: `<h2>Arrow of the First Hunt</h2><p>Roll the item's damage activity for extra force damage if needed. The target cannot benefit from invisibility against ${actor.name} until the start of ${actor.name}'s next turn.</p>`
+      content: `<h2>${TFRT("Arrow of the First Hunt")}</h2><p>${TFRT("Roll the item's damage activity for extra force damage if needed. The target cannot benefit from invisibility against {actor} until the start of {actor}'s next turn.", { actor: actor.name })}</p>`
     });
   }
   if (abilityId === "naturesPursuit") return TFRApplyNaturePursuit(actor, item);
@@ -5062,7 +5072,7 @@ async function TFRUseCloakAbility(actorOrId, abilityId, options = {}) {
     return ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor }),
       flags: TFRChatFlags({ ability: "signature" }),
-      content: `<h1>Blessing of Sylvara</h1><p>For 1 minute, marked prey cannot hide behind invisibility, mundane hiding, natural terrain, or nonmagical cover. Resolve first-hit extra damage and free Fey Step manually.</p>`
+      content: `<h1>${TFRT("Blessing of Sylvara")}</h1><p>${TFRT("For 1 minute, marked prey cannot hide behind invisibility, mundane hiding, natural terrain, or nonmagical cover. Resolve first-hit extra damage and free Fey Step manually.")}</p>`
     });
   }
 }
