@@ -92,6 +92,7 @@ Hooks.once("ready", async () => {
     syncProgressiveAppearanceDescriptions: TFRSyncProgressiveAppearanceDescriptions,
     syncFinalFormItems: TFRSyncFinalFormItems,
     syncPassiveEffects: TFRSyncAllPassiveEffects,
+    passiveStatus: TFRPassiveStatus,
     auditTrueNameSealing: TFRAuditTrueNameSealing,
     clearLockedActivities: TFRClearLockedActivities,
     setAttunementRefusal: TFRSetAttunementRefusal,

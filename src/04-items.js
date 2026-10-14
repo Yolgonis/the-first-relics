@@ -199,6 +199,15 @@ async function TFRSyncRelicBonusEffect(item, relic, stage, signatureUnlocked = f
  * Aura Effects aura on friendly tokens; without that module the passive stays GM-resolved.
  */
 const TFR_PASSIVE_EFFECTS = {
+  cloak_feywilds: {
+    // Perception is always automated; the tracking part of the Survival bonus is GM-resolved.
+    0: { changes: [["system.skills.prc.bonuses.check", "ADD", "+{bonus}"], ["system.skills.prc.bonuses.passive", "ADD", "+{bonus}"]], note: "instinct" },
+    1: { changes: [["system.attributes.movement.ignoredDifficultTerrain", "ADD", "nonmagical"]], note: "terrain" }
+  },
+  mantle_first_seer: {
+    // Arcana and History are about magic and history by nature; Investigation depends on the subject.
+    0: { changes: [["system.skills.arc.bonuses.check", "ADD", "+{bonus}"], ["system.skills.his.bonuses.check", "ADD", "+{bonus}"]], note: "scholar" }
+  },
   blood_first_dragon: {
     0: { changes: [["system.attributes.hp.bonuses.level", "ADD", "+1"]] },
     1: { changes: [["system.attributes.ac.bonus", "ADD", "+1"]] },
@@ -237,11 +246,13 @@ function TFRAuraEffectsActive() {
  */
 const TFR_PASSIVE_TRIGGERS = {
   aegis_dawn: { 0: {}, 3: {} },
+  crown_conqueror: { 1: { note: "banner" } },
+  manacles_unbroken: { 2: { note: "rage" } },
   cloak_shadowfell: { 3: { note: "midi" } },
   heart_yggdrasil: { 0: {}, 1: { note: "chatHealing" }, 2: { note: "canvas" } },
   vestments_first_saint: { 1: {} },
-  mantle_first_seer: { 3: { note: "chronicle" } },
-  chains_patron: { 2: { note: "chatDamage" } }
+  mantle_first_seer: { 1: {}, 3: { note: "chronicle" } },
+  chains_patron: { 0: { note: "borrowed" }, 2: { note: "chatDamage" } }
 };
 
 /** Number of passive features unlocked at a stage; the description shows the same ones. */
@@ -268,6 +279,12 @@ function TFRPassiveAutomationNote(automation) {
     case "chatDamage": return TFRT("Automated when damage is applied from a chat card.");
     case "canvas": return TFRT("Automated for allies with tokens on the current scene.");
     case "chronicle": return TFRT("Temporary hit points are automated; surprise is GM-resolved.");
+    case "instinct": return TFRT("Perception is automated; the tracking bonus to Survival is GM-resolved.");
+    case "terrain": return TFRT("Automated for all nonmagical difficult terrain.");
+    case "scholar": return TFRT("Arcana and History are automated; Investigation is GM-resolved.");
+    case "banner": return TFRT("When combat starts, the GM chooses the allies.");
+    case "rage": return TFRT("Automated while a Rage effect is active.");
+    case "borrowed": return TFRT("Automated for warlock spells and Eldritch Blast; pact weapons are GM-resolved.");
     default: return TFRT("Automated.");
   }
 }

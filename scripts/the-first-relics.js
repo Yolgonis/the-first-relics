@@ -2003,6 +2003,15 @@ async function TFRSyncRelicBonusEffect(item, relic, stage, signatureUnlocked = f
  * Aura Effects aura on friendly tokens; without that module the passive stays GM-resolved.
  */
 const TFR_PASSIVE_EFFECTS = {
+  cloak_feywilds: {
+    // Perception is always automated; the tracking part of the Survival bonus is GM-resolved.
+    0: { changes: [["system.skills.prc.bonuses.check", "ADD", "+{bonus}"], ["system.skills.prc.bonuses.passive", "ADD", "+{bonus}"]], note: "instinct" },
+    1: { changes: [["system.attributes.movement.ignoredDifficultTerrain", "ADD", "nonmagical"]], note: "terrain" }
+  },
+  mantle_first_seer: {
+    // Arcana and History are about magic and history by nature; Investigation depends on the subject.
+    0: { changes: [["system.skills.arc.bonuses.check", "ADD", "+{bonus}"], ["system.skills.his.bonuses.check", "ADD", "+{bonus}"]], note: "scholar" }
+  },
   blood_first_dragon: {
     0: { changes: [["system.attributes.hp.bonuses.level", "ADD", "+1"]] },
     1: { changes: [["system.attributes.ac.bonus", "ADD", "+1"]] },
@@ -2041,11 +2050,13 @@ function TFRAuraEffectsActive() {
  */
 const TFR_PASSIVE_TRIGGERS = {
   aegis_dawn: { 0: {}, 3: {} },
+  crown_conqueror: { 1: { note: "banner" } },
+  manacles_unbroken: { 2: { note: "rage" } },
   cloak_shadowfell: { 3: { note: "midi" } },
   heart_yggdrasil: { 0: {}, 1: { note: "chatHealing" }, 2: { note: "canvas" } },
   vestments_first_saint: { 1: {} },
-  mantle_first_seer: { 3: { note: "chronicle" } },
-  chains_patron: { 2: { note: "chatDamage" } }
+  mantle_first_seer: { 1: {}, 3: { note: "chronicle" } },
+  chains_patron: { 0: { note: "borrowed" }, 2: { note: "chatDamage" } }
 };
 
 /** Number of passive features unlocked at a stage; the description shows the same ones. */
@@ -2072,6 +2083,12 @@ function TFRPassiveAutomationNote(automation) {
     case "chatDamage": return TFRT("Automated when damage is applied from a chat card.");
     case "canvas": return TFRT("Automated for allies with tokens on the current scene.");
     case "chronicle": return TFRT("Temporary hit points are automated; surprise is GM-resolved.");
+    case "instinct": return TFRT("Perception is automated; the tracking bonus to Survival is GM-resolved.");
+    case "terrain": return TFRT("Automated for all nonmagical difficult terrain.");
+    case "scholar": return TFRT("Arcana and History are automated; Investigation is GM-resolved.");
+    case "banner": return TFRT("When combat starts, the GM chooses the allies.");
+    case "rage": return TFRT("Automated while a Rage effect is active.");
+    case "borrowed": return TFRT("Automated for warlock spells and Eldritch Blast; pact weapons are GM-resolved.");
     default: return TFRT("Automated.");
   }
 }
@@ -9401,6 +9418,7 @@ Hooks.once("ready", async () => {
     syncProgressiveAppearanceDescriptions: TFRSyncProgressiveAppearanceDescriptions,
     syncFinalFormItems: TFRSyncFinalFormItems,
     syncPassiveEffects: TFRSyncAllPassiveEffects,
+    passiveStatus: TFRPassiveStatus,
     auditTrueNameSealing: TFRAuditTrueNameSealing,
     clearLockedActivities: TFRClearLockedActivities,
     setAttunementRefusal: TFRSetAttunementRefusal,
@@ -9497,6 +9515,33 @@ function TFRPassiveActive(item, index) {
 function TFRActivePassiveItem(actor, relicId, index) {
   const item = actor?.items?.find?.(candidate => candidate.getFlag?.(TFR_MODULE_ID, "relicId") === relicId);
   return item && TFRPassiveActive(item, index) ? item : null;
+}
+
+/** The relic bonus of an item, read from its relic bonus effect so synchronous hooks can use it. */
+function TFRItemRelicBonus(item) {
+  const effect = TFRRelicBonusEffect(item);
+  const change = (effect?.changes || []).find(c => c.key === "system.attributes.ac.bonus");
+  return Math.abs(Number(String(change?.value ?? "1").replace(/\s/g, ""))) || 1;
+}
+
+/**
+ * The started combat the actor takes part in. game.combat only follows the scene the user is
+ * viewing, so a GM looking at another scene would otherwise lose per-round limits.
+ */
+function TFRActorCombat(actor) {
+  const inCombat = combat => combat?.started && combat.combatants.some(combatant => combatant.actor === actor);
+  return inCombat(game.combat) ? game.combat : game.combats?.find(inCombat) || null;
+}
+
+/** "combatId:round" for the actor's combat, or null outside combat. */
+function TFRCombatRoundKey(actor) {
+  const combat = TFRActorCombat(actor);
+  return combat ? `${combat.id}:${combat.round}` : null;
+}
+
+function TFRCombatTurnKey(actor) {
+  const combat = TFRActorCombat(actor);
+  return combat ? `${combat.id}:${combat.round}:${combat.turn}` : null;
 }
 
 function TFRPassiveUsed(item, index) {
@@ -9609,6 +9654,38 @@ async function TFRRemoveCombatPassives(combat, triggers = null) {
   }
 }
 
+// ---- Combat start: Banner of Order (Crown) - the GM chooses the allies ----
+
+async function TFRBannerOfOrder(combat) {
+  const seen = new Set();
+  for (const combatant of combat.combatants) {
+    const bearer = combatant.actor;
+    if (!bearer || seen.has(bearer.uuid)) continue;
+    seen.add(bearer.uuid);
+    const crown = TFRActivePassiveItem(bearer, "crown_conqueror", 1);
+    if (!crown) continue;
+    const limit = TFRProficiency(bearer);
+    const amount = limit + await TFRPassiveRelicBonus(crown);
+    const disposition = combatant.token?.disposition;
+    const allies = combat.combatants.filter(other => other.actor && other.actor !== bearer && other.token?.disposition === disposition);
+    if (!allies.length) continue;
+    const rows = allies.map(ally => `<label class="checkbox"><input type="checkbox" name="ally" value="${ally.id}"> ${TFREscapeHtml(ally.name)}</label>`).join("");
+    const chosen = await foundry.applications.api.DialogV2.wait({
+      window: { title: TFRT("Banner of Order") },
+      content: `<p>${TFRT("{bearer} raises the banner. Choose up to {limit} allies; each gains {amount} temporary hit points.", { bearer: TFREscapeHtml(bearer.name), limit, amount })}</p><div class="form-group stacked">${rows}</div>`,
+      buttons: [
+        { action: "apply", label: TFRT("Apply"), default: true, callback: (event, button) => [...button.form.querySelectorAll("input[name=ally]:checked")].map(input => input.value) },
+        { action: "skip", label: TFRT("Skip"), callback: () => [] }
+      ],
+      rejectClose: false
+    }) || [];
+    const targets = chosen.slice(0, limit).map(id => combat.combatants.get(id)?.actor).filter(Boolean);
+    for (const ally of targets) await TFRApplyTempHp(ally, amount, TFRT("Banner of Order"));
+    if (chosen.length > limit) TFRNotifyWarn(TFRT("Banner of Order: only the first {limit} allies were chosen.", { limit }));
+    if (targets.length) await TFRPassiveChat(bearer, crown, 1, TFRT("{allies} gain {amount} temporary hit points.", { allies: targets.map(a => TFREscapeHtml(a.name)).join(", "), amount }));
+  }
+}
+
 // ---- Dropping to 0 hit points: First Light (Aegis), Endless Spring (Heart of Yggdrasil) ----
 
 /** Finds a passive that keeps `actor` at 1 hit point, or null. */
@@ -9689,6 +9766,81 @@ function TFRAddHealingReceived(actor, damages) {
   if (healing) healing.value = Number(healing.value) + TFRProficiency(actor);
 }
 
+// ---- Concentration saves: Perfect Concentration (Mantle of the First Seer) ----
+
+function TFRConcentrationAdvantage(config) {
+  const actor = config?.subject;
+  const mantle = TFRActivePassiveItem(actor, "mantle_first_seer", 1);
+  if (!mantle) return;
+  const spells = [...(actor.concentration?.effects ?? [])].map(effect => fromUuidSync(effect.origin)).filter(Boolean);
+  const roll = config.rolls?.[0];
+  if (!roll) return;
+  if (spells.some(spell => spell.system?.school === "div")) {
+    roll.options ??= {};
+    roll.options.advantage = true;
+  } else {
+    roll.parts ??= [];
+    roll.parts.push(String(TFRItemRelicBonus(mantle)));
+  }
+}
+
+// ---- Damage while raging: Will Before Wound (Girdle of the Unbroken) ----
+
+function TFRIsRaging(actor) {
+  for (const effect of actor?.allApplicableEffects?.() ?? []) {
+    if (!effect.disabled && !effect.isSuppressed && /\brage\b/i.test(effect.name)) return true;
+  }
+  return false;
+}
+
+/** The Girdle whose Will Before Wound can still reduce damage this round, or null. */
+function TFRWillBeforeWoundItem(actor) {
+  const girdle = TFRActivePassiveItem(actor, "manacles_unbroken", 2);
+  if (!girdle || !TFRIsRaging(actor)) return null;
+  const round = TFRCombatRoundKey(actor);
+  return round && girdle.getFlag(TFR_MODULE_ID, "willBeforeWoundRound") === round ? null : girdle;
+}
+
+// Damage previews also call calculateDamage, so the once-per-round use is recorded only when the
+// damage is actually applied (TFRMarkWillBeforeWound).
+function TFRReduceRagingDamage(actor, damages) {
+  const girdle = TFRWillBeforeWoundItem(actor);
+  if (!girdle) return;
+  let remaining = TFRItemRelicBonus(girdle);
+  for (const damage of [...damages].filter(d => !(d.type in CONFIG.DND5E.healingTypes)).sort((a, b) => b.value - a.value)) {
+    const cut = Math.min(remaining, Math.max(0, Number(damage.value) || 0));
+    damage.value -= cut;
+    remaining -= cut;
+    if (!remaining) break;
+  }
+}
+
+function TFRMarkWillBeforeWound(actor, amount) {
+  if (!(amount > 0)) return;
+  const girdle = TFRWillBeforeWoundItem(actor);
+  const round = TFRCombatRoundKey(actor);
+  if (!girdle || !round || !girdle.isOwner) return;
+  girdle.setFlag(TFR_MODULE_ID, "willBeforeWoundRound", round).catch(error => console.warn("The First Relics | Could not record Will Before Wound.", error));
+}
+
+// ---- Warlock damage: Borrowed Power (Chains of the Patron) ----
+
+function TFRAddBorrowedPower(config) {
+  const activity = config?.subject;
+  const spell = activity?.item;
+  if (!activity || activity.type === "heal" || spell?.type !== "spell") return;
+  const warlockSpell = spell.system?.sourceClass === "warlock" || spell.system?.identifier === "eldritch-blast";
+  if (!warlockSpell) return;
+  const chains = TFRActivePassiveItem(activity.actor, "chains_patron", 0);
+  if (!chains) return;
+  const turn = TFRCombatTurnKey(activity.actor);
+  if (turn && chains.getFlag(TFR_MODULE_ID, "borrowedPowerTurn") === turn) return;
+  const roll = config.rolls?.[0];
+  if (!roll?.parts) return;
+  roll.parts.push(String(TFRItemRelicBonus(chains)));
+  if (turn && chains.isOwner) chains.setFlag(TFR_MODULE_ID, "borrowedPowerTurn", turn).catch(error => console.warn("The First Relics | Could not record Borrowed Power.", error));
+}
+
 // ---- Defeating a hostile creature: Price Paid (Chains of the Patron) ----
 
 // Hit points before damage, recorded in preApplyDamage, so applyDamage can tell a kill apart from
@@ -9715,6 +9867,20 @@ function TFRPricePaidCheck(actor, amount, options) {
   })().catch(error => console.warn("The First Relics | Could not apply Price Paid.", error));
 }
 
+/** Diagnostic: the state of every relic passive on an actor (unlocked, active, used this rest). */
+function TFRPassiveStatus(actorOrId) {
+  const actor = TFRResolveActor(actorOrId);
+  if (!actor) return [];
+  return actor.items.filter(item => item.getFlag?.(TFR_MODULE_ID, "relicId")).flatMap(item => [0, 1, 2, 3].map(index => ({
+    relic: item.name,
+    passive: index,
+    unlocked: index < TFRUnlockedPassiveCount(TFRRelicItemStage(item)),
+    active: TFRPassiveActive(item, index),
+    usedThisRest: TFRPassiveUsed(item, index),
+    raging: TFRIsRaging(actor)
+  })));
+}
+
 function TFRRegisterPassiveTriggers() {
   if (globalThis.__TFR_PASSIVE_TRIGGERS__) return;
   globalThis.__TFR_PASSIVE_TRIGGERS__ = true;
@@ -9722,7 +9888,7 @@ function TFRRegisterPassiveTriggers() {
   Hooks.on("updateCombat", (combat, changed) => {
     if (!TFRIsResponsibleGM() || !("round" in changed)) return;
     const run = combat.round === 1
-      ? TFRStartCombatPassives(combat)
+      ? TFRStartCombatPassives(combat).then(() => TFRBannerOfOrder(combat))
       : combat.round > 1 ? TFRRemoveCombatPassives(combat, ["dawnsEndurance"]) : null;
     run?.catch(error => console.warn("The First Relics | Combat passive trigger failed.", error));
   });
@@ -9738,7 +9904,11 @@ function TFRRegisterPassiveTriggers() {
     TFRPassivesAfterActivity(activity).catch(error => console.warn("The First Relics | Activity passive trigger failed.", error));
   });
   Hooks.on("dnd5e.preRollDamageV2", TFRAddHealingGiven);
+  Hooks.on("dnd5e.preRollDamageV2", TFRAddBorrowedPower);
   Hooks.on("dnd5e.preCalculateDamage", TFRAddHealingReceived);
+  Hooks.on("dnd5e.preCalculateDamage", TFRReduceRagingDamage);
+  Hooks.on("dnd5e.applyDamage", TFRMarkWillBeforeWound);
+  Hooks.on("dnd5e.preRollConcentrationV2", TFRConcentrationAdvantage);
   Hooks.on("dnd5e.preApplyDamage", TFRRecordHpBeforeDamage);
   Hooks.on("dnd5e.applyDamage", TFRPricePaidCheck);
 }
