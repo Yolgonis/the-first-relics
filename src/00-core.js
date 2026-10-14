@@ -18,6 +18,10 @@ const TFR_SAVE_AWARE_TIMEOUT_MS = 60000;
 const TFR_SAVE_AWARE_NATIVE_DELAY_MS = 1200;
 const TFR_SAVE_AWARE_WORKFLOW_CACHE_MS = 15000;
 const TFR_SAVE_AWARE_WORKFLOWS = [];
+// Resolves when the ready hook's item repairs have finished; batch operations wait for it so
+// they never rebuild the same relic copies or write relic state at the same time.
+let TFR_STARTUP_SYNC = Promise.resolve();
+const TFR_RELIC_LOCKS = new Map();
 
 /**
  * Translate a user-facing English string.

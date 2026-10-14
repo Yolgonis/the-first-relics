@@ -106,35 +106,38 @@ Hooks.once("ready", async () => {
   TFRRegisterSaveAwareAutomation();
   TFRRegisterSaveAwareChatButtons();
   TFRRegisterAttunementRefusal();
-  try {
-    await TFRNormalizeRefusingRelicItems();
-  } catch (error) {
-    console.error("The First Relics | Could not normalize refused relic feature suppression.", error);
-  }
-  try {
-    await TFRMigrateCloakDisplayName();
-  } catch (error) {
-    console.error(`The First Relics | Could not migrate existing items to ${TFR_CLOAK_DISPLAY_NAME}.`, error);
-  }
-  try {
-    await TFRSyncSealedTrueNameDescriptions();
-  } catch (error) {
-    console.error("The First Relics | Could not repair prematurely revealed true names.", error);
-  }
-  try {
-    await TFRSyncExistingLoreJournal();
-  } catch (error) {
-    console.error("The First Relics | Could not synchronize the existing lore journal.", error);
-  }
-  try {
-    await TFRSyncFinalFormItems();
-  } catch (error) {
-    console.error("The First Relics | Could not synchronize 1000-Affinity Final Form bonuses.", error);
-  }
-  try {
-    await TFRSyncProgressiveAppearanceDescriptions();
-  } catch (error) {
-    console.error("The First Relics | Could not synchronize progressive player manifestations.", error);
-  }
+  TFR_STARTUP_SYNC = (async () => {
+    try {
+      await TFRNormalizeRefusingRelicItems();
+    } catch (error) {
+      console.error("The First Relics | Could not normalize refused relic feature suppression.", error);
+    }
+    try {
+      await TFRMigrateCloakDisplayName();
+    } catch (error) {
+      console.error(`The First Relics | Could not migrate existing items to ${TFR_CLOAK_DISPLAY_NAME}.`, error);
+    }
+    try {
+      await TFRSyncSealedTrueNameDescriptions();
+    } catch (error) {
+      console.error("The First Relics | Could not repair prematurely revealed true names.", error);
+    }
+    try {
+      await TFRSyncExistingLoreJournal();
+    } catch (error) {
+      console.error("The First Relics | Could not synchronize the existing lore journal.", error);
+    }
+    try {
+      await TFRSyncFinalFormItems();
+    } catch (error) {
+      console.error("The First Relics | Could not synchronize 1000-Affinity Final Form bonuses.", error);
+    }
+    try {
+      await TFRSyncProgressiveAppearanceDescriptions();
+    } catch (error) {
+      console.error("The First Relics | Could not synchronize progressive player manifestations.", error);
+    }
+  })();
+  await TFR_STARTUP_SYNC;
   console.log(`The First Relics Framework v${TFR_VERSION} loaded.`);
 });

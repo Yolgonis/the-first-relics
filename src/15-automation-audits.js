@@ -232,6 +232,7 @@ async function TFRAuditInventorySync() {
 }
 
 async function TFRSyncAllInventoryStages() {
+  await TFR_STARTUP_SYNC;
   const relics = await TFRLoadRelics();
   const result = [];
 

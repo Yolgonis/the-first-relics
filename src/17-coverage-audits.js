@@ -189,6 +189,7 @@ async function TFRResetRelicWorldState(value = 0, stage = "dormant", signatureUn
 
 async function TFRResetTestLabSafe() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
+  await TFR_STARTUP_SYNC;
 
   await TFRDeleteTestLab();
   await TFRResetRelicWorldState(0, "dormant", false);
@@ -262,6 +263,7 @@ async function TFRResetTestLabSafe() {
 
 async function TFRCreatePlaytestLabSafe() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
+  await TFR_STARTUP_SYNC;
   const labFolderIds = game.folders
     .filter(folder => folder.type === "Actor" && folder.name === TFR_TEST_LAB_FOLDER)
     .map(folder => folder.id);

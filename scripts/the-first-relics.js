@@ -20,6 +20,10 @@ const TFR_SAVE_AWARE_TIMEOUT_MS = 60000;
 const TFR_SAVE_AWARE_NATIVE_DELAY_MS = 1200;
 const TFR_SAVE_AWARE_WORKFLOW_CACHE_MS = 15000;
 const TFR_SAVE_AWARE_WORKFLOWS = [];
+// Resolves when the ready hook's item repairs have finished; batch operations wait for it so
+// they never rebuild the same relic copies or write relic state at the same time.
+let TFR_STARTUP_SYNC = Promise.resolve();
+const TFR_RELIC_LOCKS = new Map();
 
 /**
  * Translate a user-facing English string.
@@ -2183,7 +2187,17 @@ async function TFRRebuildRelicItemDocument(item, relic, stage, signatureUnlocked
   return created;
 }
 
+/** False once a world or actor item has been deleted, e.g. replaced by a concurrent rebuild. */
+function TFRItemStillExists(item) {
+  if (!item?.id) return false;
+  if (item.pack) return true;
+  const parent = item.parent;
+  if (parent?.documentName === "Actor") return !!parent.items?.get(item.id);
+  return !!game.items?.get(item.id);
+}
+
 async function TFRUpdateRelicItem(item, stage, signatureUnlockedOverride = null) {
+  if (!TFRItemStillExists(item)) return null;
   const relics = await TFRLoadRelics();
   const relic = relics.find(r => r.name === item.name || item.getFlag("the-first-relics", "relicId") === r.id);
   if (!relic) return null;
@@ -2749,6 +2763,14 @@ async function TFRAuditFinalFormBonuses() {
   return { ok: failed.length === 0, checked: rows.length, failed, rows };
 }
 
+/** Runs fn after every earlier rebuild of the same relic has finished. */
+function TFRWithRelicLock(relicId, fn) {
+  const previous = TFR_RELIC_LOCKS.get(relicId) || Promise.resolve();
+  const run = previous.then(fn);
+  TFR_RELIC_LOCKS.set(relicId, run.catch(() => {}));
+  return run;
+}
+
 async function TFRSyncFinalFormItems() {
   if (!game.user?.isGM) return [];
   const relics = await TFRLoadRelics();
@@ -2765,18 +2787,21 @@ async function TFRSyncFinalFormItems() {
       await TFRSetRelicState(relic.id, state);
     }
 
-    for (const item of TFRFindAllRelicItemCopies(relic)) {
-      const ready = TFRRelicItemStage(item) === "exalted"
-        && TFRRelicItemSignatureUnlocked(item)
-        && !!item.getFlag(TFR_MODULE_ID, "finalForm")
-        && TFRHasUniversalRelicBonus(item, TFR_FINAL_FORM_BONUS)
-        && Number(item.system?.uses?.max) === TFR_FINAL_FORM_CHARGES
-        && String(item.system?.description?.value || "").includes(`<strong>+${TFR_FINAL_FORM_BONUS} AC</strong>`)
-        && TFRDescriptionShowsCharges(String(item.system?.description?.value || ""), TFR_FINAL_FORM_CHARGES);
-      if (ready) continue;
-      const rebuilt = await TFRUpdateRelicItem(item, "exalted", true);
-      rows.push({ relic: relic.name, location: item.parent?.name || "World Item Directory", item: rebuilt?.name || item.name, synced: !!rebuilt });
-    }
+    // Copies are looked up inside the lock, after any earlier rebuild replaced them.
+    await TFRWithRelicLock(relic.id, async () => {
+      for (const item of TFRFindAllRelicItemCopies(relic)) {
+        const ready = TFRRelicItemStage(item) === "exalted"
+          && TFRRelicItemSignatureUnlocked(item)
+          && !!item.getFlag(TFR_MODULE_ID, "finalForm")
+          && TFRHasUniversalRelicBonus(item, TFR_FINAL_FORM_BONUS)
+          && Number(item.system?.uses?.max) === TFR_FINAL_FORM_CHARGES
+          && String(item.system?.description?.value || "").includes(`<strong>+${TFR_FINAL_FORM_BONUS} AC</strong>`)
+          && TFRDescriptionShowsCharges(String(item.system?.description?.value || ""), TFR_FINAL_FORM_CHARGES);
+        if (ready) continue;
+        const rebuilt = await TFRUpdateRelicItem(item, "exalted", true);
+        rows.push({ relic: relic.name, location: item.parent?.name || "World Item Directory", item: rebuilt?.name || item.name, synced: !!rebuilt });
+      }
+    });
   }
 
   if (rows.length) TFRNotifyInfo(TFRT("The First Relics: {rowsCount} Final Form item copy/copies synchronized to +{TFR_FINAL_FORM_BONUS} and {TFR_FINAL_FORM_CHARGES} charges.", { rowsCount: rows.length, TFR_FINAL_FORM_BONUS: TFR_FINAL_FORM_BONUS, TFR_FINAL_FORM_CHARGES: TFR_FINAL_FORM_CHARGES }));
@@ -2784,6 +2809,12 @@ async function TFRSyncFinalFormItems() {
 }
 
 async function TFRUpdateAllRelicCopies(relic, stage, signatureUnlocked = false) {
+  await TFR_STARTUP_SYNC;
+  return TFRWithRelicLock(relic.id, () => TFRUpdateAllRelicCopiesNow(relic, stage, signatureUnlocked));
+}
+
+async function TFRUpdateAllRelicCopiesNow(relic, stage, signatureUnlocked) {
+  // Copies are looked up inside the lock, after any earlier rebuild replaced them.
   const copies = TFRFindAllRelicItemCopies(relic);
   if (!copies.length) {
     ui.notifications.warn(TFRT("The First Relics: No item copies found for {relicName}.", { relicName: relic.name }));
@@ -2804,6 +2835,7 @@ async function TFRUpdateAllRelicCopies(relic, stage, signatureUnlocked = false) 
 
 
 async function TFRSetRelicAffinity(relicId, value, reason = "") {
+  await TFR_STARTUP_SYNC;
   const relic = await TFRGetRelicById(relicId);
   if (!relic) return ui.notifications.warn(TFRT("The First Relics: Relic not found: {relicId}", { relicId: relicId }));
 
@@ -5239,6 +5271,7 @@ async function TFRAuditInventorySync() {
 }
 
 async function TFRSyncAllInventoryStages() {
+  await TFR_STARTUP_SYNC;
   const relics = await TFRLoadRelics();
   const result = [];
 
@@ -5431,6 +5464,7 @@ async function TFRDeleteTestLab() {
 
 async function TFRRestoreAfterTestLab() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
+  await TFR_STARTUP_SYNC;
   await TFRDeleteTestLab();
   const backup = TFRGetTestLabBackupState();
   if (backup) {
@@ -5449,6 +5483,7 @@ async function TFRRestoreAfterTestLab() {
 
 async function TFRResetTestLab(options = {}) {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
+  await TFR_STARTUP_SYNC;
   const backup = TFRGetTestLabBackupState() || TFRGetWorldState();
   await TFRSetTestLabBackupState(backup);
   await TFRDeleteTestLab();
@@ -5595,6 +5630,7 @@ async function TFRPrepareRelicForTestActor(actor, relic, stage = "exalted", affi
 
 async function TFRCreateTestLab(options = {}) {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
+  await TFR_STARTUP_SYNC;
   const stage = options.stage || "exalted";
   const affinity = Number(options.affinity ?? 1000);
 
@@ -6281,6 +6317,7 @@ async function TFRResetRelicWorldState(value = 0, stage = "dormant", signatureUn
 
 async function TFRResetTestLabSafe() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
+  await TFR_STARTUP_SYNC;
 
   await TFRDeleteTestLab();
   await TFRResetRelicWorldState(0, "dormant", false);
@@ -6354,6 +6391,7 @@ async function TFRResetTestLabSafe() {
 
 async function TFRCreatePlaytestLabSafe() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
+  await TFR_STARTUP_SYNC;
   const labFolderIds = game.folders
     .filter(folder => folder.type === "Actor" && folder.name === TFR_TEST_LAB_FOLDER)
     .map(folder => folder.id);
@@ -9049,35 +9087,38 @@ Hooks.once("ready", async () => {
   TFRRegisterSaveAwareAutomation();
   TFRRegisterSaveAwareChatButtons();
   TFRRegisterAttunementRefusal();
-  try {
-    await TFRNormalizeRefusingRelicItems();
-  } catch (error) {
-    console.error("The First Relics | Could not normalize refused relic feature suppression.", error);
-  }
-  try {
-    await TFRMigrateCloakDisplayName();
-  } catch (error) {
-    console.error(`The First Relics | Could not migrate existing items to ${TFR_CLOAK_DISPLAY_NAME}.`, error);
-  }
-  try {
-    await TFRSyncSealedTrueNameDescriptions();
-  } catch (error) {
-    console.error("The First Relics | Could not repair prematurely revealed true names.", error);
-  }
-  try {
-    await TFRSyncExistingLoreJournal();
-  } catch (error) {
-    console.error("The First Relics | Could not synchronize the existing lore journal.", error);
-  }
-  try {
-    await TFRSyncFinalFormItems();
-  } catch (error) {
-    console.error("The First Relics | Could not synchronize 1000-Affinity Final Form bonuses.", error);
-  }
-  try {
-    await TFRSyncProgressiveAppearanceDescriptions();
-  } catch (error) {
-    console.error("The First Relics | Could not synchronize progressive player manifestations.", error);
-  }
+  TFR_STARTUP_SYNC = (async () => {
+    try {
+      await TFRNormalizeRefusingRelicItems();
+    } catch (error) {
+      console.error("The First Relics | Could not normalize refused relic feature suppression.", error);
+    }
+    try {
+      await TFRMigrateCloakDisplayName();
+    } catch (error) {
+      console.error(`The First Relics | Could not migrate existing items to ${TFR_CLOAK_DISPLAY_NAME}.`, error);
+    }
+    try {
+      await TFRSyncSealedTrueNameDescriptions();
+    } catch (error) {
+      console.error("The First Relics | Could not repair prematurely revealed true names.", error);
+    }
+    try {
+      await TFRSyncExistingLoreJournal();
+    } catch (error) {
+      console.error("The First Relics | Could not synchronize the existing lore journal.", error);
+    }
+    try {
+      await TFRSyncFinalFormItems();
+    } catch (error) {
+      console.error("The First Relics | Could not synchronize 1000-Affinity Final Form bonuses.", error);
+    }
+    try {
+      await TFRSyncProgressiveAppearanceDescriptions();
+    } catch (error) {
+      console.error("The First Relics | Could not synchronize progressive player manifestations.", error);
+    }
+  })();
+  await TFR_STARTUP_SYNC;
   console.log(`The First Relics Framework v${TFR_VERSION} loaded.`);
 });

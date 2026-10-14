@@ -336,6 +336,14 @@ async function TFRAuditFinalFormBonuses() {
   return { ok: failed.length === 0, checked: rows.length, failed, rows };
 }
 
+/** Runs fn after every earlier rebuild of the same relic has finished. */
+function TFRWithRelicLock(relicId, fn) {
+  const previous = TFR_RELIC_LOCKS.get(relicId) || Promise.resolve();
+  const run = previous.then(fn);
+  TFR_RELIC_LOCKS.set(relicId, run.catch(() => {}));
+  return run;
+}
+
 async function TFRSyncFinalFormItems() {
   if (!game.user?.isGM) return [];
   const relics = await TFRLoadRelics();
@@ -352,18 +360,21 @@ async function TFRSyncFinalFormItems() {
       await TFRSetRelicState(relic.id, state);
     }
 
-    for (const item of TFRFindAllRelicItemCopies(relic)) {
-      const ready = TFRRelicItemStage(item) === "exalted"
-        && TFRRelicItemSignatureUnlocked(item)
-        && !!item.getFlag(TFR_MODULE_ID, "finalForm")
-        && TFRHasUniversalRelicBonus(item, TFR_FINAL_FORM_BONUS)
-        && Number(item.system?.uses?.max) === TFR_FINAL_FORM_CHARGES
-        && String(item.system?.description?.value || "").includes(`<strong>+${TFR_FINAL_FORM_BONUS} AC</strong>`)
-        && TFRDescriptionShowsCharges(String(item.system?.description?.value || ""), TFR_FINAL_FORM_CHARGES);
-      if (ready) continue;
-      const rebuilt = await TFRUpdateRelicItem(item, "exalted", true);
-      rows.push({ relic: relic.name, location: item.parent?.name || "World Item Directory", item: rebuilt?.name || item.name, synced: !!rebuilt });
-    }
+    // Copies are looked up inside the lock, after any earlier rebuild replaced them.
+    await TFRWithRelicLock(relic.id, async () => {
+      for (const item of TFRFindAllRelicItemCopies(relic)) {
+        const ready = TFRRelicItemStage(item) === "exalted"
+          && TFRRelicItemSignatureUnlocked(item)
+          && !!item.getFlag(TFR_MODULE_ID, "finalForm")
+          && TFRHasUniversalRelicBonus(item, TFR_FINAL_FORM_BONUS)
+          && Number(item.system?.uses?.max) === TFR_FINAL_FORM_CHARGES
+          && String(item.system?.description?.value || "").includes(`<strong>+${TFR_FINAL_FORM_BONUS} AC</strong>`)
+          && TFRDescriptionShowsCharges(String(item.system?.description?.value || ""), TFR_FINAL_FORM_CHARGES);
+        if (ready) continue;
+        const rebuilt = await TFRUpdateRelicItem(item, "exalted", true);
+        rows.push({ relic: relic.name, location: item.parent?.name || "World Item Directory", item: rebuilt?.name || item.name, synced: !!rebuilt });
+      }
+    });
   }
 
   if (rows.length) TFRNotifyInfo(TFRT("The First Relics: {rowsCount} Final Form item copy/copies synchronized to +{TFR_FINAL_FORM_BONUS} and {TFR_FINAL_FORM_CHARGES} charges.", { rowsCount: rows.length, TFR_FINAL_FORM_BONUS: TFR_FINAL_FORM_BONUS, TFR_FINAL_FORM_CHARGES: TFR_FINAL_FORM_CHARGES }));
@@ -371,6 +382,12 @@ async function TFRSyncFinalFormItems() {
 }
 
 async function TFRUpdateAllRelicCopies(relic, stage, signatureUnlocked = false) {
+  await TFR_STARTUP_SYNC;
+  return TFRWithRelicLock(relic.id, () => TFRUpdateAllRelicCopiesNow(relic, stage, signatureUnlocked));
+}
+
+async function TFRUpdateAllRelicCopiesNow(relic, stage, signatureUnlocked) {
+  // Copies are looked up inside the lock, after any earlier rebuild replaced them.
   const copies = TFRFindAllRelicItemCopies(relic);
   if (!copies.length) {
     ui.notifications.warn(TFRT("The First Relics: No item copies found for {relicName}.", { relicName: relic.name }));
@@ -391,6 +408,7 @@ async function TFRUpdateAllRelicCopies(relic, stage, signatureUnlocked = false) 
 
 
 async function TFRSetRelicAffinity(relicId, value, reason = "") {
+  await TFR_STARTUP_SYNC;
   const relic = await TFRGetRelicById(relicId);
   if (!relic) return ui.notifications.warn(TFRT("The First Relics: Relic not found: {relicId}", { relicId: relicId }));
 

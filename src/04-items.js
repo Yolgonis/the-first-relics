@@ -465,7 +465,17 @@ async function TFRRebuildRelicItemDocument(item, relic, stage, signatureUnlocked
   return created;
 }
 
+/** False once a world or actor item has been deleted, e.g. replaced by a concurrent rebuild. */
+function TFRItemStillExists(item) {
+  if (!item?.id) return false;
+  if (item.pack) return true;
+  const parent = item.parent;
+  if (parent?.documentName === "Actor") return !!parent.items?.get(item.id);
+  return !!game.items?.get(item.id);
+}
+
 async function TFRUpdateRelicItem(item, stage, signatureUnlockedOverride = null) {
+  if (!TFRItemStillExists(item)) return null;
   const relics = await TFRLoadRelics();
   const relic = relics.find(r => r.name === item.name || item.getFlag("the-first-relics", "relicId") === r.id);
   if (!relic) return null;

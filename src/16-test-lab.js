@@ -51,6 +51,7 @@ async function TFRDeleteTestLab() {
 
 async function TFRRestoreAfterTestLab() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
+  await TFR_STARTUP_SYNC;
   await TFRDeleteTestLab();
   const backup = TFRGetTestLabBackupState();
   if (backup) {
@@ -69,6 +70,7 @@ async function TFRRestoreAfterTestLab() {
 
 async function TFRResetTestLab(options = {}) {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
+  await TFR_STARTUP_SYNC;
   const backup = TFRGetTestLabBackupState() || TFRGetWorldState();
   await TFRSetTestLabBackupState(backup);
   await TFRDeleteTestLab();
@@ -215,6 +217,7 @@ async function TFRPrepareRelicForTestActor(actor, relic, stage = "exalted", affi
 
 async function TFRCreateTestLab(options = {}) {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
+  await TFR_STARTUP_SYNC;
   const stage = options.stage || "exalted";
   const affinity = Number(options.affinity ?? 1000);
 
