@@ -104,6 +104,7 @@ Hooks.once("ready", async () => {
   TFRRegisterFeyStepChatAutomation();
   TFRRegisterRelicActivityGateHooks();
   TFRRegisterTimedEffectExpiry();
+  TFRRegisterPassiveTriggers();
   TFRRegisterSaveAwareAutomation();
   TFRRegisterSaveAwareChatButtons();
   TFRRegisterAttunementRefusal();

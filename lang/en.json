@@ -59,6 +59,11 @@
     "t1x2v7m1": "The First Relics Template Audit: {missingCount} issue(s).",
     "t5iyxbe": "The First Relics Activity Template Audit passed.",
     "t1cbvh5z": "Speed is automated; jump distance is GM-resolved.",
+    "t1t2l5j4": "Automated with Midi-QOL and DAE.",
+    "t1p8k07t": "Automated when healing is applied from a chat card.",
+    "t11ng93i": "Automated when damage is applied from a chat card.",
+    "t1hql99p": "Automated for allies with tokens on the current scene.",
+    "tvzzjhv": "Temporary hit points are automated; surprise is GM-resolved.",
     "t1fb9wl5": "Automated.",
     "t1posgyl": "Passive {number}",
     "t1s20nnw": "The First Relics: GM only.",
@@ -398,6 +403,13 @@
     "tu2lfja": "The First Relics: {rowsCount} generated feature item(s) found.",
     "t1arpc6e": "Click a destination.",
     "t6zxmy9": "{infoLabel} is locked. {itemName} is currently {value}; required: {required}.",
-    "tpfen6u": "Fey Step: no source token for {actorName} on the scene. Select a token and use GM Dashboard > Control Panel > Fey Step."
+    "tpfen6u": "Fey Step: no source token for {actorName} on the scene. Select a token and use GM Dashboard > Control Panel > Fey Step.",
+    "tpi6rfc": "Dawn's Endurance",
+    "t913pnt": "Unseen Hunter",
+    "tdz9icy": "{actor} drops to 1 hit point instead of 0.",
+    "t122v3x2": "{actor} drops to 1 hit point instead of 0, sustained by {bearer}.",
+    "t87g9xs": "Living Sap",
+    "tq7d9d1": "Living Chronicle",
+    "t1k83w04": "Price Paid"
   }
 }

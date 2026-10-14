@@ -213,6 +213,19 @@ const TFR_PASSIVE_EFFECTS = {
   }
 };
 
+/**
+ * Passive features automated by hooks in src/27-passive-triggers.js (relic id -> passive index ->
+ * { note? }). Listed here so the item description can mark them.
+ */
+const TFR_PASSIVE_TRIGGERS = {
+  aegis_dawn: { 0: {}, 3: {} },
+  cloak_shadowfell: { 3: { note: "midi" } },
+  heart_yggdrasil: { 0: {}, 1: { note: "chatHealing" }, 2: { note: "canvas" } },
+  vestments_first_saint: { 1: {} },
+  mantle_first_seer: { 3: { note: "chronicle" } },
+  chains_patron: { 2: { note: "chatDamage" } }
+};
+
 /** Number of passive features unlocked at a stage; the description shows the same ones. */
 function TFRUnlockedPassiveCount(stage) {
   return stage === "dormant" ? 2 : stage === "awakened" ? 3 : 4;
@@ -222,9 +235,21 @@ function TFRPassiveAutomation(relicId, index) {
   return TFR_PASSIVE_EFFECTS[relicId]?.[index] || null;
 }
 
+/** Effect or trigger automation for a passive, used to mark it in the description. */
+function TFRPassiveAutomationAny(relicId, index) {
+  return TFRPassiveAutomation(relicId, index) || TFR_PASSIVE_TRIGGERS[relicId]?.[index] || null;
+}
+
 function TFRPassiveAutomationNote(automation) {
-  if (automation?.note === "speedOnly") return TFRT("Speed is automated; jump distance is GM-resolved.");
-  return TFRT("Automated.");
+  switch (automation?.note) {
+    case "speedOnly": return TFRT("Speed is automated; jump distance is GM-resolved.");
+    case "midi": return TFRT("Automated with Midi-QOL and DAE.");
+    case "chatHealing": return TFRT("Automated when healing is applied from a chat card.");
+    case "chatDamage": return TFRT("Automated when damage is applied from a chat card.");
+    case "canvas": return TFRT("Automated for allies with tokens on the current scene.");
+    case "chronicle": return TFRT("Temporary hit points are automated; surprise is GM-resolved.");
+    default: return TFRT("Automated.");
+  }
 }
 
 /** The feature name in a passive text such as "<strong>Ancient Scales.</strong> ...". */
