@@ -35,11 +35,56 @@ const TFR_RELIC_LOCKS = new Map();
  * @returns {string}
  */
 function TFRT(text, data) {
+  // Text written into world documents uses the world's relic content language (see TFRInContentLanguage).
+  if (TFR_CONTENT_SCOPE > 0 && TFR_CONTENT_DICTIONARY) {
+    return TFRFormatPlaceholders(TFR_CONTENT_DICTIONARY[TFRTranslationKey(text)] ?? text, data);
+  }
   const key = `${TFR_MODULE_ID}.${TFRTranslationKey(text)}`;
   const i18n = globalThis.game?.i18n;
   if (i18n?.has?.(key, false)) return data ? i18n.format(key, data) : i18n.localize(key);
+  return TFRFormatPlaceholders(text, data);
+}
+
+function TFRFormatPlaceholders(text, data) {
   if (!data) return text;
   return text.replace(/\{(\w+)\}/g, (match, name) => (name in data ? String(data[name]) : match));
+}
+
+/** Languages with relic content (data/i18n/<lang>.json and lang/<lang>.json). */
+const TFR_CONTENT_LANGUAGES = { en: "English", tr: "Türkçe" };
+let TFR_CONTENT_SCOPE = 0;
+let TFR_CONTENT_DICTIONARY = null;
+
+/**
+ * The world's relic content language. Items, descriptions and the lore journal are written in
+ * this language whichever GM writes them; the interface still follows each user's own language.
+ */
+function TFRContentLanguage() {
+  let lang = null;
+  try {
+    lang = globalThis.game?.settings?.get?.(TFR_MODULE_ID, "contentLanguage");
+  } catch (error) {
+    lang = null;
+  }
+  lang ||= globalThis.game?.i18n?.lang || "en";
+  return lang in TFR_CONTENT_LANGUAGES ? lang : "en";
+}
+
+/** Runs a synchronous builder so that TFRT returns text in the content language. */
+function TFRInContentLanguage(fn) {
+  TFR_CONTENT_SCOPE += 1;
+  try {
+    return fn();
+  } finally {
+    TFR_CONTENT_SCOPE -= 1;
+  }
+}
+
+/** Wraps a synchronous document builder with TFRInContentLanguage. */
+function TFRContentScoped(fn) {
+  return function (...args) {
+    return TFRInContentLanguage(() => fn.apply(this, args));
+  };
 }
 
 /** FNV-1a hash of the English text; must match tools/i18n-extract.cjs. */
@@ -129,20 +174,53 @@ async function TFRLoadCanonicalRelics() {
   return response.json();
 }
 
-let TFR_CONTENT_OVERLAY_PROMISE = null;
+const TFR_CONTENT_OVERLAY_PROMISES = new Map();
 
-/** Loads data/i18n/<lang>.json once per session; null for English or a missing file. */
+/**
+ * Loads the content language's relic overlay (data/i18n/<lang>.json) and interface strings
+ * (lang/<lang>.json, used for text written into documents) once per session.
+ * Resolves to null for English or a missing overlay.
+ */
 function TFRContentOverlay() {
-  const lang = globalThis.game?.i18n?.lang || "en";
-  if (lang === "en") return Promise.resolve(null);
-  TFR_CONTENT_OVERLAY_PROMISE ??= fetch(`modules/${TFR_MODULE_ID}/data/i18n/${lang}.json`)
-    .then(response => (response.ok ? response.json() : null))
-    .then(overlay => {
+  const lang = TFRContentLanguage();
+  if (!TFR_CONTENT_OVERLAY_PROMISES.has(lang)) {
+    const fetchJson = path => fetch(`modules/${TFR_MODULE_ID}/${path}`)
+      .then(response => (response.ok ? response.json() : null))
+      .catch(() => null);
+    const promise = lang === "en"
+      ? Promise.resolve([null, {}])
+      : Promise.all([fetchJson(`data/i18n/${lang}.json`), fetchJson(`lang/${lang}.json`)]);
+    TFR_CONTENT_OVERLAY_PROMISES.set(lang, promise.then(([overlay, strings]) => {
+      TFR_CONTENT_DICTIONARY = strings?.[TFR_MODULE_ID] || strings || {};
       if (overlay) TFRRegisterLocalizedIdentifiers(overlay);
       return overlay;
-    })
-    .catch(() => null);
-  return TFR_CONTENT_OVERLAY_PROMISE;
+    }));
+  }
+  return TFR_CONTENT_OVERLAY_PROMISES.get(lang);
+}
+
+let TFR_KNOWN_NAMES_PROMISE = null;
+
+/** relicId -> every generated name of that relic: English, legacy and each content language. */
+function TFRKnownRelicNames() {
+  TFR_KNOWN_NAMES_PROMISE ??= (async () => {
+    const names = new Map();
+    const add = (relicId, name) => {
+      if (!relicId || !name) return;
+      if (!names.has(relicId)) names.set(relicId, new Set());
+      names.get(relicId).add(name);
+    };
+    for (const relic of await TFRLoadCanonicalRelics()) add(relic.id, relic.name);
+    for (const name of TFR_CLOAK_LEGACY_NAMES) add("cloak_feywilds", name);
+    for (const lang of Object.keys(TFR_CONTENT_LANGUAGES).filter(code => code !== "en")) {
+      const overlay = await fetch(`modules/${TFR_MODULE_ID}/data/i18n/${lang}.json`)
+        .then(response => (response.ok ? response.json() : null))
+        .catch(() => null);
+      for (const [relicId, data] of Object.entries(overlay || {})) add(relicId, data?.name);
+    }
+    return names;
+  })();
+  return TFR_KNOWN_NAMES_PROMISE;
 }
 
 /**
@@ -2280,7 +2358,7 @@ async function TFRCreateJournalLegacy() {
   });
 }
 
-function TFRJournalPageData(name, content, sort = 0) {
+function TFRJournalPageData(name, content, sort = 0, relicId = "overview") {
   return {
     name,
     type: "text",
@@ -2291,7 +2369,8 @@ function TFRJournalPageData(name, content, sort = 0) {
     },
     flags: {
       [TFR_MODULE_ID]: {
-        generatedLorePage: true
+        generatedLorePage: true,
+        lorePageId: relicId
       }
     }
   };
@@ -2380,8 +2459,8 @@ async function TFRCreateJournal(options = {}) {
   const notify = options.notify !== false;
   const relics = await TFRLoadRelics();
   const pages = [
-    TFRJournalPageData("The First Relics", TFRBuildJournalOverview(relics), 0),
-    ...relics.map((relic, index) => TFRJournalPageData(relic.name, TFRBuildRelicJournalContent(relic), (index + 1) * 1000))
+    TFRJournalPageData(TFRInContentLanguage(() => TFRT("The First Relics")), TFRBuildJournalOverview(relics), 0, "overview"),
+    ...relics.map((relic, index) => TFRJournalPageData(relic.name, TFRBuildRelicJournalContent(relic), (index + 1) * 1000, relic.id))
   ];
   let journal = game.journal.getName("The First Relics - Lore");
 
@@ -2397,16 +2476,37 @@ async function TFRCreateJournal(options = {}) {
 
   await journal.update({ ownership: { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE } });
 
+  // Generated pages are matched by relic id, or by any generated name in any content language
+  // for pages written before v1.3.0, so changing the content language renames pages instead of
+  // adding a second set. Extra generated copies of the same page are removed.
+  const knownNames = await TFRKnownRelicNames();
+  const overviewNames = new Set(["The First Relics", pages[0].name]);
+  const pageIdOf = page => {
+    const flags = page.flags?.[TFR_MODULE_ID] || {};
+    if (flags.lorePageId) return flags.lorePageId;
+    if (!flags.generatedLorePage) return null;
+    if (overviewNames.has(page.name)) return "overview";
+    for (const [relicId, names] of knownNames) if (names.has(page.name)) return relicId;
+    return null;
+  };
   const created = [];
+  const duplicates = [];
   for (const pageData of pages) {
-    const existing = journal.pages.find(p => p.name === pageData.name);
+    const pageId = pageData.flags[TFR_MODULE_ID].lorePageId;
+    const matches = journal.pages.contents
+      .filter(page => pageIdOf(page) === pageId)
+      .sort((a, b) => (a.name === pageData.name ? -1 : 0) - (b.name === pageData.name ? -1 : 0));
+    const [existing, ...extra] = matches;
+    duplicates.push(...extra.map(page => page.id));
     if (existing) await existing.update({
+      name: pageData.name,
       text: pageData.text,
       sort: pageData.sort,
       flags: pageData.flags
     });
     else created.push(pageData);
   }
+  if (duplicates.length) await journal.deleteEmbeddedDocuments("JournalEntryPage", duplicates, { render: false });
   if (created.length) await journal.createEmbeddedDocuments("JournalEntryPage", created, { render: false });
   if (notify) ui.notifications.info(TFRT("The First Relics: Lore journal updated."));
   return journal;
@@ -2606,6 +2706,7 @@ async function TFRSyncProgressiveAppearanceDescriptions() {
   if (!game.user?.isGM) return result;
 
   const relics = await TFRLoadRelics();
+  const knownNames = await TFRKnownRelicNames();
   for (const item of TFRAllWorldAndActorItems()) {
     const relicId = item?.getFlag?.(TFR_MODULE_ID, "relicId") || item?.flags?.[TFR_MODULE_ID]?.relicId;
     const relic = relics.find(candidate => candidate.id === relicId);
@@ -2621,10 +2722,12 @@ async function TFRSyncProgressiveAppearanceDescriptions() {
     const stage = TFRRelicItemStage(item);
     const signatureUnlocked = TFRRelicItemSignatureUnlocked(item);
     const expected = TFRBuildDescription(relic, stage, signatureUnlocked);
-    if (current === expected) continue;
+    // A generated name in another content language follows the description; custom names stay.
+    const renamed = item.name !== relic.name && knownNames.get(relic.id)?.has(item.name);
+    if (current === expected && !renamed) continue;
 
     try {
-      await item.update({ "system.description.value": expected });
+      await item.update({ "system.description.value": expected, ...(renamed ? { name: relic.name } : {}) });
       result.updated += 1;
     } catch (error) {
       result.ok = false;
@@ -2709,10 +2812,10 @@ async function TFRAuditProgressiveAppearanceUnlocks() {
   return { ok: failed.length === 0, checked: rows.length, failed, rows };
 }
 
-/** True when a description shows the charge count, in English or the current language. */
+/** True when a description shows the charge count, in English or the relic content language. */
 function TFRDescriptionShowsCharges(html, charges) {
   const text = String(html || "");
-  const localized = TFRT("The relic has <strong>{charges} charges</strong> and regains all expended charges daily at dawn.", { charges }).match(/<strong>[^<]*<\/strong>/)?.[0];
+  const localized = TFRInContentLanguage(() => TFRT("The relic has <strong>{charges} charges</strong> and regains all expended charges daily at dawn.", { charges })).match(/<strong>[^<]*<\/strong>/)?.[0];
   return text.includes(`<strong>${charges} charges</strong>`) || (!!localized && text.includes(localized));
 }
 
@@ -3015,6 +3118,16 @@ function TFRRegisterToolbarButton() {
 }
 
 function TFRRegisterSettings() {
+  game.settings.register(TFR_MODULE_ID, "contentLanguage", {
+    name: TFRT("Relic content language"),
+    hint: TFRT("Language of relic items, descriptions and the lore journal in this world, whichever GM writes them. The interface follows each user's own language. After changing it, run Rebuild Existing Relics in the GM Control Panel."),
+    scope: "world",
+    config: true,
+    type: String,
+    choices: { ...TFR_CONTENT_LANGUAGES },
+    default: "en",
+    requiresReload: true
+  });
   game.settings.registerMenu("the-first-relics", "dashboard", {
     name: "Open GM Dashboard",
     label: "Open Dashboard",
@@ -3029,6 +3142,38 @@ function TFRRegisterSettings() {
     },
     restricted: true
   });
+}
+
+/**
+ * Stores the content language the first time a GM loads the world with this setting.
+ * Existing relic items decide it (worlds built before v1.3.0 have English items);
+ * a world without relic items starts in the GM's interface language.
+ */
+async function TFRInitContentLanguage() {
+  if (!game.user?.isGM) return;
+  const key = `${TFR_MODULE_ID}.contentLanguage`;
+  if (game.settings.storage.get("world")?.getSetting?.(key)) return;
+
+  const itemNames = new Set(TFRAllWorldAndActorItems()
+    .filter(item => item.getFlag?.(TFR_MODULE_ID, "relicId"))
+    .map(item => item.name));
+  let lang = null;
+  if (itemNames.size) {
+    lang = "en";
+    for (const candidate of Object.keys(TFR_CONTENT_LANGUAGES).filter(code => code !== "en")) {
+      const overlay = await fetch(`modules/${TFR_MODULE_ID}/data/i18n/${candidate}.json`)
+        .then(response => (response.ok ? response.json() : null))
+        .catch(() => null);
+      if (Object.values(overlay || {}).some(relic => itemNames.has(relic?.name))) {
+        lang = candidate;
+        break;
+      }
+    }
+  } else {
+    lang = game.i18n.lang in TFR_CONTENT_LANGUAGES ? game.i18n.lang : "en";
+  }
+  await game.settings.set(TFR_MODULE_ID, "contentLanguage", lang);
+  console.log(`The First Relics | Relic content language set to ${lang}.`);
 }
 
 // Register toolbar hook early. Waiting until ready may be too late.
@@ -5025,7 +5170,7 @@ function TFRRelicAbilityFromChatMessage(message, actor = null) {
 
     // Fallback for translated worlds, where ability names and badge text are not English:
     // dnd5e records the used activity on its chat card, and the activity carries its slot flag.
-    const activityId = (game.i18n?.lang || "en") !== "en" ? message.flags?.dnd5e?.activity?.id : null;
+    const activityId = TFRContentLanguage() !== "en" ? message.flags?.dnd5e?.activity?.id : null;
     const flaggedActivity = activityId ? item.system?.activities?.get?.(activityId) : null;
     const flaggedSlot = flaggedActivity ? TFRGetActivitySlot(flaggedActivity) : null;
     if (flaggedSlot && slots[flaggedSlot]) {
@@ -9089,6 +9234,11 @@ Hooks.once("ready", async () => {
   TFRRegisterAttunementRefusal();
   TFR_STARTUP_SYNC = (async () => {
     try {
+      await TFRInitContentLanguage();
+    } catch (error) {
+      console.error("The First Relics | Could not initialize the relic content language.", error);
+    }
+    try {
       await TFRNormalizeRefusingRelicItems();
     } catch (error) {
       console.error("The First Relics | Could not normalize refused relic feature suppression.", error);
@@ -9122,3 +9272,17 @@ Hooks.once("ready", async () => {
   await TFR_STARTUP_SYNC;
   console.log(`The First Relics Framework v${TFR_VERSION} loaded.`);
 });
+// ---- src/26-content-language.js ----
+// Text these builders write into world documents (relic items, activities, effects, the lore
+// journal) uses the world's relic content language, not the language of whichever GM triggers
+// the write. Without this, a GM with an English interface would rewrite Turkish items in
+// English on load. Each builder is synchronous, so the scope cannot leak into other code.
+TFRBuildItem = TFRContentScoped(TFRBuildItem);
+TFRBuildItemEffects = TFRContentScoped(TFRBuildItemEffects);
+TFRBuildDescription = TFRContentScoped(TFRBuildDescription);
+TFRBuildActivities = TFRContentScoped(TFRBuildActivities);
+TFRBuildNativeActivityEffects = TFRContentScoped(TFRBuildNativeActivityEffects);
+TFRCloneRelicItemDataForStage = TFRContentScoped(TFRCloneRelicItemDataForStage);
+TFRSealTrueNameText = TFRContentScoped(TFRSealTrueNameText);
+TFRBuildJournalOverview = TFRContentScoped(TFRBuildJournalOverview);
+TFRBuildRelicJournalContent = TFRContentScoped(TFRBuildRelicJournalContent);

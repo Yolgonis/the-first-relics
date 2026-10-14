@@ -22,7 +22,7 @@ async function TFRCreateJournalLegacy() {
   });
 }
 
-function TFRJournalPageData(name, content, sort = 0) {
+function TFRJournalPageData(name, content, sort = 0, relicId = "overview") {
   return {
     name,
     type: "text",
@@ -33,7 +33,8 @@ function TFRJournalPageData(name, content, sort = 0) {
     },
     flags: {
       [TFR_MODULE_ID]: {
-        generatedLorePage: true
+        generatedLorePage: true,
+        lorePageId: relicId
       }
     }
   };
@@ -122,8 +123,8 @@ async function TFRCreateJournal(options = {}) {
   const notify = options.notify !== false;
   const relics = await TFRLoadRelics();
   const pages = [
-    TFRJournalPageData("The First Relics", TFRBuildJournalOverview(relics), 0),
-    ...relics.map((relic, index) => TFRJournalPageData(relic.name, TFRBuildRelicJournalContent(relic), (index + 1) * 1000))
+    TFRJournalPageData(TFRInContentLanguage(() => TFRT("The First Relics")), TFRBuildJournalOverview(relics), 0, "overview"),
+    ...relics.map((relic, index) => TFRJournalPageData(relic.name, TFRBuildRelicJournalContent(relic), (index + 1) * 1000, relic.id))
   ];
   let journal = game.journal.getName("The First Relics - Lore");
 
@@ -139,16 +140,37 @@ async function TFRCreateJournal(options = {}) {
 
   await journal.update({ ownership: { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE } });
 
+  // Generated pages are matched by relic id, or by any generated name in any content language
+  // for pages written before v1.3.0, so changing the content language renames pages instead of
+  // adding a second set. Extra generated copies of the same page are removed.
+  const knownNames = await TFRKnownRelicNames();
+  const overviewNames = new Set(["The First Relics", pages[0].name]);
+  const pageIdOf = page => {
+    const flags = page.flags?.[TFR_MODULE_ID] || {};
+    if (flags.lorePageId) return flags.lorePageId;
+    if (!flags.generatedLorePage) return null;
+    if (overviewNames.has(page.name)) return "overview";
+    for (const [relicId, names] of knownNames) if (names.has(page.name)) return relicId;
+    return null;
+  };
   const created = [];
+  const duplicates = [];
   for (const pageData of pages) {
-    const existing = journal.pages.find(p => p.name === pageData.name);
+    const pageId = pageData.flags[TFR_MODULE_ID].lorePageId;
+    const matches = journal.pages.contents
+      .filter(page => pageIdOf(page) === pageId)
+      .sort((a, b) => (a.name === pageData.name ? -1 : 0) - (b.name === pageData.name ? -1 : 0));
+    const [existing, ...extra] = matches;
+    duplicates.push(...extra.map(page => page.id));
     if (existing) await existing.update({
+      name: pageData.name,
       text: pageData.text,
       sort: pageData.sort,
       flags: pageData.flags
     });
     else created.push(pageData);
   }
+  if (duplicates.length) await journal.deleteEmbeddedDocuments("JournalEntryPage", duplicates, { render: false });
   if (created.length) await journal.createEmbeddedDocuments("JournalEntryPage", created, { render: false });
   if (notify) ui.notifications.info(TFRT("The First Relics: Lore journal updated."));
   return journal;

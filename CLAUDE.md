@@ -4,7 +4,7 @@ Foundry VTT 13 / dnd5e 5.3.3 ticari modülü: affinity ile gelişen 12 efsanevi 
 
 - Foundry'de `Data\modules\the-first-relics` junction'ıyla yüklenir; değişikliği Foundry doğrudan görür.
 - GitHub: `Yolgonis/the-first-relics` (gizli; Temmuz 2026'dan beri kullanıcının geçmişi var, force push yapma). Her iş bitince commit + push.
-- Kod `src/` altında 26 parçada (`00-core.js` … `25-hooks.js`). Foundry tek dosya yükler: `scripts/the-first-relics.js`, `node tools/build.cjs` ile parçalar dosya adı sırasıyla birleştirilerek üretilir. **`scripts/the-first-relics.js`'i elle düzenleme**; `src/`'yi düzenle, sonra build et ve iki dosyayı birlikte commit et (Foundry junction üzerinden birleşik dosyayı okur). Parçalar tek bir ES module kapsamını paylaşır: import/export yok, sıra önemli (üst düzey `const` ve `TFRRegisterToolbarButton()` gibi çağrılar kendinden önceki parçalara dayanır). Yeni parça eklerken numara ver.
+- Kod `src/` altında 27 parçada (`00-core.js` … `26-content-language.js`). Foundry tek dosya yükler: `scripts/the-first-relics.js`, `node tools/build.cjs` ile parçalar dosya adı sırasıyla birleştirilerek üretilir. **`scripts/the-first-relics.js`'i elle düzenleme**; `src/`'yi düzenle, sonra build et ve iki dosyayı birlikte commit et (Foundry junction üzerinden birleşik dosyayı okur). Parçalar tek bir ES module kapsamını paylaşır: import/export yok, sıra önemli (üst düzey `const` ve `TFRRegisterToolbarButton()` gibi çağrılar kendinden önceki parçalara dayanır). Yeni parça eklerken numara ver.
 - Relic içeriği `data/relics.json`.
 - Test için Foundry içinde: `await FirstRelics.runDiagnostics()`, `FirstRelics.runReleaseCheck()`, `FirstRelics.openDashboard()`, `FirstRelics.openControlPanel()`.
 
@@ -25,7 +25,7 @@ node tools/i18n-build-lang.cjs tr     # lang/tr.json'u üretir (yer tutucuları 
 
 Terimler: D&D/Foundry terimleri İngilizce (attunement, token, GM, ft, temp HP); modül kavramları Türkçe (Affinity=Yakınlık, Stage=Aşama, Mood=Ruh Hali, Signature=İmza, True Name=Gerçek Ad, dormant/awakened/exalted/final form=uykuda/uyanmış/yüceltilmiş/nihai form). Aşama ve durum kimlikleri veride İngilizce kalır; yalnızca `TFRStageLabel` / `TFRStatusLabel` ile gösterilirken çevrilir.
 
-Relic içeriği `data/i18n/<dil>.json` katmanıyla çevrilir (`tools/i18n-content.cjs extract|build tr`, kaynak `tools/translations/content-tr.cjs`). Dünyada var olan eşyalar oluşturuldukları dilde kalır; Rebuild Existing Relics ile yenilenir. Konsol raporları bilerek İngilizce.
+Dünyaya yazılan içerik (eşya, açıklama, aktivite, efekt, günlük) istemci dilini değil dünya ayarı `contentLanguage`'i ("Relic content language") kullanır: `TFRContentLanguage()`. Bunu sağlayan, `src/26-content-language.js`'teki senkron derleyici sarmalayıcılarıdır (`TFRContentScoped`); dünyaya metin yazan yeni bir senkron derleyici eklersen oraya da ekle. Sarmalayıcı içinde `TFRT` içerik dilinin `lang/<dil>.json` sözlüğünü kullanır. Relic içeriği `data/i18n/<dil>.json` katmanıyla çevrilir (`tools/i18n-content.cjs extract|build tr`, kaynak `tools/translations/content-tr.cjs`). Dünyada var olan eşyalar oluşturuldukları dilde kalır; Rebuild Existing Relics ile yenilenir. Konsol raporları bilerek İngilizce.
 
 Foundry yeni dil dosyalarını dünya yeniden başlatılınca yükler; hızlı test için tarayıcıda `foundry.utils.mergeObject(game.i18n.translations, await (await fetch("/modules/the-first-relics/lang/tr.json")).json())` yalnızca o istemciye yükler.
 

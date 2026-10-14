@@ -402,5 +402,7 @@ module.exports = {
   "Arrow of the First Hunt": "İlk Avın Oku",
   "Roll the item's damage activity for extra force damage if needed. The target cannot benefit from invisibility against {actor} until the start of {actor}'s next turn.": "Gerekirse ek kuvvet hasarı için eşyanın hasar aktivitesini at. Hedef, {actor} karakterinin bir sonraki turunun başına kadar {actor} karakterine karşı görünmezlikten yararlanamaz.",
   "Blessing of Sylvara": "Sylvara'nın Lütfu",
-  "For 1 minute, marked prey cannot hide behind invisibility, mundane hiding, natural terrain, or nonmagical cover. Resolve first-hit extra damage and free Fey Step manually.": "1 dakika boyunca işaretli av görünmezliğin, sıradan saklanmanın, doğal arazinin ya da büyülü olmayan siperin ardına gizlenemez. İlk isabetin ek hasarını ve ücretsiz Fey Step'i elle çöz."
+  "For 1 minute, marked prey cannot hide behind invisibility, mundane hiding, natural terrain, or nonmagical cover. Resolve first-hit extra damage and free Fey Step manually.": "1 dakika boyunca işaretli av görünmezliğin, sıradan saklanmanın, doğal arazinin ya da büyülü olmayan siperin ardına gizlenemez. İlk isabetin ek hasarını ve ücretsiz Fey Step'i elle çöz.",
+  "Relic content language": "Relic içerik dili",
+  "Language of relic items, descriptions and the lore journal in this world, whichever GM writes them. The interface follows each user's own language. After changing it, run Rebuild Existing Relics in the GM Control Panel.": "Bu dünyadaki relic eşyalarının, açıklamaların ve lore günlüğünün dili; hangi GM yazarsa yazsın bu dil kullanılır. Arayüz her kullanıcının kendi dilini izler. Değiştirdikten sonra GM Control Panel'de Rebuild Existing Relics'i çalıştırın."
 };

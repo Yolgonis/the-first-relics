@@ -33,11 +33,56 @@ const TFR_RELIC_LOCKS = new Map();
  * @returns {string}
  */
 function TFRT(text, data) {
+  // Text written into world documents uses the world's relic content language (see TFRInContentLanguage).
+  if (TFR_CONTENT_SCOPE > 0 && TFR_CONTENT_DICTIONARY) {
+    return TFRFormatPlaceholders(TFR_CONTENT_DICTIONARY[TFRTranslationKey(text)] ?? text, data);
+  }
   const key = `${TFR_MODULE_ID}.${TFRTranslationKey(text)}`;
   const i18n = globalThis.game?.i18n;
   if (i18n?.has?.(key, false)) return data ? i18n.format(key, data) : i18n.localize(key);
+  return TFRFormatPlaceholders(text, data);
+}
+
+function TFRFormatPlaceholders(text, data) {
   if (!data) return text;
   return text.replace(/\{(\w+)\}/g, (match, name) => (name in data ? String(data[name]) : match));
+}
+
+/** Languages with relic content (data/i18n/<lang>.json and lang/<lang>.json). */
+const TFR_CONTENT_LANGUAGES = { en: "English", tr: "Türkçe" };
+let TFR_CONTENT_SCOPE = 0;
+let TFR_CONTENT_DICTIONARY = null;
+
+/**
+ * The world's relic content language. Items, descriptions and the lore journal are written in
+ * this language whichever GM writes them; the interface still follows each user's own language.
+ */
+function TFRContentLanguage() {
+  let lang = null;
+  try {
+    lang = globalThis.game?.settings?.get?.(TFR_MODULE_ID, "contentLanguage");
+  } catch (error) {
+    lang = null;
+  }
+  lang ||= globalThis.game?.i18n?.lang || "en";
+  return lang in TFR_CONTENT_LANGUAGES ? lang : "en";
+}
+
+/** Runs a synchronous builder so that TFRT returns text in the content language. */
+function TFRInContentLanguage(fn) {
+  TFR_CONTENT_SCOPE += 1;
+  try {
+    return fn();
+  } finally {
+    TFR_CONTENT_SCOPE -= 1;
+  }
+}
+
+/** Wraps a synchronous document builder with TFRInContentLanguage. */
+function TFRContentScoped(fn) {
+  return function (...args) {
+    return TFRInContentLanguage(() => fn.apply(this, args));
+  };
 }
 
 /** FNV-1a hash of the English text; must match tools/i18n-extract.cjs. */
@@ -127,20 +172,53 @@ async function TFRLoadCanonicalRelics() {
   return response.json();
 }
 
-let TFR_CONTENT_OVERLAY_PROMISE = null;
+const TFR_CONTENT_OVERLAY_PROMISES = new Map();
 
-/** Loads data/i18n/<lang>.json once per session; null for English or a missing file. */
+/**
+ * Loads the content language's relic overlay (data/i18n/<lang>.json) and interface strings
+ * (lang/<lang>.json, used for text written into documents) once per session.
+ * Resolves to null for English or a missing overlay.
+ */
 function TFRContentOverlay() {
-  const lang = globalThis.game?.i18n?.lang || "en";
-  if (lang === "en") return Promise.resolve(null);
-  TFR_CONTENT_OVERLAY_PROMISE ??= fetch(`modules/${TFR_MODULE_ID}/data/i18n/${lang}.json`)
-    .then(response => (response.ok ? response.json() : null))
-    .then(overlay => {
+  const lang = TFRContentLanguage();
+  if (!TFR_CONTENT_OVERLAY_PROMISES.has(lang)) {
+    const fetchJson = path => fetch(`modules/${TFR_MODULE_ID}/${path}`)
+      .then(response => (response.ok ? response.json() : null))
+      .catch(() => null);
+    const promise = lang === "en"
+      ? Promise.resolve([null, {}])
+      : Promise.all([fetchJson(`data/i18n/${lang}.json`), fetchJson(`lang/${lang}.json`)]);
+    TFR_CONTENT_OVERLAY_PROMISES.set(lang, promise.then(([overlay, strings]) => {
+      TFR_CONTENT_DICTIONARY = strings?.[TFR_MODULE_ID] || strings || {};
       if (overlay) TFRRegisterLocalizedIdentifiers(overlay);
       return overlay;
-    })
-    .catch(() => null);
-  return TFR_CONTENT_OVERLAY_PROMISE;
+    }));
+  }
+  return TFR_CONTENT_OVERLAY_PROMISES.get(lang);
+}
+
+let TFR_KNOWN_NAMES_PROMISE = null;
+
+/** relicId -> every generated name of that relic: English, legacy and each content language. */
+function TFRKnownRelicNames() {
+  TFR_KNOWN_NAMES_PROMISE ??= (async () => {
+    const names = new Map();
+    const add = (relicId, name) => {
+      if (!relicId || !name) return;
+      if (!names.has(relicId)) names.set(relicId, new Set());
+      names.get(relicId).add(name);
+    };
+    for (const relic of await TFRLoadCanonicalRelics()) add(relic.id, relic.name);
+    for (const name of TFR_CLOAK_LEGACY_NAMES) add("cloak_feywilds", name);
+    for (const lang of Object.keys(TFR_CONTENT_LANGUAGES).filter(code => code !== "en")) {
+      const overlay = await fetch(`modules/${TFR_MODULE_ID}/data/i18n/${lang}.json`)
+        .then(response => (response.ok ? response.json() : null))
+        .catch(() => null);
+      for (const [relicId, data] of Object.entries(overlay || {})) add(relicId, data?.name);
+    }
+    return names;
+  })();
+  return TFR_KNOWN_NAMES_PROMISE;
 }
 
 /**

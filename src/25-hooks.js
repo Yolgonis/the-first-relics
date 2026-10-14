@@ -108,6 +108,11 @@ Hooks.once("ready", async () => {
   TFRRegisterAttunementRefusal();
   TFR_STARTUP_SYNC = (async () => {
     try {
+      await TFRInitContentLanguage();
+    } catch (error) {
+      console.error("The First Relics | Could not initialize the relic content language.", error);
+    }
+    try {
       await TFRNormalizeRefusingRelicItems();
     } catch (error) {
       console.error("The First Relics | Could not normalize refused relic feature suppression.", error);

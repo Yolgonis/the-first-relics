@@ -179,6 +179,7 @@ async function TFRSyncProgressiveAppearanceDescriptions() {
   if (!game.user?.isGM) return result;
 
   const relics = await TFRLoadRelics();
+  const knownNames = await TFRKnownRelicNames();
   for (const item of TFRAllWorldAndActorItems()) {
     const relicId = item?.getFlag?.(TFR_MODULE_ID, "relicId") || item?.flags?.[TFR_MODULE_ID]?.relicId;
     const relic = relics.find(candidate => candidate.id === relicId);
@@ -194,10 +195,12 @@ async function TFRSyncProgressiveAppearanceDescriptions() {
     const stage = TFRRelicItemStage(item);
     const signatureUnlocked = TFRRelicItemSignatureUnlocked(item);
     const expected = TFRBuildDescription(relic, stage, signatureUnlocked);
-    if (current === expected) continue;
+    // A generated name in another content language follows the description; custom names stay.
+    const renamed = item.name !== relic.name && knownNames.get(relic.id)?.has(item.name);
+    if (current === expected && !renamed) continue;
 
     try {
-      await item.update({ "system.description.value": expected });
+      await item.update({ "system.description.value": expected, ...(renamed ? { name: relic.name } : {}) });
       result.updated += 1;
     } catch (error) {
       result.ok = false;
@@ -282,10 +285,10 @@ async function TFRAuditProgressiveAppearanceUnlocks() {
   return { ok: failed.length === 0, checked: rows.length, failed, rows };
 }
 
-/** True when a description shows the charge count, in English or the current language. */
+/** True when a description shows the charge count, in English or the relic content language. */
 function TFRDescriptionShowsCharges(html, charges) {
   const text = String(html || "");
-  const localized = TFRT("The relic has <strong>{charges} charges</strong> and regains all expended charges daily at dawn.", { charges }).match(/<strong>[^<]*<\/strong>/)?.[0];
+  const localized = TFRInContentLanguage(() => TFRT("The relic has <strong>{charges} charges</strong> and regains all expended charges daily at dawn.", { charges })).match(/<strong>[^<]*<\/strong>/)?.[0];
   return text.includes(`<strong>${charges} charges</strong>`) || (!!localized && text.includes(localized));
 }
 

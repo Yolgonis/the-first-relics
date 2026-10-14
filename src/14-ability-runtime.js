@@ -577,7 +577,7 @@ function TFRRelicAbilityFromChatMessage(message, actor = null) {
 
     // Fallback for translated worlds, where ability names and badge text are not English:
     // dnd5e records the used activity on its chat card, and the activity carries its slot flag.
-    const activityId = (game.i18n?.lang || "en") !== "en" ? message.flags?.dnd5e?.activity?.id : null;
+    const activityId = TFRContentLanguage() !== "en" ? message.flags?.dnd5e?.activity?.id : null;
     const flaggedActivity = activityId ? item.system?.activities?.get?.(activityId) : null;
     const flaggedSlot = flaggedActivity ? TFRGetActivitySlot(flaggedActivity) : null;
     if (flaggedSlot && slots[flaggedSlot]) {

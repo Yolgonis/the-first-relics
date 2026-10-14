@@ -106,6 +106,8 @@
     "talbvi3": "The First Relics: Relic data not found for {relicId}",
     "tprxcos": "{relicName}: Affinity threshold reached. Stage set to {value}.",
     "t188ixtr": "The First Relics: Relic item not found for {relicName}. Stage saved on actor only.",
+    "t1faxbqt": "Relic content language",
+    "t6w1gsr": "Language of relic items, descriptions and the lore journal in this world, whichever GM writes them. The interface follows each user's own language. After changing it, run Rebuild Existing Relics in the GM Control Panel.",
     "t1le4i69": "Relic not found: {relicId}",
     "t1mgp7ol": "Requirement not found: {requirementId}",
     "t15rvpz6": "{relicName}: {reqLabel} completed.",

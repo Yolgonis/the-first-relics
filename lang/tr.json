@@ -106,6 +106,8 @@
     "talbvi3": "The First Relics: {relicId} için relic verisi bulunamadı",
     "tprxcos": "{relicName}: Yakınlık eşiğine ulaşıldı. Aşama {value} oldu.",
     "t188ixtr": "The First Relics: {relicName} için relic eşyası bulunamadı. Aşama yalnızca aktöre kaydedildi.",
+    "t1faxbqt": "Relic içerik dili",
+    "t6w1gsr": "Bu dünyadaki relic eşyalarının, açıklamaların ve lore günlüğünün dili; hangi GM yazarsa yazsın bu dil kullanılır. Arayüz her kullanıcının kendi dilini izler. Değiştirdikten sonra GM Control Panel'de Rebuild Existing Relics'i çalıştırın.",
     "t1le4i69": "Relic bulunamadı: {relicId}",
     "t1mgp7ol": "Koşul bulunamadı: {requirementId}",
     "t15rvpz6": "{relicName}: {reqLabel} tamamlandı.",
