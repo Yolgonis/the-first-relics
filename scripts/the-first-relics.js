@@ -909,7 +909,7 @@ function TFRBuildDescription(relic, stage, signatureUnlocked = false) {
   const stageData = TFRGetStageData(relic, stage, signatureUnlocked);
   const b = stageData.bonus;
   const f = relic.features;
-  const passives = stage === "dormant" ? f.passives.slice(0, 2) : stage === "awakened" ? f.passives.slice(0, 3) : f.passives.slice(0, 4);
+  const passives = f.passives.slice(0, TFRUnlockedPassiveCount(stage));
   const actives = stage === "dormant" ? f.actives.slice(0, 2) : stage === "awakened" ? f.actives.slice(0, 4) : f.actives.slice(0, 4);
 
   const description = `
@@ -939,7 +939,7 @@ function TFRBuildDescription(relic, stage, signatureUnlocked = false) {
     <p>${TFRT("The relic has <strong>{charges} charges</strong> and regains all expended charges daily at dawn.", { charges: stageData.charges })}</p>
 
     <h3>${TFRT("Unlocked Passive Features")}</h3>
-    <ul>${passives.map(p => `<li>${p}</li>`).join("")}</ul>
+    <ul>${passives.map((p, i) => { const auto = TFRPassiveAutomation(relic.id, i); return `<li>${p}${auto ? ` <em class="tfr-automated">(${TFRPassiveAutomationNote(auto)})</em>` : ""}</li>`; }).join("")}</ul>
 
     <h3>${TFRT("Unlocked Active Features")}</h3>
     <ul>${actives.map(a => `<li>${a}</li>`).join("")}</ul>
@@ -1995,9 +1995,124 @@ async function TFRSyncRelicBonusEffect(item, relic, stage, signatureUnlocked = f
   return created;
 }
 
+/**
+ * Passive features applied as Active Effects, by relic id and passive index. All other passives
+ * are situational and stay GM-resolved. Each entry is { changes: [[key, mode, value]], note? };
+ * `note` names a partial-automation message in TFRPassiveAutomationNote.
+ */
+const TFR_PASSIVE_EFFECTS = {
+  blood_first_dragon: {
+    0: { changes: [["system.attributes.hp.bonuses.level", "ADD", "+1"]] },
+    1: { changes: [["system.attributes.ac.bonus", "ADD", "+1"]] },
+    2: { changes: [["system.abilities.str.save.roll.mode", "ADD", "1"], ["system.abilities.con.save.roll.mode", "ADD", "1"]] },
+    3: { changes: [["system.traits.dr.value", "ADD", "fire"], ["system.traits.dr.value", "ADD", "cold"], ["system.traits.ci.value", "ADD", "frightened"]] }
+  },
+  bands_inner_dragon: {
+    0: { changes: [["system.attributes.concentration.roll.mode", "ADD", "1"]] },
+    // dnd5e derives jump distance after effects apply, so only the speed bonus is automated.
+    2: { changes: [["system.attributes.movement.walk", "ADD", "10"]], note: "speedOnly" }
+  },
+  heart_yggdrasil: {
+    3: { changes: [["system.traits.ci.value", "ADD", "poisoned"], ["system.traits.ci.value", "ADD", "diseased"]] }
+  }
+};
+
+/** Number of passive features unlocked at a stage; the description shows the same ones. */
+function TFRUnlockedPassiveCount(stage) {
+  return stage === "dormant" ? 2 : stage === "awakened" ? 3 : 4;
+}
+
+function TFRPassiveAutomation(relicId, index) {
+  return TFR_PASSIVE_EFFECTS[relicId]?.[index] || null;
+}
+
+function TFRPassiveAutomationNote(automation) {
+  if (automation?.note === "speedOnly") return TFRT("Speed is automated; jump distance is GM-resolved.");
+  return TFRT("Automated.");
+}
+
+/** The feature name in a passive text such as "<strong>Ancient Scales.</strong> ...". */
+function TFRPassiveName(text) {
+  return String(text || "").match(/<strong>(.*?)\.?<\/strong>/)?.[1] || "";
+}
+
+function TFRBuildPassiveEffects(relic, stage) {
+  const passives = relic.features?.passives || [];
+  const effects = [];
+  for (let index = 0; index < Math.min(passives.length, TFRUnlockedPassiveCount(stage)); index++) {
+    const automation = TFRPassiveAutomation(relic.id, index);
+    if (!automation) continue;
+    effects.push({
+      name: `${relic.name} - ${TFRPassiveName(passives[index]) || TFRT("Passive {number}", { number: index + 1 })}`,
+      img: relic.icon,
+      transfer: true,
+      disabled: false,
+      description: passives[index],
+      changes: automation.changes.map(([key, mode, value]) => ({ key, mode: TFRMode(mode), value, priority: 20 })),
+      duration: {},
+      flags: {
+        dae: { transfer: true, stackable: "noneName", specialDuration: [] },
+        [TFR_MODULE_ID]: { passiveEffect: true, passiveIndex: index }
+      }
+    });
+  }
+  return effects;
+}
+
+/**
+ * Brings an existing item's passive effects in line with its stage without rebuilding the item:
+ * creates newly unlocked ones, refreshes changed ones and removes ones no longer unlocked.
+ */
+async function TFRSyncPassiveEffects(item, relic) {
+  if (!item?.effects || !relic) return { created: 0, updated: 0, deleted: 0 };
+  const wanted = TFRBuildPassiveEffects(relic, TFRRelicItemStage(item));
+  const existing = item.effects.filter(effect => effect.getFlag?.(TFR_MODULE_ID, "passiveEffect"));
+  const byIndex = new Map(existing.map(effect => [effect.getFlag(TFR_MODULE_ID, "passiveIndex"), effect]));
+  const create = [];
+  const update = [];
+  for (const data of wanted) {
+    const current = byIndex.get(data.flags[TFR_MODULE_ID].passiveIndex);
+    byIndex.delete(data.flags[TFR_MODULE_ID].passiveIndex);
+    if (!current) {
+      create.push(data);
+      continue;
+    }
+    const same = current.name === data.name
+      && current.description === data.description
+      && JSON.stringify(current.changes.map(c => [c.key, c.mode, String(c.value)])) === JSON.stringify(data.changes.map(c => [c.key, c.mode, String(c.value)]));
+    if (!same) update.push({ _id: current.id, name: data.name, description: data.description, changes: data.changes, img: data.img });
+  }
+  const remove = [...byIndex.values()].map(effect => effect.id);
+  if (create.length) await item.createEmbeddedDocuments("ActiveEffect", create, { render: false });
+  if (update.length) await item.updateEmbeddedDocuments("ActiveEffect", update, { render: false });
+  if (remove.length) await item.deleteEmbeddedDocuments("ActiveEffect", remove, { render: false });
+  return { created: create.length, updated: update.length, deleted: remove.length };
+}
+
+/** Startup repair: adds passive effects to relic items built before they existed. */
+async function TFRSyncAllPassiveEffects() {
+  const result = { checked: 0, created: 0, updated: 0, deleted: 0 };
+  if (!game.user?.isGM) return result;
+  const relics = await TFRLoadRelics();
+  for (const item of TFRAllWorldAndActorItems()) {
+    const relic = TFRRelicForItem(item, relics);
+    if (!relic || !item.getFlag?.(TFR_MODULE_ID, "relicId")) continue;
+    result.checked += 1;
+    const changed = await TFRWithRelicLock(relic.id, () => TFRSyncPassiveEffects(item, relic));
+    result.created += changed.created;
+    result.updated += changed.updated;
+    result.deleted += changed.deleted;
+  }
+  if (result.created || result.updated || result.deleted) {
+    console.log(`The First Relics | Passive effects synced: ${result.created} created, ${result.updated} updated, ${result.deleted} removed.`);
+  }
+  return result;
+}
+
 function TFRBuildItemEffects(relic, stage, signatureUnlocked = false) {
   return [
     TFRBuildEffect(relic, stage, signatureUnlocked),
+    ...TFRBuildPassiveEffects(relic, stage),
     ...TFRBuildNativeActivityEffects(relic, stage, signatureUnlocked)
   ];
 }
@@ -2319,6 +2434,7 @@ async function TFRUpdateRelicItem(item, stage, signatureUnlockedOverride = null)
     "flags.the-first-relics.nativeWorkflow": true
   });
   await TFRSyncRelicBonusEffect(item, relic, stage, signatureUnlocked);
+  await TFRSyncPassiveEffects(item, relic);
   await TFRClearLockedActivities(item, allowedSlots);
 
   ui.notifications.info(TFRT("{relicName} upgraded to {stageDataTitle}.", { relicName: relic.name, stageDataTitle: stageData.title }));
@@ -9222,6 +9338,7 @@ Hooks.once("ready", async () => {
     syncSealedTrueNameDescriptions: TFRSyncSealedTrueNameDescriptions,
     syncProgressiveAppearanceDescriptions: TFRSyncProgressiveAppearanceDescriptions,
     syncFinalFormItems: TFRSyncFinalFormItems,
+    syncPassiveEffects: TFRSyncAllPassiveEffects,
     auditTrueNameSealing: TFRAuditTrueNameSealing,
     clearLockedActivities: TFRClearLockedActivities,
     setAttunementRefusal: TFRSetAttunementRefusal,
@@ -9267,6 +9384,11 @@ Hooks.once("ready", async () => {
       await TFRSyncFinalFormItems();
     } catch (error) {
       console.error("The First Relics | Could not synchronize 1000-Affinity Final Form bonuses.", error);
+    }
+    try {
+      await TFRSyncAllPassiveEffects();
+    } catch (error) {
+      console.error("The First Relics | Could not synchronize passive feature effects.", error);
     }
     try {
       await TFRSyncProgressiveAppearanceDescriptions();

@@ -91,6 +91,7 @@ Hooks.once("ready", async () => {
     syncSealedTrueNameDescriptions: TFRSyncSealedTrueNameDescriptions,
     syncProgressiveAppearanceDescriptions: TFRSyncProgressiveAppearanceDescriptions,
     syncFinalFormItems: TFRSyncFinalFormItems,
+    syncPassiveEffects: TFRSyncAllPassiveEffects,
     auditTrueNameSealing: TFRAuditTrueNameSealing,
     clearLockedActivities: TFRClearLockedActivities,
     setAttunementRefusal: TFRSetAttunementRefusal,
@@ -136,6 +137,11 @@ Hooks.once("ready", async () => {
       await TFRSyncFinalFormItems();
     } catch (error) {
       console.error("The First Relics | Could not synchronize 1000-Affinity Final Form bonuses.", error);
+    }
+    try {
+      await TFRSyncAllPassiveEffects();
+    } catch (error) {
+      console.error("The First Relics | Could not synchronize passive feature effects.", error);
     }
     try {
       await TFRSyncProgressiveAppearanceDescriptions();

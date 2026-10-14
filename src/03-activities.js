@@ -2,7 +2,7 @@ function TFRBuildDescription(relic, stage, signatureUnlocked = false) {
   const stageData = TFRGetStageData(relic, stage, signatureUnlocked);
   const b = stageData.bonus;
   const f = relic.features;
-  const passives = stage === "dormant" ? f.passives.slice(0, 2) : stage === "awakened" ? f.passives.slice(0, 3) : f.passives.slice(0, 4);
+  const passives = f.passives.slice(0, TFRUnlockedPassiveCount(stage));
   const actives = stage === "dormant" ? f.actives.slice(0, 2) : stage === "awakened" ? f.actives.slice(0, 4) : f.actives.slice(0, 4);
 
   const description = `
@@ -32,7 +32,7 @@ function TFRBuildDescription(relic, stage, signatureUnlocked = false) {
     <p>${TFRT("The relic has <strong>{charges} charges</strong> and regains all expended charges daily at dawn.", { charges: stageData.charges })}</p>
 
     <h3>${TFRT("Unlocked Passive Features")}</h3>
-    <ul>${passives.map(p => `<li>${p}</li>`).join("")}</ul>
+    <ul>${passives.map((p, i) => { const auto = TFRPassiveAutomation(relic.id, i); return `<li>${p}${auto ? ` <em class="tfr-automated">(${TFRPassiveAutomationNote(auto)})</em>` : ""}</li>`; }).join("")}</ul>
 
     <h3>${TFRT("Unlocked Active Features")}</h3>
     <ul>${actives.map(a => `<li>${a}</li>`).join("")}</ul>

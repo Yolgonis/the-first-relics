@@ -7,7 +7,7 @@ Foundry VTT 13 / dnd5e 5.3.3 modülü: affinity ile gelişen 12 efsanevi relic. 
 - Foundry'de `Data\modules\the-first-relics` junction'ıyla yüklenir; değişikliği Foundry doğrudan görür.
 - GitHub: `Yolgonis/the-first-relics` (gizli; Temmuz 2026'dan beri kullanıcının geçmişi var, force push yapma). Her iş bitince commit + push.
 - Kod `src/` altında 27 parçada (`00-core.js` … `26-content-language.js`). Foundry tek dosya yükler: `scripts/the-first-relics.js`, `node tools/build.cjs` ile parçalar dosya adı sırasıyla birleştirilerek üretilir. **`scripts/the-first-relics.js`'i elle düzenleme**; `src/`'yi düzenle, sonra build et ve iki dosyayı birlikte commit et (Foundry junction üzerinden birleşik dosyayı okur). Parçalar tek bir ES module kapsamını paylaşır: import/export yok, sıra önemli (üst düzey `const` ve `TFRRegisterToolbarButton()` gibi çağrılar kendinden önceki parçalara dayanır). Yeni parça eklerken numara ver.
-- Relic içeriği `data/relics.json`.
+- Relic içeriği `data/relics.json`. Pasif özellikler açıklama metnidir; her zaman açık olanlar `src/04-items.js`'teki `TFR_PASSIVE_EFFECTS` tablosuyla (relic id → pasif sırası → Active Effect değişiklikleri) otomatikleşir. Aşamaya göre açılır, attunement yoksa ya da reddedilmişse dnd5e bastırır; mevcut eşyalar açılışta `TFRSyncAllPassiveEffects` ile güncellenir. Durumsal pasifler GM'dedir.
 - Test için Foundry içinde: `await FirstRelics.runDiagnostics()`, `FirstRelics.runReleaseCheck()`, `FirstRelics.openDashboard()`, `FirstRelics.openControlPanel()`.
 
 ## Sürüm çıkarma
