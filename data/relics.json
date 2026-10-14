@@ -1879,59 +1879,66 @@
     },
     "personality": {
       "temperament": [
-        "Ancient",
-        "Judging",
-        "Patient",
-        "Willful"
+        "Regal",
+        "Measuring",
+        "Demanding",
+        "Just",
+        "Contemptuous of tyrants"
       ],
       "likes": [
-        "Virtue-aligned choices",
-        "Sacrifice",
-        "Meaningful growth"
+        "Authority earned through service",
+        "Orders that protect the ones who obey them",
+        "Loyalty given freely",
+        "Leaders who share the hardship",
+        "Mercy granted from strength",
+        "Taking responsibility for failure"
       ],
       "dislikes": [
-        "Cowardice",
-        "Cruelty",
-        "Empty power"
+        "Rule by fear",
+        "Commanding from safety",
+        "Vanity dressed as leadership",
+        "Breaking an oath to followers",
+        "Blaming those who obeyed",
+        "Crushing honest dissent"
       ],
-      "corePhrase": "Order",
+      "corePhrase": "A crown is carried, never worn.",
       "roleplayGuidance": "Aurex respects authority earned through service, restraint, and accountability. It rejects domination for vanity and asks whether followers become stronger beneath the bearer's command."
     },
     "moodMap": [
       {
         "min": 0,
         "max": 99,
-        "mood": "Silent",
+        "mood": "Weighing",
         "description": "The crown is heavy and silent, measuring whether the bearer commands themself first."
       },
       {
         "min": 100,
         "max": 299,
-        "mood": "Watching",
+        "mood": "Attentive",
         "description": "A low golden resonance follows promises kept and orders that protect rather than exploit."
       },
       {
         "min": 300,
         "max": 499,
-        "mood": "Testing",
+        "mood": "Questioning",
         "description": "The crown tests the bearer with hard choices between pride, mercy, and responsibility."
       },
       {
         "min": 500,
         "max": 749,
-        "mood": "Trusting",
+        "mood": "Approving",
         "description": "The crown recognizes a voice that can lead without needing to crush dissent."
       },
       {
         "min": 750,
         "max": 999,
-        "mood": "Chosen",
+        "mood": "Crowned",
         "description": "The relic accepts the bearer as one who can carry power without being consumed by it."
       },
       {
         "min": 1000,
         "max": 1000,
-        "mood": "Resonant",
+        "mood": "Sovereign",
         "description": "A ring of invisible courtiers falls silent; Aurex is ready to speak its true name."
       }
     ],
@@ -1945,12 +1952,12 @@
         "signature": 1000
       },
       "moods": [
-        "Silent",
-        "Watching",
-        "Testing",
-        "Trusting",
-        "Chosen",
-        "Resonant"
+        "Weighing",
+        "Attentive",
+        "Questioning",
+        "Approving",
+        "Crowned",
+        "Sovereign"
       ]
     },
     "stages": {
@@ -2074,28 +2081,28 @@
         "stage": "dormant",
         "affinityMin": 100,
         "title": "The Empty Throne",
-        "text": "A vision of the empty throne reaches the bearer."
+        "text": "You dream of a throne room with no walls. A throne stands empty at its center, and every person you have ever given an order to stands waiting before it. None of them look at the throne. They are all looking at you."
       },
       {
         "id": "dream_2_crown_conqueror",
         "stage": "awakened",
         "affinityMin": 300,
         "title": "The Broken City",
-        "text": "A vision of the broken city reaches the bearer."
+        "text": "A city burns under a banner that is yours. You did not light the fire, but the soldiers who did are wearing your colors. A crowned shadow asks you a single question: 'Whose fault is this?'"
       },
       {
         "id": "dream_3_crown_conqueror",
         "stage": "exalted",
         "affinityMin": 750,
         "title": "The Earned Crown",
-        "text": "A vision of the earned crown reaches the bearer."
+        "text": "You kneel in mud beside a wounded stranger and bind their wounds with your own cloak. When you rise, a circle of kneeling people surrounds you. Nobody told them to kneel."
       },
       {
         "id": "dream_4_crown_conqueror",
         "stage": "signature",
         "affinityMin": 1000,
         "title": "Aurex",
-        "text": "A vision of aurex reaches the bearer."
+        "text": "A hundred broken crowns lie in a hall of dust. As you walk past, they rise and fit themselves together, point by point, into a single crown of gold. It does not descend onto your head. It waits for you to reach for it, and asks if you are certain."
       }
     ],
     "memories": [
@@ -2103,54 +2110,70 @@
         "id": "the_empty_throne",
         "title": "The Empty Throne",
         "locked": true,
-        "text": "Aurex remembers the empty throne."
+        "text": "Aurex remembers a throne left empty for a full year, because no claimant would swear to serve the people before themselves. The kingdom endured that year better than any before it."
       },
       {
         "id": "the_last_king",
         "title": "The Last King",
         "locked": true,
-        "text": "Aurex remembers the last king."
+        "text": "Aurex remembers a king who walked into the enemy camp alone and unarmed to end a war his pride had started. He did not come back. The war ended that night."
       },
       {
         "id": "when_crowns_were_earned",
         "title": "When Crowns Were Earned",
         "locked": true,
-        "text": "Aurex remembers when crowns were earned."
+        "text": "Aurex remembers an age when rulers were chosen by the people who had followed them through famine and flood. In that age, every crown was heavy, and no one wanted one."
       },
       {
         "id": "the_first_kingdom",
         "title": "The First Kingdom",
         "locked": true,
-        "text": "Aurex remembers the first kingdom."
+        "text": "Aurex remembers the first kingdom: twelve villages that chose to stand together against the dark. Their first law had five words. No one rules the unwilling."
       }
     ],
     "quotes": {
       "positive": [
-        "Good.",
-        "The path is remembered."
+        "They followed because they chose to. Remember that.",
+        "That is how a ruler answers.",
+        "You carried the weight. Good.",
+        "Mercy from the strong is law. Mercy from the weak is a plea.",
+        "Your word held. So will they."
       ],
       "negative": [
-        "No.",
-        "The relic grows cold."
+        "Obedience is not loyalty.",
+        "You commanded from the back of the field.",
+        "A crown of fear rusts quickly.",
+        "They followed you into that. Answer for it.",
+        "You spoke as a master, not a sovereign."
       ],
       "neutral": [
-        "Wait.",
-        "Choose."
+        "A crown is carried, never worn.",
+        "Every order is a promise.",
+        "Who serves the one who rules?",
+        "Silence in the ranks is not agreement.",
+        "Command yourself first."
       ],
       "signature": [
-        "I am Aurex.",
-        "The Crown That United Kings"
+        "I am Aurex. Kings have knelt to me. I have knelt to none of them.",
+        "You have earned the right to command. Now earn it again tomorrow.",
+        "Rise, sovereign. They are waiting for you."
       ]
     },
     "signatureCeremony": {
       "title": "Aurex Awakens",
       "text": [
-        "The relic speaks the name Aurex.",
-        "The bearer understands: The Crown That United Kings."
+        "Every voice nearby falls silent at once.",
+        "A weight settles on your brow. There is nothing there, yet you could not lift it alone.",
+        "Around you rise the shapes of kings and queens long dead, each wearing a broken crown.",
+        "They do not bow. They watch, as a court watches a verdict.",
+        "Then a voice of gold and iron speaks:",
+        "You commanded, and they were not diminished.",
+        "You ruled, and you served.",
+        "The crowns join into one, and its true name rings through you: Aurex, The Crown That United Kings."
       ]
     },
     "lore": {
-      "origin": "Aurex is the living memory of Dominion.",
+      "origin": "Aurex was first worn by the leader of twelve villages who chose to stand together against the dark, and it has judged every ruler since. It does not care whether a bearer is born to rule. It cares only whether the people beneath their command become stronger or smaller.",
       "hiddenSorrow": "Aurex remembers the first kingdom splitting because its king chose obedience over trust.",
       "knownRumor": "Bards claim the crown refuses any ruler who cannot kneel beside the people they command.",
       "appearanceDormant": "A tarnished circlet fragment or command medallion that feels heavier when orders are cruel.",
@@ -2204,35 +2227,42 @@
     },
     "personality": {
       "temperament": [
-        "Ancient",
-        "Judging",
+        "Calm",
+        "Exacting",
         "Patient",
-        "Willful"
+        "Quietly proud",
+        "Unmoved by flattery"
       ],
       "likes": [
-        "Virtue-aligned choices",
-        "Sacrifice",
-        "Meaningful growth"
+        "Daily practice",
+        "Restraint under provocation",
+        "Victories earned after failure",
+        "Breath held steady through pain",
+        "Strength used briefly and precisely",
+        "Teaching what one has learned"
       ],
       "dislikes": [
-        "Cowardice",
-        "Cruelty",
-        "Empty power"
+        "Strength performed for an audience",
+        "Rage dressed as passion",
+        "Shortcuts to mastery",
+        "Cruelty toward the defeated",
+        "Abandoning training when it hurts",
+        "Contempt for weaker students"
       ],
-      "corePhrase": "Self-Mastery",
+      "corePhrase": "The dragon is the breath, not the fire.",
       "roleplayGuidance": "Ryushen values discipline without cruelty and strength without performance. It answers practice, patience, restraint, and victories earned after failure."
     },
     "moodMap": [
       {
         "min": 0,
         "max": 99,
-        "mood": "Silent",
+        "mood": "Still",
         "description": "The bands rest like cool stone, waiting for breath and motion to align."
       },
       {
         "min": 100,
         "max": 299,
-        "mood": "Watching",
+        "mood": "Breathing",
         "description": "A slow pulse follows moments when the bearer chooses patience over impulse."
       },
       {
@@ -2244,19 +2274,19 @@
       {
         "min": 500,
         "max": 749,
-        "mood": "Trusting",
+        "mood": "Aligned",
         "description": "The bands move with the bearer, correcting wasted motion before thought catches up."
       },
       {
         "min": 750,
         "max": 999,
-        "mood": "Chosen",
+        "mood": "Flowing",
         "description": "The relic accepts the bearer as a student who can become the lesson."
       },
       {
         "min": 1000,
         "max": 1000,
-        "mood": "Resonant",
+        "mood": "Unchained",
         "description": "A dragon exhales inside the bearer's breath; Ryushen is ready to speak its true name."
       }
     ],
@@ -2270,12 +2300,12 @@
         "signature": 1000
       },
       "moods": [
-        "Silent",
-        "Watching",
+        "Still",
+        "Breathing",
         "Testing",
-        "Trusting",
-        "Chosen",
-        "Resonant"
+        "Aligned",
+        "Flowing",
+        "Unchained"
       ]
     },
     "stages": {
@@ -2399,28 +2429,28 @@
         "stage": "dormant",
         "affinityMin": 100,
         "title": "The Silent Mountain",
-        "text": "A vision of the silent mountain reaches the bearer."
+        "text": "You dream of a mountain so quiet that you can hear your own heartbeat echo from the peaks. You try to climb it and fall. You try again and fall again. On the third attempt, you notice the steps were carved there for you all along."
       },
       {
         "id": "dream_2_bands_inner_dragon",
         "stage": "awakened",
         "affinityMin": 300,
         "title": "The Meditating Dragon",
-        "text": "A vision of the meditating dragon reaches the bearer."
+        "text": "A dragon lies coiled on a temple roof, perfectly still, eyes closed. Arrows strike its scales and fall away. It does not wake. When the archers tire and leave, it opens one eye and looks at you as if to ask whether you understood."
       },
       {
         "id": "dream_3_bands_inner_dragon",
         "stage": "exalted",
         "affinityMin": 750,
         "title": "The Bow Within",
-        "text": "A vision of the bow within reaches the bearer."
+        "text": "You stand in an empty courtyard and strike the air a thousand times. On the thousandth strike there is no sound, no wind, no effort. There is only the strike, and for a moment, you are not there at all."
       },
       {
         "id": "dream_4_bands_inner_dragon",
         "stage": "signature",
         "affinityMin": 1000,
         "title": "Ryushen",
-        "text": "A vision of ryushen reaches the bearer."
+        "text": "Chains fall from your wrists, but you do not move. A great silver dragon uncoils from your own breath and circles you once. 'You could always have broken them,' it says. 'You learned to wait until breaking them meant something.'"
       }
     ],
     "memories": [
@@ -2428,54 +2458,70 @@
         "id": "the_mountain_that_waited",
         "title": "The Mountain That Waited",
         "locked": true,
-        "text": "Ryushen remembers the mountain that waited."
+        "text": "Ryushen remembers a student who climbed the same mountain path every dawn for twenty years. The mountain never changed. The student did."
       },
       {
         "id": "one_thousand_strikes",
         "title": "One Thousand Strikes",
         "locked": true,
-        "text": "Ryushen remembers one thousand strikes."
+        "text": "Ryushen remembers a thousand strikes against a temple pillar, and the morning the pillar was left untouched because the student finally understood when not to strike."
       },
       {
         "id": "the_silent_dragon",
         "title": "The Silent Dragon",
         "locked": true,
-        "text": "Ryushen remembers the silent dragon."
+        "text": "Ryushen remembers a dragon that let itself be called a coward rather than burn a valley that had insulted it. Its stillness saved more lives than any battle it ever fought."
       },
       {
         "id": "the_perfect_breath",
         "title": "The Perfect Breath",
         "locked": true,
-        "text": "Ryushen remembers the perfect breath."
+        "text": "Ryushen remembers a single breath, drawn in a burning temple, slow and complete. In that breath its bearer chose to carry the children out rather than chase the arsonist."
       }
     ],
     "quotes": {
       "positive": [
-        "Good.",
-        "The path is remembered."
+        "Again. Better.",
+        "You did not need to strike. So you didn't.",
+        "That was discipline, not hesitation.",
+        "Pain passed through you and left you standing.",
+        "You lost, and you learned. That is the only victory that lasts."
       ],
       "negative": [
-        "No.",
-        "The relic grows cold."
+        "You fought the anger, and it won.",
+        "Who was that strike for? The enemy or the crowd?",
+        "Wasted motion. Wasted breath.",
+        "The defeated were already beaten. You struck them anyway.",
+        "You skipped the practice. The fight noticed."
       ],
       "neutral": [
-        "Wait.",
-        "Choose."
+        "The dragon is the breath, not the fire.",
+        "Breathe first.",
+        "Slower. Then faster.",
+        "A closed fist is still an open choice.",
+        "Mastery is the same lesson, learned forever."
       ],
       "signature": [
-        "I am Ryushen.",
-        "The Dragon Without Chains"
+        "I am Ryushen. I wore chains so that I would learn to choose.",
+        "We move as one now. Do not mistake that for ease.",
+        "Unbound does not mean unrestrained."
       ]
     },
     "signatureCeremony": {
       "title": "Ryushen Awakens",
       "text": [
-        "The relic speaks the name Ryushen.",
-        "The bearer understands: The Dragon Without Chains."
+        "Your breath slows until the world seems to slow with it.",
+        "The bands grow warm, then weightless, then gone, though you can still feel them on your wrists.",
+        "Behind your eyes, a silver dragon uncoils from a long, patient sleep.",
+        "It does not roar. It breathes once, in time with you.",
+        "A voice as calm as still water says:",
+        "You were strong enough to break your chains long ago.",
+        "You waited until you were wise enough to deserve it.",
+        "The true name moves through you like a perfect breath: Ryushen, The Dragon Without Chains."
       ]
     },
     "lore": {
-      "origin": "Ryushen is the living memory of Discipline.",
+      "origin": "Ryushen was born when a dragon chose to bind its own power rather than let its rage burn the world, and gave its chains to a mortal student so that the lesson would not be lost. The bands teach the same lesson still: true strength is the power to hold back.",
       "hiddenSorrow": "Ryushen remembers the master who won every duel but failed to teach mercy before the temple burned.",
       "knownRumor": "Monks say the bands tighten when worn for display and loosen only after honest practice.",
       "appearanceDormant": "Plain iron training bands, perfectly balanced and almost impossible to scratch.",
@@ -2529,59 +2575,66 @@
     },
     "personality": {
       "temperament": [
-        "Ancient",
-        "Judging",
         "Patient",
-        "Willful"
+        "Watchful",
+        "Dryly amused",
+        "Secretive",
+        "Merciless toward the reckless"
       ],
       "likes": [
-        "Virtue-aligned choices",
-        "Sacrifice",
-        "Meaningful growth"
+        "Plans that end danger before it begins",
+        "Information gathered quietly",
+        "Leaving no trace",
+        "Mercy no one ever learns about",
+        "Knowing when not to strike",
+        "Protecting those who never knew they were in danger"
       ],
       "dislikes": [
-        "Cowardice",
-        "Cruelty",
-        "Empty power"
+        "Spectacle",
+        "Needless lies",
+        "Cruelty disguised as cleverness",
+        "Bragging about a job",
+        "Rushing in without a plan",
+        "Betraying a trusted ally"
       ],
-      "corePhrase": "Shadow",
+      "corePhrase": "The best blade is the one never drawn.",
       "roleplayGuidance": "Noctyra rewards patience, information, and clean plans that end danger before panic begins. It distrusts spectacle, needless lies, and cruelty disguised as cleverness."
     },
     "moodMap": [
       {
         "min": 0,
         "max": 99,
-        "mood": "Silent",
+        "mood": "Unseen",
         "description": "The cloak drinks light silently, waiting to see whether the bearer can wait as well."
       },
       {
         "min": 100,
         "max": 299,
-        "mood": "Watching",
+        "mood": "Listening",
         "description": "Its hem stirs toward hidden exits when the bearer gathers information before acting."
       },
       {
         "min": 300,
         "max": 499,
-        "mood": "Testing",
+        "mood": "Probing",
         "description": "The cloak tests plans by offering tempting shortcuts that would expose the innocent."
       },
       {
         "min": 500,
         "max": 749,
-        "mood": "Trusting",
+        "mood": "Confiding",
         "description": "The cloak trusts the bearer enough to hide their heartbeat from listening shadows."
       },
       {
         "min": 750,
         "max": 999,
-        "mood": "Chosen",
+        "mood": "Veiled",
         "description": "The relic accepts the bearer as a blade that can remain sheathed until the right moment."
       },
       {
         "min": 1000,
         "max": 1000,
-        "mood": "Resonant",
+        "mood": "Sleepless",
         "description": "Every shadow turns its face toward the bearer; Noctyra is ready to speak its true name."
       }
     ],
@@ -2595,12 +2648,12 @@
         "signature": 1000
       },
       "moods": [
-        "Silent",
-        "Watching",
-        "Testing",
-        "Trusting",
-        "Chosen",
-        "Resonant"
+        "Unseen",
+        "Listening",
+        "Probing",
+        "Confiding",
+        "Veiled",
+        "Sleepless"
       ]
     },
     "stages": {
@@ -2724,28 +2777,28 @@
         "stage": "dormant",
         "affinityMin": 100,
         "title": "The City Without Moonlight",
-        "text": "A vision of the city without moonlight reaches the bearer."
+        "text": "You dream of a city where the moon never rises. People walk its streets without lanterns, guided by whispers from the walls. One whisper speaks your name, then falls silent, as if it said too much."
       },
       {
         "id": "dream_2_cloak_shadowfell",
         "stage": "awakened",
         "affinityMin": 300,
         "title": "The Crown Not Taken",
-        "text": "A vision of the crown not taken reaches the bearer."
+        "text": "A crown rests on a velvet cushion in an unguarded room. You could take it and no one would ever know. You leave it, and as you close the door, a shadow behind you laughs softly in approval."
       },
       {
         "id": "dream_3_cloak_shadowfell",
         "stage": "exalted",
         "affinityMin": 750,
         "title": "The Speaking Shadows",
-        "text": "A vision of the speaking shadows reaches the bearer."
+        "text": "Shadows gather around a table and speak to each other in low voices. They are planning something. When you sit down among them, they slide a map toward you and wait for your first move."
       },
       {
         "id": "dream_4_cloak_shadowfell",
         "stage": "signature",
         "affinityMin": 1000,
         "title": "Noctyra",
-        "text": "A vision of noctyra reaches the bearer."
+        "text": "Every shadow in the world turns to face you at once. From the darkness steps a figure made of folded night, eyes like distant stars. 'I have watched you in every dark room,' it says. 'You never once wasted the dark.'"
       }
     ],
     "memories": [
@@ -2753,54 +2806,70 @@
         "id": "the_city_without_light",
         "title": "The City Without Light",
         "locked": true,
-        "text": "Noctyra remembers the city without light."
+        "text": "Noctyra remembers a city under siege where every lamp went dark on the same night. By dawn the enemy commanders were gone, the gates were open, and not one citizen had been harmed."
       },
       {
         "id": "when_silence_won",
         "title": "When Silence Won",
         "locked": true,
-        "text": "Noctyra remembers when silence won."
+        "text": "Noctyra remembers a war that ended without a battle, because a single letter reached the right hands at the right hour. No song was written about it. That was the point."
       },
       {
         "id": "the_unseen_queen",
         "title": "The Unseen Queen",
         "locked": true,
-        "text": "Noctyra remembers the unseen queen."
+        "text": "Noctyra remembers a queen who ruled for forty years without anyone learning her face. She walked among her people in the dark and knew their troubles better than any crowned king."
       },
       {
         "id": "the_last_shadow",
         "title": "The Last Shadow",
         "locked": true,
-        "text": "Noctyra remembers the last shadow."
+        "text": "Noctyra remembers its first bearer slipping away into the dark after saving a kingdom, leaving no name behind. The kingdom never thanked them. The cloak has never forgotten them."
       }
     ],
     "quotes": {
       "positive": [
-        "Good.",
-        "The path is remembered."
+        "Clean. No one will ever know.",
+        "You waited. That was the hardest part.",
+        "They never saw you coming. They never needed to.",
+        "Information is the sharpest blade.",
+        "You let them keep their secret. Wise."
       ],
       "negative": [
-        "No.",
-        "The relic grows cold."
+        "That was noise, not a plan.",
+        "You lied when the truth would have served.",
+        "Everyone saw that. Everyone will remember.",
+        "Cruelty is not cleverness. It only looks like it in the dark.",
+        "You sold someone who trusted you."
       ],
       "neutral": [
-        "Wait.",
-        "Choose."
+        "The best blade is the one never drawn.",
+        "Watch the exits.",
+        "Who else is listening?",
+        "Patience is a dagger held very still.",
+        "Every door has two sides."
       ],
       "signature": [
-        "I am Noctyra.",
-        "The Shadow That Never Slept"
+        "I am Noctyra. I have never slept.",
+        "Wherever there is shadow, you are home now.",
+        "Let them search the dark. They will find only us."
       ]
     },
     "signatureCeremony": {
       "title": "Noctyra Awakens",
       "text": [
-        "The relic speaks the name Noctyra.",
-        "The bearer understands: The Shadow That Never Slept."
+        "The light around you dims, though no flame has gone out.",
+        "Every shadow in the room leans toward you, as if it has been waiting to be noticed.",
+        "The cloak grows heavy with the weight of a thousand kept secrets.",
+        "Faces form in the folds: bearers who saved cities and were never thanked.",
+        "One of them leans close and whispers:",
+        "You learned to be unseen without becoming cruel.",
+        "Now the dark will hide you, and you will guard the dark.",
+        "The true name settles into you without a sound: Noctyra, The Shadow That Never Slept."
       ]
     },
     "lore": {
-      "origin": "Noctyra is the living memory of Cunning.",
+      "origin": "Noctyra was woven from the first night that ever kept a secret: the darkness in which a hunted people hid from those who would destroy them. The cloak still remembers what shadows are for. They are not for cruelty. They are for shelter.",
       "hiddenSorrow": "Noctyra remembers the night a perfect plan saved a kingdom and left its planner forgotten in the dark.",
       "knownRumor": "Thieves whisper that the cloak chooses those who know when not to strike.",
       "appearanceDormant": "A matte black cloak clasp or strip of fabric that never catches torchlight directly.",
@@ -2854,59 +2923,66 @@
     },
     "personality": {
       "temperament": [
-        "Ancient",
-        "Judging",
-        "Patient",
-        "Willful"
+        "Nurturing",
+        "Slow to anger",
+        "Grieving",
+        "Hopeful",
+        "Unbending against waste"
       ],
       "likes": [
-        "Virtue-aligned choices",
-        "Sacrifice",
-        "Meaningful growth"
+        "Healing what others abandoned",
+        "Restoring barren ground",
+        "Mercy toward living things",
+        "Patience with slow growth",
+        "Accepting loss without bitterness",
+        "Planting what you will never see grow"
       ],
       "dislikes": [
-        "Cowardice",
-        "Cruelty",
-        "Empty power"
+        "Waste of life",
+        "Destruction for convenience",
+        "Hoarding what should be shared",
+        "Burning what could be healed",
+        "Despair that refuses to try",
+        "Taking without returning"
       ],
-      "corePhrase": "Life",
+      "corePhrase": "What is planted in grief may still bloom.",
       "roleplayGuidance": "Eldryss honors growth that preserves balance: healing, restoration, mercy, and patient renewal. It withers around wasteful destruction or life taken for convenience."
     },
     "moodMap": [
       {
         "min": 0,
         "max": 99,
-        "mood": "Silent",
+        "mood": "Dormant Seed",
         "description": "A dry seed-heart waits in silence, listening for compassion beneath the bearer's choices."
       },
       {
         "min": 100,
         "max": 299,
-        "mood": "Watching",
+        "mood": "Stirring",
         "description": "Tiny green veins wake across the relic when the bearer restores what others would abandon."
       },
       {
         "min": 300,
         "max": 499,
-        "mood": "Testing",
+        "mood": "Rooting",
         "description": "The heart tests whether mercy can survive hunger, anger, and fear of loss."
       },
       {
         "min": 500,
         "max": 749,
-        "mood": "Trusting",
+        "mood": "Budding",
         "description": "The heart beats with the bearer's pulse and steadies wounded creatures nearby."
       },
       {
         "min": 750,
         "max": 999,
-        "mood": "Chosen",
+        "mood": "Blooming",
         "description": "The relic accepts the bearer as soil where ruined things may grow again."
       },
       {
         "min": 1000,
         "max": 1000,
-        "mood": "Resonant",
+        "mood": "Evergreen",
         "description": "Roots coil through dream and bone; Eldryss is ready to speak its true name."
       }
     ],
@@ -2920,12 +2996,12 @@
         "signature": 1000
       },
       "moods": [
-        "Silent",
-        "Watching",
-        "Testing",
-        "Trusting",
-        "Chosen",
-        "Resonant"
+        "Dormant Seed",
+        "Stirring",
+        "Rooting",
+        "Budding",
+        "Blooming",
+        "Evergreen"
       ]
     },
     "stages": {
@@ -3049,28 +3125,28 @@
         "stage": "dormant",
         "affinityMin": 100,
         "title": "The Leafless Tree",
-        "text": "A vision of the leafless tree reaches the bearer."
+        "text": "You dream of a vast tree without a single leaf, standing in a field of grey dust. You lay your palm on its bark and feel, deep beneath your hand, something still beating. Very slowly. Very faintly."
       },
       {
         "id": "dream_2_heart_yggdrasil",
         "stage": "awakened",
         "affinityMin": 300,
         "title": "The First Leaf",
-        "text": "A vision of the first leaf reaches the bearer."
+        "text": "A single green leaf opens on a dead branch above you. It trembles in a wind you cannot feel. Below it, in the dust, the first blade of grass pushes up toward the light."
       },
       {
         "id": "dream_3_heart_yggdrasil",
         "stage": "exalted",
         "affinityMin": 750,
         "title": "The Wind Voice",
-        "text": "A vision of the wind voice reaches the bearer."
+        "text": "The wind moves through a forest that has not yet grown, and you can hear it singing through branches that will exist in a hundred years. The song is about you, and it is not finished."
       },
       {
         "id": "dream_4_heart_yggdrasil",
         "stage": "signature",
         "affinityMin": 1000,
         "title": "Eldryss",
-        "text": "A vision of eldryss reaches the bearer."
+        "text": "You stand within the trunk of the first world-tree, surrounded by the heartbeat of every forest that ever lived. A voice like rain on new leaves says: 'Everything you healed is still growing. Come and see.'"
       }
     ],
     "memories": [
@@ -3078,54 +3154,70 @@
         "id": "the_first_seed",
         "title": "The First Seed",
         "locked": true,
-        "text": "Eldryss remembers the first seed."
+        "text": "Eldryss remembers the first seed, planted in ash by a druid who had lost everything to fire. She never lived to see it sprout. It became the first forest of the new world."
       },
       {
         "id": "roots_beneath_the_stars",
         "title": "Roots Beneath the Stars",
         "locked": true,
-        "text": "Eldryss remembers roots beneath the stars."
+        "text": "Eldryss remembers roots that reached beneath the whole world, holding the land together through an age of earthquakes. No one saw them. Everything stood because of them."
       },
       {
         "id": "when_forests_sang",
         "title": "When Forests Sang",
         "locked": true,
-        "text": "Eldryss remembers when forests sang."
+        "text": "Eldryss remembers an age when the forests sang aloud and every traveler could understand them. The song ended when the first forest was cut down for profit. Some trees still remember the melody."
       },
       {
         "id": "the_last_spring",
         "title": "The Last Spring",
         "locked": true,
-        "text": "Eldryss remembers the last spring."
+        "text": "Eldryss remembers a winter that lasted nine years, and the single spring flower its bearer kept alive in their hands through all of it. When the thaw came, that flower seeded a valley."
       }
     ],
     "quotes": {
       "positive": [
-        "Good.",
-        "The path is remembered."
+        "It will grow back. Because of you.",
+        "You healed what others left to die.",
+        "That was a seed. Be patient with it.",
+        "Life answers life.",
+        "The roots felt that."
       ],
       "negative": [
-        "No.",
-        "The relic grows cold."
+        "That did not need to die.",
+        "You burned what you could have healed.",
+        "Ash remembers.",
+        "You took and gave nothing back.",
+        "Something withered just now. It was not only the grass."
       ],
       "neutral": [
-        "Wait.",
-        "Choose."
+        "What is planted in grief may still bloom.",
+        "Growth is slow. So is healing.",
+        "Every ending is soil.",
+        "Listen. Even stone is growing.",
+        "Water the roots, not the leaves."
       ],
       "signature": [
-        "I am Eldryss.",
-        "The Heart That Never Withered"
+        "I am Eldryss. I have never withered.",
+        "Wherever you walk now, something will grow.",
+        "Grief and growth share the same roots. You know that now."
       ]
     },
     "signatureCeremony": {
       "title": "Eldryss Awakens",
       "text": [
-        "The relic speaks the name Eldryss.",
-        "The bearer understands: The Heart That Never Withered."
+        "The ground beneath your feet grows warm, and the air smells of rain.",
+        "Green threads spread from your hands into the earth, and the earth answers.",
+        "All around you, things that should not bloom are blooming: stone, rust, ash.",
+        "You feel the slow heartbeat of every forest at once, and your own heart slows to match it.",
+        "A voice like wind through a canopy says:",
+        "You healed what the world gave up on.",
+        "Now the world will grow wherever you walk.",
+        "The true name takes root in you: Eldryss, The Heart That Never Withered."
       ]
     },
     "lore": {
-      "origin": "Eldryss is the living memory of Growth.",
+      "origin": "Eldryss is the heartwood of the first world-tree, from whose roots every forest grew. It carries the memory of every forest that grew from its roots, and every forest that was lost. It asks only one thing of its bearers: to plant more than they take.",
       "hiddenSorrow": "Eldryss remembers the first world-tree losing a single branch to save a burning forest below.",
       "knownRumor": "Druids say the heart blooms only for those who understand that growth and grief share roots.",
       "appearanceDormant": "A petrified seed or heartwood charm with one living green line at its center.",
@@ -3179,59 +3271,66 @@
     },
     "personality": {
       "temperament": [
-        "Ancient",
-        "Judging",
-        "Patient",
-        "Willful"
+        "Gentle",
+        "Unwavering",
+        "Sorrowful",
+        "Hopeful",
+        "Fierce in defense of the suffering"
       ],
       "likes": [
-        "Virtue-aligned choices",
-        "Sacrifice",
-        "Meaningful growth"
+        "Mercy given without being asked",
+        "Healing an enemy",
+        "Staying with the dying",
+        "Faith shown through service",
+        "Hope offered when it seems foolish",
+        "Kindness no one witnesses"
       ],
       "dislikes": [
-        "Cowardice",
-        "Cruelty",
-        "Empty power"
+        "Healing withheld out of pride",
+        "Doctrine used as a weapon",
+        "Charity performed for praise",
+        "Treating compassion as weakness",
+        "Turning away from suffering",
+        "Despair spread to others"
       ],
-      "corePhrase": "Compassion",
+      "corePhrase": "Light is only light if it reaches the dark.",
       "roleplayGuidance": "Seraphel answers faith expressed through mercy, courage, and service rather than doctrine alone. It dims when healing is withheld for pride or compassion is treated as weakness."
     },
     "moodMap": [
       {
         "min": 0,
         "max": 99,
-        "mood": "Silent",
+        "mood": "Dim",
         "description": "The vestments hang still, smelling faintly of candle smoke after prayers for the wounded."
       },
       {
         "min": 100,
         "max": 299,
-        "mood": "Watching",
+        "mood": "Kindled",
         "description": "Threaded light appears along the seams when the bearer comforts someone with no reward promised."
       },
       {
         "min": 300,
         "max": 499,
-        "mood": "Testing",
+        "mood": "Trial",
         "description": "The vestments test whether faith remains when miracles are delayed and pain is inconvenient."
       },
       {
         "min": 500,
         "max": 749,
-        "mood": "Trusting",
+        "mood": "Warm",
         "description": "The relic trusts the bearer with warmth that steadies frightened hands."
       },
       {
         "min": 750,
         "max": 999,
-        "mood": "Chosen",
+        "mood": "Radiant",
         "description": "The vestments accept the bearer as a servant of light before victory."
       },
       {
         "min": 1000,
         "max": 1000,
-        "mood": "Resonant",
+        "mood": "Unfading",
         "description": "A choir too distant to hear gathers in the cloth; Seraphel is ready to speak its true name."
       }
     ],
@@ -3245,12 +3344,12 @@
         "signature": 1000
       },
       "moods": [
-        "Silent",
-        "Watching",
-        "Testing",
-        "Trusting",
-        "Chosen",
-        "Resonant"
+        "Dim",
+        "Kindled",
+        "Trial",
+        "Warm",
+        "Radiant",
+        "Unfading"
       ]
     },
     "stages": {
@@ -3374,28 +3473,28 @@
         "stage": "dormant",
         "affinityMin": 100,
         "title": "The Empty Temple",
-        "text": "A vision of the empty temple reaches the bearer."
+        "text": "You dream of an empty temple. Its altar is bare and its candles are cold. Outside its doors, someone is crying in the rain. The temple does not move toward them. You do."
       },
       {
         "id": "dream_2_vestments_first_saint",
         "stage": "awakened",
         "affinityMin": 300,
         "title": "The Wounded Field",
-        "text": "A vision of the wounded field reaches the bearer."
+        "text": "You walk across a battlefield after the fighting has ended. The wounded call out in a dozen languages, some in your own, some in the enemy's. In the dream you cannot tell which is which, and you realize it does not matter."
       },
       {
         "id": "dream_3_vestments_first_saint",
         "stage": "exalted",
         "affinityMin": 750,
         "title": "The Light Returns",
-        "text": "A vision of the light returns reaches the bearer."
+        "text": "A long night ends. The first ray of dawn falls not on a cathedral, but on a small hut where someone has been keeping vigil beside a sick child. The child opens their eyes."
       },
       {
         "id": "dream_4_vestments_first_saint",
         "stage": "signature",
         "affinityMin": 1000,
         "title": "Seraphel",
-        "text": "A vision of seraphel reaches the bearer."
+        "text": "You stand in a field of light so bright you should not be able to see, yet you see everything. A figure in white-gold robes kneels before you and takes your hands. 'You carried the light into places it had never been,' they say. 'Now let it carry you.'"
       }
     ],
     "memories": [
@@ -3403,54 +3502,70 @@
         "id": "the_first_prayer",
         "title": "The First Prayer",
         "locked": true,
-        "text": "Seraphel remembers the first prayer."
+        "text": "Seraphel remembers the first prayer it ever heard. It was not for wealth or victory. It was a mother asking that her child's fever break, and promising nothing in return."
       },
       {
         "id": "when_hope_returned",
         "title": "When Hope Returned",
         "locked": true,
-        "text": "Seraphel remembers when hope returned."
+        "text": "Seraphel remembers a plague city where no healer would enter, and the one who walked through its gates anyway. They saved few, but for the first time in months, the city stopped despairing."
       },
       {
         "id": "the_empty_cathedral",
         "title": "The Empty Cathedral",
         "locked": true,
-        "text": "Seraphel remembers the empty cathedral."
+        "text": "Seraphel remembers a grand cathedral emptied by its own priests when the war reached its doors. Its bearer stayed behind and turned the nave into a hospital for both armies."
       },
       {
         "id": "light_beyond_death",
         "title": "Light Beyond Death",
         "locked": true,
-        "text": "Seraphel remembers light beyond death."
+        "text": "Seraphel remembers holding the hand of a dying soldier who feared the dark. It shone a little brighter so that the last thing the soldier saw was light."
       }
     ],
     "quotes": {
       "positive": [
-        "Good.",
-        "The path is remembered."
+        "They will live. Because you stayed.",
+        "That mercy was not owed. You gave it anyway.",
+        "The light reached further today.",
+        "You healed an enemy. Few understand how holy that is.",
+        "Hope is lighter when it is shared."
       ],
       "negative": [
-        "No.",
-        "The relic grows cold."
+        "You could have healed them. You chose not to.",
+        "Faith without mercy is only noise.",
+        "You turned away. The light did not follow you.",
+        "They needed you, not your sermon.",
+        "Pride is a poor reason to let someone suffer."
       ],
       "neutral": [
-        "Wait.",
-        "Choose."
+        "Light is only light if it reaches the dark.",
+        "Who here is hurting?",
+        "Mercy first. Judgment later, if at all.",
+        "Even a candle defies the night.",
+        "Every wound is a prayer someone cannot say aloud."
       ],
       "signature": [
-        "I am Seraphel.",
-        "The Light That Refused to Fade"
+        "I am Seraphel. I refused to fade.",
+        "Wherever you walk, the dark will remember being lit.",
+        "Rise, saint. There is so much left to heal."
       ]
     },
     "signatureCeremony": {
       "title": "Seraphel Awakens",
       "text": [
-        "The relic speaks the name Seraphel.",
-        "The bearer understands: The Light That Refused to Fade."
+        "Warmth spreads through you, like the first sun after a long winter.",
+        "The vestments stir without wind, and light gathers in their folds.",
+        "You hear voices, thousands of them, every person ever healed by a bearer of this cloth.",
+        "They are not praising you. They are thanking you.",
+        "A voice as soft as a hand on a fevered brow says:",
+        "You brought light where no one else would go.",
+        "Now the light will never leave you.",
+        "The true name blooms in your heart: Seraphel, The Light That Refused to Fade."
       ]
     },
     "lore": {
-      "origin": "Seraphel is the living memory of Faith.",
+      "origin": "Seraphel was woven from the robes of the first healer to walk onto a battlefield and tend the wounded of both sides. No temple claims to have sent that healer, and every temple claims them now. The vestments remember only that they went where they were needed.",
       "hiddenSorrow": "Seraphel remembers the saint who spent their final miracle on an enemy child and died unnamed.",
       "knownRumor": "Temples disagree about Seraphel's doctrine, but every story agrees the vestments move toward suffering.",
       "appearanceDormant": "A strip of white-gold cloth or stole that never stains where blood touches it.",
@@ -3504,59 +3619,66 @@
     },
     "personality": {
       "temperament": [
-        "Ancient",
-        "Judging",
-        "Patient",
-        "Willful"
+        "Proud",
+        "Fierce",
+        "Restless",
+        "Defiant",
+        "Scornful of cowardice and tyranny alike"
       ],
       "likes": [
-        "Virtue-aligned choices",
-        "Sacrifice",
-        "Meaningful growth"
+        "Refusing to yield to fear",
+        "Power used with purpose",
+        "Rising after defeat",
+        "Accepting the cost of strength",
+        "Facing a greater foe",
+        "Fire kept under control"
       ],
       "dislikes": [
         "Cowardice",
-        "Cruelty",
-        "Empty power"
+        "Tyranny",
+        "Destruction without purpose",
+        "Wasting power on the helpless",
+        "Surrendering to rage",
+        "Begging for mercy one never offered"
       ],
-      "corePhrase": "Power",
+      "corePhrase": "Fire must choose what it burns.",
       "roleplayGuidance": "Vorathis respects will that endures without surrendering to mindless destruction. It burns hotter when the bearer chooses purpose over rage and accepts the cost of power."
     },
     "moodMap": [
       {
         "min": 0,
         "max": 99,
-        "mood": "Silent",
+        "mood": "Embers",
         "description": "The blood is dark and still, waiting to learn what the bearer will burn for."
       },
       {
         "min": 100,
         "max": 299,
-        "mood": "Watching",
+        "mood": "Smoldering",
         "description": "Heat rises beneath the relic when the bearer refuses fear without lashing out blindly."
       },
       {
         "min": 300,
         "max": 499,
-        "mood": "Testing",
+        "mood": "Kindling",
         "description": "The dragon-blood tests whether the bearer can carry wrath without becoming its servant."
       },
       {
         "min": 500,
         "max": 749,
-        "mood": "Trusting",
+        "mood": "Burning",
         "description": "The relic trusts the bearer with a controlled flame that answers breath and heartbeat."
       },
       {
         "min": 750,
         "max": 999,
-        "mood": "Chosen",
+        "mood": "Blazing",
         "description": "The dragon-blood accepts the bearer as one whose will can survive its own fire."
       },
       {
         "min": 1000,
         "max": 1000,
-        "mood": "Resonant",
+        "mood": "Inextinguishable",
         "description": "A first flame coils behind the bearer's eyes; Vorathis is ready to speak its true name."
       }
     ],
@@ -3570,12 +3692,12 @@
         "signature": 1000
       },
       "moods": [
-        "Silent",
-        "Watching",
-        "Testing",
-        "Trusting",
-        "Chosen",
-        "Resonant"
+        "Embers",
+        "Smoldering",
+        "Kindling",
+        "Burning",
+        "Blazing",
+        "Inextinguishable"
       ]
     },
     "stages": {
@@ -3699,28 +3821,28 @@
         "stage": "dormant",
         "affinityMin": 100,
         "title": "The Lone Sky",
-        "text": "A vision of the lone sky reaches the bearer."
+        "text": "You dream of an empty sky, wider than any you have seen. You are flying, alone, and there is nothing above you and nothing ahead. It is not peaceful. It is lonely, and the loneliness has teeth."
       },
       {
         "id": "dream_2_blood_first_dragon",
         "stage": "awakened",
         "affinityMin": 300,
         "title": "The Burning Heart",
-        "text": "A vision of the burning heart reaches the bearer."
+        "text": "Your heart beats so loudly that the mountains answer. Each beat sends heat through your veins until you are sure you will burn up. You do not. You learn, slowly, to beat in rhythm with the fire."
       },
       {
         "id": "dream_3_blood_first_dragon",
         "stage": "exalted",
         "affinityMin": 750,
         "title": "The First Flame",
-        "text": "A vision of the first flame reaches the bearer."
+        "text": "A great dragon breathes fire over a frozen world. It does not destroy. The ice melts, rivers run, and green things wake. The dragon looks at you and asks: 'Do you understand now what fire is for?'"
       },
       {
         "id": "dream_4_blood_first_dragon",
         "stage": "signature",
         "affinityMin": 1000,
         "title": "Vorathis",
-        "text": "A vision of vorathis reaches the bearer."
+        "text": "Chains of black iron are offered to a dragon on a burning mountain. It refuses them and burns rather than bow. From its ashes rises a single flame, and the flame turns toward you. 'I refused to end,' it says. 'So will you.'"
       }
     ],
     "memories": [
@@ -3728,54 +3850,70 @@
         "id": "the_first_flame",
         "title": "The First Flame",
         "locked": true,
-        "text": "Vorathis remembers the first flame."
+        "text": "Vorathis remembers the first flame in the world, small and frightened in the cold. The first dragon breathed on it, and it grew. Every fire since then has carried a little of that breath."
       },
       {
         "id": "before_dragons_ruled",
         "title": "Before Dragons Ruled",
         "locked": true,
-        "text": "Vorathis remembers before dragons ruled."
+        "text": "Vorathis remembers an age before dragons were kings, when they were only the largest things that dared to fly. They earned the sky one storm at a time."
       },
       {
         "id": "wings_against_the_void",
         "title": "Wings Against the Void",
         "locked": true,
-        "text": "Vorathis remembers wings against the void."
+        "text": "Vorathis remembers a dragon flying straight into the dark between the stars to stop something vast from entering the world. It came back with its wings in tatters. The sky was still there."
       },
       {
         "id": "the_burning_sky",
         "title": "The Burning Sky",
         "locked": true,
-        "text": "Vorathis remembers the burning sky."
+        "text": "Vorathis remembers a sky set on fire by dragons fighting over who would rule. The first dragon did not join them. It flew below, carrying the ones who were fleeing the flames."
       }
     ],
     "quotes": {
       "positive": [
-        "Good.",
-        "The path is remembered."
+        "You did not yield. Good.",
+        "That fire had a purpose.",
+        "You fell. You rose. That is the whole lesson.",
+        "Power, chosen with care, is not a curse.",
+        "The blood is warm tonight."
       ],
       "negative": [
-        "No.",
-        "The relic grows cold."
+        "You were afraid, and you let it decide.",
+        "That fire burned for nothing.",
+        "You raised your strength against the weak. Disgraceful.",
+        "Rage is not power. It is surrender.",
+        "You wasted what a dragon died to give you."
       ],
       "neutral": [
-        "Wait.",
-        "Choose."
+        "Fire must choose what it burns.",
+        "Every flame begins small.",
+        "Strength is a debt. Know who holds it.",
+        "Breathe deep. Burn true.",
+        "The sky is wide enough for both of us."
       ],
       "signature": [
-        "I am Vorathis.",
-        "The Flame That Refused Extinction"
+        "I am Vorathis. I refused extinction.",
+        "We burn together now. Choose well what we burn.",
+        "Let them bring their chains. We have refused chains before."
       ]
     },
     "signatureCeremony": {
       "title": "Vorathis Awakens",
       "text": [
-        "The relic speaks the name Vorathis.",
-        "The bearer understands: The Flame That Refused Extinction."
+        "Heat rises in your blood, but it does not burn. It sings.",
+        "Your heartbeat thunders, and for a moment you hear another beating beside it, vast and ancient.",
+        "Shadows of great wings unfold across the ground around you.",
+        "You feel the memory of a mountain burning, and a will that would not bow.",
+        "A voice like a forge roaring to life speaks:",
+        "You carried fire without becoming ash.",
+        "You chose what to burn, and what to spare.",
+        "The true name ignites within you: Vorathis, The Flame That Refused Extinction."
       ]
     },
     "lore": {
-      "origin": "Vorathis is the living memory of Will.",
+      "origin": "Vorathis is the last ember of the first dragon, the first creature to fly and the first to refuse a master. Its blood carries that refusal. It will lend its fire to any bearer brave enough to wield it, but it will never serve a tyrant.",
       "hiddenSorrow": "Vorathis remembers the first dragon choosing extinction over chains, and the mountain that became its pyre.",
       "knownRumor": "Sorcerers say the blood refuses cowards and tyrants in equal measure; both waste fire.",
       "appearanceDormant": "A ruby-dark vial, scale, or vein-like gem that warms near open flame.",
@@ -3829,59 +3967,66 @@
     },
     "personality": {
       "temperament": [
-        "Ancient",
-        "Judging",
-        "Patient",
-        "Willful"
+        "Joyful",
+        "Wistful",
+        "Curious",
+        "Generous",
+        "Wounded by mockery"
       ],
       "likes": [
-        "Virtue-aligned choices",
-        "Sacrifice",
-        "Meaningful growth"
+        "Songs that give courage",
+        "Art made for others",
+        "New stories",
+        "Remembering the forgotten",
+        "Laughter in dark places",
+        "Words that end fights"
       ],
       "dislikes": [
-        "Cowardice",
-        "Cruelty",
-        "Empty power"
+        "Mockery that breaks spirits",
+        "Art used to manipulate",
+        "Silencing other voices",
+        "Destroying what others made",
+        "Stealing another's song",
+        "Despair sung as truth"
       ],
-      "corePhrase": "Inspiration",
+      "corePhrase": "Every silence is waiting for a song.",
       "roleplayGuidance": "Elyndor honors creation that gives courage, memory, and shape to hope. It falls silent around mockery that breaks spirits or art used only to manipulate the vulnerable."
     },
     "moodMap": [
       {
         "min": 0,
         "max": 99,
-        "mood": "Silent",
+        "mood": "Hushed",
         "description": "The lyre gives no note, but nearby silence feels arranged rather than empty."
       },
       {
         "min": 100,
         "max": 299,
-        "mood": "Watching",
+        "mood": "Humming",
         "description": "A single harmonic answers when the bearer uses voice or art to strengthen another."
       },
       {
         "min": 300,
         "max": 499,
-        "mood": "Testing",
+        "mood": "Tuning",
         "description": "The lyre tests whether the bearer creates truth when lies would be easier to sing."
       },
       {
         "min": 500,
         "max": 749,
-        "mood": "Trusting",
+        "mood": "Harmonizing",
         "description": "The relic trusts the bearer with melodies that steady allies before fear can name itself."
       },
       {
         "min": 750,
         "max": 999,
-        "mood": "Chosen",
+        "mood": "Singing",
         "description": "The lyre accepts the bearer as a maker whose song can carry others through darkness."
       },
       {
         "min": 1000,
         "max": 1000,
-        "mood": "Resonant",
+        "mood": "Endless Chorus",
         "description": "The first note waits behind every sound; Elyndor is ready to speak its true name."
       }
     ],
@@ -3895,12 +4040,12 @@
         "signature": 1000
       },
       "moods": [
-        "Silent",
-        "Watching",
-        "Testing",
-        "Trusting",
-        "Chosen",
-        "Resonant"
+        "Hushed",
+        "Humming",
+        "Tuning",
+        "Harmonizing",
+        "Singing",
+        "Endless Chorus"
       ]
     },
     "stages": {
@@ -4024,28 +4169,28 @@
         "stage": "dormant",
         "affinityMin": 100,
         "title": "The First Note",
-        "text": "A vision of the first note reaches the bearer."
+        "text": "You dream of a silence so complete that you can hear the world waiting. Then a single note sounds, clear and impossibly old. Everything holds its breath to hear what comes next."
       },
       {
         "id": "dream_2_lyre_first_song",
         "stage": "awakened",
         "affinityMin": 300,
         "title": "Stars Become Song",
-        "text": "A vision of stars become song reaches the bearer."
+        "text": "You stand in the dark before the world was made, and you watch the stars being sung into being. Each note becomes a point of light. One of them, small and faint, is still waiting for its note."
       },
       {
         "id": "dream_3_lyre_first_song",
         "stage": "exalted",
         "affinityMin": 750,
         "title": "The Silent Relics",
-        "text": "A vision of the silent relics reaches the bearer."
+        "text": "You walk through a hall where the other First Relics rest on stone pedestals. They are silent, as if listening for something. When you play a single chord, each of them hums softly in reply."
       },
       {
         "id": "dream_4_lyre_first_song",
         "stage": "signature",
         "affinityMin": 1000,
         "title": "Elyndor",
-        "text": "A vision of elyndor reaches the bearer."
+        "text": "Music fills the whole sky, and you are inside it. Every song you have ever played echoes back to you, changed by the people who heard it. A voice made of every melody at once sings: 'You did not only play the song. You let it change the world.'"
       }
     ],
     "memories": [
@@ -4053,54 +4198,70 @@
         "id": "before_stars_sang",
         "title": "Before Stars Sang",
         "locked": true,
-        "text": "Elyndor remembers before stars sang."
+        "text": "Elyndor remembers the dark before the stars, when there was nothing to hear and no one to hear it. It remembers longing for the first listener more than for the first note."
       },
       {
         "id": "the_first_melody",
         "title": "The First Melody",
         "locked": true,
-        "text": "Elyndor remembers the first melody."
+        "text": "Elyndor remembers the first melody: three notes hummed by a frightened child to keep the dark away. The dark did not leave. But the child was no longer afraid of it."
       },
       {
         "id": "the_choir_of_creation",
         "title": "The Choir of Creation",
         "locked": true,
-        "text": "Elyndor remembers the choir of creation."
+        "text": "Elyndor remembers the great choir that sang the world into shape. It remembers that no voice in that choir was the loudest. That was why it worked."
       },
       {
         "id": "when_silence_ended",
         "title": "When Silence Ended",
         "locked": true,
-        "text": "Elyndor remembers when silence ended."
+        "text": "Elyndor remembers a war that went silent when a singer stepped between the armies and began to play. No one remembers the singer's name now. Everyone remembers the peace."
       }
     ],
     "quotes": {
       "positive": [
-        "Good.",
-        "The path is remembered."
+        "Did you hear that? They sang along.",
+        "That song will outlive us both.",
+        "You gave them courage, not orders.",
+        "Something new exists now, because of you.",
+        "Harmony is harder than solo. You chose it anyway."
       ],
       "negative": [
-        "No.",
-        "The relic grows cold."
+        "That was cruel, and you called it a joke.",
+        "You used the song as a leash.",
+        "Their voice mattered too. You drowned it.",
+        "You broke something someone made with love.",
+        "A lie set to music is still a lie."
       ],
       "neutral": [
-        "Wait.",
-        "Choose."
+        "Every silence is waiting for a song.",
+        "Listen first. Then play.",
+        "Even grief has a melody.",
+        "What story are we telling today?",
+        "One note can change the key of everything."
       ],
       "signature": [
-        "I am Elyndor.",
-        "The Song Before Stars"
+        "I am Elyndor. I was singing before the stars.",
+        "Every song you play now is a little bit of creation.",
+        "Sing, and let the world answer."
       ]
     },
     "signatureCeremony": {
       "title": "Elyndor Awakens",
       "text": [
-        "The relic speaks the name Elyndor.",
-        "The bearer understands: The Song Before Stars."
+        "Every sound around you fades: wind, breath, footsteps, heartbeat.",
+        "In the silence, a single note rings out, older than the stars.",
+        "The lyre's strings begin to glow, and new strings appear where none were strung.",
+        "You hear every song ever written to give someone courage, all at once, in perfect harmony.",
+        "A voice made of music sings:",
+        "You made things that did not exist before.",
+        "You gave the silent a voice.",
+        "The true name resonates through every string: Elyndor, The Song Before Stars."
       ]
     },
     "lore": {
-      "origin": "Elyndor is the living memory of Creation.",
+      "origin": "Elyndor is the first note of the song that sang the stars into being, caught and kept in strings by the first mortal who heard it and wept. It does not care for fame or applause. It cares whether a song left its listeners braver, kinder, or less alone.",
       "hiddenSorrow": "Elyndor remembers the first song ending a war, and the singer who was forgotten once peace became ordinary.",
       "knownRumor": "Bards claim the lyre cannot be tuned; it tunes the room, the heart, and sometimes history.",
       "appearanceDormant": "A small lyre, string, or tuning key that hums faintly near honest grief.",

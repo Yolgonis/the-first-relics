@@ -2,7 +2,7 @@
 
 ## v1.3.0
 
-- Rewrote the templated content of Aegis of the Dawn: personality, mood names, dreams, memories, quotes, origin, and the true-name ceremony now belong to Sol'Kaer instead of a shared template.
+- Rewrote the templated content of eight relics (Aegis of the Dawn, Crown of the Conqueror, Bands of the Inner Dragon, Cloak of the Umbral Veil, Heart of Yggdrasil, Vestments of the First Saint, Blood of the First Dragon, Lyre of the First Song). Each now has its own personality, mood names, dreams, memories, quotes, origin, and true-name ceremony instead of a shared template such as "A vision of ... reaches the bearer" and "Good." / "No.". Dream and memory ids, stages, and affinity thresholds are unchanged.
 - Fixed the hidden requirement label "Reach 1000 Resonance" to "Reach 1000 Affinity" on eight relics.
 - Turkish localization is paused: the module ships in English only. The language infrastructure stays in place (interface strings, content overlays, the content language setting, which is hidden while only English ships).
 - Added Turkish relic content: names, true names, features, ability names, lore, dreams, memories, mood maps, affinity events, hidden requirements, quotes, and the signature ceremony for all twelve relics (1427 strings). Content is loaded from `data/i18n/<lang>.json` as an overlay on the English data; ids, numbers, and automation data never change.
