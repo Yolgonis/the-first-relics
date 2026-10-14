@@ -1713,10 +1713,10 @@
     ],
     "features": {
       "passives": [
-        "Dawn's Endurance: first round +relic bonus AC.",
-        "Unbroken Wall: allies near you resist opportunity attacks.",
-        "Guardian's Burden: redirect an ally's attack to yourself PB/long rest.",
-        "First Light: once per long rest drop to 1 HP instead of 0."
+        "<strong>Dawn's Endurance.</strong> During the first round of each combat, you gain a bonus to AC equal to the relic bonus.",
+        "<strong>Unbroken Wall.</strong> Opportunity attacks against allies within 5 feet of you have disadvantage.",
+        "<strong>Guardian's Burden.</strong> When a creature you can see attacks an ally within 5 feet of you, you can use your reaction to become the target of that attack instead. You can do this a number of times equal to your proficiency bonus, regaining all uses when you finish a long rest.",
+        "<strong>First Light.</strong> When you are reduced to 0 hit points but not killed outright, you drop to 1 hit point instead. Once you use this feature, you can't use it again until you finish a long rest."
       ],
       "actives": [
         "<strong>Stand Firm.</strong> <em>Bonus Action, 1 charge.</em> Until the start of your next turn, add the relic bonus to checks and saves made to resist being pushed, knocked prone, grappled, or restrained.",
@@ -2061,10 +2061,10 @@
     ],
     "features": {
       "passives": [
-        "Royal Presence: allies within 30 ft gain relic bonus to WIS saves.",
-        "Banner of Order: combat start, PB allies gain temp HP.",
-        "Commander's Resolve: ally rerolls failed save PB/long rest.",
-        "Sovereign Aura: allies have advantage vs charm/fear."
+        "<strong>Royal Presence.</strong> You and allies within 30 feet of you add the relic bonus to Wisdom saving throws.",
+        "<strong>Banner of Order.</strong> When combat begins, choose a number of allies within 30 feet of you equal to your proficiency bonus. Each gains temporary hit points equal to your proficiency bonus + the relic bonus.",
+        "<strong>Commander's Resolve.</strong> When an ally you can see within 30 feet fails a saving throw, you can use your reaction to let them reroll it; they must use the new roll. You can do this a number of times equal to your proficiency bonus, regaining all uses when you finish a long rest.",
+        "<strong>Sovereign Aura.</strong> You and allies within 30 feet of you have advantage on saving throws against being charmed or frightened."
       ],
       "actives": [
         "<strong>Rally.</strong> <em>Bonus Action, 1 charge.</em> Choose allies within 30 feet who can hear you. Each may move up to half their speed without provoking opportunity attacks.",
@@ -2409,10 +2409,10 @@
     ],
     "features": {
       "passives": [
-        "Centered Mind: advantage on concentration saves.",
-        "Perfect Motion: first OA against you each round has disadvantage.",
-        "Body Beyond Limits: +10 speed and double jump.",
-        "Flow State: reroll failed STR/DEX/CON save once/long rest."
+        "<strong>Centered Mind.</strong> You have advantage on Constitution saving throws made to maintain concentration.",
+        "<strong>Perfect Motion.</strong> The first opportunity attack made against you each round has disadvantage.",
+        "<strong>Body Beyond Limits.</strong> Your speed increases by 10 feet, and your jump distance is doubled.",
+        "<strong>Flow State.</strong> When you fail a Strength, Dexterity, or Constitution saving throw, you can reroll it and must use the new roll. Once you use this feature, you can't use it again until you finish a long rest."
       ],
       "actives": [
         "<strong>Dragon Breath.</strong> <em>Bonus Action, 1 charge, 1 minute.</em> You ignore nonmagical difficult terrain, gain a climbing speed equal to your walking speed, and add the relic bonus to Dexterity (Acrobatics) checks.",
@@ -2757,10 +2757,10 @@
     ],
     "features": {
       "passives": [
-        "Shadow Walker: advantage Stealth in dim/dark.",
-        "Veil of Silence: silent movement and detection advantage.",
-        "One With Darkness: +2 AC in dim/dark.",
-        "Unseen Hunter: first attack has advantage and +2d8 necrotic."
+        "<strong>Shadow Walker.</strong> You have advantage on Dexterity (Stealth) checks while you are in dim light or darkness.",
+        "<strong>Veil of Silence.</strong> Your movement makes no sound, and you have advantage on Wisdom (Perception) checks made to detect hidden creatures.",
+        "<strong>One With Darkness.</strong> While you are in dim light or darkness, you gain a +2 bonus to AC.",
+        "<strong>Unseen Hunter.</strong> You have advantage on the first attack roll you make in each combat. If that attack hits, it deals an extra 2d8 necrotic damage."
       ],
       "actives": [
         "<strong>Shadow Step.</strong> <em>Bonus Action, 1 charge.</em> Teleport up to 30 feet to an unoccupied space in dim light or darkness that you can see.",
@@ -3105,10 +3105,10 @@
     ],
     "features": {
       "passives": [
-        "Living Sap: long rest restores PB×2 extra HP.",
-        "Nature's Blessing: healing received +PB.",
-        "Endless Spring: once/long rest first ally at 0 rises to 1 HP.",
-        "World Tree's Gift: immune poison and disease."
+        "<strong>Living Sap.</strong> When you finish a long rest, you gain temporary hit points equal to twice your proficiency bonus.",
+        "<strong>Nature's Blessing.</strong> Whenever you regain hit points from a spell, potion, or feature, you regain additional hit points equal to your proficiency bonus.",
+        "<strong>Endless Spring.</strong> The first time an ally within 30 feet of you drops to 0 hit points, they drop to 1 hit point instead. Once this feature saves an ally, it can't do so again until you finish a long rest.",
+        "<strong>World Tree's Gift.</strong> You are immune to the poisoned condition and to disease."
       ],
       "actives": [
         "<strong>Verdant Bloom.</strong> <em>Action, 1 charge.</em> Cause plants and roots to surge in an area within 60 feet. Enemies treat the area as difficult terrain while allies move through it normally.",
@@ -3453,10 +3453,10 @@
     ],
     "features": {
       "passives": [
-        "Gentle Light: allies within 30 ft advantage death saves.",
-        "Saint's Grace: healing caused +PB.",
-        "Beacon of Hope: allies advantage vs fear/charm.",
-        "Unyielding Spirit: reject one death effect per long rest."
+        "<strong>Gentle Light.</strong> Allies within 30 feet of you have advantage on death saving throws.",
+        "<strong>Saint's Grace.</strong> When you restore hit points to a creature with a spell or feature, it regains additional hit points equal to your proficiency bonus.",
+        "<strong>Beacon of Hope.</strong> Allies within 30 feet of you have advantage on saving throws against being charmed or frightened.",
+        "<strong>Unyielding Spirit.</strong> When a spell or effect would kill you outright, you can reject it and drop to 1 hit point instead. Once you use this feature, you can't use it again until you finish a long rest."
       ],
       "actives": [
         "<strong>Blessing.</strong> <em>Bonus Action, 1 charge.</em> An ally within 30 feet adds 1d4 to attack rolls, saving throws, and ability checks until the end of your next turn.",
@@ -3801,10 +3801,10 @@
     ],
     "features": {
       "passives": [
-        "Draconic Blood: max HP +1/level.",
-        "Ancient Scales: +1 AC.",
-        "Unyielding Will: advantage STR/CON saves.",
-        "Dragon Soul: fire/cold resistance and frightened immunity."
+        "<strong>Draconic Blood.</strong> Your hit point maximum increases by 1 for each of your character levels.",
+        "<strong>Ancient Scales.</strong> You gain a +1 bonus to AC.",
+        "<strong>Unyielding Will.</strong> You have advantage on Strength and Constitution saving throws.",
+        "<strong>Dragon Soul.</strong> You have resistance to fire and cold damage, and you are immune to the frightened condition."
       ],
       "actives": [
         "<strong>Draconic Roar.</strong> <em>Bonus Action, 1 charge.</em> One creature within 30 feet must make a Wisdom saving throw or be frightened of you until the end of your next turn.",
@@ -4149,10 +4149,10 @@
     ],
     "features": {
       "passives": [
-        "Echo of Inspiration: allies within 30 ft gain relic bonus to checks.",
-        "Song of Courage: allies within 30 ft cannot be frightened.",
-        "Melody of Unity: allies within 30 ft add PB to saves.",
-        "Symphony Eternal: PB/long rest auto-succeed a failed concentration save."
+        "<strong>Echo of Inspiration.</strong> Allies within 30 feet of you add the relic bonus to their ability checks.",
+        "<strong>Song of Courage.</strong> Allies within 30 feet of you can't be frightened.",
+        "<strong>Melody of Unity.</strong> Allies within 30 feet of you add your proficiency bonus to their saving throws.",
+        "<strong>Symphony Eternal.</strong> When you fail a Constitution saving throw to maintain concentration, you can choose to succeed instead. You can do this a number of times equal to your proficiency bonus, regaining all uses when you finish a long rest."
       ],
       "actives": [
         "<strong>Song of Rest.</strong> <em>Action, 1 charge.</em> Allies of your choice within 30 feet regain 2d8 hit points as the first chord restores breath and courage.",
