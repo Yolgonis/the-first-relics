@@ -193,8 +193,10 @@ async function TFRSyncRelicBonusEffect(item, relic, stage, signatureUnlocked = f
 
 /**
  * Passive features applied as Active Effects, by relic id and passive index. All other passives
- * are situational and stay GM-resolved. Each entry is { changes: [[key, mode, value]], note? };
- * `note` names a partial-automation message in TFRPassiveAutomationNote.
+ * are situational and stay GM-resolved. Each entry is { changes: [[key, mode, value]], note?, aura? };
+ * `note` names a partial-automation message in TFRPassiveAutomationNote, and "{bonus}" in a value
+ * becomes the relic bonus of the current stage. An `aura` entry ({ distance, self }) becomes an
+ * Aura Effects aura on friendly tokens; without that module the passive stays GM-resolved.
  */
 const TFR_PASSIVE_EFFECTS = {
   blood_first_dragon: {
@@ -210,8 +212,24 @@ const TFR_PASSIVE_EFFECTS = {
   },
   heart_yggdrasil: {
     3: { changes: [["system.traits.ci.value", "ADD", "poisoned"], ["system.traits.ci.value", "ADD", "diseased"]] }
+  },
+  crown_conqueror: {
+    0: { aura: { distance: 30, self: true }, changes: [["system.abilities.wis.bonuses.save", "ADD", "+{bonus}"]] }
+  },
+  vestments_first_saint: {
+    0: { aura: { distance: 30, self: false }, changes: [["system.attributes.death.roll.mode", "ADD", "1"]] }
+  },
+  lyre_first_song: {
+    0: { aura: { distance: 30, self: false }, changes: [["system.bonuses.abilities.check", "ADD", "+{bonus}"]] },
+    1: { aura: { distance: 30, self: false }, changes: [["system.traits.ci.value", "ADD", "frightened"]] },
+    // @prof resolves against each ally, so an ally of a different level adds their own proficiency bonus.
+    2: { aura: { distance: 30, self: false }, changes: [["system.bonuses.abilities.save", "ADD", "+@prof"]] }
   }
 };
+
+function TFRAuraEffectsActive() {
+  return !!globalThis.game?.modules?.get("auraeffects")?.active;
+}
 
 /**
  * Passive features automated by hooks in src/27-passive-triggers.js (relic id -> passive index ->
@@ -232,7 +250,8 @@ function TFRUnlockedPassiveCount(stage) {
 }
 
 function TFRPassiveAutomation(relicId, index) {
-  return TFR_PASSIVE_EFFECTS[relicId]?.[index] || null;
+  const automation = TFR_PASSIVE_EFFECTS[relicId]?.[index] || null;
+  return automation?.aura && !TFRAuraEffectsActive() ? null : automation;
 }
 
 /** Effect or trigger automation for a passive, used to mark it in the description. */
@@ -241,6 +260,7 @@ function TFRPassiveAutomationAny(relicId, index) {
 }
 
 function TFRPassiveAutomationNote(automation) {
+  if (automation?.aura) return TFRT("Automated as an aura with the Aura Effects module.");
   switch (automation?.note) {
     case "speedOnly": return TFRT("Speed is automated; jump distance is GM-resolved.");
     case "midi": return TFRT("Automated with Midi-QOL and DAE.");
@@ -257,25 +277,37 @@ function TFRPassiveName(text) {
   return String(text || "").match(/<strong>(.*?)\.?<\/strong>/)?.[1] || "";
 }
 
-function TFRBuildPassiveEffects(relic, stage) {
+function TFRBuildPassiveEffects(relic, stage, signatureUnlocked = false) {
   const passives = relic.features?.passives || [];
+  const bonus = Number(TFRGetStageData(relic, stage, signatureUnlocked)?.bonus) || 1;
   const effects = [];
   for (let index = 0; index < Math.min(passives.length, TFRUnlockedPassiveCount(stage)); index++) {
     const automation = TFRPassiveAutomation(relic.id, index);
     if (!automation) continue;
-    effects.push({
+    const effect = {
       name: `${relic.name} - ${TFRPassiveName(passives[index]) || TFRT("Passive {number}", { number: index + 1 })}`,
       img: relic.icon,
       transfer: true,
       disabled: false,
       description: passives[index],
-      changes: automation.changes.map(([key, mode, value]) => ({ key, mode: TFRMode(mode), value, priority: 20 })),
+      changes: automation.changes.map(([key, mode, value]) => ({ key, mode: TFRMode(mode), value: String(value).replace("{bonus}", bonus), priority: 20 })),
       duration: {},
       flags: {
         dae: { transfer: true, stackable: "noneName", specialDuration: [] },
         [TFR_MODULE_ID]: { passiveEffect: true, passiveIndex: index }
       }
-    });
+    };
+    if (automation.aura) {
+      effect.type = "auraeffects.aura";
+      effect.system = {
+        distanceFormula: String(automation.aura.distance),
+        disposition: 1,
+        applyToSelf: !!automation.aura.self,
+        canStack: false,
+        showRadius: false
+      };
+    }
+    effects.push(effect);
   }
   return effects;
 }
@@ -286,7 +318,7 @@ function TFRBuildPassiveEffects(relic, stage) {
  */
 async function TFRSyncPassiveEffects(item, relic) {
   if (!item?.effects || !relic) return { created: 0, updated: 0, deleted: 0 };
-  const wanted = TFRBuildPassiveEffects(relic, TFRRelicItemStage(item));
+  const wanted = TFRBuildPassiveEffects(relic, TFRRelicItemStage(item), TFRRelicItemSignatureUnlocked(item));
   const existing = item.effects.filter(effect => effect.getFlag?.(TFR_MODULE_ID, "passiveEffect"));
   const byIndex = new Map(existing.map(effect => [effect.getFlag(TFR_MODULE_ID, "passiveIndex"), effect]));
   const create = [];
@@ -294,19 +326,24 @@ async function TFRSyncPassiveEffects(item, relic) {
   for (const data of wanted) {
     const current = byIndex.get(data.flags[TFR_MODULE_ID].passiveIndex);
     byIndex.delete(data.flags[TFR_MODULE_ID].passiveIndex);
-    if (!current) {
+    // The effect type cannot change in place, so an effect that became (or stopped being) an aura is recreated.
+    const auraChanged = current && ((current.type ?? "base") !== (data.type ?? "base")
+      || (data.system && (String(current.system?.distanceFormula) !== data.system.distanceFormula || !!current.system?.applyToSelf !== data.system.applyToSelf)));
+    if (!current || auraChanged) {
+      if (current) byIndex.set(`replace-${current.id}`, current);
       create.push(data);
       continue;
     }
     const same = current.name === data.name
       && current.description === data.description
-      && JSON.stringify(current.changes.map(c => [c.key, c.mode, String(c.value)])) === JSON.stringify(data.changes.map(c => [c.key, c.mode, String(c.value)]));
+      // Source data: Aura Effects hides an aura's changes from its bearer when it does not apply to self.
+      && JSON.stringify((current._source?.changes ?? current.changes).map(c => [c.key, c.mode, String(c.value)])) === JSON.stringify(data.changes.map(c => [c.key, c.mode, String(c.value)]));
     if (!same) update.push({ _id: current.id, name: data.name, description: data.description, changes: data.changes, img: data.img });
   }
   const remove = [...byIndex.values()].map(effect => effect.id);
+  if (remove.length) await item.deleteEmbeddedDocuments("ActiveEffect", remove, { render: false });
   if (create.length) await item.createEmbeddedDocuments("ActiveEffect", create, { render: false });
   if (update.length) await item.updateEmbeddedDocuments("ActiveEffect", update, { render: false });
-  if (remove.length) await item.deleteEmbeddedDocuments("ActiveEffect", remove, { render: false });
   return { created: create.length, updated: update.length, deleted: remove.length };
 }
 
@@ -333,7 +370,7 @@ async function TFRSyncAllPassiveEffects() {
 function TFRBuildItemEffects(relic, stage, signatureUnlocked = false) {
   return [
     TFRBuildEffect(relic, stage, signatureUnlocked),
-    ...TFRBuildPassiveEffects(relic, stage),
+    ...TFRBuildPassiveEffects(relic, stage, signatureUnlocked),
     ...TFRBuildNativeActivityEffects(relic, stage, signatureUnlocked)
   ];
 }
