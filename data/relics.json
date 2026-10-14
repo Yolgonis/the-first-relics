@@ -605,7 +605,7 @@
     "hiddenRequirements": [
       {
         "id": "reach_1000",
-        "label": "Reach 1000 Resonance",
+        "label": "Reach 1000 Affinity",
         "requiredFor": "signature",
         "completed": false,
         "secret": true
@@ -969,7 +969,7 @@
     "hiddenRequirements": [
       {
         "id": "reach_1000",
-        "label": "Reach 1000 Resonance",
+        "label": "Reach 1000 Affinity",
         "requiredFor": "signature",
         "completed": false,
         "secret": true
@@ -1326,7 +1326,7 @@
     "hiddenRequirements": [
       {
         "id": "reach_1000",
-        "label": "Reach 1000 Resonance",
+        "label": "Reach 1000 Affinity",
         "requiredFor": "signature",
         "completed": false,
         "secret": true
@@ -1531,59 +1531,66 @@
     },
     "personality": {
       "temperament": [
-        "Ancient",
-        "Judging",
+        "Steadfast",
+        "Protective",
+        "Stern",
         "Patient",
-        "Willful"
+        "Unforgiving of abandonment"
       ],
       "likes": [
-        "Virtue-aligned choices",
-        "Sacrifice",
-        "Meaningful growth"
+        "Standing between harm and the helpless",
+        "Holding the line when retreat is easier",
+        "Shielding others at real cost",
+        "Keeping watch through the night",
+        "Quiet courage",
+        "Promises kept to the end"
       ],
       "dislikes": [
-        "Cowardice",
-        "Cruelty",
-        "Empty power"
+        "Abandoning the defenseless",
+        "Bravery performed for glory",
+        "Using the weak as cover",
+        "Breaking a sworn guard",
+        "Cowardice disguised as caution",
+        "Leaving the wounded behind"
       ],
-      "corePhrase": "Dawn",
+      "corePhrase": "Someone must stand until morning.",
       "roleplayGuidance": "Sol'Kaer rewards protectors who hold the line when retreat would be easier. It grows cold around selfish bravery and answers most strongly when the bearer shields another at real cost."
     },
     "moodMap": [
       {
         "min": 0,
         "max": 99,
-        "mood": "Silent",
+        "mood": "Unlit",
         "description": "A pale warmth gathers along the shield edge when danger turns toward the helpless."
       },
       {
         "min": 100,
         "max": 299,
-        "mood": "Watching",
+        "mood": "Watchful",
         "description": "The aegis answers with brief flashes of dawnlight when the bearer chooses duty over safety."
       },
       {
         "min": 300,
         "max": 499,
-        "mood": "Testing",
+        "mood": "Weighing",
         "description": "The aegis tests whether the bearer protects because it is right, not because glory is watching."
       },
       {
         "min": 500,
         "max": 749,
-        "mood": "Trusting",
+        "mood": "Steadfast",
         "description": "The relic steadies the bearer like a wall that remembers every life it sheltered."
       },
       {
         "min": 750,
         "max": 999,
-        "mood": "Chosen",
+        "mood": "Shield-Sworn",
         "description": "The shield accepts the bearer as a last line between harm and the innocent."
       },
       {
         "min": 1000,
         "max": 1000,
-        "mood": "Resonant",
+        "mood": "Unfallen",
         "description": "Dawnlight collects at the bearer's arm; Sol'Kaer is ready to speak its true name."
       }
     ],
@@ -1597,12 +1604,12 @@
         "signature": 1000
       },
       "moods": [
-        "Silent",
-        "Watching",
-        "Testing",
-        "Trusting",
-        "Chosen",
-        "Resonant"
+        "Unlit",
+        "Watchful",
+        "Weighing",
+        "Steadfast",
+        "Shield-Sworn",
+        "Unfallen"
       ]
     },
     "stages": {
@@ -1663,7 +1670,7 @@
     "hiddenRequirements": [
       {
         "id": "reach_1000",
-        "label": "Reach 1000 Resonance",
+        "label": "Reach 1000 Affinity",
         "requiredFor": "signature",
         "completed": false,
         "secret": true
@@ -1726,28 +1733,28 @@
         "stage": "dormant",
         "affinityMin": 100,
         "title": "The White Field",
-        "text": "A vision of the white field reaches the bearer."
+        "text": "You dream of a field of white ash under a sky with no sun. Somewhere behind you, someone small is breathing too fast. You wake with your arm raised, as if a shield were already on it."
       },
       {
         "id": "dream_2_aegis_dawn",
         "stage": "awakened",
         "affinityMin": 300,
         "title": "The Broken Shield",
-        "text": "A vision of the broken shield reaches the bearer."
+        "text": "A shield lies split in two across the threshold of a gate. Its bearer is gone, but the gate is still closed. A voice without warmth says: 'It held. That was enough.'"
       },
       {
         "id": "dream_3_aegis_dawn",
         "stage": "exalted",
         "affinityMin": 750,
         "title": "The Last Wall",
-        "text": "A vision of the last wall reaches the bearer."
+        "text": "You stand on a wall that crumbles stone by stone. Each time a stone falls, you step into the gap. Behind you, a city sleeps and never learns your name."
       },
       {
         "id": "dream_4_aegis_dawn",
         "stage": "signature",
         "affinityMin": 1000,
         "title": "Sol'Kaer",
-        "text": "A vision of sol'kaer reaches the bearer."
+        "text": "Night ends. Light pours across a battlefield and finds a single figure still standing, shield raised against an enemy long gone. The figure turns, and it wears your face. 'I never fell,' it says. 'Neither will you.'"
       }
     ],
     "memories": [
@@ -1755,54 +1762,70 @@
         "id": "the_last_wall",
         "title": "The Last Wall",
         "locked": true,
-        "text": "Sol'Kaer remembers the last wall."
+        "text": "Sol'Kaer remembers a wall of forty shields, and how it became thirty, then ten, then one. The last did not step back. The dark broke against it until dawn."
       },
       {
         "id": "a_child_behind_the_shield",
         "title": "A Child Behind the Shield",
         "locked": true,
-        "text": "Sol'Kaer remembers a child behind the shield."
+        "text": "Sol'Kaer remembers a child pressed against its bearer's back, too frightened to cry. Every blow that night landed on the shield, so that none landed on her."
       },
       {
         "id": "the_day_the_sun_did_not_rise",
         "title": "The Day the Sun Did Not Rise",
         "locked": true,
-        "text": "Sol'Kaer remembers the day the sun did not rise."
+        "text": "Sol'Kaer remembers a morning that never came, when the dark held the sky for three days. Its bearer kept the watch fire burning and told no one how afraid they were."
       },
       {
         "id": "sol_kaer_s_final_stand",
         "title": "Sol'Kaer's Final Stand",
         "locked": true,
-        "text": "Sol'Kaer remembers sol'kaer's final stand."
+        "text": "Sol'Kaer remembers its first bearer's last breath at the gate, and the sunrise that came a moment too late for them to see it. The gate held. The aegis has carried that sunrise ever since."
       }
     ],
     "quotes": {
       "positive": [
-        "Good.",
-        "The path is remembered."
+        "You stood. That is all I ask.",
+        "They are alive because you did not move.",
+        "The line held.",
+        "A shield is measured by what it keeps, not by what it breaks.",
+        "Dawn is closer than it was."
       ],
       "negative": [
-        "No.",
-        "The relic grows cold."
+        "You stepped aside. Someone else paid for it.",
+        "A shield that runs is only metal.",
+        "They called for you. You were elsewhere.",
+        "Glory is a poor reason to stand. You chose it anyway.",
+        "The gate is open behind you."
       ],
       "neutral": [
-        "Wait.",
-        "Choose."
+        "Someone must stand until morning.",
+        "Watch the gap, not the enemy.",
+        "Brace.",
+        "A wall is only as strong as the one who will not leave it.",
+        "The night is long. So is my patience."
       ],
       "signature": [
-        "I am Sol'Kaer.",
-        "The Shield That Never Fell"
+        "I am Sol'Kaer. I have never fallen.",
+        "Stand with me, and morning will find us both.",
+        "Let the dark come. We have outlasted it before."
       ]
     },
     "signatureCeremony": {
       "title": "Sol'Kaer Awakens",
       "text": [
-        "The relic speaks the name Sol'Kaer.",
-        "The bearer understands: The Shield That Never Fell."
+        "The light changes, as if the sun has chosen to rise early for you alone.",
+        "Your shield arm grows warm, then heavy, then certain.",
+        "For a heartbeat you see them all: every bearer who stood at a gate and did not step back.",
+        "They do not speak. One by one, they lower their shields in salute.",
+        "A voice like a bell struck at dawn says:",
+        "You held when holding cost you everything.",
+        "Now nothing will make you fall.",
+        "The true name settles over you like morning light: Sol'Kaer, The Shield That Never Fell."
       ]
     },
     "lore": {
-      "origin": "Sol'Kaer is the living memory of Protection.",
+      "origin": "Sol'Kaer was forged in the long night before the first sunrise, when a single shield-bearer held a gate against the dark until morning came. The aegis is what remained of that vigil: a promise that someone will always stand between harm and the helpless.",
       "hiddenSorrow": "Sol'Kaer remembers the fortress gate that held until dawn, and the one child its bearer could not reach.",
       "knownRumor": "Old soldiers say the aegis appears only before sieges where one stand can change a generation.",
       "appearanceDormant": "A white-gold shield boss or bracer plate, warm only when someone nearby is afraid.",
@@ -1988,7 +2011,7 @@
     "hiddenRequirements": [
       {
         "id": "reach_1000",
-        "label": "Reach 1000 Resonance",
+        "label": "Reach 1000 Affinity",
         "requiredFor": "signature",
         "completed": false,
         "secret": true
@@ -2313,7 +2336,7 @@
     "hiddenRequirements": [
       {
         "id": "reach_1000",
-        "label": "Reach 1000 Resonance",
+        "label": "Reach 1000 Affinity",
         "requiredFor": "signature",
         "completed": false,
         "secret": true
@@ -2638,7 +2661,7 @@
     "hiddenRequirements": [
       {
         "id": "reach_1000",
-        "label": "Reach 1000 Resonance",
+        "label": "Reach 1000 Affinity",
         "requiredFor": "signature",
         "completed": false,
         "secret": true
@@ -2963,7 +2986,7 @@
     "hiddenRequirements": [
       {
         "id": "reach_1000",
-        "label": "Reach 1000 Resonance",
+        "label": "Reach 1000 Affinity",
         "requiredFor": "signature",
         "completed": false,
         "secret": true
@@ -3288,7 +3311,7 @@
     "hiddenRequirements": [
       {
         "id": "reach_1000",
-        "label": "Reach 1000 Resonance",
+        "label": "Reach 1000 Affinity",
         "requiredFor": "signature",
         "completed": false,
         "secret": true
@@ -3613,7 +3636,7 @@
     "hiddenRequirements": [
       {
         "id": "reach_1000",
-        "label": "Reach 1000 Resonance",
+        "label": "Reach 1000 Affinity",
         "requiredFor": "signature",
         "completed": false,
         "secret": true
@@ -3938,7 +3961,7 @@
     "hiddenRequirements": [
       {
         "id": "reach_1000",
-        "label": "Reach 1000 Resonance",
+        "label": "Reach 1000 Affinity",
         "requiredFor": "signature",
         "completed": false,
         "secret": true

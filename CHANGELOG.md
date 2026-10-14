@@ -2,6 +2,8 @@
 
 ## v1.3.0
 
+- Rewrote the templated content of Aegis of the Dawn: personality, mood names, dreams, memories, quotes, origin, and the true-name ceremony now belong to Sol'Kaer instead of a shared template.
+- Fixed the hidden requirement label "Reach 1000 Resonance" to "Reach 1000 Affinity" on eight relics.
 - Turkish localization is paused: the module ships in English only. The language infrastructure stays in place (interface strings, content overlays, the content language setting, which is hidden while only English ships).
 - Added Turkish relic content: names, true names, features, ability names, lore, dreams, memories, mood maps, affinity events, hidden requirements, quotes, and the signature ceremony for all twelve relics (1427 strings). Content is loaded from `data/i18n/<lang>.json` as an overlay on the English data; ids, numbers, and automation data never change.
 - Chat cards from the save resolver, ability helpers, and the Cloak of the Feywilds helpers (Briar Snare, Arrow / Marked by the First Hunt, Nature's Pursuit, Avatar of the First Hunt, Blessing of Sylvara) and the relic journal intro are now translated (394 interface strings).
