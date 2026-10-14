@@ -1,6 +1,8 @@
 # The First Relics (the-first-relics)
 
-Foundry VTT 13 / dnd5e 5.3.3 ticari modülü: affinity ile gelişen 12 efsanevi relic. Yazar Yolgonis; **Patreon'da satılacak** tek modül. Kullanıcıyla Türkçe konuş; modülün kodu, yorumları, README ve CHANGELOG İngilizce. Genel bağlam: `C:\Claude\Vaelora\CLAUDE.md`.
+Foundry VTT 13 / dnd5e 5.3.3 modülü: affinity ile gelişen 12 efsanevi relic. Yazar Yolgonis.
+
+**Güncel yön (14.10.2026):** Satış planı askıda; amaç modülü geliştirmek ve güzelleştirmek. Yalnızca İngilizce geliştirilir, Türkçe kapalı (aşağıda). Paketleme ve lisans dosyaları ileride satış için duruyor. Kullanıcıyla Türkçe konuş; modülün kodu, yorumları, README ve CHANGELOG İngilizce. Genel bağlam: `C:\Claude\Vaelora\CLAUDE.md`.
 
 - Foundry'de `Data\modules\the-first-relics` junction'ıyla yüklenir; değişikliği Foundry doğrudan görür.
 - GitHub: `Yolgonis/the-first-relics` (gizli; Temmuz 2026'dan beri kullanıcının geçmişi var, force push yapma). Her iş bitince commit + push.
@@ -14,22 +16,17 @@ Sürüm numarası beş yerde aynı olmalı: `module.json`, `src/00-core.js` (`TF
 
 ## Çeviri (i18n)
 
-Arayüz metinleri kodda İngilizce kalır ve `TFRT("English text", { placeholder })` ile sarılır; anahtar metnin FNV-1a hash'idir. Şablon metin (`${}`) kullanma, `{ad}` yer tutucusu kullan. Yeni ya da değişen metinden sonra:
+Modül şimdilik **yalnızca İngilizce**. Türkçe 14.10.2026'da kapatıldı: `lang/tr.json`, `data/i18n/tr.json` ve module.json'daki `tr` dil kaydı kaldırıldı; `TFR_CONTENT_LANGUAGES` yalnızca `en`. Türkçe kaynaklar `tools/translations/tr.cjs` (arayüz) ve `tools/translations/content-tr.cjs` (relic içeriği) içinde duruyor ama İngilizce metin değiştikçe güncellenmiyor; yeniden açarken eksikleri tamamla.
 
-```
-node tools/build.cjs                  # önce birleşik dosyayı güncelle (i18n araçları onu okur)
-node tools/i18n-extract.cjs           # lang/en.json'u üretir, eksik çevirileri listeler
-# tools/translations/tr.cjs'e İngilizce → Türkçe çeviriyi ekle
-node tools/i18n-build-lang.cjs tr     # lang/tr.json'u üretir (yer tutucuları denetler)
-```
+Altyapı yerinde kalıyor, yeni metin yazarken ona uy:
+- Arayüz metinleri `TFRT("English text", { placeholder })` ile sarılır; anahtar metnin FNV-1a hash'idir. `TFRT` içinde şablon metin (`${}`) kullanma, `{ad}` yer tutucusu kullan. Metin değişince `node tools/build.cjs` ve `node tools/i18n-extract.cjs` (lang/en.json'u üretir).
+- Dünyaya yazılan içerik (eşya, açıklama, aktivite, efekt, günlük) dünya ayarı `contentLanguage`'i kullanır (`TFRContentLanguage()`); dünyaya metin yazan yeni bir senkron derleyici eklersen `src/26-content-language.js`'e de ekle. Tek dil varken ayar gizlidir.
+- Relic içeriği `data/relics.json`; çeviri katmanı `data/i18n/<dil>.json`.
+- Aşama ve durum kimlikleri veride İngilizce kalır; gösterim `TFRStageLabel` / `TFRStatusLabel` ile.
 
-Terimler: D&D/Foundry terimleri İngilizce (attunement, token, GM, ft, temp HP); modül kavramları Türkçe (Affinity=Yakınlık, Stage=Aşama, Mood=Ruh Hali, Signature=İmza, True Name=Gerçek Ad, dormant/awakened/exalted/final form=uykuda/uyanmış/yüceltilmiş/nihai form). Aşama ve durum kimlikleri veride İngilizce kalır; yalnızca `TFRStageLabel` / `TFRStatusLabel` ile gösterilirken çevrilir.
+Türkçeyi yeniden açmak için: çevirileri tamamla, `node tools/i18n-build-lang.cjs tr` ve `node tools/i18n-content.cjs build tr`, `TFR_CONTENT_LANGUAGES`'e ve module.json `languages`'a `tr` ekle. Terimler: D&D/Foundry terimleri İngilizce (attunement, token, GM, ft, temp HP); modül kavramları Türkçe (Affinity=Yakınlık, Stage=Aşama, Mood=Ruh Hali, Signature=İmza, True Name=Gerçek Ad, dormant/awakened/exalted/final form=uykuda/uyanmış/yüceltilmiş/nihai form).
 
-Dünyaya yazılan içerik (eşya, açıklama, aktivite, efekt, günlük) istemci dilini değil dünya ayarı `contentLanguage`'i ("Relic content language") kullanır: `TFRContentLanguage()`. Bunu sağlayan, `src/26-content-language.js`'teki senkron derleyici sarmalayıcılarıdır (`TFRContentScoped`); dünyaya metin yazan yeni bir senkron derleyici eklersen oraya da ekle. Sarmalayıcı içinde `TFRT` içerik dilinin `lang/<dil>.json` sözlüğünü kullanır. Relic içeriği `data/i18n/<dil>.json` katmanıyla çevrilir (`tools/i18n-content.cjs extract|build tr`, kaynak `tools/translations/content-tr.cjs`). Dünyada var olan eşyalar oluşturuldukları dilde kalır; Rebuild Existing Relics ile yenilenir. Konsol raporları bilerek İngilizce.
-
-Foundry yeni dil dosyalarını dünya yeniden başlatılınca yükler; hızlı test için tarayıcıda `foundry.utils.mergeObject(game.i18n.translations, await (await fetch("/modules/the-first-relics/lang/tr.json")).json())` yalnızca o istemciye yükler.
-
-## Paketleme (Patreon)
+## Paketleme (satış askıda)
 
 ```
 pwsh tools/package.ps1

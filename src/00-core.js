@@ -48,8 +48,12 @@ function TFRFormatPlaceholders(text, data) {
   return text.replace(/\{(\w+)\}/g, (match, name) => (name in data ? String(data[name]) : match));
 }
 
-/** Languages with relic content (data/i18n/<lang>.json and lang/<lang>.json). */
-const TFR_CONTENT_LANGUAGES = { en: "English", tr: "Türkçe" };
+/**
+ * Languages with relic content (data/i18n/<lang>.json and lang/<lang>.json).
+ * Turkish is paused: its sources stay in tools/translations; to re-enable it, rebuild
+ * lang/tr.json and data/i18n/tr.json, add tr here and to module.json "languages".
+ */
+const TFR_CONTENT_LANGUAGES = { en: "English" };
 let TFR_CONTENT_SCOPE = 0;
 let TFR_CONTENT_DICTIONARY = null;
 

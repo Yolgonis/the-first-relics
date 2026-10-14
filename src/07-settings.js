@@ -43,7 +43,8 @@ function TFRRegisterSettings() {
     name: TFRT("Relic content language"),
     hint: TFRT("Language of relic items, descriptions and the lore journal in this world, whichever GM writes them. The interface follows each user's own language. After changing it, run Rebuild Existing Relics in the GM Control Panel."),
     scope: "world",
-    config: true,
+    // Only shown when more than one content language ships.
+    config: Object.keys(TFR_CONTENT_LANGUAGES).length > 1,
     type: String,
     choices: { ...TFR_CONTENT_LANGUAGES },
     default: "en",

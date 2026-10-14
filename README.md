@@ -10,9 +10,7 @@ The First Relics is a Foundry VTT module for dnd5e campaigns. It adds twelve evo
 
 ## Languages
 
-- English and Turkish (Türkçe). The interface (GM dashboard, control panel, notifications, chat cards) follows each user's Foundry language.
-- Relic content (item names, descriptions, powers, lore, dreams, memories, moods, affinity events, and the lore journal) uses the world setting **Relic content language**, so every GM writes the same language into the world. It is chosen automatically the first time a GM loads the world: from the existing relic items, or from the GM's language in a new world.
-- After changing **Relic content language**, use Rebuild Existing Relics in the GM Control Panel.
+- English.
 
 ## Included Content
 

@@ -23,11 +23,6 @@
       "lang": "en",
       "name": "English",
       "path": "lang/en.json"
-    },
-    {
-      "lang": "tr",
-      "name": "Türkçe",
-      "path": "lang/tr.json"
     }
   ],
   "relationships": {
