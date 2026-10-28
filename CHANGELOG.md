@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.2
+
+- Removed the separate Sync Item Stage button from the GM Affinity Dashboard. Save already writes the affinity and syncs the relic item stage, so one button is enough.
+
 ## v1.3.1
 
 - The GM Affinity Dashboard no longer closes when you press Save or Sync Item Stage. It refreshes in place with the saved values, at the same position and size and on the same tab. Changing the relic keeps the window position too.

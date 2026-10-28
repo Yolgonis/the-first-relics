@@ -2,7 +2,7 @@
 // ---- src/00-core.js ----
 
 const TFR_MODULE_ID = "the-first-relics";
-const TFR_VERSION = "1.3.1";
+const TFR_VERSION = "1.3.2";
 const TFR_ATTUNEMENT_REFUSAL_FLAG = "refusesAttunement";
 const TFR_FINAL_FORM_BONUS = 5;
 const TFR_FINAL_FORM_CHARGES = 15;
@@ -3708,7 +3708,7 @@ async function TFROpenDashboard(relicId = null, { position = null } = {}) {
 
     <section class="tfr-tab-panel" data-panel="debug">
       <h3>${TFRT("Debug / Maintenance")}</h3>
-      <p>${TFRT("Use the dialog buttons below for Save and Sync Item Stage.")}</p>
+      <p>${TFRT("Save also syncs the relic item stage.")}</p>
       <p>${TFRT("Console helpers:")}</p>
       <pre>await FirstRelics.auditInventorySync()
 await FirstRelics.syncAllInventoryStages()</pre>
@@ -3758,16 +3758,6 @@ await FirstRelics.syncAllInventoryStages()</pre>
             const note = noteText || "Manual dashboard edit";
             await TFRSetRelicAffinity(selectedRelic, currentValue, note);
           }
-          await TFRRefreshDashboard(app, selectedRelic);
-        }
-      },
-      {
-        action: "sync",
-        label: TFRT("Sync Item Stage"),
-        callback: async (event, button, app) => {
-          const selectedRelic = field(app.element, "relic")?.value;
-          const value = Number(field(app.element, "affinity")?.value || 0);
-          await TFRSetRelicAffinity(selectedRelic, value, "Manual stage sync from dashboard");
           await TFRRefreshDashboard(app, selectedRelic);
         }
       },
