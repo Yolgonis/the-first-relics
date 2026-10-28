@@ -2,7 +2,7 @@
 // ---- src/00-core.js ----
 
 const TFR_MODULE_ID = "the-first-relics";
-const TFR_VERSION = "1.3.0";
+const TFR_VERSION = "1.3.1";
 const TFR_ATTUNEMENT_REFUSAL_FLAG = "refusesAttunement";
 const TFR_FINAL_FORM_BONUS = 5;
 const TFR_FINAL_FORM_CHARGES = 15;
@@ -3591,7 +3591,14 @@ function TFRSafeCssToken(value, fallback = "overview") {
   return /^[a-zA-Z0-9_-]+$/.test(text) ? text : fallback;
 }
 
-async function TFROpenDashboard(relicId = null) {
+// Save/Sync pencereyi kapatmaz: pencere aynı yerde yenilenmiş verilerle yeniden açılır.
+async function TFRRefreshDashboard(app, relicId) {
+  const { left, top, width, height } = app.position;
+  await TFROpenDashboard(relicId, { position: { left, top, width, height } });
+  await app.close();
+}
+
+async function TFROpenDashboard(relicId = null, { position = null } = {}) {
   if (!game.user.isGM) {
     ui.notifications.warn(TFRT("The First Relics: only the GM can open the Affinity Dashboard."));
     return;
@@ -3714,7 +3721,8 @@ await FirstRelics.syncAllInventoryStages()</pre>
   const dialog = new foundry.applications.api.DialogV2({
     classes: ["tfr-dialog"],
     window: { title: TFRT("The First Relics — GM Affinity Dashboard"), resizable: true },
-    position: { width: 760, height: 720 },
+    position: { width: 760, height: 720, ...(position ?? {}) },
+    form: { closeOnSubmit: false },
     content,
     buttons: [
       {
@@ -3750,6 +3758,7 @@ await FirstRelics.syncAllInventoryStages()</pre>
             const note = noteText || "Manual dashboard edit";
             await TFRSetRelicAffinity(selectedRelic, currentValue, note);
           }
+          await TFRRefreshDashboard(app, selectedRelic);
         }
       },
       {
@@ -3759,9 +3768,10 @@ await FirstRelics.syncAllInventoryStages()</pre>
           const selectedRelic = field(app.element, "relic")?.value;
           const value = Number(field(app.element, "affinity")?.value || 0);
           await TFRSetRelicAffinity(selectedRelic, value, "Manual stage sync from dashboard");
+          await TFRRefreshDashboard(app, selectedRelic);
         }
       },
-      { action: "close", label: TFRT("Close") }
+      { action: "close", label: TFRT("Close"), callback: (event, button, app) => app.close() }
     ]
   });
 
@@ -3769,8 +3779,9 @@ await FirstRelics.syncAllInventoryStages()</pre>
   const root = dialog.element;
 
   field(root, "relic")?.addEventListener("change", ev => {
+    const { left, top, width, height } = dialog.position;
     dialog.close();
-    TFROpenDashboard(ev.currentTarget.value);
+    TFROpenDashboard(ev.currentTarget.value, { position: { left, top, width, height } });
   });
 
   root.querySelectorAll(".tfr-tab-button").forEach(button => button.addEventListener("click", ev => {

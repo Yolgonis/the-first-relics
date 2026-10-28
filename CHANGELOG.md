@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.1
+
+- The GM Affinity Dashboard no longer closes when you press Save or Sync Item Stage. It refreshes in place with the saved values, at the same position and size and on the same tab. Changing the relic keeps the window position too.
+
 ## v1.3.0
 
 - Automated the parts of situational passives that need no GM judgment; the judgment calls stay with the GM: Hunter's Instinct (relic bonus to Perception and passive Perception; the tracking bonus to Survival stays manual) and Path of the Wild (ignores nonmagical difficult terrain) on Cloak of Fey Paths; Scholar's Insight (Arcana and History; Investigation stays manual) and Perfect Concentration (advantage on concentration saves for divination spells, otherwise the relic bonus) on Mantle of the First Seer; Will Before Wound (while a Rage effect is active, the first damage each round is reduced by the relic bonus) on Girdle of the Unbroken; Borrowed Power (relic bonus once per turn to warlock spell and Eldritch Blast damage; pact weapons stay manual) on Chains of the Patron; and Banner of Order on Crown of the Conqueror, where the GM picks the allies in a dialog when combat starts.
