@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.3
+
+- An open character sheet now refreshes right after a relic stage sync (Save in the Affinity Dashboard), so the relic item in the inventory updates without closing and reopening the sheet. The refresh looked only at legacy windows and missed dnd5e 5 sheets, which are ApplicationV2 windows.
+
 ## v1.3.2
 
 - Removed the separate Sync Item Stage button from the GM Affinity Dashboard. Save already writes the affinity and syncs the relic item stage, so one button is enough.

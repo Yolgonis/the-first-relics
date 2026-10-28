@@ -519,8 +519,13 @@ function TFRRefreshActorAndItemSheets(actor, oldItemId = null, newItem = null) {
   const refresh = () => {
     // Do not call actor.sheet.render(...) directly here. In Foundry that can open a
     // closed character sheet while the Test Lab or a stage rebuild is running. Only
-    // refresh applications that are already present in ui.windows.
-    for (const app of Object.values(ui.windows || {})) {
+    // refresh applications that are already open. dnd5e 5 sheets are ApplicationV2 windows,
+    // which live in foundry.applications.instances, not in ui.windows.
+    const openApps = new Set([
+      ...Object.values(ui.windows || {}),
+      ...(foundry.applications?.instances?.values?.() ?? [])
+    ]);
+    for (const app of openApps) {
       const doc = app?.document || app?.object || null;
       const appActor = app?.actor || doc?.parent || null;
 
