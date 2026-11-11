@@ -2,7 +2,8 @@
 
 ## v0.5.1
 
-- The item sheet now says, next to the attunement field, when the bearer lacks the relic's class, so players see it before they try to attune.
+- The item sheet now says, under the attunement row, when the bearer lacks the relic's class, so players see it before they try to attune.
+- Fixed relic item sheet adjustments on dnd5e 5 sheets: hiding the GM-only relic notes and the personality section, and trimming the mood history for players, were applied to the sheet's first field instead of the sheet and so did nothing.
 - Relic data is fetched once per session instead of on every use.
 - The Mantle of the First Seer, Girdle of the Unbroken and Chains of the Patron now show their automation summary in the Affinity Dashboard like the other relics.
 - The relic id migration also covers relic items owned by unlinked tokens.
