@@ -9,14 +9,14 @@
  * Paths are stable: arrays of objects with an id use the id (dreams.silent_forest.text),
  * other arrays use the index (moodMap.0.mood). Only the fields below are translatable;
  * ids, numbers, icons and automation metadata never are.
- * Ability names come from TFRAbilityDefinitions() in the module script (path: <relic>.abilities.<slot>).
+ * Ability names come from the relic definitions in src/relics/ (path: <relic>.abilities.<slot>).
  */
 const fs = require("node:fs");
 const path = require("node:path");
 
 const root = path.join(__dirname, "..");
 const RELICS = path.join(root, "data", "relics.json");
-const SCRIPT = path.join(root, "scripts", "the-first-relics.js");
+const RELIC_DEFINITIONS = path.join(root, "src", "relics", "index.js");
 const TRANSLATIONS = path.join(__dirname, "translations");
 
 const TRANSLATABLE = [
@@ -62,13 +62,10 @@ function collect(value, parts, out, relicId) {
 }
 
 function abilityNames() {
-  const source = fs.readFileSync(SCRIPT, "utf8");
-  const start = source.indexOf("function TFRAbilityDefinitions()");
-  const body = source.slice(start, source.indexOf("\n}\n", start) + 2);
-  const defs = Function(`${body}; return TFRAbilityDefinitions();`)();
+  const { TFR_RELIC_DEFINITIONS } = require(RELIC_DEFINITIONS);
   const out = {};
-  for (const [relicId, slots] of Object.entries(defs)) {
-    for (const [slot, def] of Object.entries(slots)) out[`${relicId}.abilities.${slot}`] = def.name;
+  for (const [relicId, definition] of Object.entries(TFR_RELIC_DEFINITIONS)) {
+    for (const [slot, def] of Object.entries(definition.abilities)) out[`${relicId}.abilities.${slot}`] = def.name;
   }
   return out;
 }

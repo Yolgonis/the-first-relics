@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { relics, repoFileExists } from "./foundry-stub.mjs";
-import { TFR_ACTIVITY_SLOTS, TFR_STAGES } from "../src/00-core.js";
+import { TFRLoadCanonicalRelics, TFR_ACTIVITY_SLOTS, TFR_STAGES } from "../src/00-core.js";
 import { TFRAbilityDefinitions } from "../src/03-activities.js";
 import { TFR_PASSIVE_EFFECTS, TFR_PASSIVE_TRIGGERS } from "../src/04-items.js";
 import { TFR_LEGACY_RELIC_IDS } from "../src/06-relic-state.js";
@@ -86,6 +86,30 @@ test("every relic has a definition file with known fields", () => {
     assert.equal(definition.id, id);
     assert.deepEqual(Object.keys(definition).filter(field => !known.includes(field)), [], `${id}: unknown field`);
     for (const field of ["damageType", "abilities", "abilityEffects", "runtime"]) assert.ok(definition[field], `${id}: missing ${field}`);
+  }
+});
+
+test("relic data is fetched once and every caller gets its own copy", async () => {
+  const realFetch = globalThis.fetch;
+  let fetches = 0;
+  globalThis.fetch = (...args) => { fetches += 1; return realFetch(...args); };
+  try {
+    const first = await TFRLoadCanonicalRelics();
+    const second = await TFRLoadCanonicalRelics();
+    assert.ok(fetches <= 1, `fetched ${fetches} times`);
+    assert.deepEqual(first, relics);
+    first[0].name = "changed by a caller";
+    assert.equal(second[0].name, relics[0].name);
+    assert.equal((await TFRLoadCanonicalRelics())[0].name, relics[0].name);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});
+
+test("every relic describes its automation for the dashboard", () => {
+  for (const relic of relics) {
+    for (const field of ["passives", "actives", "avatar", "signature"]) assert.ok(relic.automationStatus?.[field], `${relic.id}: automationStatus.${field}`);
+    assert.ok(Array.isArray(relic.automationStatus.notes), `${relic.id}: automationStatus.notes`);
   }
 });
 

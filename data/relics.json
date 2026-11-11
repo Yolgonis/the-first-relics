@@ -406,6 +406,16 @@
       "unlockAffinity": 1000,
       "revealed": false
     },
+    "automationStatus": {
+      "passives": "Foundry Active Effects / GM adjudication",
+      "actives": "dnd5e Activities + MidiQOL",
+      "avatar": "dnd5e Activity / reminder",
+      "signature": "dnd5e Activity / GM adjudication",
+      "notes": [
+        "Primary workflow is Item Sheet -> Activities.",
+        "No player-facing macro is required."
+      ]
+    },
     "class": "Wizard",
     "virtue": "Understanding",
     "theme": "Knowledge • Time • Memory • Stars • Prophecy • Truth",
@@ -796,6 +806,16 @@
       "unlockAffinity": 1000,
       "revealed": false
     },
+    "automationStatus": {
+      "passives": "Foundry Active Effects / GM adjudication",
+      "actives": "dnd5e Activities + MidiQOL",
+      "avatar": "dnd5e Activity / reminder",
+      "signature": "dnd5e Activity / GM adjudication",
+      "notes": [
+        "Primary workflow is Item Sheet -> Activities.",
+        "No player-facing macro is required."
+      ]
+    },
     "class": "Barbarian",
     "virtue": "Indomitable Will",
     "theme": "Will • Endurance • Defiance • Survival • Strength",
@@ -1152,6 +1172,16 @@
       "full": "Mordrath, The Price of Ambition",
       "unlockAffinity": 1000,
       "revealed": false
+    },
+    "automationStatus": {
+      "passives": "Foundry Active Effects / GM adjudication",
+      "actives": "dnd5e Activities + MidiQOL",
+      "avatar": "dnd5e Activity / reminder",
+      "signature": "dnd5e Activity / GM adjudication",
+      "notes": [
+        "Primary workflow is Item Sheet -> Activities.",
+        "No player-facing macro is required."
+      ]
     },
     "class": "Warlock",
     "virtue": "Ambition",

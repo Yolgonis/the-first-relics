@@ -267,6 +267,19 @@ export async function TFRNormalizeRefusingRelicItems() {
   return normalized;
 }
 
+/** Says on the item sheet, next to the attunement field, that this bearer lacks the relic's class. */
+function TFRShowAttunementClassNote(item, element) {
+  const className = TFRMissingAttunementClass(item);
+  const group = element.querySelector('[name="system.attuned"]')?.closest(".form-group");
+  if (!className || !group || group.querySelector(".tfr-attunement-class-note")) return;
+  const note = document.createElement("p");
+  note.className = "hint tfr-attunement-class-note";
+  note.textContent = game.user?.isGM
+    ? TFRT("Requires attunement by a {className}. {actorName} is not one; only a GM can attune it.", { className, actorName: item.parent.name })
+    : TFRT("Requires attunement by a {className}. {actorName} cannot attune to it.", { className, actorName: item.parent.name });
+  group.append(note);
+}
+
 export async function TFRApplyRelicSheetVisibility(app, html) {
   const item = app?.document || app?.item || app?.object;
   const relicId = item?.getFlag?.(TFR_MODULE_ID, "relicId");
@@ -282,6 +295,8 @@ export async function TFRApplyRelicSheetVisibility(app, html) {
       ".first-relics-item-description .tfr-gm-relic-notes"
     )
     .forEach(node => node.remove());
+
+  TFRShowAttunementClassNote(item, element);
 
   if (!game.user?.isGM) {
     TFRRemovePlayerMoodHistory(element);

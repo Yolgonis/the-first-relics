@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.5.1
+
+- The item sheet now says, next to the attunement field, when the bearer lacks the relic's class, so players see it before they try to attune.
+- Relic data is fetched once per session instead of on every use.
+- The Mantle of the First Seer, Girdle of the Unbroken and Chains of the Patron now show their automation summary in the Affinity Dashboard like the other relics.
+- The relic id migration also covers relic items owned by unlinked tokens.
+- Removed the unused `manacles-unbroken.svg` icon.
+
 ## v1.5.0
 
 - Each relic's game definitions (damage type, abilities, automation notes, passive effects and triggers, ability effects, runtime behaviour) now live in one file per relic under `src/relics/`, instead of being spread over seven tables in four files. Behaviour is unchanged: the tables the code reads are built from these files and were compared against the previous ones.

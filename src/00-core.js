@@ -2,7 +2,7 @@ import { TFR_CLOAK_ABILITY_SLOTS_BY_LABEL } from "./24-chat-and-gates.js";
 
 
 export const TFR_MODULE_ID = "the-first-relics";
-export const TFR_VERSION = "1.5.0";
+export const TFR_VERSION = "0.5.1";
 export const TFR_ATTUNEMENT_REFUSAL_FLAG = "refusesAttunement";
 export const TFR_FINAL_FORM_BONUS = 5;
 export const TFR_FINAL_FORM_CHARGES = 15;
@@ -174,10 +174,17 @@ export async function TFRLoadRelics() {
   return overlay ? relics.map(relic => TFRApplyContentOverlay(relic, overlay[relic.id])) : relics;
 }
 
-/** Untranslated English relic data. */
+let TFR_CANONICAL_RELICS_PROMISE = null;
+
+/** Untranslated English relic data. Fetched once per session; each caller gets its own copy. */
 export async function TFRLoadCanonicalRelics() {
-  const response = await fetch("modules/the-first-relics/data/relics.json");
-  return response.json();
+  TFR_CANONICAL_RELICS_PROMISE ??= fetch("modules/the-first-relics/data/relics.json")
+    .then(response => response.json())
+    .catch(error => {
+      TFR_CANONICAL_RELICS_PROMISE = null; // let the next call retry
+      throw error;
+    });
+  return structuredClone(await TFR_CANONICAL_RELICS_PROMISE);
 }
 
 const TFR_CONTENT_OVERLAY_PROMISES = new Map();

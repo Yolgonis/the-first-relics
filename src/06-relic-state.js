@@ -114,9 +114,7 @@ export async function TFRMigrateLegacyRelicIds() {
   }
   if (result.state) await TFRSetWorldState(state);
 
-  // shortcut: unlinked token actors are not scanned, add scene token deltas if relics are ever placed on them.
-  const items = [...game.items, ...game.actors.contents.flatMap(actor => actor.items.contents)];
-  for (const item of items) {
+  const migrateItem = async item => {
     const update = {};
     const newId = TFR_LEGACY_RELIC_IDS[item.flags?.[TFR_MODULE_ID]?.relicId];
     if (newId) update[`flags.${TFR_MODULE_ID}.relicId`] = newId;
@@ -126,9 +124,16 @@ export async function TFRMigrateLegacyRelicIds() {
       const activityRelicId = TFR_LEGACY_RELIC_IDS[activity?.flags?.[TFR_MODULE_ID]?.relicId];
       if (activityRelicId) update[`system.activities.${activityId}.flags.${TFR_MODULE_ID}.relicId`] = activityRelicId;
     }
-    if (!Object.keys(update).length) continue;
+    if (!Object.keys(update).length) return;
     await item.update(update);
     result.items += 1;
+  };
+  for (const item of [...game.items, ...game.actors.contents.flatMap(actor => actor.items.contents)]) await migrateItem(item);
+  // Unlinked tokens come after their base actors: items they inherit are already migrated by
+  // then, so only items the token itself owns are still on an old id.
+  const unlinkedTokens = (game.scenes?.contents || []).flatMap(scene => scene.tokens.contents).filter(token => !token.actorLink && token.actor);
+  for (const token of unlinkedTokens) {
+    for (const item of token.actor.items.contents) await migrateItem(item);
   }
 
   for (const journal of game.journal) {

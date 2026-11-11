@@ -32,6 +32,8 @@
     "t1o4f8rz": "{relicName} now accepts attunement. {copiesCount} item copy/copies synchronized.",
     "t1e0aw61": "{itemName} requires attunement by a {className}. {actorName} is not one; attuned by GM override.",
     "t9am8an": "{itemName} requires attunement by a {className}. {actorName} cannot attune to it.",
+    "tbptpo": "Requires attunement by a {className}. {actorName} is not one; only a GM can attune it.",
+    "t3e3tit": "Requires attunement by a {className}. {actorName} cannot attune to it.",
     "t1la8ksj": "Artifact",
     "t2dc98z": "Artifact, requires attunement by a {className}",
     "t149fk5w": "Attunement:",

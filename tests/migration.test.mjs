@@ -10,14 +10,16 @@ function doc(data) {
   return { ...data, updates, update: async change => { updates.push(change); } };
 }
 
-function world({ state, items = [], actorItems = [], pages = [] }) {
+function world({ state, items = [], actorItems = [], pages = [], tokens = [] }) {
   const settings = { relicState: state };
   game.settings = { get: (_module, key) => settings[key], set: async (_module, key, value) => { settings[key] = value; } };
   game.items = items;
   game.actors = { contents: [{ items: { contents: actorItems } }] };
   game.journal = [{ pages }];
+  game.scenes = { contents: [{ tokens: { contents: tokens } }] };
   return settings;
 }
+const token = (actorLink, items) => ({ actorLink, actor: { items: { contents: items } } });
 
 const girdle = relicId => doc({
   flags: { [FLAG]: { relicId } },
@@ -47,6 +49,15 @@ test("old relic ids move to the new id everywhere", async () => {
   }
   assert.deepEqual(untouched.updates, []);
   assert.deepEqual(page.updates, [{ [`flags.${FLAG}.lorePageId`]: "girdle_unbroken" }]);
+});
+
+test("items owned by unlinked tokens are migrated, linked tokens are left to their actor", async () => {
+  const onUnlinked = girdle("manacles_unbroken");
+  const onLinked = girdle("manacles_unbroken");
+  world({ state: {}, tokens: [token(false, [onUnlinked]), token(true, [onLinked]), { actorLink: false, actor: null }] });
+  assert.deepEqual(await TFRMigrateLegacyRelicIds(), { state: 0, items: 1, pages: 0 });
+  assert.equal(onUnlinked.updates.length, 1);
+  assert.deepEqual(onLinked.updates, []);
 });
 
 test("state already saved under the new id is kept", async () => {
