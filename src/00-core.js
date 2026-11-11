@@ -2,7 +2,7 @@ import { TFR_CLOAK_ABILITY_SLOTS_BY_LABEL } from "./24-chat-and-gates.js";
 
 
 export const TFR_MODULE_ID = "the-first-relics";
-export const TFR_VERSION = "1.4.0";
+export const TFR_VERSION = "1.4.1";
 export const TFR_ATTUNEMENT_REFUSAL_FLAG = "refusesAttunement";
 export const TFR_FINAL_FORM_BONUS = 5;
 export const TFR_FINAL_FORM_CHARGES = 15;
@@ -175,7 +175,7 @@ export async function TFRLoadRelics() {
 }
 
 /** Untranslated English relic data. */
-async function TFRLoadCanonicalRelics() {
+export async function TFRLoadCanonicalRelics() {
   const response = await fetch("modules/the-first-relics/data/relics.json");
   return response.json();
 }

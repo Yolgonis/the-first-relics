@@ -1,5 +1,12 @@
 import "./01-stages-and-text.js"; // keeps the original load order
-import { TFRNotifyInfo, TFRNotifyWarn, TFRT, TFR_ATTUNEMENT_REFUSAL_FLAG, TFR_MODULE_ID } from "./00-core.js";
+import {
+  TFRLoadCanonicalRelics,
+  TFRNotifyInfo,
+  TFRNotifyWarn,
+  TFRT,
+  TFR_ATTUNEMENT_REFUSAL_FLAG,
+  TFR_MODULE_ID
+} from "./00-core.js";
 import {
   TFRAttunementForStage,
   TFRRemoveDescriptionSection,
@@ -198,9 +205,49 @@ export async function TFRSetRelicAttunementRefusal(relicId, refuses = true) {
   return data;
 }
 
+/** relic id -> class named in "requires attunement by a <class>". Filled once at startup. */
+const TFR_RELIC_CLASSES = new Map();
+
+function TFRActorHasClass(actor, className) {
+  const identifier = String(className).toLowerCase();
+  return Object.keys(actor?.classes || {}).includes(identifier)
+    || !!actor?.items?.some(item => item.type === "class" && (item.system?.identifier === identifier || item.name === className));
+}
+
+/** The class this bearer is missing for the relic, or "" if the bearer qualifies. */
+function TFRMissingAttunementClass(item, actor = item?.parent) {
+  const className = TFR_RELIC_CLASSES.get(item?.flags?.[TFR_MODULE_ID]?.relicId);
+  if (!className || actor?.documentName !== "Actor") return "";
+  return TFRActorHasClass(actor, className) ? "" : className;
+}
+
+/** Players cannot attune a relic to a bearer without its class. A GM still can, with a notice. */
+function TFRBlockWrongClassAttunement(item, changes = {}) {
+  if (TFRPendingDocumentChange(changes, "system.attuned").value !== true || item.system?.attuned) return;
+  const className = TFRMissingAttunementClass(item);
+  if (!className) return;
+  const names = { itemName: item.name, actorName: item.parent.name, className };
+  if (game.user?.isGM) {
+    TFRNotifyInfo(TFRT("{itemName} requires attunement by a {className}. {actorName} is not one; attuned by GM override.", names));
+    return;
+  }
+  TFRNotifyWarn(TFRT("{itemName} requires attunement by a {className}. {actorName} cannot attune to it.", names));
+  return false;
+}
+
+function TFRClearWrongClassAttunementOnCreate(item) {
+  if (game.user?.isGM || !item.system?.attuned || !TFRMissingAttunementClass(item)) return;
+  item.updateSource({ "system.attuned": false });
+}
+
 export function TFRRegisterAttunementRefusal() {
   Hooks.on("preUpdateItem", TFRBlockRefusedAttunementUpdate);
   Hooks.on("preCreateItem", TFRNormalizeRefusedAttunementOnCreate);
+  Hooks.on("preUpdateItem", TFRBlockWrongClassAttunement);
+  Hooks.on("preCreateItem", TFRClearWrongClassAttunementOnCreate);
+  TFRLoadCanonicalRelics()
+    .then(relics => relics.forEach(relic => TFR_RELIC_CLASSES.set(relic.id, relic.class)))
+    .catch(error => console.error("The First Relics | Could not load relic classes for attunement.", error));
 }
 
 export async function TFRNormalizeRefusingRelicItems() {

@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.4.1
+
+- "Requires attunement by a <class>" is now enforced. A player cannot attune a relic to a character that has no levels in the relic's class; the attempt is cancelled with a warning. A GM can still attune it to anyone and gets a notice that it was an override. Relics that are already attuned are left as they are.
+
 ## v1.4.0
 
 - The module code is now loaded as separate ES modules from `src/` instead of one generated 9,900-line file. `scripts/the-first-relics.js` is a three-line entry point, each part states what it imports and exports, and console errors point at the part and line they come from. There is no build step any more. Behaviour is unchanged.
