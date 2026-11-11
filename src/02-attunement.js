@@ -208,7 +208,7 @@ export async function TFRSetRelicAttunementRefusal(relicId, refuses = true) {
 /** relic id -> class named in "requires attunement by a <class>". Filled once at startup. */
 const TFR_RELIC_CLASSES = new Map();
 
-function TFRActorHasClass(actor, className) {
+export function TFRActorHasClass(actor, className) {
   const identifier = String(className).toLowerCase();
   return Object.keys(actor?.classes || {}).includes(identifier)
     || !!actor?.items?.some(item => item.type === "class" && (item.system?.identifier === identifier || item.name === className));
@@ -222,7 +222,7 @@ function TFRMissingAttunementClass(item, actor = item?.parent) {
 }
 
 /** Players cannot attune a relic to a bearer without its class. A GM still can, with a notice. */
-function TFRBlockWrongClassAttunement(item, changes = {}) {
+export function TFRBlockWrongClassAttunement(item, changes = {}) {
   if (TFRPendingDocumentChange(changes, "system.attuned").value !== true || item.system?.attuned) return;
   const className = TFRMissingAttunementClass(item);
   if (!className) return;

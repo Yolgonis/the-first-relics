@@ -229,7 +229,7 @@ async function TFRSyncRelicBonusEffect(item, relic, stage, signatureUnlocked = f
  * becomes the relic bonus of the current stage. An `aura` entry ({ distance, self }) becomes an
  * Aura Effects aura on friendly tokens; without that module the passive stays GM-resolved.
  */
-const TFR_PASSIVE_EFFECTS = {
+export const TFR_PASSIVE_EFFECTS = {
   cloak_feywilds: {
     // Perception is always automated; the tracking part of the Survival bonus is GM-resolved.
     0: { changes: [["system.skills.prc.bonuses.check", "ADD", "+{bonus}"], ["system.skills.prc.bonuses.passive", "ADD", "+{bonus}"]], note: "instinct" },
@@ -275,7 +275,7 @@ function TFRAuraEffectsActive() {
  * Passive features automated by hooks in src/27-passive-triggers.js (relic id -> passive index ->
  * { note? }). Listed here so the item description can mark them.
  */
-const TFR_PASSIVE_TRIGGERS = {
+export const TFR_PASSIVE_TRIGGERS = {
   aegis_dawn: { 0: {}, 3: {} },
   crown_conqueror: { 1: { note: "banner" } },
   girdle_unbroken: { 2: { note: "rage" } },

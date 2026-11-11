@@ -97,7 +97,7 @@ export async function TFRSetWorldState(state) {
 }
 
 /** Relic ids that were renamed: old id -> current id. */
-const TFR_LEGACY_RELIC_IDS = { manacles_unbroken: "girdle_unbroken" };
+export const TFR_LEGACY_RELIC_IDS = { manacles_unbroken: "girdle_unbroken" };
 
 /** Moves world state, items and lore pages saved under a renamed relic id to the current id. */
 export async function TFRMigrateLegacyRelicIds() {

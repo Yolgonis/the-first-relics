@@ -26,6 +26,10 @@ $changelog = Get-Content (Join-Path $root 'CHANGELOG.md') -Raw
 if (-not $changelog.Contains("## v$version")) { $problems += "CHANGELOG.md has no '## v$version' entry" }
 node (Join-Path $root 'tools/check-load.mjs') | Out-Null
 if ($LASTEXITCODE -ne 0) { $problems += "the module does not load; run node tools/check-load.mjs" }
+Push-Location $root
+node --test "tests/*.test.mjs" | Out-Null
+if ($LASTEXITCODE -ne 0) { $problems += "tests fail; run node --test `"tests/*.test.mjs`"" }
+Pop-Location
 node (Join-Path $root 'tools/i18n-extract.cjs') --check | Out-Null
 if ($LASTEXITCODE -ne 0) { $problems += "translations are incomplete; run node tools/i18n-extract.cjs and node tools/i18n-build-lang.cjs <lang>" }
 if ($problems) { throw "Release check failed:`n - " + ($problems -join "`n - ") }
