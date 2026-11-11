@@ -340,6 +340,8 @@ function TFRRelicGmSecretsHtml(relic) {
 }
 
 export function TFRSheetHtmlElement(html) {
+  // An ApplicationV2 sheet passes its <form>; form[0] would be its first field, not the sheet.
+  if (html instanceof globalThis.HTMLElement) return html;
   return html?.jquery ? html[0] : html?.[0] || html;
 }
 

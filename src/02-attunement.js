@@ -271,13 +271,15 @@ export async function TFRNormalizeRefusingRelicItems() {
 function TFRShowAttunementClassNote(item, element) {
   const className = TFRMissingAttunementClass(item);
   const group = element.querySelector('[name="system.attuned"]')?.closest(".form-group");
-  if (!className || !group || group.querySelector(".tfr-attunement-class-note")) return;
+  if (!className || !group || element.querySelector(".tfr-attunement-class-note")) return;
+  // The attunement field sits in a narrow column of a split row; the note goes under the whole row.
+  const row = group.closest(".split-group") || group;
   const note = document.createElement("p");
   note.className = "hint tfr-attunement-class-note";
   note.textContent = game.user?.isGM
     ? TFRT("Requires attunement by a {className}. {actorName} is not one; only a GM can attune it.", { className, actorName: item.parent.name })
     : TFRT("Requires attunement by a {className}. {actorName} cannot attune to it.", { className, actorName: item.parent.name });
-  group.append(note);
+  row.after(note);
 }
 
 export async function TFRApplyRelicSheetVisibility(app, html) {
