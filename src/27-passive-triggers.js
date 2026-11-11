@@ -298,7 +298,7 @@ function TFRIsRaging(actor) {
 
 /** The Girdle whose Will Before Wound can still reduce damage this round, or null. */
 function TFRWillBeforeWoundItem(actor) {
-  const girdle = TFRActivePassiveItem(actor, "manacles_unbroken", 2);
+  const girdle = TFRActivePassiveItem(actor, "girdle_unbroken", 2);
   if (!girdle || !TFRIsRaging(actor)) return null;
   const round = TFRCombatRoundKey(actor);
   return round && girdle.getFlag(TFR_MODULE_ID, "willBeforeWoundRound") === round ? null : girdle;

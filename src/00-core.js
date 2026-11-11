@@ -1,6 +1,6 @@
 
 const TFR_MODULE_ID = "the-first-relics";
-const TFR_VERSION = "1.3.3";
+const TFR_VERSION = "1.3.4";
 const TFR_ATTUNEMENT_REFUSAL_FLAG = "refusesAttunement";
 const TFR_FINAL_FORM_BONUS = 5;
 const TFR_FINAL_FORM_CHARGES = 15;

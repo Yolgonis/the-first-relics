@@ -247,7 +247,7 @@ function TFRAuraEffectsActive() {
 const TFR_PASSIVE_TRIGGERS = {
   aegis_dawn: { 0: {}, 3: {} },
   crown_conqueror: { 1: { note: "banner" } },
-  manacles_unbroken: { 2: { note: "rage" } },
+  girdle_unbroken: { 2: { note: "rage" } },
   cloak_shadowfell: { 3: { note: "midi" } },
   heart_yggdrasil: { 0: {}, 1: { note: "chatHealing" }, 2: { note: "canvas" } },
   vestments_first_saint: { 1: {} },

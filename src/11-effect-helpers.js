@@ -19,7 +19,7 @@ function TFRGetActorRelicItem(actor, relicId) {
   const names = {
     cloak_feywilds: TFR_CLOAK_DISPLAY_NAME,
     mantle_first_seer: "Mantle of the First Seer",
-    manacles_unbroken: "Girdle of the Unbroken",
+    girdle_unbroken: "Girdle of the Unbroken",
     chains_patron: "Chains of the Patron"
   };
   if (relicId === "cloak_feywilds") {

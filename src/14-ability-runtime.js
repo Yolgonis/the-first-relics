@@ -124,7 +124,7 @@ function TFREffectChangesForRelicAbility(relicId, slot, relic = null, item = nul
         { key: "system.bonuses.abilities.save", mode: add, value: `+${bonus}`, priority: 20 }
       ]
     },
-    manacles_unbroken: {
+    girdle_unbroken: {
       avatar: [
         { key: "system.attributes.movement.fly", mode: upgrade, value: "30", priority: 20 },
         { key: "system.attributes.movement.hover", mode: override, value: "true", priority: 20 },
@@ -308,7 +308,7 @@ function TFRRelicAbilityRuntimeSpec(relicId, slot) {
       avatar: { selfEffect: true },
       signature: { note: "Chronicle Unwritten is manual: after seeing the d20 result but before the outcome, force a reroll and choose the final result." }
     },
-    manacles_unbroken: {
+    girdle_unbroken: {
       active1: { removeSelf: ["prone"], tempHp: "level+bonus", rounds: 1, seconds: 6 },
       active3: { note: "Refuse the Fall is manual: reroll the failed Strength, Constitution, or Wisdom save and use the new result." },
       active4: { note: "Hold the World is manual: protect the chosen creature within 10 ft, then resolve the AC bonus, movement, or intercepted effect with the GM." },

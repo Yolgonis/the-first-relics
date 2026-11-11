@@ -2,7 +2,7 @@
 // ---- src/00-core.js ----
 
 const TFR_MODULE_ID = "the-first-relics";
-const TFR_VERSION = "1.3.3";
+const TFR_VERSION = "1.3.4";
 const TFR_ATTUNEMENT_REFUSAL_FLAG = "refusesAttunement";
 const TFR_FINAL_FORM_BONUS = 5;
 const TFR_FINAL_FORM_CHARGES = 15;
@@ -428,7 +428,7 @@ function TFRDamageTypeForRelic(relic) {
     "cloak_feywilds": "force",
     "cloak_shadowfell": "necrotic",
     "mantle_first_seer": "psychic",
-    "manacles_unbroken": "force",
+    "girdle_unbroken": "force",
     "lyre_first_song": "thunder",
     "vestments_first_saint": "radiant",
     "heart_yggdrasil": "poison",
@@ -1025,7 +1025,7 @@ function TFRAbilityAutomation(relicId, slot) {
       avatar: { role: "self-buff", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self", effect: true, note: "First Seer avatar reminder/effect." },
       signature: { role: "reroll-signature", type: "utility", activation: "reaction", charges: 0, range: 120, target: "creature", note: "Chronicle Unwritten is reroll only; no damage." }
     },
-    manacles_unbroken: {
+    girdle_unbroken: {
       active1: { role: "self-recovery", type: "utility", activation: "bonus", charges: 1, range: 0, target: "self", note: "End prone + temp HP; utility/reminder." },
       active2: { role: "bonus-damage", type: "damage", activation: "special", charges: 2, range: 5, target: "creature", damage: { number: 4, denomination: 8, type: "force" }, note: "Extra force damage after melee hit." },
       active3: { role: "saving-reroll", type: "utility", activation: "reaction", charges: 3, range: 0, target: "self", note: "Reroll failed STR/CON/WIS save." },
@@ -1411,7 +1411,7 @@ function TFRAbilityDefinitions() {
       avatar: { name: "Avatar of Understanding", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self" },
       signature: { name: "Signature of Understanding", type: "utility", activation: "reaction", charges: 0, range: 120, target: "creature" }
     },
-    manacles_unbroken: {
+    girdle_unbroken: {
       active1: { name: "Stand", type: "utility", activation: "bonus", charges: 1, range: 0, target: "self" },
       active2: { name: "Stoneheart Surge", type: "damage", activation: "special", charges: 2, range: 5, target: "creature", damage: { number: 4, denomination: 8, type: "force" } },
       active3: { name: "Refuse the Fall", type: "utility", activation: "reaction", charges: 3, range: 0, target: "self" },
@@ -2051,7 +2051,7 @@ function TFRAuraEffectsActive() {
 const TFR_PASSIVE_TRIGGERS = {
   aegis_dawn: { 0: {}, 3: {} },
   crown_conqueror: { 1: { note: "banner" } },
-  manacles_unbroken: { 2: { note: "rage" } },
+  girdle_unbroken: { 2: { note: "rage" } },
   cloak_shadowfell: { 3: { note: "midi" } },
   heart_yggdrasil: { 0: {}, 1: { note: "chatHealing" }, 2: { note: "canvas" } },
   vestments_first_saint: { 1: {} },
@@ -2793,6 +2793,56 @@ function TFRGetWorldState() {
 
 async function TFRSetWorldState(state) {
   return game.settings.set("the-first-relics", "relicState", state || {});
+}
+
+/** Relic ids that were renamed: old id -> current id. */
+const TFR_LEGACY_RELIC_IDS = { manacles_unbroken: "girdle_unbroken" };
+
+/** Moves world state, items and lore pages saved under a renamed relic id to the current id. */
+async function TFRMigrateLegacyRelicIds() {
+  if (!game.users?.activeGM?.isSelf) return { state: 0, items: 0, pages: 0 };
+  const result = { state: 0, items: 0, pages: 0 };
+
+  const state = TFRGetWorldState();
+  for (const [oldId, newId] of Object.entries(TFR_LEGACY_RELIC_IDS)) {
+    if (!(oldId in state)) continue;
+    // Never overwrite state already saved under the new id.
+    if (!(newId in state)) state[newId] = state[oldId];
+    delete state[oldId];
+    result.state += 1;
+  }
+  if (result.state) await TFRSetWorldState(state);
+
+  // shortcut: unlinked token actors are not scanned, add scene token deltas if relics are ever placed on them.
+  const items = [...game.items, ...game.actors.contents.flatMap(actor => actor.items.contents)];
+  for (const item of items) {
+    const update = {};
+    const newId = TFR_LEGACY_RELIC_IDS[item.flags?.[TFR_MODULE_ID]?.relicId];
+    if (newId) update[`flags.${TFR_MODULE_ID}.relicId`] = newId;
+    const newIdentifier = TFR_LEGACY_RELIC_IDS[item._source?.system?.identifier];
+    if (newIdentifier) update["system.identifier"] = newIdentifier;
+    for (const [activityId, activity] of Object.entries(item._source?.system?.activities || {})) {
+      const activityRelicId = TFR_LEGACY_RELIC_IDS[activity?.flags?.[TFR_MODULE_ID]?.relicId];
+      if (activityRelicId) update[`system.activities.${activityId}.flags.${TFR_MODULE_ID}.relicId`] = activityRelicId;
+    }
+    if (!Object.keys(update).length) continue;
+    await item.update(update);
+    result.items += 1;
+  }
+
+  for (const journal of game.journal) {
+    for (const page of journal.pages) {
+      const newId = TFR_LEGACY_RELIC_IDS[page.flags?.[TFR_MODULE_ID]?.lorePageId];
+      if (!newId) continue;
+      await page.update({ [`flags.${TFR_MODULE_ID}.lorePageId`]: newId });
+      result.pages += 1;
+    }
+  }
+
+  if (result.state || result.items || result.pages) {
+    console.log(`The First Relics | Migrated renamed relic ids: ${result.state} state record(s), ${result.items} item(s), ${result.pages} lore page(s).`);
+  }
+  return result;
 }
 
 function TFRDefaultRelicState() {
@@ -3950,7 +4000,7 @@ function TFRGetActorRelicItem(actor, relicId) {
   const names = {
     cloak_feywilds: TFR_CLOAK_DISPLAY_NAME,
     mantle_first_seer: "Mantle of the First Seer",
-    manacles_unbroken: "Girdle of the Unbroken",
+    girdle_unbroken: "Girdle of the Unbroken",
     chains_patron: "Chains of the Patron"
   };
   if (relicId === "cloak_feywilds") {
@@ -4923,7 +4973,7 @@ function TFREffectChangesForRelicAbility(relicId, slot, relic = null, item = nul
         { key: "system.bonuses.abilities.save", mode: add, value: `+${bonus}`, priority: 20 }
       ]
     },
-    manacles_unbroken: {
+    girdle_unbroken: {
       avatar: [
         { key: "system.attributes.movement.fly", mode: upgrade, value: "30", priority: 20 },
         { key: "system.attributes.movement.hover", mode: override, value: "true", priority: 20 },
@@ -5107,7 +5157,7 @@ function TFRRelicAbilityRuntimeSpec(relicId, slot) {
       avatar: { selfEffect: true },
       signature: { note: "Chronicle Unwritten is manual: after seeing the d20 result but before the outcome, force a reroll and choose the final result." }
     },
-    manacles_unbroken: {
+    girdle_unbroken: {
       active1: { removeSelf: ["prone"], tempHp: "level+bonus", rounds: 1, seconds: 6 },
       active3: { note: "Refuse the Fall is manual: reroll the failed Strength, Constitution, or Wisdom save and use the new result." },
       active4: { note: "Hold the World is manual: protect the chosen creature within 10 ft, then resolve the AC bonus, movement, or intercepted effect with the GM." },
@@ -9420,6 +9470,7 @@ Hooks.once("ready", async () => {
     refreshActorAndItemSheets: TFRRefreshActorAndItemSheets,
     auditCloakAutomation: TFRAuditCloakAutomation,
     migrateCloakDisplayName: TFRMigrateCloakDisplayName,
+    migrateLegacyRelicIds: TFRMigrateLegacyRelicIds,
     syncSealedTrueNameDescriptions: TFRSyncSealedTrueNameDescriptions,
     syncProgressiveAppearanceDescriptions: TFRSyncProgressiveAppearanceDescriptions,
     syncFinalFormItems: TFRSyncFinalFormItems,
@@ -9442,6 +9493,11 @@ Hooks.once("ready", async () => {
   TFRRegisterSaveAwareChatButtons();
   TFRRegisterAttunementRefusal();
   TFR_STARTUP_SYNC = (async () => {
+    try {
+      await TFRMigrateLegacyRelicIds();
+    } catch (error) {
+      console.error("The First Relics | Could not migrate renamed relic ids.", error);
+    }
     try {
       await TFRInitContentLanguage();
     } catch (error) {
@@ -9801,7 +9857,7 @@ function TFRIsRaging(actor) {
 
 /** The Girdle whose Will Before Wound can still reduce damage this round, or null. */
 function TFRWillBeforeWoundItem(actor) {
-  const girdle = TFRActivePassiveItem(actor, "manacles_unbroken", 2);
+  const girdle = TFRActivePassiveItem(actor, "girdle_unbroken", 2);
   if (!girdle || !TFRIsRaging(actor)) return null;
   const round = TFRCombatRoundKey(actor);
   return round && girdle.getFlag(TFR_MODULE_ID, "willBeforeWoundRound") === round ? null : girdle;

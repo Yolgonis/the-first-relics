@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.4
+
+- The Girdle of the Unbroken now uses the relic id `girdle_unbroken` instead of the leftover `manacles_unbroken`. On world load the active GM client moves the saved relic state, existing Girdle items (world and actor inventories, including their activities) and the lore journal page to the new id automatically. Macros that pass the old id to the API must use `girdle_unbroken`.
+
 ## v1.3.3
 
 - An open character sheet now refreshes right after a relic stage sync (Save in the Affinity Dashboard), so the relic item in the inventory updates without closing and reopening the sheet. The refresh looked only at legacy windows and missed dnd5e 5 sheets, which are ApplicationV2 windows.

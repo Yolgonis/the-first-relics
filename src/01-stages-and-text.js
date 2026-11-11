@@ -147,7 +147,7 @@ function TFRDamageTypeForRelic(relic) {
     "cloak_feywilds": "force",
     "cloak_shadowfell": "necrotic",
     "mantle_first_seer": "psychic",
-    "manacles_unbroken": "force",
+    "girdle_unbroken": "force",
     "lyre_first_song": "thunder",
     "vestments_first_saint": "radiant",
     "heart_yggdrasil": "poison",

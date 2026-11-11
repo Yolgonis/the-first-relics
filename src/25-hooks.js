@@ -88,6 +88,7 @@ Hooks.once("ready", async () => {
     refreshActorAndItemSheets: TFRRefreshActorAndItemSheets,
     auditCloakAutomation: TFRAuditCloakAutomation,
     migrateCloakDisplayName: TFRMigrateCloakDisplayName,
+    migrateLegacyRelicIds: TFRMigrateLegacyRelicIds,
     syncSealedTrueNameDescriptions: TFRSyncSealedTrueNameDescriptions,
     syncProgressiveAppearanceDescriptions: TFRSyncProgressiveAppearanceDescriptions,
     syncFinalFormItems: TFRSyncFinalFormItems,
@@ -110,6 +111,11 @@ Hooks.once("ready", async () => {
   TFRRegisterSaveAwareChatButtons();
   TFRRegisterAttunementRefusal();
   TFR_STARTUP_SYNC = (async () => {
+    try {
+      await TFRMigrateLegacyRelicIds();
+    } catch (error) {
+      console.error("The First Relics | Could not migrate renamed relic ids.", error);
+    }
     try {
       await TFRInitContentLanguage();
     } catch (error) {

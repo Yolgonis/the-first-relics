@@ -64,6 +64,56 @@ async function TFRSetWorldState(state) {
   return game.settings.set("the-first-relics", "relicState", state || {});
 }
 
+/** Relic ids that were renamed: old id -> current id. */
+const TFR_LEGACY_RELIC_IDS = { manacles_unbroken: "girdle_unbroken" };
+
+/** Moves world state, items and lore pages saved under a renamed relic id to the current id. */
+async function TFRMigrateLegacyRelicIds() {
+  if (!game.users?.activeGM?.isSelf) return { state: 0, items: 0, pages: 0 };
+  const result = { state: 0, items: 0, pages: 0 };
+
+  const state = TFRGetWorldState();
+  for (const [oldId, newId] of Object.entries(TFR_LEGACY_RELIC_IDS)) {
+    if (!(oldId in state)) continue;
+    // Never overwrite state already saved under the new id.
+    if (!(newId in state)) state[newId] = state[oldId];
+    delete state[oldId];
+    result.state += 1;
+  }
+  if (result.state) await TFRSetWorldState(state);
+
+  // shortcut: unlinked token actors are not scanned, add scene token deltas if relics are ever placed on them.
+  const items = [...game.items, ...game.actors.contents.flatMap(actor => actor.items.contents)];
+  for (const item of items) {
+    const update = {};
+    const newId = TFR_LEGACY_RELIC_IDS[item.flags?.[TFR_MODULE_ID]?.relicId];
+    if (newId) update[`flags.${TFR_MODULE_ID}.relicId`] = newId;
+    const newIdentifier = TFR_LEGACY_RELIC_IDS[item._source?.system?.identifier];
+    if (newIdentifier) update["system.identifier"] = newIdentifier;
+    for (const [activityId, activity] of Object.entries(item._source?.system?.activities || {})) {
+      const activityRelicId = TFR_LEGACY_RELIC_IDS[activity?.flags?.[TFR_MODULE_ID]?.relicId];
+      if (activityRelicId) update[`system.activities.${activityId}.flags.${TFR_MODULE_ID}.relicId`] = activityRelicId;
+    }
+    if (!Object.keys(update).length) continue;
+    await item.update(update);
+    result.items += 1;
+  }
+
+  for (const journal of game.journal) {
+    for (const page of journal.pages) {
+      const newId = TFR_LEGACY_RELIC_IDS[page.flags?.[TFR_MODULE_ID]?.lorePageId];
+      if (!newId) continue;
+      await page.update({ [`flags.${TFR_MODULE_ID}.lorePageId`]: newId });
+      result.pages += 1;
+    }
+  }
+
+  if (result.state || result.items || result.pages) {
+    console.log(`The First Relics | Migrated renamed relic ids: ${result.state} state record(s), ${result.items} item(s), ${result.pages} lore page(s).`);
+  }
+  return result;
+}
+
 function TFRDefaultRelicState() {
   return {
     value: 0,
