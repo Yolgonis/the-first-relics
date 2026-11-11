@@ -5,6 +5,7 @@ import { TFR_ACTIVITY_SLOTS, TFR_STAGES } from "../src/00-core.js";
 import { TFRAbilityDefinitions } from "../src/03-activities.js";
 import { TFR_PASSIVE_EFFECTS, TFR_PASSIVE_TRIGGERS } from "../src/04-items.js";
 import { TFR_LEGACY_RELIC_IDS } from "../src/06-relic-state.js";
+import { TFR_RELIC_DEFINITIONS } from "../src/relics/index.js";
 
 const ids = relics.map(relic => relic.id);
 const unique = values => new Set(values).size === values.length;
