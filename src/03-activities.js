@@ -1,4 +1,5 @@
 import "./02-attunement.js"; // keeps the original load order
+import { TFRRelicTable } from "./relics/index.js";
 import {
   TFRContentScoped,
   TFRLoadRelics,
@@ -132,40 +133,7 @@ function TFRAbilityAutomationFromDefinition(relicId, slot) {
 
 
 export function TFRAbilityAutomation(relicId, slot) {
-  const map = {
-    cloak_feywilds: {
-      active1: { role: "teleport", type: "utility", activation: "bonus", charges: 1, range: 60, target: "space", note: "Native charge + range only; token movement is manual without macro." },
-      active2: { role: "bonus-damage", type: "damage", activation: "special", charges: 2, range: 120, target: "creature", damage: { number: 4, denomination: 8, type: "force" }, note: "Extra force damage after ranged hit." },
-      active3: { role: "self-buff", type: "utility", activation: "bonus", charges: 3, range: 0, target: "self", effect: true, note: "+10 ft movement effect." },
-      active4: { role: "save-control", type: "save", activation: "action", charges: 4, range: 60, target: "creature", save: "str", note: "STR save; apply Restrained if Midi does not." },
-      avatar: { role: "self-buff", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self", effect: true, note: "Avatar helper effect." },
-      signature: { role: "signature-state", type: "utility", activation: "special", charges: 0, range: 0, target: "self", effect: true, note: "Signature reminder/state." }
-    },
-    mantle_first_seer: {
-      active1: { role: "self-buff", type: "utility", activation: "bonus", charges: 1, range: 0, target: "self", note: "Advantage on next Intelligence check; reminder utility." },
-      active2: { role: "roll-modifier", type: "utility", activation: "reaction", charges: 2, range: 60, target: "creature", note: "Add/subtract relic bonus before outcome." },
-      active3: { role: "reroll", type: "utility", activation: "reaction", charges: 3, range: 60, target: "creature", note: "Reroll effect; no damage." },
-      active4: { role: "spell-info", type: "utility", activation: "reaction", charges: 4, range: 120, target: "creature", note: "Spell information and save advantage reminder." },
-      avatar: { role: "self-buff", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self", effect: true, note: "First Seer avatar reminder/effect." },
-      signature: { role: "reroll-signature", type: "utility", activation: "reaction", charges: 0, range: 120, target: "creature", note: "Chronicle Unwritten is reroll only; no damage." }
-    },
-    girdle_unbroken: {
-      active1: { role: "self-recovery", type: "utility", activation: "bonus", charges: 1, range: 0, target: "self", note: "End prone + temp HP; utility/reminder." },
-      active2: { role: "bonus-damage", type: "damage", activation: "special", charges: 2, range: 5, target: "creature", damage: { number: 4, denomination: 8, type: "force" }, note: "Extra force damage after melee hit." },
-      active3: { role: "saving-reroll", type: "utility", activation: "reaction", charges: 3, range: 0, target: "self", note: "Reroll failed STR/CON/WIS save." },
-      active4: { role: "ally-protection", type: "utility", activation: "reaction", charges: 4, range: 10, target: "creature", note: "+3 AC or take movement/effect; GM resolved." },
-      avatar: { role: "self-buff", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self", effect: true, note: "Unbroken avatar effect/reminder." },
-      signature: { role: "death-ward-state", type: "utility", activation: "special", charges: 0, range: 0, target: "self", note: "1 HP refusal state." }
-    },
-    chains_patron: {
-      active1: { role: "detect-pact", type: "utility", activation: "bonus", charges: 1, range: 60, target: "creature", note: "Pact/curse detection." },
-      active2: { role: "bonus-damage", type: "damage", activation: "special", charges: 2, range: 120, target: "creature", damage: { number: 4, denomination: 8, type: "necrotic" }, note: "Extra necrotic damage." },
-      active3: { role: "save-control", type: "save", activation: "action", charges: 3, range: 60, target: "creature", save: "str", note: "STR save; apply Restrained if Midi does not." },
-      active4: { role: "saving-reroll-cost", type: "utility", activation: "reaction", charges: 4, range: 0, target: "self", note: "Take necrotic self-cost to reroll save." },
-      avatar: { role: "self-buff", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self", effect: true, note: "Pact avatar effect/reminder." },
-      signature: { role: "save-control-signature", type: "save", activation: "action", charges: 0, range: 60, target: "creature", save: "cha", note: "CHA save against Price of Eternity." }
-    }
-  };
+  const map = TFRRelicTable("automation");
   return {
     ...TFRAbilityAutomationFromDefinition(relicId, slot),
     ...(map[relicId]?.[slot] || {})
@@ -518,105 +486,7 @@ export function TFRRuntimeWorkCoveredByNativeEffects(spec = {}) {
 
 
 export function TFRAbilityDefinitions() {
-  return {
-    cloak_feywilds: {
-      active1: { name: "Fey Step", type: "utility", activation: "bonus", charges: 1, range: 60, target: "space", template: "mistyStep", teleport: true },
-      active2: { name: "Arrow of the First Hunt", type: "damage", activation: "special", charges: 2, range: 120, target: "creature", damage: { number: 4, denomination: 8, type: "force" } },
-      active3: { name: "Nature's Pursuit", type: "utility", activation: "bonus", charges: 3, range: 0, target: "self" },
-      active4: { name: "Briar Snare", type: "save", activation: "action", charges: 4, range: 60, target: "creature", save: "str" },
-      avatar: { name: "Avatar of The Hunt", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self" },
-      signature: { name: "Signature of The Hunt", type: "utility", activation: "special", charges: 0, range: 0, target: "self" }
-    },
-    mantle_first_seer: {
-      active1: { name: "Echo of Tomorrow", type: "utility", activation: "bonus", charges: 1, range: 0, target: "self" },
-      active2: { name: "Moment of Clarity", type: "utility", activation: "reaction", charges: 2, range: 60, target: "creature" },
-      active3: { name: "Threads of Fate", type: "utility", activation: "reaction", charges: 3, range: 60, target: "creature" },
-      active4: { name: "Spell Insight", type: "utility", activation: "reaction", charges: 4, range: 120, target: "creature" },
-      avatar: { name: "Avatar of Understanding", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self" },
-      signature: { name: "Signature of Understanding", type: "utility", activation: "reaction", charges: 0, range: 120, target: "creature" }
-    },
-    girdle_unbroken: {
-      active1: { name: "Stand", type: "utility", activation: "bonus", charges: 1, range: 0, target: "self" },
-      active2: { name: "Stoneheart Surge", type: "damage", activation: "special", charges: 2, range: 5, target: "creature", damage: { number: 4, denomination: 8, type: "force" } },
-      active3: { name: "Refuse the Fall", type: "utility", activation: "reaction", charges: 3, range: 0, target: "self" },
-      active4: { name: "Hold the World", type: "utility", activation: "reaction", charges: 4, range: 10, target: "creature" },
-      avatar: { name: "Avatar of Indomitable Will", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self" },
-      signature: { name: "Signature of Indomitable Will", type: "utility", activation: "special", charges: 0, range: 0, target: "self" }
-    },
-    chains_patron: {
-      active1: { name: "Patron's Glance", type: "utility", activation: "bonus", charges: 1, range: 60, target: "creature" },
-      active2: { name: "Borrowed Ruin", type: "damage", activation: "special", charges: 2, range: 120, target: "creature", damage: { number: 4, denomination: 8, type: "necrotic" } },
-      active3: { name: "Chain of Binding", type: "save", activation: "action", charges: 3, range: 60, target: "creature", save: "str" },
-      active4: { name: "Pay the Difference", type: "utility", activation: "reaction", charges: 4, range: 0, target: "self" },
-      avatar: { name: "Avatar of Ambition", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self" },
-      signature: { name: "Signature of Ambition", type: "save", activation: "action", charges: 0, range: 60, target: "creature", save: "cha" }
-    },
-
-    aegis_dawn: {
-      active1: { name: "Stand Firm", type: "utility", activation: "bonus", charges: 1, range: 0, target: "self" },
-      active2: { name: "Dawn Barrier", type: "utility", activation: "reaction", charges: 2, range: 30, target: "creature" },
-      active3: { name: "Bastion of Resolve", type: "utility", activation: "action", charges: 3, range: 0, target: "self" },
-      active4: { name: "Break the Darkness", type: "save", activation: "action", charges: 4, range: 30, target: "creature", save: "con" },
-      avatar: { name: "Dawn Incarnate", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self" },
-      signature: { name: "Last Sunrise", type: "utility", activation: "special", charges: 0, range: 30, target: "creature" }
-    },
-    crown_conqueror: {
-      active1: { name: "Rally", type: "utility", activation: "bonus", charges: 1, range: 30, target: "creature" },
-      active2: { name: "Royal Decree", type: "save", activation: "action", charges: 2, range: 60, target: "creature", save: "wis" },
-      active3: { name: "Banner Unbroken", type: "utility", activation: "action", charges: 3, range: 0, target: "self" },
-      active4: { name: "March of Kings", type: "utility", activation: "action", charges: 4, range: 30, target: "creature" },
-      avatar: { name: "King Eternal", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self" },
-      signature: { name: "The World Shall Kneel", type: "save", activation: "action", charges: 0, range: 60, target: "creature", save: "wis" }
-    },
-    bands_inner_dragon: {
-      active1: { name: "Dragon Breath", type: "utility", activation: "bonus", charges: 1, range: 0, target: "self" },
-      active2: { name: "Iron Soul", type: "utility", activation: "reaction", charges: 2, range: 0, target: "self" },
-      active3: { name: "Hundred Forms", type: "utility", activation: "action", charges: 3, range: 0, target: "self" },
-      active4: { name: "Perfect Strike", type: "utility", activation: "action", charges: 4, range: 0, target: "self" },
-      avatar: { name: "Inner Dragon Manifest", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self" },
-      signature: { name: "Dragon Unbound", type: "utility", activation: "special", charges: 0, range: 0, target: "self" }
-    },
-    cloak_shadowfell: {
-      active1: { name: "Shadow Step", type: "utility", activation: "bonus", charges: 1, range: 30, target: "space", template: "mistyStep", teleport: true },
-      active2: { name: "Fade Away", type: "utility", activation: "reaction", charges: 2, range: 0, target: "self" },
-      active3: { name: "Living Darkness", type: "utility", activation: "action", charges: 3, range: 60, target: "space" },
-      active4: { name: "Death From Silence", type: "damage", activation: "action", charges: 4, range: 5, target: "creature", damage: { number: 8, denomination: 6, type: "necrotic" } },
-      avatar: { name: "Walker Between Shadows", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self" },
-      signature: { name: "One Step Behind", type: "damage", activation: "special", charges: 0, range: 60, target: "creature", damage: { number: 10, denomination: 6, type: "necrotic" }, template: "mistyStep", teleport: true }
-    },
-    heart_yggdrasil: {
-      active1: { name: "Verdant Bloom", type: "utility", activation: "action", charges: 1, range: 60, target: "space" },
-      active2: { name: "Nature's Embrace", type: "heal", activation: "bonus", charges: 2, range: 30, target: "creature", healing: { number: 4, denomination: 8 } },
-      active3: { name: "Forest Guardian", type: "utility", activation: "action", charges: 3, range: 0, target: "self" },
-      active4: { name: "Roots of Eternity", type: "save", activation: "action", charges: 4, range: 60, target: "creature", save: "str" },
-      avatar: { name: "Avatar of Yggdrasil", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self" },
-      signature: { name: "World Reborn", type: "utility", activation: "special", charges: 0, range: 60, target: "creature" }
-    },
-    vestments_first_saint: {
-      active1: { name: "Blessing", type: "utility", activation: "bonus", charges: 1, range: 30, target: "creature" },
-      active2: { name: "Cleansing Light", type: "utility", activation: "action", charges: 2, range: 30, target: "creature" },
-      active3: { name: "Sanctuary of Dawn", type: "utility", activation: "action", charges: 3, range: 0, target: "self" },
-      active4: { name: "Wings of Mercy", type: "heal", activation: "action", charges: 4, range: 60, target: "creature", healing: { number: 6, denomination: 8 } },
-      avatar: { name: "Saint Incarnate", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self" },
-      signature: { name: "Miracle of the First Saint", type: "utility", activation: "special", charges: 0, range: 60, target: "creature" }
-    },
-    blood_first_dragon: {
-      active1: { name: "Draconic Roar", type: "save", activation: "bonus", charges: 1, range: 30, target: "creature", save: "wis" },
-      active2: { name: "Burning Blood", type: "utility", activation: "bonus", charges: 2, range: 0, target: "self" },
-      active3: { name: "Wings of the First Dragon", type: "utility", activation: "action", charges: 3, range: 0, target: "self" },
-      active4: { name: "Primordial Breath", type: "damage", activation: "action", charges: 4, range: 60, target: "creature", damage: { number: 10, denomination: 6, type: "fire" } },
-      avatar: { name: "First Dragon Incarnate", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self" },
-      signature: { name: "Heart of the First Flame", type: "utility", activation: "special", charges: 0, range: 0, target: "self" }
-    },
-    lyre_first_song: {
-      active1: { name: "Song of Rest", type: "heal", activation: "action", charges: 1, range: 30, target: "creature", healing: { number: 2, denomination: 8 } },
-      active2: { name: "Ballad of Heroes", type: "utility", activation: "bonus", charges: 2, range: 0, target: "self" },
-      active3: { name: "Verse of Silence", type: "save", activation: "action", charges: 3, range: 60, target: "creature", save: "wis" },
-      active4: { name: "Chorus of Creation", type: "utility", activation: "action", charges: 4, range: 0, target: "self" },
-      avatar: { name: "First Song Incarnate", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self" },
-      signature: { name: "The First Song", type: "save", activation: "special", charges: 0, range: 60, target: "creature", save: "wis" }
-    }
-  };
+  return TFRRelicTable("abilities");
 }
 
 export function TFRGetAbilityDefinition(relic, slot) {

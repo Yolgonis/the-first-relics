@@ -78,6 +78,16 @@ test("passive automation tables point at real relics and passives", () => {
   }
 });
 
+test("every relic has a definition file with known fields", () => {
+  const known = ["id", "damageType", "abilities", "automation", "passiveEffects", "passiveTriggers", "abilityEffects", "runtime"];
+  assert.deepEqual(Object.keys(TFR_RELIC_DEFINITIONS), ids);
+  for (const [id, definition] of Object.entries(TFR_RELIC_DEFINITIONS)) {
+    assert.equal(definition.id, id);
+    assert.deepEqual(Object.keys(definition).filter(field => !known.includes(field)), [], `${id}: unknown field`);
+    for (const field of ["damageType", "abilities", "abilityEffects", "runtime"]) assert.ok(definition[field], `${id}: missing ${field}`);
+  }
+});
+
 test("renamed relic ids map old ids to current ones", () => {
   for (const [oldId, newId] of Object.entries(TFR_LEGACY_RELIC_IDS)) {
     assert.ok(!ids.includes(oldId), `${oldId} is still a relic id`);

@@ -1,4 +1,5 @@
 import "./03-activities.js"; // keeps the original load order
+import { TFRRelicTable } from "./relics/index.js";
 import {
   TFRContentScoped,
   TFRLoadRelics,
@@ -229,43 +230,7 @@ async function TFRSyncRelicBonusEffect(item, relic, stage, signatureUnlocked = f
  * becomes the relic bonus of the current stage. An `aura` entry ({ distance, self }) becomes an
  * Aura Effects aura on friendly tokens; without that module the passive stays GM-resolved.
  */
-export const TFR_PASSIVE_EFFECTS = {
-  cloak_feywilds: {
-    // Perception is always automated; the tracking part of the Survival bonus is GM-resolved.
-    0: { changes: [["system.skills.prc.bonuses.check", "ADD", "+{bonus}"], ["system.skills.prc.bonuses.passive", "ADD", "+{bonus}"]], note: "instinct" },
-    1: { changes: [["system.attributes.movement.ignoredDifficultTerrain", "ADD", "nonmagical"]], note: "terrain" }
-  },
-  mantle_first_seer: {
-    // Arcana and History are about magic and history by nature; Investigation depends on the subject.
-    0: { changes: [["system.skills.arc.bonuses.check", "ADD", "+{bonus}"], ["system.skills.his.bonuses.check", "ADD", "+{bonus}"]], note: "scholar" }
-  },
-  blood_first_dragon: {
-    0: { changes: [["system.attributes.hp.bonuses.level", "ADD", "+1"]] },
-    1: { changes: [["system.attributes.ac.bonus", "ADD", "+1"]] },
-    2: { changes: [["system.abilities.str.save.roll.mode", "ADD", "1"], ["system.abilities.con.save.roll.mode", "ADD", "1"]] },
-    3: { changes: [["system.traits.dr.value", "ADD", "fire"], ["system.traits.dr.value", "ADD", "cold"], ["system.traits.ci.value", "ADD", "frightened"]] }
-  },
-  bands_inner_dragon: {
-    0: { changes: [["system.attributes.concentration.roll.mode", "ADD", "1"]] },
-    // dnd5e derives jump distance after effects apply, so only the speed bonus is automated.
-    2: { changes: [["system.attributes.movement.walk", "ADD", "10"]], note: "speedOnly" }
-  },
-  heart_yggdrasil: {
-    3: { changes: [["system.traits.ci.value", "ADD", "poisoned"], ["system.traits.ci.value", "ADD", "diseased"]] }
-  },
-  crown_conqueror: {
-    0: { aura: { distance: 30, self: true }, changes: [["system.abilities.wis.bonuses.save", "ADD", "+{bonus}"]] }
-  },
-  vestments_first_saint: {
-    0: { aura: { distance: 30, self: false }, changes: [["system.attributes.death.roll.mode", "ADD", "1"]] }
-  },
-  lyre_first_song: {
-    0: { aura: { distance: 30, self: false }, changes: [["system.bonuses.abilities.check", "ADD", "+{bonus}"]] },
-    1: { aura: { distance: 30, self: false }, changes: [["system.traits.ci.value", "ADD", "frightened"]] },
-    // @prof resolves against each ally, so an ally of a different level adds their own proficiency bonus.
-    2: { aura: { distance: 30, self: false }, changes: [["system.bonuses.abilities.save", "ADD", "+@prof"]] }
-  }
-};
+export const TFR_PASSIVE_EFFECTS = TFRRelicTable("passiveEffects");
 
 function TFRAuraEffectsActive() {
   return !!globalThis.game?.modules?.get("auraeffects")?.active;
@@ -275,16 +240,7 @@ function TFRAuraEffectsActive() {
  * Passive features automated by hooks in src/27-passive-triggers.js (relic id -> passive index ->
  * { note? }). Listed here so the item description can mark them.
  */
-export const TFR_PASSIVE_TRIGGERS = {
-  aegis_dawn: { 0: {}, 3: {} },
-  crown_conqueror: { 1: { note: "banner" } },
-  girdle_unbroken: { 2: { note: "rage" } },
-  cloak_shadowfell: { 3: { note: "midi" } },
-  heart_yggdrasil: { 0: {}, 1: { note: "chatHealing" }, 2: { note: "canvas" } },
-  vestments_first_saint: { 1: {} },
-  mantle_first_seer: { 1: {}, 3: { note: "chronicle" } },
-  chains_patron: { 0: { note: "borrowed" }, 2: { note: "chatDamage" } }
-};
+export const TFR_PASSIVE_TRIGGERS = TFRRelicTable("passiveTriggers");
 
 /** Number of passive features unlocked at a stage; the description shows the same ones. */
 export function TFRUnlockedPassiveCount(stage) {

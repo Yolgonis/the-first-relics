@@ -1,4 +1,5 @@
 import "./00-core.js"; // keeps the original load order
+import { TFRRelicTable } from "./relics/index.js";
 import { TFRContentScoped, TFRT, TFR_FINAL_FORM_BONUS, TFR_FINAL_FORM_CHARGES } from "./00-core.js";
 
 export function TFRMode(name) {
@@ -145,21 +146,8 @@ function TFRActivity({ id, name, img, charges = 0, activation = "action", desc =
 }
 
 
-function TFRDamageTypeForRelic(relic) {
-  const map = {
-    "cloak_feywilds": "force",
-    "cloak_shadowfell": "necrotic",
-    "mantle_first_seer": "psychic",
-    "girdle_unbroken": "force",
-    "lyre_first_song": "thunder",
-    "vestments_first_saint": "radiant",
-    "heart_yggdrasil": "poison",
-    "crown_conqueror": "force",
-    "bands_inner_dragon": "force",
-    "aegis_dawn": "radiant",
-    "blood_first_dragon": "fire",
-    "chains_patron": "necrotic"
-  };
+export function TFRDamageTypeForRelic(relic) {
+  const map = TFRRelicTable("damageType");
   return map[relic.id] ?? "force";
 }
 

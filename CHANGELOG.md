@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.5.0
+
+- Each relic's game definitions (damage type, abilities, automation notes, passive effects and triggers, ability effects, runtime behaviour) now live in one file per relic under `src/relics/`, instead of being spread over seven tables in four files. Behaviour is unchanged: the tables the code reads are built from these files and were compared against the previous ones.
+- Added automated tests that run without Foundry (`node --test "tests/*.test.mjs"`): progression thresholds, relic data consistency, class-gated attunement and the relic id migration.
+
 ## v1.4.1
 
 - "Requires attunement by a <class>" is now enforced. A player cannot attune a relic to a character that has no levels in the relic's class; the attempt is cancelled with a warning. A GM can still attune it to anyone and gets a notice that it was an override. Relics that are already attuned are left as they are.
