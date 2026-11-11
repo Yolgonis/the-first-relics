@@ -1,3 +1,20 @@
+import "./25-hooks.js"; // keeps the original load order
+import { TFRNotifyWarn, TFRT, TFR_MODULE_ID } from "./00-core.js";
+import { TFRGetStageData, TFRMode } from "./01-stages-and-text.js";
+import { TFRRelicFeaturesAreBlocked } from "./02-attunement.js";
+import {
+  TFRPassiveName,
+  TFRRelicBonusEffect,
+  TFRRelicItemSignatureUnlocked,
+  TFRRelicItemStage,
+  TFRUnlockedPassiveCount
+} from "./04-items.js";
+import { TFRGetRelicById } from "./06-relic-state.js";
+import { TFREscapeHtml } from "./08-affinity-events.js";
+import { TFRChatFlags, TFRResolveActor } from "./11-effect-helpers.js";
+import { TFRApplyTempHp } from "./14-ability-runtime.js";
+import { TFRDistanceFeet } from "./19-fey-step.js";
+
 // Event-triggered passive features: combat start, dropping to 0 hit points, long rests, casting
 // divination spells, healing, and defeating a hostile creature. Passives that need GM judgment
 // stay manual. A trigger only fires while its passive is unlocked by the item's stage and the
@@ -371,7 +388,7 @@ function TFRPricePaidCheck(actor, amount, options) {
 }
 
 /** Diagnostic: the state of every relic passive on an actor (unlocked, active, used this rest). */
-function TFRPassiveStatus(actorOrId) {
+export function TFRPassiveStatus(actorOrId) {
   const actor = TFRResolveActor(actorOrId);
   if (!actor) return [];
   return actor.items.filter(item => item.getFlag?.(TFR_MODULE_ID, "relicId")).flatMap(item => [0, 1, 2, 3].map(index => ({
@@ -384,7 +401,7 @@ function TFRPassiveStatus(actorOrId) {
   })));
 }
 
-function TFRRegisterPassiveTriggers() {
+export function TFRRegisterPassiveTriggers() {
   if (globalThis.__TFR_PASSIVE_TRIGGERS__) return;
   globalThis.__TFR_PASSIVE_TRIGGERS__ = true;
 

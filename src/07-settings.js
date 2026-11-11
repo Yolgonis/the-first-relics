@@ -1,3 +1,8 @@
+import "./06-relic-state.js"; // keeps the original load order
+import { TFRT, TFR_CONTENT_LANGUAGES, TFR_MODULE_ID } from "./00-core.js";
+import { TFRAllWorldAndActorItems } from "./06-relic-state.js";
+import { TFROpenDashboard } from "./09-dashboard.js";
+
 function TFRRegisterToolbarButton() {
   Hooks.on("getSceneControlButtons", controls => {
     if (!game.user?.isGM) return;
@@ -38,7 +43,7 @@ function TFRRegisterToolbarButton() {
   });
 }
 
-function TFRRegisterSettings() {
+export function TFRRegisterSettings() {
   game.settings.register(TFR_MODULE_ID, "contentLanguage", {
     name: TFRT("Relic content language"),
     hint: TFRT("Language of relic items, descriptions and the lore journal in this world, whichever GM writes them. The interface follows each user's own language. After changing it, run Rebuild Existing Relics in the GM Control Panel."),
@@ -71,7 +76,7 @@ function TFRRegisterSettings() {
  * Existing relic items decide it (worlds built before v1.3.0 have English items);
  * a world without relic items starts in the GM's interface language.
  */
-async function TFRInitContentLanguage() {
+export async function TFRInitContentLanguage() {
   if (!game.user?.isGM) return;
   const key = `${TFR_MODULE_ID}.contentLanguage`;
   if (game.settings.storage.get("world")?.getSetting?.(key)) return;

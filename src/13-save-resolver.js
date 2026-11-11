@@ -1,3 +1,27 @@
+import "./12-conditions.js"; // keeps the original load order
+import {
+  TFRT,
+  TFR_SAVE_AWARE_AUTO_APPLY,
+  TFR_SAVE_AWARE_NATIVE_DELAY_MS,
+  TFR_SAVE_AWARE_PENDING,
+  TFR_SAVE_AWARE_TIMEOUT_MS,
+  TFR_SAVE_AWARE_WORKFLOWS,
+  TFR_SAVE_AWARE_WORKFLOW_CACHE_MS
+} from "./00-core.js";
+import { TFRConditionLabel, TFRGetAbilityDefinition } from "./03-activities.js";
+import { TFRGetRelicById } from "./06-relic-state.js";
+import { TFREscapeHtml } from "./08-affinity-events.js";
+import { TFRChatFlags } from "./11-effect-helpers.js";
+import {
+  TFRApplyConditionSpecToRefs,
+  TFRExtractWorkflowFailedSaveRefs,
+  TFRUniqueActorTokenRefs,
+  TFRWorkflowMatchesPending
+} from "./12-conditions.js";
+import { TFRRelicAbilityRuntimeSpec } from "./14-ability-runtime.js";
+import { TFRFindActorRelicItem } from "./19-fey-step.js";
+import { TFRLogRelicTimelineSafe } from "./24-chat-and-gates.js";
+
 async function TFRCreateManualSaveResolverCard(pending) {
   if (!pending || pending.resolverMessageId) return null;
   const actor = game.actors?.get?.(pending.actorId) || game.actors?.getName?.(pending.actorName) || null;
@@ -34,7 +58,7 @@ async function TFRCreateManualSaveResolverCard(pending) {
   return resolverMessage;
 }
 
-async function TFRQueueSaveAwareCondition(actor, relicId, slot, options = {}) {
+export async function TFRQueueSaveAwareCondition(actor, relicId, slot, options = {}) {
   const relic = await TFRGetRelicById(relicId);
   const item = TFRFindActorRelicItem(actor, relicId);
   const def = relic ? TFRGetAbilityDefinition(relic, slot) : null;
@@ -96,7 +120,7 @@ function TFRCurrentTargetRefs() {
   return TFRUniqueActorTokenRefs(Array.from(game.user?.targets || []));
 }
 
-async function TFRResolveSaveAwareManual(pendingId, action = "apply-targets") {
+export async function TFRResolveSaveAwareManual(pendingId, action = "apply-targets") {
   if (!game.user?.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const pending = TFR_SAVE_AWARE_PENDING.get(pendingId);
   if (!pending) {
@@ -141,7 +165,7 @@ async function TFRResolveSaveAwareManual(pendingId, action = "apply-targets") {
   return { ok: true, applied: names };
 }
 
-function TFRRegisterSaveAwareChatButtons() {
+export function TFRRegisterSaveAwareChatButtons() {
   if (globalThis.__TFR_SAVE_AWARE_CHAT_BUTTONS__) return;
   globalThis.__TFR_SAVE_AWARE_CHAT_BUTTONS__ = true;
   document.addEventListener("click", async event => {
@@ -241,7 +265,7 @@ async function TFRResolveSaveAwareWorkflow(workflow, hook = "") {
   return true;
 }
 
-function TFRRegisterSaveAwareAutomation() {
+export function TFRRegisterSaveAwareAutomation() {
   if (globalThis.__TFR_SAVE_AWARE_AUTOMATION_HOOK__) return;
   globalThis.__TFR_SAVE_AWARE_AUTOMATION_HOOK__ = true;
 
@@ -266,7 +290,7 @@ function TFRRegisterSaveAwareAutomation() {
   console.log("The First Relics | Safe save resolver enabled. Failed-save conditions are never applied automatically; use the GM resolver button after the save roll.");
 }
 
-function TFRAuditSaveAwarePending() {
+export function TFRAuditSaveAwarePending() {
   const rows = Array.from(TFR_SAVE_AWARE_PENDING.values()).map(p => ({
     ageMs: Date.now() - p.created,
     actor: p.actorName,

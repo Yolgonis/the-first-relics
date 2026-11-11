@@ -1,5 +1,5 @@
 /**
- * Extracts every TFRT("…") string from scripts/the-first-relics.js.
+ * Extracts every TFRT("…") string from the module parts in src/.
  *
  *   node tools/i18n-extract.cjs          regenerate lang/en.json and report translation gaps
  *   node tools/i18n-extract.cjs --check  only report; exit 1 if any language is incomplete
@@ -12,7 +12,7 @@ const path = require("node:path");
 
 const root = path.join(__dirname, "..");
 const MODULE_ID = "the-first-relics";
-const SOURCE = path.join(root, "scripts", "the-first-relics.js");
+const SOURCE_DIR = path.join(root, "src");
 const LANG_DIR = path.join(root, "lang");
 const CHECK_ONLY = process.argv.includes("--check");
 
@@ -26,7 +26,8 @@ function translationKey(text) {
 }
 
 function extract() {
-  const source = fs.readFileSync(SOURCE, "utf8");
+  const source = fs.readdirSync(SOURCE_DIR).filter(file => file.endsWith(".js")).sort()
+    .map(file => fs.readFileSync(path.join(SOURCE_DIR, file), "utf8")).join("\n");
   const pattern = /TFRT\(\s*("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/g;
   const strings = new Map();
   const problems = [];

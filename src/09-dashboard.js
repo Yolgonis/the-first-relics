@@ -1,4 +1,23 @@
-function TFRRequirementProgress(relic, data) {
+import "./08-affinity-events.js"; // keeps the original load order
+import { TFRLoadRelics, TFRT } from "./00-core.js";
+import { TFRDisplayStage, TFRSheetHtmlElement, TFRStageLabel } from "./01-stages-and-text.js";
+import { TFRSetRelicAttunementRefusal } from "./02-attunement.js";
+import {
+  TFRGetRelicById,
+  TFRGetRelicState,
+  TFRMoodFromAffinity,
+  TFRMoodLabel,
+  TFRSetRelicAffinity,
+  TFRSetRelicState,
+  TFRSignatureUnlockedFromAffinity,
+  TFRStageFromAffinity
+} from "./06-relic-state.js";
+import { TFREscapeHtml, TFREventOptions, TFRGetAffinityEvent } from "./08-affinity-events.js";
+import { TFRControlPanelHtmlV2, TFRWireControlPanel } from "./20-control-panel.js";
+
+let TFR_DASHBOARD_LAST_TAB = "overview";
+
+export function TFRRequirementProgress(relic, data) {
   const reqs = relic.hiddenRequirements || [];
   const done = reqs.filter(r => data.requirements?.[r.id]).length;
   return { done, total: reqs.length, complete: reqs.length > 0 && done === reqs.length };
@@ -107,7 +126,7 @@ async function TFRRefreshDashboard(app, relicId) {
   await app.close();
 }
 
-async function TFROpenDashboard(relicId = null, { position = null } = {}) {
+export async function TFROpenDashboard(relicId = null, { position = null } = {}) {
   if (!game.user.isGM) {
     ui.notifications.warn(TFRT("The First Relics: only the GM can open the Affinity Dashboard."));
     return;
@@ -309,7 +328,7 @@ await FirstRelics.syncAllInventoryStages()</pre>
 }
 
 
-async function TFRApplyAffinityEvent(relicId, eventId, extraNote = "") {
+export async function TFRApplyAffinityEvent(relicId, eventId, extraNote = "") {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const relic = await TFRGetRelicById(relicId);
   if (!relic) return ui.notifications.warn(TFRT("The First Relics: Relic not found: {relicId}", { relicId: relicId }));

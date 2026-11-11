@@ -1,27 +1,31 @@
+import { TFR_CLOAK_ABILITY_SLOTS_BY_LABEL } from "./24-chat-and-gates.js";
 
-const TFR_MODULE_ID = "the-first-relics";
-const TFR_VERSION = "1.3.4";
-const TFR_ATTUNEMENT_REFUSAL_FLAG = "refusesAttunement";
-const TFR_FINAL_FORM_BONUS = 5;
-const TFR_FINAL_FORM_CHARGES = 15;
-const TFR_CLOAK_DISPLAY_NAME = "Cloak of Fey Paths";
-const TFR_CLOAK_LEGACY_NAMES = new Set(["Cloak of Verdant Paths", "Cloak of Feywilds"]);
-const TFR_CLOAK_ITEM_NAMES = new Set([TFR_CLOAK_DISPLAY_NAME, ...TFR_CLOAK_LEGACY_NAMES]);
-const TFR_STAGES = ["dormant", "awakened", "exalted"];
-const TFR_ACTIVITY_SLOTS = ["active1", "active2", "active3", "active4", "avatar", "signature"];
-const TFR_FEY_STEP_DEBOUNCE_MS = 1800;
-const TFR_FEY_STEP_RECENT = new Map();
-const TFR_FEY_STEP_IN_FLIGHT = new Set();
-let TFR_DASHBOARD_LAST_TAB = "overview";
-const TFR_SAVE_AWARE_PENDING = new Map();
-const TFR_SAVE_AWARE_TIMEOUT_MS = 60000;
-const TFR_SAVE_AWARE_NATIVE_DELAY_MS = 1200;
-const TFR_SAVE_AWARE_WORKFLOW_CACHE_MS = 15000;
-const TFR_SAVE_AWARE_WORKFLOWS = [];
+
+export const TFR_MODULE_ID = "the-first-relics";
+export const TFR_VERSION = "1.4.0";
+export const TFR_ATTUNEMENT_REFUSAL_FLAG = "refusesAttunement";
+export const TFR_FINAL_FORM_BONUS = 5;
+export const TFR_FINAL_FORM_CHARGES = 15;
+export const TFR_CLOAK_DISPLAY_NAME = "Cloak of Fey Paths";
+export const TFR_CLOAK_LEGACY_NAMES = new Set(["Cloak of Verdant Paths", "Cloak of Feywilds"]);
+export const TFR_CLOAK_ITEM_NAMES = new Set([TFR_CLOAK_DISPLAY_NAME, ...TFR_CLOAK_LEGACY_NAMES]);
+export const TFR_STAGES = ["dormant", "awakened", "exalted"];
+export const TFR_ACTIVITY_SLOTS = ["active1", "active2", "active3", "active4", "avatar", "signature"];
+export const TFR_FEY_STEP_DEBOUNCE_MS = 1800;
+export const TFR_FEY_STEP_RECENT = new Map();
+export const TFR_FEY_STEP_IN_FLIGHT = new Set();
+export const TFR_SAVE_AWARE_PENDING = new Map();
+export const TFR_SAVE_AWARE_TIMEOUT_MS = 60000;
+export const TFR_SAVE_AWARE_NATIVE_DELAY_MS = 1200;
+export const TFR_SAVE_AWARE_WORKFLOW_CACHE_MS = 15000;
+export const TFR_SAVE_AWARE_WORKFLOWS = [];
 // Resolves when the ready hook's item repairs have finished; batch operations wait for it so
 // they never rebuild the same relic copies or write relic state at the same time.
-let TFR_STARTUP_SYNC = Promise.resolve();
-const TFR_RELIC_LOCKS = new Map();
+export let TFR_STARTUP_SYNC = Promise.resolve();
+export function TFRSetStartupSync(promise) {
+  TFR_STARTUP_SYNC = promise;
+}
+export const TFR_RELIC_LOCKS = new Map();
 
 /**
  * Translate a user-facing English string.
@@ -32,7 +36,7 @@ const TFR_RELIC_LOCKS = new Map();
  * @param {object} [data]          Values for {placeholders}.
  * @returns {string}
  */
-function TFRT(text, data) {
+export function TFRT(text, data) {
   // Text written into world documents uses the world's relic content language (see TFRInContentLanguage).
   if (TFR_CONTENT_SCOPE > 0 && TFR_CONTENT_DICTIONARY) {
     return TFRFormatPlaceholders(TFR_CONTENT_DICTIONARY[TFRTranslationKey(text)] ?? text, data);
@@ -53,7 +57,7 @@ function TFRFormatPlaceholders(text, data) {
  * Turkish is paused: its sources stay in tools/translations; to re-enable it, rebuild
  * lang/tr.json and data/i18n/tr.json, add tr here and to module.json "languages".
  */
-const TFR_CONTENT_LANGUAGES = { en: "English" };
+export const TFR_CONTENT_LANGUAGES = { en: "English" };
 let TFR_CONTENT_SCOPE = 0;
 let TFR_CONTENT_DICTIONARY = null;
 
@@ -61,7 +65,7 @@ let TFR_CONTENT_DICTIONARY = null;
  * The world's relic content language. Items, descriptions and the lore journal are written in
  * this language whichever GM writes them; the interface still follows each user's own language.
  */
-function TFRContentLanguage() {
+export function TFRContentLanguage() {
   let lang = null;
   try {
     lang = globalThis.game?.settings?.get?.(TFR_MODULE_ID, "contentLanguage");
@@ -73,7 +77,7 @@ function TFRContentLanguage() {
 }
 
 /** Runs a synchronous builder so that TFRT returns text in the content language. */
-function TFRInContentLanguage(fn) {
+export function TFRInContentLanguage(fn) {
   TFR_CONTENT_SCOPE += 1;
   try {
     return fn();
@@ -83,7 +87,7 @@ function TFRInContentLanguage(fn) {
 }
 
 /** Wraps a synchronous document builder with TFRInContentLanguage. */
-function TFRContentScoped(fn) {
+export function TFRContentScoped(fn) {
   return function (...args) {
     return TFRInContentLanguage(() => fn.apply(this, args));
   };
@@ -138,7 +142,7 @@ function TFRTranslationKey(text) {
 // alone, and the module never applies failed-save conditions automatically.
 // After the save is rolled, the GM targets the failed creature(s) and presses the
 // resolver button, similar to applying an effect from a Foundry chat card.
-const TFR_SAVE_AWARE_AUTO_APPLY = false;
+export const TFR_SAVE_AWARE_AUTO_APPLY = false;
 
 function TFRNotify(level, message) {
   const text = String(message ?? "");
@@ -155,8 +159,8 @@ function TFRNotify(level, message) {
   }
 }
 
-const TFRNotifyInfo = message => TFRNotify("info", message);
-const TFRNotifyWarn = message => TFRNotify("warn", message);
+export const TFRNotifyInfo = message => TFRNotify("info", message);
+export const TFRNotifyWarn = message => TFRNotify("warn", message);
 const TFRNotifyError = message => TFRNotify("error", message);
 
 
@@ -164,7 +168,7 @@ const TFRNotifyError = message => TFRNotify("error", message);
  * Relic data in the world's language. data/relics.json is the canonical English source;
  * data/i18n/<lang>.json overlays translated text by relic id (see TFRApplyContentOverlay).
  */
-async function TFRLoadRelics() {
+export async function TFRLoadRelics() {
   const relics = await TFRLoadCanonicalRelics();
   const overlay = await TFRContentOverlay();
   return overlay ? relics.map(relic => TFRApplyContentOverlay(relic, overlay[relic.id])) : relics;
@@ -204,7 +208,7 @@ function TFRContentOverlay() {
 let TFR_KNOWN_NAMES_PROMISE = null;
 
 /** relicId -> every generated name of that relic: English, legacy and each content language. */
-function TFRKnownRelicNames() {
+export function TFRKnownRelicNames() {
   TFR_KNOWN_NAMES_PROMISE ??= (async () => {
     const names = new Map();
     const add = (relicId, name) => {
@@ -238,7 +242,7 @@ function TFRApplyContentOverlay(relic, overlay) {
   return localized;
 }
 
-const TFR_FEY_STEP_NAMES = new Set(["fey step"]);
+export const TFR_FEY_STEP_NAMES = new Set(["fey step"]);
 
 /**
  * A few Cloak of Fey Paths helpers recognise the item and its abilities by name

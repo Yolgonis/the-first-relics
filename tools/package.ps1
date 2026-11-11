@@ -17,20 +17,20 @@ $version = $manifest.version
 
 # Release consistency checks (mirrors FirstRelics.runReleaseCheck's version checks).
 $problems = @()
-$script = Get-Content (Join-Path $root 'scripts/the-first-relics.js') -Raw
-if ($script -notmatch "const TFR_VERSION = `"$([regex]::Escape($version))`";") { $problems += "scripts/the-first-relics.js TFR_VERSION != $version" }
+$script = Get-Content (Join-Path $root 'src/00-core.js') -Raw
+if ($script -notmatch "const TFR_VERSION = `"$([regex]::Escape($version))`";") { $problems += "src/00-core.js TFR_VERSION != $version" }
 $readme = Get-Content (Join-Path $root 'README.md') -Raw
 if (-not $readme.Contains("# The First Relics v$version")) { $problems += "README.md title is not v$version" }
 if (-not $readme.Contains("Current public version: ``$version``")) { $problems += "README.md 'Current public version' is not $version" }
 $changelog = Get-Content (Join-Path $root 'CHANGELOG.md') -Raw
 if (-not $changelog.Contains("## v$version")) { $problems += "CHANGELOG.md has no '## v$version' entry" }
-node (Join-Path $root 'tools/build.cjs') --check | Out-Null
-if ($LASTEXITCODE -ne 0) { $problems += "scripts/the-first-relics.js is out of date; run node tools/build.cjs" }
+node (Join-Path $root 'tools/check-load.mjs') | Out-Null
+if ($LASTEXITCODE -ne 0) { $problems += "the module does not load; run node tools/check-load.mjs" }
 node (Join-Path $root 'tools/i18n-extract.cjs') --check | Out-Null
 if ($LASTEXITCODE -ne 0) { $problems += "translations are incomplete; run node tools/i18n-extract.cjs and node tools/i18n-build-lang.cjs <lang>" }
 if ($problems) { throw "Release check failed:`n - " + ($problems -join "`n - ") }
 
-$include = @('module.json', 'README.md', 'CHANGELOG.md', 'LICENSE.md', 'scripts', 'styles', 'lang', 'data', 'art')
+$include = @('module.json', 'README.md', 'CHANGELOG.md', 'LICENSE.md', 'scripts', 'src', 'styles', 'lang', 'data', 'art')
 $exclude = @('art/icons/v1/_contact-sheet.png')
 
 $files = foreach ($entry in $include) {

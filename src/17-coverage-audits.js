@@ -1,3 +1,40 @@
+import "./16-test-lab.js"; // keeps the original load order
+import {
+  TFRLoadRelics,
+  TFRNotifyInfo,
+  TFRNotifyWarn,
+  TFRT,
+  TFR_ACTIVITY_SLOTS,
+  TFR_STARTUP_SYNC
+} from "./00-core.js";
+import {
+  TFRAbilityAutomation,
+  TFRGetAbilityDefinition,
+  TFRRuntimeWorkCoveredByNativeEffects
+} from "./03-activities.js";
+import {
+  TFRBuildItem,
+  TFRRelicItemSignatureUnlocked,
+  TFRRelicItemStage,
+  TFRRequiredStageForSlot,
+  TFRUnlockedActivitySlots,
+  TFRUpdateRelicItem
+} from "./04-items.js";
+import { TFRCreateAll } from "./05-journal.js";
+import { TFRMoodFromAffinity } from "./06-relic-state.js";
+import { TFRRelicAbilityRuntimeSpec } from "./14-ability-runtime.js";
+import {
+  TFRActivityCount,
+  TFRBackupWorldStateForTestLab,
+  TFRCreateTestActor,
+  TFRCreateTestLab,
+  TFRDeleteTestLab,
+  TFRGetOrCreateTestFolder,
+  TFRGetTestLabBackupState,
+  TFRRestoreAfterTestLab,
+  TFR_TEST_LAB_FOLDER
+} from "./16-test-lab.js";
+
 function TFRActivityChargeCost(activity) {
   const targets = activity?.consumption?.targets || [];
   const itemUse = targets.find(target => target?.type === "itemUses") || targets[0];
@@ -53,7 +90,7 @@ function TFRRuntimeCoverageKindFromLabels(labels = []) {
   return "manualOnly";
 }
 
-async function TFRAuditRuntimeCoverage() {
+export async function TFRAuditRuntimeCoverage() {
   const relics = await TFRLoadRelics();
   const rows = [];
   const issues = [];
@@ -187,7 +224,7 @@ async function TFRResetRelicWorldState(value = 0, stage = "dormant", signatureUn
 }
 
 
-async function TFRResetTestLabSafe() {
+export async function TFRResetTestLabSafe() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
   await TFR_STARTUP_SYNC;
 
@@ -261,7 +298,7 @@ async function TFRResetTestLabSafe() {
 }
 
 
-async function TFRCreatePlaytestLabSafe() {
+export async function TFRCreatePlaytestLabSafe() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
   await TFR_STARTUP_SYNC;
   const labFolderIds = game.folders
@@ -285,13 +322,13 @@ async function TFRCreatePlaytestLabSafe() {
 }
 
 
-async function TFRRestoreAfterTestLabSafe() {
+export async function TFRRestoreAfterTestLabSafe() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
   return TFRRestoreAfterTestLab();
 }
 
 
-async function TFRDestroyTestLabSafe() {
+export async function TFRDestroyTestLabSafe() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
   await TFRDeleteTestLab();
   ui.notifications.info(TFRT("The First Relics Test Lab destroyed. Relic world state unchanged."));
@@ -301,7 +338,7 @@ async function TFRDestroyTestLabSafe() {
 
 
 
-function TFRGetActivitiesArray(item) {
+export function TFRGetActivitiesArray(item) {
   if (!item?.system?.activities) return [];
   const acts = item.system.activities;
   if (acts instanceof Map) return Array.from(acts.values());
@@ -310,7 +347,7 @@ function TFRGetActivitiesArray(item) {
   return Object.values(acts);
 }
 
-function TFRActivitySummary(activity) {
+export function TFRActivitySummary(activity) {
   const src = activity?.toObject ? activity.toObject() : activity;
   const data = src || {};
   const activation = data.activation?.type || data.activation || "";
@@ -341,7 +378,7 @@ function TFRActivitySummary(activity) {
 }
 
 
-async function TFRAuditActivitiesDetailed() {
+export async function TFRAuditActivitiesDetailed() {
   const relics = await TFRLoadRelics();
   const rows = [];
   const summaryRows = [];
@@ -413,7 +450,7 @@ async function TFRAuditActivitiesDetailed() {
   return { coverage, summaryRows, rows, issues };
 }
 
-async function TFRInspectRelicActivities(relicIdOrName) {
+export async function TFRInspectRelicActivities(relicIdOrName) {
   const relics = await TFRLoadRelics();
   const query = String(relicIdOrName || "").toLowerCase();
   const relic = relics.find(r => r.id.toLowerCase() === query || r.name.toLowerCase() === query || r.name.toLowerCase().includes(query));

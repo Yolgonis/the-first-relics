@@ -1,3 +1,9 @@
+import "./17-coverage-audits.js"; // keeps the original load order
+import { TFRLoadRelics, TFRT } from "./00-core.js";
+import { TFRGetAbilityDefinition } from "./03-activities.js";
+import { TFRGetRelicState, TFRSetRelicState } from "./06-relic-state.js";
+import { TFRActivitySummary, TFRGetActivitiesArray } from "./17-coverage-audits.js";
+
 function TFRFallbackAbilityAutomation(relicId, slot) {
   const cfg = {
     aegis_dawn: {
@@ -99,7 +105,7 @@ function TFRSprint1Expected() {
   };
 }
 
-async function TFRAuditSprint1() {
+export async function TFRAuditSprint1() {
   const relics = await TFRLoadRelics();
   const expected = TFRSprint1Expected();
   const rows = [];
@@ -157,7 +163,7 @@ async function TFRAuditSprint1() {
 
 
 
-const TFRAutomation = {
+export const TFRAutomation = {
   version: "0.17.1",
 
   activitySlots: ["active1", "active2", "active3", "active4", "avatar", "signature"],
@@ -269,7 +275,7 @@ const TFRAutomation = {
   }
 };
 
-async function TFRAuditAutomationEngine() {
+export async function TFRAuditAutomationEngine() {
   const relics = await TFRLoadRelics();
   const rows = [];
 
@@ -301,7 +307,7 @@ async function TFRAuditAutomationEngine() {
   return rows;
 }
 
-async function TFRTestAutomationEngine(relicId, slot = "active1") {
+export async function TFRTestAutomationEngine(relicId, slot = "active1") {
   const result = await TFRAutomation.dryRun(relicId, slot);
   console.table([result]);
   if (result.ok) ui.notifications.info(TFRT("Automation dry run OK: {relic} / {activity}", { relic: result.relic, activity: result.activity }));

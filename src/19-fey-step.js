@@ -1,8 +1,28 @@
-function TFRSelectedToken() {
+import "./18-automation-engine.js"; // keeps the original load order
+import {
+  TFRLoadRelics,
+  TFRT,
+  TFR_CLOAK_DISPLAY_NAME,
+  TFR_CLOAK_ITEM_NAMES,
+  TFR_CLOAK_LEGACY_NAMES,
+  TFR_FEY_STEP_DEBOUNCE_MS,
+  TFR_FEY_STEP_IN_FLIGHT,
+  TFR_FEY_STEP_RECENT
+} from "./00-core.js";
+import { TFRBlockRelicFeatureUse } from "./02-attunement.js";
+import { TFRGetAbilityDefinition } from "./03-activities.js";
+import { TFRAutomation } from "./18-automation-engine.js";
+import {
+  TFRMoveTokenAsTeleport,
+  TFRPickCanvasPointWithRange,
+  TFRPlaySimpleTeleportAnimation
+} from "./23-teleport.js";
+
+export function TFRSelectedToken() {
   return (canvas?.tokens?.controlled || [])[0] || null;
 }
 
-function TFRTokenCenter(token) {
+export function TFRTokenCenter(token) {
   const doc = token.document || token;
   const gridSize = canvas?.grid?.size || 100;
   const width = (doc.width || 1) * gridSize;
@@ -13,7 +33,7 @@ function TFRTokenCenter(token) {
   };
 }
 
-function TFRDistanceFeet(a, b) {
+export function TFRDistanceFeet(a, b) {
   const gridSize = canvas?.grid?.size || 100;
   const gridDistance = canvas?.scene?.grid?.distance || 5;
   const dx = b.x - a.x;
@@ -21,7 +41,7 @@ function TFRDistanceFeet(a, b) {
   return (Math.sqrt(dx * dx + dy * dy) / gridSize) * gridDistance;
 }
 
-function TFRDestinationTopLeftForToken(token, center) {
+export function TFRDestinationTopLeftForToken(token, center) {
   const doc = token.document || token;
   const gridSize = canvas?.grid?.size || 100;
   return {
@@ -30,17 +50,17 @@ function TFRDestinationTopLeftForToken(token, center) {
   };
 }
 
-function TFRFindActorRelicItem(actor, relicId) {
+export function TFRFindActorRelicItem(actor, relicId) {
   return actor?.items?.find(i => i.getFlag("the-first-relics", "relicId") === relicId);
 }
 
-function TFRIsCloakItem(item) {
+export function TFRIsCloakItem(item) {
   if (!item) return false;
   return item.getFlag("the-first-relics", "relicId") === "cloak_feywilds"
     || TFR_CLOAK_ITEM_NAMES.has(item.name);
 }
 
-async function TFRMigrateCloakDisplayName() {
+export async function TFRMigrateCloakDisplayName() {
   if (!game.user?.isGM) return { renamed: 0 };
 
   const targets = [...game.items.filter(item => TFR_CLOAK_LEGACY_NAMES.has(item.name))];
@@ -128,7 +148,7 @@ async function TFRPickCanvasPoint({ message = TFRT("Click a destination on the c
 
 
 
-function TFRFeyStepTokenKey(token, actor = null) {
+export function TFRFeyStepTokenKey(token, actor = null) {
   const doc = token?.document || token;
   const sceneId = canvas?.scene?.id || doc?.parent?.id || "scene";
   const tokenId = doc?.id || token?.id || token?.name || "token";
@@ -145,13 +165,13 @@ function TFRMarkRecentFeyStep(key) {
   }
 }
 
-function TFRIsRecentFeyStep(key) {
+export function TFRIsRecentFeyStep(key) {
   if (!key) return false;
   const previous = TFR_FEY_STEP_RECENT.get(key) || 0;
   return Date.now() - previous < TFR_FEY_STEP_DEBOUNCE_MS;
 }
 
-function TFRIsFeyStepInFlight(key) {
+export function TFRIsFeyStepInFlight(key) {
   return !!key && TFR_FEY_STEP_IN_FLIGHT.has(key);
 }
 
@@ -161,7 +181,7 @@ function TFRSetFeyStepInFlight(key, active) {
   else TFR_FEY_STEP_IN_FLIGHT.delete(key);
 }
 
-async function TFRExecuteFeyStep(options = {}) {
+export async function TFRExecuteFeyStep(options = {}) {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: Fey Step automation currently requires GM."));
 
   const token = options.token || TFRSelectedToken();

@@ -1,3 +1,10 @@
+import "./21-system-templates.js"; // keeps the original load order
+import { TFRLoadRelics, TFRT, TFR_CLOAK_DISPLAY_NAME } from "./00-core.js";
+import { TFRActivityDescription, TFRGetAbilityDefinition } from "./03-activities.js";
+import { TFRMarkFeyStepExternalAnimationsDisabled } from "./04-items.js";
+import { TFRGetActivitiesArray } from "./17-coverage-audits.js";
+import { TFRIsCloakItem } from "./19-fey-step.js";
+
 const TFR_FEATURE_ITEM_FOLDER = "The First Relics — Feature Items";
 
 async function TFRGetOrCreateFeatureItemFolder(type = "Item") {
@@ -178,7 +185,7 @@ async function TFRCreateFeyStepFeatureItemForActor(actor) {
   };
 }
 
-async function TFRCreateFeatureItems() {
+export async function TFRCreateFeatureItems() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
 
   const actors = game.actors.filter(a => a.items.some(TFRIsCloakItem));
@@ -200,7 +207,7 @@ async function TFRCreateFeatureItems() {
   return rows;
 }
 
-async function TFRAuditFeatureItems() {
+export async function TFRAuditFeatureItems() {
   const rows = [];
 
   for (const actor of game.actors) {
@@ -259,7 +266,7 @@ function TFRFeatureTemplateDefinitions() {
   };
 }
 
-async function TFRResolveTemplate(templateName) {
+export async function TFRResolveTemplate(templateName) {
   const template = await TFRFindSystemItemTemplateByName(templateName);
   if (!template) {
     ui.notifications.warn(TFRT("The First Relics: template not found: {templateName}", { templateName: templateName }));
@@ -450,7 +457,7 @@ async function TFRCreateResolvedFeyStepForActor(actor) {
   };
 }
 
-async function TFRCreateResolvedTemplateItems() {
+export async function TFRCreateResolvedTemplateItems() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
 
   const actors = game.actors.filter(a =>
@@ -474,7 +481,7 @@ async function TFRCreateResolvedTemplateItems() {
   return rows;
 }
 
-async function TFRAuditResolvedTemplateItems() {
+export async function TFRAuditResolvedTemplateItems() {
   const rows = [];
 
   for (const actor of game.actors) {
@@ -705,7 +712,7 @@ async function TFRCreateSpellbookFeyStepForActor(actor) {
   };
 }
 
-async function TFRCreateSpellbookFeatures() {
+export async function TFRCreateSpellbookFeatures() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
 
   const actors = game.actors.filter(a =>
@@ -729,7 +736,7 @@ async function TFRCreateSpellbookFeatures() {
   return rows;
 }
 
-async function TFRAuditSpellbookFeatures() {
+export async function TFRAuditSpellbookFeatures() {
   const rows = [];
 
   for (const actor of game.actors) {
@@ -776,7 +783,7 @@ function TFRIsRelicGeneratedActorItem(item) {
   );
 }
 
-async function TFRDeleteFeatureItems() {
+export async function TFRDeleteFeatureItems() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
 
   const rows = [];
@@ -798,7 +805,7 @@ async function TFRDeleteFeatureItems() {
   return rows;
 }
 
-async function TFRAuditGeneratedFeatureItems() {
+export async function TFRAuditGeneratedFeatureItems() {
   const rows = [];
 
   for (const actor of game.actors) {

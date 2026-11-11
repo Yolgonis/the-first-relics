@@ -1,3 +1,6 @@
+import "./22-feature-items.js"; // keeps the original load order
+import { TFRT } from "./00-core.js";
+
 function TFRDrawRangeCircle(origin, rangeFeet) {
   const layer = canvas?.controls || canvas?.stage;
   if (!layer || !window.PIXI) return null;
@@ -28,7 +31,7 @@ function TFRDrawRangeCircle(origin, rangeFeet) {
   return g;
 }
 
-async function TFRPickCanvasPointWithRange({ origin, rangeFeet = 60, message = TFRT("Click a destination.") } = {}) {
+export async function TFRPickCanvasPointWithRange({ origin, rangeFeet = 60, message = TFRT("Click a destination.") } = {}) {
   ui.notifications.info(message);
 
   const ring = TFRDrawRangeCircle(origin, rangeFeet);
@@ -71,7 +74,7 @@ async function TFRPickCanvasPointWithRange({ origin, rangeFeet = 60, message = T
   });
 }
 
-async function TFRMoveTokenAsTeleport(token, topLeft) {
+export async function TFRMoveTokenAsTeleport(token, topLeft) {
   const doc = token?.document || token;
   const obj = token?.object || doc?.object || token;
 
@@ -112,7 +115,7 @@ async function TFRMoveTokenAsTeleport(token, topLeft) {
   } catch (err) {}
 }
 
-async function TFRPlaySimpleTeleportAnimation(token, destination) {
+export async function TFRPlaySimpleTeleportAnimation(token, destination) {
   const doc = token?.document || token;
   const obj = token?.object || doc?.object || token;
   if (!obj) return;

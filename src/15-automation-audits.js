@@ -1,4 +1,57 @@
-async function TFRAuditAllRelicEffectAutomation() {
+import "./14-ability-runtime.js"; // keeps the original load order
+import {
+  TFRLoadRelics,
+  TFRT,
+  TFR_ACTIVITY_SLOTS,
+  TFR_CLOAK_DISPLAY_NAME,
+  TFR_STARTUP_SYNC
+} from "./00-core.js";
+import { TFRStageTitle } from "./01-stages-and-text.js";
+import { TFRBlockRelicFeatureUse } from "./02-attunement.js";
+import { TFRAbilityAutomation, TFRGetAbilityDefinition } from "./03-activities.js";
+import {
+  TFRBuildActivities,
+  TFRBuildItem,
+  TFRCreateValidatedRelicReplacement,
+  TFRIsAbilitySlotUnlocked,
+  TFRNormalizeStage,
+  TFRRebuildRelicItemDocument,
+  TFRRelicItemSignatureUnlocked,
+  TFRRelicItemStage,
+  TFRReplacementActivitySlot,
+  TFRRequiredStageForSlot,
+  TFRUnlockedActivitySlots
+} from "./04-items.js";
+import {
+  TFRFindAllRelicItemCopies,
+  TFRGetRelicState,
+  TFRStageFromAffinity,
+  TFRUpdateAllRelicCopies
+} from "./06-relic-state.js";
+import { TFRRequirementProgress } from "./09-dashboard.js";
+import {
+  TFRChatFlags,
+  TFRGetActorRelicItem,
+  TFRGetSelectedTargetActor,
+  TFRResolveActor,
+  TFRSpendRelicCharges,
+  TFRTokenForActor
+} from "./11-effect-helpers.js";
+import { TFRApplyRestrainedCondition } from "./12-conditions.js";
+import {
+  TFRApplyCloakAvatar,
+  TFRApplyCloakMark,
+  TFRApplyNaturePursuit,
+  TFRApplyVerdantSnare,
+  TFREffectChangesForRelicAbility,
+  TFRRelicAbilityRuntimeSpec,
+  TFRUseRelicAbility
+} from "./14-ability-runtime.js";
+import { TFRGetActivitiesArray } from "./17-coverage-audits.js";
+import { TFRAutomation } from "./18-automation-engine.js";
+import { TFRExecuteFeyStep } from "./19-fey-step.js";
+
+export async function TFRAuditAllRelicEffectAutomation() {
   const relics = await TFRLoadRelics();
   const rows = [];
   for (const relic of relics) {
@@ -28,7 +81,7 @@ async function TFRAuditAllRelicEffectAutomation() {
   return rows;
 }
 
-async function TFRUseCloakAbility(actorOrId, abilityId, options = {}) {
+export async function TFRUseCloakAbility(actorOrId, abilityId, options = {}) {
   const actor = TFRResolveActor(actorOrId);
   if (!actor) return ui.notifications.warn(TFRT("{TFR_CLOAK_DISPLAY_NAME}: no actor selected.", { TFR_CLOAK_DISPLAY_NAME: TFR_CLOAK_DISPLAY_NAME }));
   const item = TFRGetActorRelicItem(actor, "cloak_feywilds");
@@ -101,7 +154,7 @@ async function TFRUseCloakAbility(actorOrId, abilityId, options = {}) {
   }
 }
 
-async function TFRAuditCloakAutomation() {
+export async function TFRAuditCloakAutomation() {
   const checks = [
     ["TFRUseCloakAbility", typeof TFRUseCloakAbility === "function"],
     ["TFRApplyCloakMark", typeof TFRApplyCloakMark === "function"],
@@ -119,7 +172,7 @@ async function TFRAuditCloakAutomation() {
 
 
 
-async function TFRAuditNative() {
+export async function TFRAuditNative() {
   const relics = await TFRLoadRelics();
   const rows = [];
   let index = 1;
@@ -166,7 +219,7 @@ async function TFRAuditNative() {
 
 
 
-async function TFRAuditTargeting() {
+export async function TFRAuditTargeting() {
   const relics = await TFRLoadRelics();
   const rows = [];
   let index = 1;
@@ -195,7 +248,7 @@ async function TFRAuditTargeting() {
 
 
 
-async function TFRAuditInventorySync() {
+export async function TFRAuditInventorySync() {
   const relics = await TFRLoadRelics();
   const rows = [];
 
@@ -231,7 +284,7 @@ async function TFRAuditInventorySync() {
   return rows;
 }
 
-async function TFRSyncAllInventoryStages() {
+export async function TFRSyncAllInventoryStages() {
   await TFR_STARTUP_SYNC;
   const relics = await TFRLoadRelics();
   const result = [];
@@ -250,7 +303,7 @@ async function TFRSyncAllInventoryStages() {
 
 
 
-async function TFRAuditStageSyncSafety() {
+export async function TFRAuditStageSyncSafety() {
   const relics = await TFRLoadRelics();
   const rows = [];
 
@@ -316,7 +369,7 @@ async function TFRAuditStageSyncSafety() {
 
 
 
-async function TFRAuditAbilityDesign() {
+export async function TFRAuditAbilityDesign() {
   const relics = await TFRLoadRelics();
   const rows = [];
   let index = 1;
@@ -348,7 +401,7 @@ async function TFRAuditAbilityDesign() {
 
 
 
-async function TFRAuditProgression() {
+export async function TFRAuditProgression() {
   const relics = await TFRLoadRelics();
   const rows = [];
   for (const relic of relics) {

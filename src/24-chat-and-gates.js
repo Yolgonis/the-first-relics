@@ -1,4 +1,45 @@
-async function TFRLogRelicTimelineSafe(relicId, entry) {
+import "./23-teleport.js"; // keeps the original load order
+import {
+  TFRT,
+  TFR_ACTIVITY_SLOTS,
+  TFR_CLOAK_ITEM_NAMES,
+  TFR_FEY_STEP_NAMES,
+  TFR_MODULE_ID
+} from "./00-core.js";
+import { TFRSheetHtmlElement, TFRStageTitle } from "./01-stages-and-text.js";
+import { TFRBlockRelicFeatureUse, TFRRelicFeaturesAreBlocked } from "./02-attunement.js";
+import {
+  TFRRuntimeWorkCoveredByNativeEffects,
+  TFRShouldPreferNativeActivityEffects
+} from "./03-activities.js";
+import {
+  TFRIsAbilitySlotUnlocked,
+  TFRRelicItemSignatureUnlocked,
+  TFRRelicItemStage,
+  TFRRequiredStageForSlot
+} from "./04-items.js";
+import { TFRGetRelicById, TFRGetRelicState, TFRSetRelicState } from "./06-relic-state.js";
+import { TFRGetActorRelicItem, TFRResolveActor } from "./11-effect-helpers.js";
+import {
+  TFRChatMentionsRelicItem,
+  TFRNormalizeChatHaystack,
+  TFRRelicAbilityFromChatMessage,
+  TFRRelicAbilityRuntimeSpec,
+  TFRUseRelicAbility
+} from "./14-ability-runtime.js";
+import { TFRUseCloakAbility } from "./15-automation-audits.js";
+import { TFRAutomation } from "./18-automation-engine.js";
+import {
+  TFRExecuteFeyStep,
+  TFRFeyStepTokenKey,
+  TFRFindActorRelicItem,
+  TFRIsCloakItem,
+  TFRIsFeyStepInFlight,
+  TFRIsRecentFeyStep,
+  TFRSelectedToken
+} from "./19-fey-step.js";
+
+export async function TFRLogRelicTimelineSafe(relicId, entry) {
   if (typeof TFRAutomation?.logTimeline === "function") {
     return await TFRAutomation.logTimeline(relicId, entry);
   }
@@ -25,7 +66,7 @@ async function TFRLogRelicTimelineSafe(relicId, entry) {
 
 
 
-function TFRChatMessagePlainText(message) {
+export function TFRChatMessagePlainText(message) {
   const content = String(message?.content || "");
   try {
     const div = document.createElement("div");
@@ -74,7 +115,7 @@ function TFRActorFromChatMessage(message) {
   return candidates.length === 1 ? candidates[0] : null;
 }
 
-function TFRTokenFromChatMessage(message, actor = null) {
+export function TFRTokenFromChatMessage(message, actor = null) {
   const speaker = message?.speaker || {};
 
   if (speaker.scene === canvas?.scene?.id && speaker.token) {
@@ -100,7 +141,7 @@ function TFRTokenFromChatMessage(message, actor = null) {
   return null;
 }
 
-const TFR_CLOAK_ABILITY_SLOTS_BY_LABEL = {
+export const TFR_CLOAK_ABILITY_SLOTS_BY_LABEL = {
   "fey step": "active1",
   "arrow of the first hunt": "active2",
   "nature's pursuit": "active3",
@@ -116,7 +157,7 @@ function TFRGetActivityItem(activity) {
   return activity?.item || activity?.parent || activity?.document?.item || null;
 }
 
-function TFRGetActivitySlot(activity, fallbackName = "") {
+export function TFRGetActivitySlot(activity, fallbackName = "") {
   const data = activity?.toObject ? activity.toObject() : activity;
   const flagSlot = activity?.getFlag?.(TFR_MODULE_ID, "slot") || data?.flags?.[TFR_MODULE_ID]?.slot;
   if (flagSlot) return flagSlot;
@@ -152,7 +193,7 @@ function TFRBlockLockedActivity(activity, ...args) {
   return false;
 }
 
-function TFRRegisterRelicActivityGateHooks() {
+export function TFRRegisterRelicActivityGateHooks() {
   const hooks = [
     "dnd5e.preUseActivity",
     "dnd5e.preActivityUse",
@@ -257,7 +298,7 @@ function TFRCloakAbilitySlotFromId(abilityId) {
   }[abilityId] || null;
 }
 
-function TFRRegisterFeyStepChatAutomation() {
+export function TFRRegisterFeyStepChatAutomation() {
   Hooks.on("createChatMessage", async (message, options, userId) => {
     if (!game.user?.isGM) return;
     if (message.getFlag?.(TFR_MODULE_ID, "tfrAutomationMessage")) return;

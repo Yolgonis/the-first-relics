@@ -1,3 +1,58 @@
+import "./13-save-resolver.js"; // keeps the original load order
+import { TFRContentLanguage, TFRLoadRelics, TFRT, TFR_CLOAK_DISPLAY_NAME, TFR_MODULE_ID } from "./00-core.js";
+import { TFRGetStageData, TFRMode, TFRStageTitle } from "./01-stages-and-text.js";
+import { TFRBlockRelicFeatureUse } from "./02-attunement.js";
+import {
+  TFRAbilityDefinitions,
+  TFRGetAbilityDefinition,
+  TFRRuntimeWorkCoveredByNativeEffects,
+  TFRShouldPreferNativeActivityEffects
+} from "./03-activities.js";
+import {
+  TFRIsAbilitySlotUnlocked,
+  TFRRelicItemSignatureUnlocked,
+  TFRRelicItemStage,
+  TFRRequiredStageForSlot,
+  TFRUnlockedActivitySlots
+} from "./04-items.js";
+import { TFRGetRelicById } from "./06-relic-state.js";
+import {
+  TFRAbilityHelperChatContent,
+  TFRAbilityHelperKind,
+  TFRApplyOrRefreshEffect,
+  TFRChatFlags,
+  TFREffectData,
+  TFRGetSelectedTargetActor,
+  TFRResolveActor,
+  TFRSpendRelicCharges,
+  TFRTokenForActor
+} from "./11-effect-helpers.js";
+import {
+  TFRApplyRestrainedCondition,
+  TFRApplyStatusCondition,
+  TFRGetSelectedTargetToken,
+  TFRRemoveActorConditions
+} from "./12-conditions.js";
+import { TFRQueueSaveAwareCondition } from "./13-save-resolver.js";
+import {
+  TFRDestinationTopLeftForToken,
+  TFRDistanceFeet,
+  TFRFindActorRelicItem,
+  TFRSelectedToken,
+  TFRTokenCenter
+} from "./19-fey-step.js";
+import {
+  TFRMoveTokenAsTeleport,
+  TFRPickCanvasPointWithRange,
+  TFRPlaySimpleTeleportAnimation
+} from "./23-teleport.js";
+import {
+  TFRChatMessagePlainText,
+  TFRGetActivitySlot,
+  TFRLogRelicTimelineSafe,
+  TFRTokenFromChatMessage
+} from "./24-chat-and-gates.js";
+
 function TFRActorTotalLevel(actor) {
   const direct = Number(actor?.system?.details?.level);
   if (Number.isFinite(direct) && direct > 0) return direct;
@@ -8,7 +63,7 @@ function TFRActorTotalLevel(actor) {
   return total || Number(actor?.system?.details?.cr) || 1;
 }
 
-async function TFRApplyTempHp(actor, amount, label = "Temporary Hit Points") {
+export async function TFRApplyTempHp(actor, amount, label = "Temporary Hit Points") {
   if (!actor || !Number.isFinite(Number(amount))) return false;
   const current = Number(actor.system?.attributes?.hp?.temp || 0) || 0;
   const next = Math.max(current, Number(amount));
@@ -17,7 +72,7 @@ async function TFRApplyTempHp(actor, amount, label = "Temporary Hit Points") {
   return true;
 }
 
-async function TFRApplyVerdantSnare(actor, targetActor = null, item = null, options = {}) {
+export async function TFRApplyVerdantSnare(actor, targetActor = null, item = null, options = {}) {
   const targetToken = TFRGetSelectedTargetToken();
   const target = targetActor || targetToken?.actor || null;
   if (!target) {
@@ -38,7 +93,7 @@ async function TFRApplyVerdantSnare(actor, targetActor = null, item = null, opti
 }
 
 
-async function TFRApplyCloakMark(sourceActor, targetActor) {
+export async function TFRApplyCloakMark(sourceActor, targetActor) {
   if (!sourceActor || !targetActor) {
     ui.notifications.warn(TFRT("{TFR_CLOAK_DISPLAY_NAME}: select a target token first.", { TFR_CLOAK_DISPLAY_NAME: TFR_CLOAK_DISPLAY_NAME }));
     return null;
@@ -58,7 +113,7 @@ async function TFRApplyCloakMark(sourceActor, targetActor) {
   return created;
 }
 
-async function TFRApplyNaturePursuit(actor, item) {
+export async function TFRApplyNaturePursuit(actor, item) {
   const effect = TFREffectData(
     "Nature's Pursuit",
     item?.img || "modules/the-first-relics/art/icons/cloak-feywilds.svg",
@@ -73,7 +128,7 @@ async function TFRApplyNaturePursuit(actor, item) {
   });
 }
 
-async function TFRApplyCloakAvatar(actor, item) {
+export async function TFRApplyCloakAvatar(actor, item) {
   const effect = TFREffectData(
     "Avatar of the First Hunt",
     item?.img || "modules/the-first-relics/art/icons/cloak-feywilds.svg",
@@ -98,7 +153,7 @@ function TFRRelicStageBonusFromItem(relic, item) {
   return Number(TFRGetStageData(relic, stage)?.bonus || 1) || 1;
 }
 
-function TFREffectChangesForRelicAbility(relicId, slot, relic = null, item = null) {
+export function TFREffectChangesForRelicAbility(relicId, slot, relic = null, item = null) {
   const bonus = relic ? TFRRelicStageBonusFromItem(relic, item) : 1;
   const add = TFRMode("ADD");
   const upgrade = TFRMode("UPGRADE");
@@ -284,7 +339,7 @@ function TFREffectChangesForRelicAbility(relicId, slot, relic = null, item = nul
   return foundry.utils.deepClone(common[relicId]?.[slot] || []);
 }
 
-function TFRRelicAbilityEffectData(relic, slot, item = null, actor = null) {
+export function TFRRelicAbilityEffectData(relic, slot, item = null, actor = null) {
   if (!relic || !slot) return null;
   const def = TFRGetAbilityDefinition(relic, slot);
   const changes = TFREffectChangesForRelicAbility(relic.id, slot, relic, item);
@@ -294,7 +349,7 @@ function TFRRelicAbilityEffectData(relic, slot, item = null, actor = null) {
   return TFREffectData(`${name} — ${relic.name}`, img, changes, 10, 60, item?.uuid || null);
 }
 
-function TFRRelicAbilityRuntimeSpec(relicId, slot) {
+export function TFRRelicAbilityRuntimeSpec(relicId, slot) {
   const specs = {
     cloak_feywilds: {
       active1: { teleport: true }, active2: { targetEffect: true, note: "Marked prey helper applied." }, active3: { selfEffect: true },
@@ -439,12 +494,12 @@ async function TFRApplyRelicAbilityRuntime(actor, relicId, slot, options = {}) {
   return null;
 }
 
-async function TFRUseSelectedRelicAbility(relicId, slot, options = {}) {
+export async function TFRUseSelectedRelicAbility(relicId, slot, options = {}) {
   if (!relicId) {
     ui.notifications.warn(TFRT("Selected Relic Quick Actions: select a relic in the dashboard first."));
     return { ok: false, issue: "No relic selected" };
   }
-  const actor = TFRSelectedActor();
+  const actor = TFRResolveActor();
   if (!actor) {
     ui.notifications.warn(TFRT("Selected Relic Quick Actions: select the bearer's token."));
     return { ok: false, issue: "No actor selected" };
@@ -458,7 +513,7 @@ async function TFRUseSelectedRelicAbility(relicId, slot, options = {}) {
   return TFRUseRelicAbility(actor, relicId, slot, options);
 }
 
-async function TFRUseRelicAbility(actorOrId, relicId, slot, options = {}) {
+export async function TFRUseRelicAbility(actorOrId, relicId, slot, options = {}) {
   const actor = TFRResolveActor(actorOrId);
   if (!actor) return ui.notifications.warn(TFRT("The First Relics: no actor selected."));
   const item = TFRFindActorRelicItem(actor, relicId);
@@ -477,14 +532,14 @@ function TFRTextHasNeedle(haystack, needle) {
   return String(haystack || "").toLowerCase().includes(value);
 }
 
-function TFRNormalizeChatHaystack(message) {
+export function TFRNormalizeChatHaystack(message) {
   const text = TFRChatMessagePlainText(message).toLowerCase();
   let flagText = "";
   try { flagText = JSON.stringify(message?.flags || {}).toLowerCase(); } catch (err) {}
   return `${text} ${flagText}`.replace(/\s+/g, " ").trim();
 }
 
-function TFRChatMentionsRelicItem(message, actor, relicId, item, haystack = null) {
+export function TFRChatMentionsRelicItem(message, actor, relicId, item, haystack = null) {
   haystack = haystack ?? TFRNormalizeChatHaystack(message);
   const names = [
     item?.name,
@@ -557,7 +612,7 @@ function TFRInferRelicSlotFromChatBadges(relicId, item, haystack) {
   return null;
 }
 
-function TFRRelicAbilityFromChatMessage(message, actor = null) {
+export function TFRRelicAbilityFromChatMessage(message, actor = null) {
   if (!message || !actor) return null;
   if (message.getFlag?.(TFR_MODULE_ID, "tfrAutomationMessage")) return null;
   if (message.getFlag?.(TFR_MODULE_ID, "genericRelicAutomationHandled")) return null;

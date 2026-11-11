@@ -1,4 +1,36 @@
-async function TFRInitActorRelicData(actor, relicId) {
+import "./05-journal.js"; // keeps the original load order
+import {
+  TFRInContentLanguage,
+  TFRKnownRelicNames,
+  TFRLoadRelics,
+  TFRNotifyInfo,
+  TFRT,
+  TFR_CLOAK_ITEM_NAMES,
+  TFR_FINAL_FORM_BONUS,
+  TFR_FINAL_FORM_CHARGES,
+  TFR_MODULE_ID,
+  TFR_RELIC_LOCKS,
+  TFR_STAGES,
+  TFR_STARTUP_SYNC
+} from "./00-core.js";
+import {
+  TFRDisplayStage,
+  TFRGetStageData,
+  TFRSealTrueNameText,
+  TFRTrueNameLeaks
+} from "./01-stages-and-text.js";
+import { TFRBuildDescription } from "./03-activities.js";
+import {
+  TFRBuildItem,
+  TFRHasUniversalRelicBonus,
+  TFRRelicBonusEffect,
+  TFRRelicItemSignatureUnlocked,
+  TFRRelicItemStage,
+  TFRUpdateRelicItem
+} from "./04-items.js";
+import { TFRDeleteFeatureItems } from "./22-feature-items.js";
+
+export async function TFRInitActorRelicData(actor, relicId) {
   if (!game.user.isGM || !actor) return;
   const existing = actor.getFlag("the-first-relics", `affinity.${relicId}`);
   if (existing) return existing;
@@ -7,7 +39,7 @@ async function TFRInitActorRelicData(actor, relicId) {
   return data;
 }
 
-async function TFRSetAffinity(actor, relicId, value, reason = "") {
+export async function TFRSetAffinity(actor, relicId, value, reason = "") {
   if (!game.user.isGM || !actor) return;
   const data = await TFRInitActorRelicData(actor, relicId);
   data.value = Math.clamp(Number(value) || 0, 0, 1000);
@@ -16,14 +48,14 @@ async function TFRSetAffinity(actor, relicId, value, reason = "") {
   ui.notifications.info(TFRT("Affinity updated: {actorName} / {relicId} = {dataValue}", { actorName: actor.name, relicId: relicId, dataValue: data.value }));
 }
 
-async function TFRAdjustAffinity(actor, relicId, delta, reason = "") {
+export async function TFRAdjustAffinity(actor, relicId, delta, reason = "") {
   const data = await TFRInitActorRelicData(actor, relicId);
   const value = (data.value || 0) + Number(delta || 0);
   await TFRSetAffinity(actor, relicId, value, reason);
   return TFRSyncStageFromAffinity(actor, relicId, value, reason || "Affinity adjusted");
 }
 
-async function TFRDeleteAll() {
+export async function TFRDeleteAll() {
   await TFRDeleteFeatureItems();
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const itemIds = game.items.filter(i => i.system?.source?.custom === "The First Relics" || i.flags?.["the-first-relics"]?.relicId).map(i => i.id);
@@ -38,7 +70,7 @@ async function TFRDeleteAll() {
 
 
 
-function TFRRegisterWorldState() {
+export function TFRRegisterWorldState() {
   game.settings.register("the-first-relics", "relicState", {
     name: "Relic State",
     scope: "world",
@@ -56,11 +88,11 @@ function TFRRegisterWorldState() {
   });
 }
 
-function TFRGetWorldState() {
+export function TFRGetWorldState() {
   return foundry.utils.deepClone(game.settings.get("the-first-relics", "relicState") || {});
 }
 
-async function TFRSetWorldState(state) {
+export async function TFRSetWorldState(state) {
   return game.settings.set("the-first-relics", "relicState", state || {});
 }
 
@@ -68,7 +100,7 @@ async function TFRSetWorldState(state) {
 const TFR_LEGACY_RELIC_IDS = { manacles_unbroken: "girdle_unbroken" };
 
 /** Moves world state, items and lore pages saved under a renamed relic id to the current id. */
-async function TFRMigrateLegacyRelicIds() {
+export async function TFRMigrateLegacyRelicIds() {
   if (!game.users?.activeGM?.isSelf) return { state: 0, items: 0, pages: 0 };
   const result = { state: 0, items: 0, pages: 0 };
 
@@ -130,7 +162,7 @@ function TFRDefaultRelicState() {
   };
 }
 
-async function TFRGetRelicState(relicId) {
+export async function TFRGetRelicState(relicId) {
   const state = TFRGetWorldState();
   if (!state[relicId]) {
     state[relicId] = TFRDefaultRelicState();
@@ -139,21 +171,21 @@ async function TFRGetRelicState(relicId) {
   return state[relicId];
 }
 
-async function TFRSetRelicState(relicId, data) {
+export async function TFRSetRelicState(relicId, data) {
   const state = TFRGetWorldState();
   state[relicId] = data;
   await TFRSetWorldState(state);
   return data;
 }
 
-async function TFRAdjustRelicAffinity(relicId, delta, reason = "") {
+export async function TFRAdjustRelicAffinity(relicId, delta, reason = "") {
   const data = await TFRGetRelicState(relicId);
   const value = Math.clamp((Number(data.value) || 0) + Number(delta || 0), 0, 1000);
   return TFRSetRelicAffinity(relicId, value, reason || `Adjusted by ${delta}`);
 }
 
 
-function TFRFindAllRelicItemCopies(relic) {
+export function TFRFindAllRelicItemCopies(relic) {
   const items = [];
   if (!relic?.id || !relic?.name) return items;
   const matches = item => {
@@ -172,20 +204,20 @@ function TFRFindAllRelicItemCopies(relic) {
   return Array.from(new Map(items.map(i => [i.uuid, i])).values());
 }
 
-function TFRRelicForItem(item, relics) {
+export function TFRRelicForItem(item, relics) {
   const relicId = item?.getFlag?.(TFR_MODULE_ID, "relicId") || item?.flags?.[TFR_MODULE_ID]?.relicId;
   if (relicId) return relics.find(relic => relic.id === relicId) || null;
   if (TFR_CLOAK_ITEM_NAMES.has(item?.name)) return relics.find(relic => relic.id === "cloak_feywilds") || null;
   return relics.find(relic => relic.name === item?.name) || null;
 }
 
-function TFRAllWorldAndActorItems() {
+export function TFRAllWorldAndActorItems() {
   const items = [...(game.items?.contents || [])];
   for (const actor of game.actors?.contents || []) items.push(...(actor.items?.contents || []));
   return Array.from(new Map(items.filter(Boolean).map(item => [item.uuid || item.id, item])).values());
 }
 
-async function TFRSyncSealedTrueNameDescriptions() {
+export async function TFRSyncSealedTrueNameDescriptions() {
   const result = { ok: true, checked: 0, updated: 0, skippedUnlocked: 0, failures: [] };
   if (!game.user?.isGM) return result;
 
@@ -224,7 +256,7 @@ async function TFRSyncSealedTrueNameDescriptions() {
   return result;
 }
 
-async function TFRSyncProgressiveAppearanceDescriptions() {
+export async function TFRSyncProgressiveAppearanceDescriptions() {
   const result = { ok: true, checked: 0, updated: 0, skippedCustom: 0, failures: [] };
   if (!game.user?.isGM) return result;
 
@@ -263,7 +295,7 @@ async function TFRSyncProgressiveAppearanceDescriptions() {
   return result;
 }
 
-async function TFRAuditTrueNameSealing() {
+export async function TFRAuditTrueNameSealing() {
   const relics = await TFRLoadRelics();
   const rows = [];
   for (const relic of relics) {
@@ -284,7 +316,7 @@ async function TFRAuditTrueNameSealing() {
   return { ok: failed.length === 0, checked: rows.length, failed, rows };
 }
 
-async function TFRAuditProgressiveAppearanceUnlocks() {
+export async function TFRAuditProgressiveAppearanceUnlocks() {
   const relics = await TFRLoadRelics();
   const cases = [
     { stage: "dormant", signatureUnlocked: false, expectedCount: 1, label: "Dormant" },
@@ -342,7 +374,7 @@ function TFRDescriptionShowsCharges(html, charges) {
   return text.includes(`<strong>${charges} charges</strong>`) || (!!localized && text.includes(localized));
 }
 
-async function TFRAuditFinalFormBonuses() {
+export async function TFRAuditFinalFormBonuses() {
   const relics = await TFRLoadRelics();
   const rows = [];
 
@@ -390,14 +422,14 @@ async function TFRAuditFinalFormBonuses() {
 }
 
 /** Runs fn after every earlier rebuild of the same relic has finished. */
-function TFRWithRelicLock(relicId, fn) {
+export function TFRWithRelicLock(relicId, fn) {
   const previous = TFR_RELIC_LOCKS.get(relicId) || Promise.resolve();
   const run = previous.then(fn);
   TFR_RELIC_LOCKS.set(relicId, run.catch(() => {}));
   return run;
 }
 
-async function TFRSyncFinalFormItems() {
+export async function TFRSyncFinalFormItems() {
   if (!game.user?.isGM) return [];
   const relics = await TFRLoadRelics();
   const rows = [];
@@ -434,7 +466,7 @@ async function TFRSyncFinalFormItems() {
   return rows;
 }
 
-async function TFRUpdateAllRelicCopies(relic, stage, signatureUnlocked = false) {
+export async function TFRUpdateAllRelicCopies(relic, stage, signatureUnlocked = false) {
   await TFR_STARTUP_SYNC;
   return TFRWithRelicLock(relic.id, () => TFRUpdateAllRelicCopiesNow(relic, stage, signatureUnlocked));
 }
@@ -460,7 +492,7 @@ async function TFRUpdateAllRelicCopiesNow(relic, stage, signatureUnlocked) {
 }
 
 
-async function TFRSetRelicAffinity(relicId, value, reason = "") {
+export async function TFRSetRelicAffinity(relicId, value, reason = "") {
   await TFR_STARTUP_SYNC;
   const relic = await TFRGetRelicById(relicId);
   if (!relic) return ui.notifications.warn(TFRT("The First Relics: Relic not found: {relicId}", { relicId: relicId }));
@@ -506,12 +538,12 @@ async function TFRSetRelicAffinity(relicId, value, reason = "") {
   return data;
 }
 
-async function TFRGetRelicById(relicId) {
+export async function TFRGetRelicById(relicId) {
   const relics = await TFRLoadRelics();
   return relics.find(r => r.id === relicId);
 }
 
-function TFRMoodFromAffinity(value) {
+export function TFRMoodFromAffinity(value) {
   value = Number(value) || 0;
   if (value <= 50) return "Rejected";
   if (value <= 200) return "Silent";
@@ -522,7 +554,7 @@ function TFRMoodFromAffinity(value) {
 }
 
 /** Display label for a stored mood id (moods are saved in English in relic state). */
-function TFRMoodLabel(mood) {
+export function TFRMoodLabel(mood) {
   const labels = {
     Rejected: TFRT("Rejected"),
     Silent: TFRT("Silent"),
@@ -534,7 +566,7 @@ function TFRMoodLabel(mood) {
   return labels[mood] ?? mood;
 }
 
-function TFRStageFromAffinity(value) {
+export function TFRStageFromAffinity(value) {
   value = Number(value) || 0;
   if (value >= 750) return "exalted";
   if (value >= 300) return "awakened";
@@ -542,7 +574,7 @@ function TFRStageFromAffinity(value) {
 }
 
 
-function TFRSignatureUnlockedFromAffinity(value) {
+export function TFRSignatureUnlockedFromAffinity(value) {
   return (Number(value) || 0) >= 1000;
 }
 
@@ -558,7 +590,7 @@ async function TFRFindRelicItem(actor, relic) {
   return actor?.items?.find?.(matches) || game.items?.find?.(matches) || null;
 }
 
-async function TFRSyncStageFromAffinity(actor, relicId, value, reason = "Affinity threshold sync") {
+export async function TFRSyncStageFromAffinity(actor, relicId, value, reason = "Affinity threshold sync") {
   if (!game.user.isGM || !actor) return null;
 
   const relic = await TFRGetRelicById(relicId);

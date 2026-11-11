@@ -1,3 +1,118 @@
+import "./24-chat-and-gates.js"; // keeps the original load order
+import {
+  TFRLoadRelics,
+  TFRSetStartupSync,
+  TFR_CLOAK_DISPLAY_NAME,
+  TFR_STARTUP_SYNC,
+  TFR_VERSION
+} from "./00-core.js";
+import {
+  TFRApplyRelicSheetVisibility,
+  TFRNormalizeRefusingRelicItems,
+  TFRRegisterAttunementRefusal,
+  TFRSetAttunementRefusal,
+  TFRSetRelicAttunementRefusal
+} from "./02-attunement.js";
+import { TFRAuditActivityTemplates } from "./03-activities.js";
+import {
+  TFRClearLockedActivities,
+  TFRCreateRelics,
+  TFRDowngradeItem,
+  TFRRefreshActorAndItemSheets,
+  TFRSyncAllPassiveEffects,
+  TFRUpdateRelicItem,
+  TFRUpgradeItem
+} from "./04-items.js";
+import { TFRCreateAll, TFRCreateJournal, TFRSyncExistingLoreJournal } from "./05-journal.js";
+import {
+  TFRAdjustAffinity,
+  TFRAdjustRelicAffinity,
+  TFRAuditFinalFormBonuses,
+  TFRAuditProgressiveAppearanceUnlocks,
+  TFRAuditTrueNameSealing,
+  TFRDeleteAll,
+  TFRGetRelicState,
+  TFRInitActorRelicData,
+  TFRMigrateLegacyRelicIds,
+  TFRRegisterWorldState,
+  TFRSetAffinity,
+  TFRSetRelicAffinity,
+  TFRSyncFinalFormItems,
+  TFRSyncProgressiveAppearanceDescriptions,
+  TFRSyncSealedTrueNameDescriptions,
+  TFRSyncStageFromAffinity
+} from "./06-relic-state.js";
+import { TFRInitContentLanguage, TFRRegisterSettings } from "./07-settings.js";
+import { TFRAddTimeline, TFRSendDream, TFRSetRequirement, TFRUnlockMemory } from "./08-affinity-events.js";
+import { TFRApplyAffinityEvent, TFROpenDashboard } from "./09-dashboard.js";
+import { TFRAuditActivities, TFRAuditMidiEffects, TFRAuditRelics } from "./10-basic-audits.js";
+import { TFRApplyRestrainedCondition, TFRRegisterTimedEffectExpiry } from "./12-conditions.js";
+import {
+  TFRAuditSaveAwarePending,
+  TFRRegisterSaveAwareAutomation,
+  TFRRegisterSaveAwareChatButtons,
+  TFRResolveSaveAwareManual
+} from "./13-save-resolver.js";
+import {
+  TFRApplyVerdantSnare,
+  TFRUseRelicAbility,
+  TFRUseSelectedRelicAbility
+} from "./14-ability-runtime.js";
+import {
+  TFRAuditAbilityDesign,
+  TFRAuditAllRelicEffectAutomation,
+  TFRAuditCloakAutomation,
+  TFRAuditInventorySync,
+  TFRAuditNative,
+  TFRAuditProgression,
+  TFRAuditStageSyncSafety,
+  TFRAuditTargeting,
+  TFRSyncAllInventoryStages,
+  TFRUseCloakAbility
+} from "./15-automation-audits.js";
+import {
+  TFRActivityCount,
+  TFRAuditRelicCleanup,
+  TFRAuditRelicQAMatrix,
+  TFRAuditTestLab,
+  TFRCreateTestLab,
+  TFRDeleteTestLab,
+  TFRRunDiagnostics,
+  TFRRunPlaytestHealthCheck,
+  TFRRunReleaseCandidateCheck
+} from "./16-test-lab.js";
+import {
+  TFRAuditActivitiesDetailed,
+  TFRAuditRuntimeCoverage,
+  TFRCreatePlaytestLabSafe,
+  TFRDestroyTestLabSafe,
+  TFRInspectRelicActivities,
+  TFRResetTestLabSafe,
+  TFRRestoreAfterTestLabSafe
+} from "./17-coverage-audits.js";
+import {
+  TFRAuditAutomationEngine,
+  TFRAuditSprint1,
+  TFRAutomation,
+  TFRTestAutomationEngine
+} from "./18-automation-engine.js";
+import { TFRExecuteFeyStep, TFRMigrateCloakDisplayName } from "./19-fey-step.js";
+import { TFROpenControlPanel } from "./20-control-panel.js";
+import { TFRApplySystemTemplates, TFRAuditSystemTemplates } from "./21-system-templates.js";
+import {
+  TFRAuditFeatureItems,
+  TFRAuditGeneratedFeatureItems,
+  TFRAuditResolvedTemplateItems,
+  TFRAuditSpellbookFeatures,
+  TFRCreateFeatureItems,
+  TFRCreateResolvedTemplateItems,
+  TFRCreateSpellbookFeatures,
+  TFRDeleteFeatureItems,
+  TFRResolveTemplate
+} from "./22-feature-items.js";
+import { TFRRegisterFeyStepChatAutomation, TFRRegisterRelicActivityGateHooks } from "./24-chat-and-gates.js";
+import { TFRPassiveStatus, TFRRegisterPassiveTriggers } from "./27-passive-triggers.js";
+
 Hooks.once("ready", async () => {
   Hooks.on("renderItemSheet", TFRApplyRelicSheetVisibility);
   Hooks.on("renderItemSheet5e", TFRApplyRelicSheetVisibility);
@@ -110,7 +225,7 @@ Hooks.once("ready", async () => {
   TFRRegisterSaveAwareAutomation();
   TFRRegisterSaveAwareChatButtons();
   TFRRegisterAttunementRefusal();
-  TFR_STARTUP_SYNC = (async () => {
+  TFRSetStartupSync((async () => {
     try {
       await TFRMigrateLegacyRelicIds();
     } catch (error) {
@@ -156,7 +271,7 @@ Hooks.once("ready", async () => {
     } catch (error) {
       console.error("The First Relics | Could not synchronize progressive player manifestations.", error);
     }
-  })();
+  })());
   await TFR_STARTUP_SYNC;
   console.log(`The First Relics Framework v${TFR_VERSION} loaded.`);
 });

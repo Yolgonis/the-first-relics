@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.4.0
+
+- The module code is now loaded as separate ES modules from `src/` instead of one generated 9,900-line file. `scripts/the-first-relics.js` is a three-line entry point, each part states what it imports and exports, and console errors point at the part and line they come from. There is no build step any more. Behaviour is unchanged.
+- Fixed `FirstRelics.useSelectedRelicAbility()`, which called a helper that did not exist and always failed. It now uses the selected token's actor, or the user's character.
+
 ## v1.3.4
 
 - The Girdle of the Unbroken now uses the relic id `girdle_unbroken` instead of the leftover `manacles_unbroken`. On world load the active GM client moves the saved relic state, existing Girdle items (world and actor inventories, including their activities) and the lore journal page to the new id automatically. Macros that pass the old id to the API must use `girdle_unbroken`.

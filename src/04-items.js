@@ -1,4 +1,35 @@
-function TFRNormalizeStage(stage) {
+import "./03-activities.js"; // keeps the original load order
+import {
+  TFRContentScoped,
+  TFRLoadRelics,
+  TFRT,
+  TFR_ACTIVITY_SLOTS,
+  TFR_ATTUNEMENT_REFUSAL_FLAG,
+  TFR_MODULE_ID,
+  TFR_STAGES
+} from "./00-core.js";
+import {
+  TFRAttunementForStage,
+  TFRBaseChanges,
+  TFRGetStageData,
+  TFRIsFinalForm,
+  TFRMode
+} from "./01-stages-and-text.js";
+import { TFRRelicRefusesAttunement } from "./02-attunement.js";
+import {
+  TFRBuildDescription,
+  TFRBuildNativeActivityEffects,
+  TFRCreateEngineActivity
+} from "./03-activities.js";
+import {
+  TFRAllWorldAndActorItems,
+  TFRGetWorldState,
+  TFRRelicForItem,
+  TFRWithRelicLock
+} from "./06-relic-state.js";
+import { TFRGetActivitiesArray } from "./17-coverage-audits.js";
+
+export function TFRNormalizeStage(stage) {
   return TFR_STAGES.includes(stage) ? stage : "dormant";
 }
 
@@ -10,7 +41,7 @@ function TFRStageAtLeast(stage, minimum) {
   return TFRStageRank(stage) >= TFRStageRank(minimum);
 }
 
-function TFRRequiredStageForSlot(slot) {
+export function TFRRequiredStageForSlot(slot) {
   const required = {
     active1: "dormant",
     active2: "dormant",
@@ -22,14 +53,14 @@ function TFRRequiredStageForSlot(slot) {
   return required[slot] || "dormant";
 }
 
-function TFRIsAbilitySlotUnlocked(stage, slot, signatureUnlocked = false) {
+export function TFRIsAbilitySlotUnlocked(stage, slot, signatureUnlocked = false) {
   stage = TFRNormalizeStage(stage);
   if (slot === "signature") return !!signatureUnlocked;
   const required = TFRRequiredStageForSlot(slot);
   return TFRStageAtLeast(stage, required);
 }
 
-function TFRUnlockedActivitySlots(stage = "dormant", signatureUnlocked = false) {
+export function TFRUnlockedActivitySlots(stage = "dormant", signatureUnlocked = false) {
   stage = TFRNormalizeStage(stage);
   const slots = ["active1", "active2"];
   if (TFRStageAtLeast(stage, "awakened")) slots.push("active3", "active4");
@@ -88,7 +119,7 @@ function TFRActivityDeletePatch(itemOrActivities, keepSlots = []) {
   return patch;
 }
 
-async function TFRClearLockedActivities(item, keepSlots = []) {
+export async function TFRClearLockedActivities(item, keepSlots = []) {
   if (!item?.update) return false;
   const patch = TFRActivityDeletePatch(item, keepSlots);
   if (!Object.keys(patch).length) return false;
@@ -96,15 +127,15 @@ async function TFRClearLockedActivities(item, keepSlots = []) {
   return true;
 }
 
-function TFRRelicItemStage(item) {
+export function TFRRelicItemStage(item) {
   return TFRNormalizeStage(item?.getFlag?.("the-first-relics", "stage") || item?.flags?.["the-first-relics"]?.stage || "dormant");
 }
 
-function TFRRelicItemSignatureUnlocked(item) {
+export function TFRRelicItemSignatureUnlocked(item) {
   return !!(item?.getFlag?.("the-first-relics", "signatureUnlocked") || item?.flags?.["the-first-relics"]?.signatureUnlocked);
 }
 
-function TFRBuildActivities(relic, stage = "dormant", index = 1, signatureUnlocked = false) {
+export function TFRBuildActivities(relic, stage = "dormant", index = 1, signatureUnlocked = false) {
   const activities = {};
   const slots = TFRUnlockedActivitySlots(stage, signatureUnlocked);
 
@@ -123,7 +154,7 @@ function TFRBuildActivities(relic, stage = "dormant", index = 1, signatureUnlock
 
 
 
-function TFRMarkFeyStepExternalAnimationsDisabled(data) {
+export function TFRMarkFeyStepExternalAnimationsDisabled(data) {
   if (!data) return data;
   data.flags = data.flags || {};
   data.flags["autoanimations"] = {
@@ -160,7 +191,7 @@ function TFRBuildEffect(relic, stage, signatureUnlocked = false) {
   };
 }
 
-function TFRRelicBonusEffect(itemOrData) {
+export function TFRRelicBonusEffect(itemOrData) {
   const effects = itemOrData?.effects?.contents || itemOrData?.effects || [];
   const list = Array.isArray(effects) ? effects : Array.from(effects?.values?.() || Object.values(effects));
   return list.find(effect =>
@@ -170,7 +201,7 @@ function TFRRelicBonusEffect(itemOrData) {
   ) || null;
 }
 
-function TFRHasUniversalRelicBonus(itemOrData, bonus) {
+export function TFRHasUniversalRelicBonus(itemOrData, bonus) {
   const effect = TFRRelicBonusEffect(itemOrData);
   if (!effect) return false;
   const expected = TFRBaseChanges({ bonus });
@@ -256,7 +287,7 @@ const TFR_PASSIVE_TRIGGERS = {
 };
 
 /** Number of passive features unlocked at a stage; the description shows the same ones. */
-function TFRUnlockedPassiveCount(stage) {
+export function TFRUnlockedPassiveCount(stage) {
   return stage === "dormant" ? 2 : stage === "awakened" ? 3 : 4;
 }
 
@@ -266,11 +297,11 @@ function TFRPassiveAutomation(relicId, index) {
 }
 
 /** Effect or trigger automation for a passive, used to mark it in the description. */
-function TFRPassiveAutomationAny(relicId, index) {
+export function TFRPassiveAutomationAny(relicId, index) {
   return TFRPassiveAutomation(relicId, index) || TFR_PASSIVE_TRIGGERS[relicId]?.[index] || null;
 }
 
-function TFRPassiveAutomationNote(automation) {
+export function TFRPassiveAutomationNote(automation) {
   if (automation?.aura) return TFRT("Automated as an aura with the Aura Effects module.");
   switch (automation?.note) {
     case "speedOnly": return TFRT("Speed is automated; jump distance is GM-resolved.");
@@ -290,7 +321,7 @@ function TFRPassiveAutomationNote(automation) {
 }
 
 /** The feature name in a passive text such as "<strong>Ancient Scales.</strong> ...". */
-function TFRPassiveName(text) {
+export function TFRPassiveName(text) {
   return String(text || "").match(/<strong>(.*?)\.?<\/strong>/)?.[1] || "";
 }
 
@@ -365,7 +396,7 @@ async function TFRSyncPassiveEffects(item, relic) {
 }
 
 /** Startup repair: adds passive effects to relic items built before they existed. */
-async function TFRSyncAllPassiveEffects() {
+export async function TFRSyncAllPassiveEffects() {
   const result = { checked: 0, created: 0, updated: 0, deleted: 0 };
   if (!game.user?.isGM) return result;
   const relics = await TFRLoadRelics();
@@ -384,7 +415,7 @@ async function TFRSyncAllPassiveEffects() {
   return result;
 }
 
-function TFRBuildItemEffects(relic, stage, signatureUnlocked = false) {
+export function TFRBuildItemEffects(relic, stage, signatureUnlocked = false) {
   return [
     TFRBuildEffect(relic, stage, signatureUnlocked),
     ...TFRBuildPassiveEffects(relic, stage, signatureUnlocked),
@@ -392,7 +423,7 @@ function TFRBuildItemEffects(relic, stage, signatureUnlocked = false) {
   ];
 }
 
-function TFRBuildItem(relic, stage, index, signatureUnlocked = false) {
+export function TFRBuildItem(relic, stage, index, signatureUnlocked = false) {
   const stageData = TFRGetStageData(relic, stage, signatureUnlocked);
   return {
     name: relic.name,
@@ -441,7 +472,7 @@ function TFRBuildItem(relic, stage, index, signatureUnlocked = false) {
   };
 }
 
-async function TFRCreateRelics() {
+export async function TFRCreateRelics() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const relics = await TFRLoadRelics();
   const worldState = TFRGetWorldState();
@@ -511,7 +542,7 @@ function TFRRenderApplicationSafe(app) {
   try { app.render(false); } catch (err) {}
 }
 
-function TFRRefreshActorAndItemSheets(actor, oldItemId = null, newItem = null) {
+export function TFRRefreshActorAndItemSheets(actor, oldItemId = null, newItem = null) {
   const oldId = oldItemId ? String(oldItemId) : null;
   const newId = newItem?.id ? String(newItem.id) : null;
   const actorUuid = actor?.uuid;
@@ -557,7 +588,7 @@ function TFRRefreshActorAndItemSheets(actor, oldItemId = null, newItem = null) {
   setTimeout(refresh, 750);
 }
 
-function TFRReplacementActivitySlot(activity) {
+export function TFRReplacementActivitySlot(activity) {
   const data = activity?.toObject ? activity.toObject() : activity;
   return activity?.getFlag?.(TFR_MODULE_ID, "slot") || data?.flags?.[TFR_MODULE_ID]?.slot || "";
 }
@@ -613,7 +644,7 @@ async function TFRRollbackReplacementItem(created, parentActor = null) {
   }
 }
 
-async function TFRCreateValidatedRelicReplacement(data, relic, stage, signatureUnlocked, parentActor = null) {
+export async function TFRCreateValidatedRelicReplacement(data, relic, stage, signatureUnlocked, parentActor = null) {
   const replacementData = foundry.utils.deepClone(data);
   delete replacementData._id;
   let created = null;
@@ -632,7 +663,7 @@ async function TFRCreateValidatedRelicReplacement(data, relic, stage, signatureU
   }
 }
 
-async function TFRRebuildRelicItemDocument(item, relic, stage, signatureUnlocked = false) {
+export async function TFRRebuildRelicItemDocument(item, relic, stage, signatureUnlocked = false) {
   const relics = await TFRLoadRelics();
   const index = relics.findIndex(r => r.id === relic.id) + 1;
   const data = TFRCloneRelicItemDataForStage(relic, stage, index, item, signatureUnlocked);
@@ -673,7 +704,7 @@ function TFRItemStillExists(item) {
   return !!game.items?.get(item.id);
 }
 
-async function TFRUpdateRelicItem(item, stage, signatureUnlockedOverride = null) {
+export async function TFRUpdateRelicItem(item, stage, signatureUnlockedOverride = null) {
   if (!TFRItemStillExists(item)) return null;
   const relics = await TFRLoadRelics();
   const relic = relics.find(r => r.name === item.name || item.getFlag("the-first-relics", "relicId") === r.id);
@@ -721,15 +752,21 @@ async function TFRUpdateRelicItem(item, stage, signatureUnlockedOverride = null)
   return item;
 }
 
-async function TFRUpgradeItem(item) {
+export async function TFRUpgradeItem(item) {
   const current = item?.getFlag("the-first-relics", "stage") || "dormant";
   const next = current === "dormant" ? "awakened" : current === "awakened" ? "exalted" : "exalted";
   return TFRUpdateRelicItem(item, next);
 }
 
-async function TFRDowngradeItem(item) {
+export async function TFRDowngradeItem(item) {
   const current = item?.getFlag("the-first-relics", "stage") || "dormant";
   const prev = current === "exalted" ? "awakened" : current === "awakened" ? "dormant" : "dormant";
   return TFRUpdateRelicItem(item, prev);
 }
 
+// Text these builders write into world documents uses the world's relic content language, not
+// the language of whichever GM triggers the write (see TFRContentScoped in 00-core.js).
+TFRBuildItem = TFRContentScoped(TFRBuildItem);
+TFRBuildItemEffects = TFRContentScoped(TFRBuildItemEffects);
+TFRBuildActivities = TFRContentScoped(TFRBuildActivities);
+TFRCloneRelicItemDataForStage = TFRContentScoped(TFRCloneRelicItemDataForStage);

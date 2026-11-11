@@ -1,3 +1,16 @@
+import "./04-items.js"; // keeps the original load order
+import {
+  TFRContentScoped,
+  TFRInContentLanguage,
+  TFRKnownRelicNames,
+  TFRLoadRelics,
+  TFRT,
+  TFR_MODULE_ID,
+  TFR_STAGES
+} from "./00-core.js";
+import { TFRGetStageData, TFRStageTitle } from "./01-stages-and-text.js";
+import { TFRCreateRelics } from "./04-items.js";
+
 async function TFRCreateJournalLegacy() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   if (game.journal.getName("The First Relics - Lore")) return;
@@ -118,7 +131,7 @@ function TFRBuildRelicJournalContent(relic) {
   `;
 }
 
-async function TFRCreateJournal(options = {}) {
+export async function TFRCreateJournal(options = {}) {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const notify = options.notify !== false;
   const relics = await TFRLoadRelics();
@@ -176,15 +189,19 @@ async function TFRCreateJournal(options = {}) {
   return journal;
 }
 
-async function TFRSyncExistingLoreJournal() {
+export async function TFRSyncExistingLoreJournal() {
   if (!game.user?.isGM || !game.journal?.getName?.("The First Relics - Lore")) return null;
   return TFRCreateJournal({ notify: false });
 }
 
-async function TFRCreateAll() {
+export async function TFRCreateAll() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const createdRelics = await TFRCreateRelics();
   const createdJournal = await TFRCreateJournal();
   return { createdRelics, createdJournal };
 }
 
+// Text these builders write into world documents uses the world's relic content language, not
+// the language of whichever GM triggers the write (see TFRContentScoped in 00-core.js).
+TFRBuildJournalOverview = TFRContentScoped(TFRBuildJournalOverview);
+TFRBuildRelicJournalContent = TFRContentScoped(TFRBuildRelicJournalContent);

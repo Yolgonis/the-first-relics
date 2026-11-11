@@ -1,4 +1,7 @@
-function TFRMode(name) {
+import "./00-core.js"; // keeps the original load order
+import { TFRContentScoped, TFRT, TFR_FINAL_FORM_BONUS, TFR_FINAL_FORM_CHARGES } from "./00-core.js";
+
+export function TFRMode(name) {
   return CONST.ACTIVE_EFFECT_MODES[name];
 }
 
@@ -6,15 +9,15 @@ function TFRActivityId(index) {
   return `TFR${String(index).padStart(13, "0")}`.slice(0, 16);
 }
 
-function TFRStageTitle(stage) {
+export function TFRStageTitle(stage) {
   return stage[0].toUpperCase() + stage.slice(1);
 }
 
-function TFRIsFinalForm(stage, signatureUnlocked = false) {
+export function TFRIsFinalForm(stage, signatureUnlocked = false) {
   return stage === "exalted" && !!signatureUnlocked;
 }
 
-function TFRGetStageData(relic, stage, signatureUnlocked = false) {
+export function TFRGetStageData(relic, stage, signatureUnlocked = false) {
   const stageData = relic.stages[stage] ?? relic.stages.dormant;
   if (!TFRIsFinalForm(stage, signatureUnlocked)) return stageData;
   return {
@@ -25,12 +28,12 @@ function TFRGetStageData(relic, stage, signatureUnlocked = false) {
   };
 }
 
-function TFRDisplayStage(stage, signatureUnlocked = false) {
+export function TFRDisplayStage(stage, signatureUnlocked = false) {
   return TFRIsFinalForm(stage, signatureUnlocked) ? "final form" : stage;
 }
 
 /** Translated label for a stage id; stage ids themselves stay English in flags and data. */
-function TFRStageLabel(stage) {
+export function TFRStageLabel(stage) {
   const labels = {
     dormant: TFRT("dormant"),
     awakened: TFRT("awakened"),
@@ -41,20 +44,20 @@ function TFRStageLabel(stage) {
 }
 
 
-function TFRAttunementForStage(stage) {
+export function TFRAttunementForStage(stage) {
   // dnd5e uses "required" for attunement-required items.
   // Empty string is the safest no-attunement value for item data.
   return stage === "exalted" ? "" : "required";
 }
 
-function TFRAttunementText(stage) {
+export function TFRAttunementText(stage) {
   return stage === "exalted"
     ? TFRT("The relic has become part of its bearer and no longer requires attunement.")
     : TFRT("This relic requires attunement.");
 }
 
 
-function TFRBaseChanges(stageData) {
+export function TFRBaseChanges(stageData) {
   const b = stageData.bonus;
   return [
     { key: "system.attributes.ac.bonus", mode: TFRMode("ADD"), value: String(b), priority: 20 },
@@ -160,7 +163,7 @@ function TFRDamageTypeForRelic(relic) {
   return map[relic.id] ?? "force";
 }
 
-function TFRMakeDamageActivity(activity, relic, number = 4, denomination = 8, forcedType = null) {
+export function TFRMakeDamageActivity(activity, relic, number = 4, denomination = 8, forcedType = null) {
   const dtype = forcedType || TFRDamageTypeForRelic(relic);
   activity.type = "damage";
   delete activity.roll;
@@ -184,7 +187,7 @@ function TFRMakeDamageActivity(activity, relic, number = 4, denomination = 8, fo
   return activity;
 }
 
-function TFRAvatarEffect(relic) {
+export function TFRAvatarEffect(relic) {
   return {
     name: `${relic.name} - Avatar Helper`,
     img: relic.icon,
@@ -268,12 +271,12 @@ function TFREscapeRegExp(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function TFRTrueNameLeaks(relic, text) {
+export function TFRTrueNameLeaks(relic, text) {
   const source = String(text || "");
   return TFRTrueNameTokens(relic).filter(token => new RegExp(TFREscapeRegExp(token), "i").test(source));
 }
 
-function TFRSealTrueNameText(relic, text, signatureUnlocked = false) {
+export function TFRSealTrueNameText(relic, text, signatureUnlocked = false) {
   let sealed = String(text || "");
   if (signatureUnlocked) return sealed;
   for (const token of TFRTrueNameTokens(relic)) {
@@ -297,7 +300,7 @@ function TFRRelicPlayerMoodEntries(relic, stage, signatureUnlocked = false) {
     .sort((a, b) => Number(a.min) - Number(b.min));
 }
 
-function TFRRelicMoodHtml(relic, stage, signatureUnlocked = false) {
+export function TFRRelicMoodHtml(relic, stage, signatureUnlocked = false) {
   const current = TFRRelicCurrentMoodEntry(relic, stage, signatureUnlocked);
   if (!current) return "";
 
@@ -319,7 +322,7 @@ function TFRRelicUnlockedAppearanceEntries(relic, stage, signatureUnlocked = fal
   ].filter(entry => entry.unlocked && entry.text);
 }
 
-function TFRRelicAppearanceHtml(relic, stage, signatureUnlocked = false) {
+export function TFRRelicAppearanceHtml(relic, stage, signatureUnlocked = false) {
   const entries = TFRRelicUnlockedAppearanceEntries(relic, stage, signatureUnlocked);
   if (!entries.length) return "";
   return `
@@ -348,7 +351,7 @@ function TFRRelicGmSecretsHtml(relic) {
   `;
 }
 
-function TFRSheetHtmlElement(html) {
+export function TFRSheetHtmlElement(html) {
   return html?.jquery ? html[0] : html?.[0] || html;
 }
 
@@ -356,7 +359,7 @@ function TFRRelicDescriptionRoot(element) {
   return element?.querySelector?.(".first-relics-item-description") || null;
 }
 
-function TFRRemovePlayerMoodHistory(element) {
+export function TFRRemovePlayerMoodHistory(element) {
   const root = TFRRelicDescriptionRoot(element);
   if (!root) return;
   const heading = Array.from(root.querySelectorAll("h3"))
@@ -371,7 +374,7 @@ function TFRRemovePlayerMoodHistory(element) {
   }
 }
 
-function TFRRemoveDescriptionSection(element, headingText) {
+export function TFRRemoveDescriptionSection(element, headingText) {
   const root = TFRRelicDescriptionRoot(element);
   if (!root) return;
   const heading = Array.from(root.querySelectorAll("h3"))
@@ -393,3 +396,6 @@ function TFRAppendHtml(parent, html) {
   parent.appendChild(template.content);
 }
 
+// Text these builders write into world documents uses the world's relic content language, not
+// the language of whichever GM triggers the write (see TFRContentScoped in 00-core.js).
+TFRSealTrueNameText = TFRContentScoped(TFRSealTrueNameText);

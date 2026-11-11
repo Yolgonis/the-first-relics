@@ -1,3 +1,9 @@
+import "./20-control-panel.js"; // keeps the original load order
+import { TFRLoadRelics, TFRT } from "./00-core.js";
+import { TFRActivityDescription, TFRGetAbilityDefinition } from "./03-activities.js";
+import { TFRGetActivitiesArray } from "./17-coverage-audits.js";
+import { TFRIsCloakItem } from "./19-fey-step.js";
+
 async function TFRFindSystemItemTemplate(name) {
   const wanted = String(name || "").toLowerCase();
 
@@ -151,7 +157,7 @@ async function TFRApplyMistyStepTemplateToRelicItem(item) {
   };
 }
 
-async function TFRApplySystemTemplates() {
+export async function TFRApplySystemTemplates() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
 
   const targets = [];
@@ -187,7 +193,7 @@ async function TFRApplySystemTemplates() {
   return rows;
 }
 
-async function TFRAuditSystemTemplates() {
+export async function TFRAuditSystemTemplates() {
   const rows = [];
 
   for (const actor of game.actors) {

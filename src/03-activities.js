@@ -1,4 +1,35 @@
-function TFRBuildDescription(relic, stage, signatureUnlocked = false) {
+import "./02-attunement.js"; // keeps the original load order
+import {
+  TFRContentScoped,
+  TFRLoadRelics,
+  TFRT,
+  TFR_FINAL_FORM_BONUS,
+  TFR_FINAL_FORM_CHARGES,
+  TFR_MODULE_ID
+} from "./00-core.js";
+import {
+  TFRAttunementText,
+  TFRAvatarEffect,
+  TFRGetStageData,
+  TFRIsFinalForm,
+  TFRMakeDamageActivity,
+  TFRMode,
+  TFRRelicAppearanceHtml,
+  TFRRelicMoodHtml,
+  TFRSealTrueNameText
+} from "./01-stages-and-text.js";
+import {
+  TFRNormalizeStage,
+  TFRPassiveAutomationAny,
+  TFRPassiveAutomationNote,
+  TFRUnlockedActivitySlots,
+  TFRUnlockedPassiveCount
+} from "./04-items.js";
+import { TFREffectData } from "./11-effect-helpers.js";
+import { TFRCollectionToArray, TFRGetConditionIcon } from "./12-conditions.js";
+import { TFRRelicAbilityEffectData, TFRRelicAbilityRuntimeSpec } from "./14-ability-runtime.js";
+
+export function TFRBuildDescription(relic, stage, signatureUnlocked = false) {
   const stageData = TFRGetStageData(relic, stage, signatureUnlocked);
   const b = stageData.bonus;
   const f = relic.features;
@@ -100,7 +131,7 @@ function TFRAbilityAutomationFromDefinition(relicId, slot) {
 }
 
 
-function TFRAbilityAutomation(relicId, slot) {
+export function TFRAbilityAutomation(relicId, slot) {
   const map = {
     cloak_feywilds: {
       active1: { role: "teleport", type: "utility", activation: "bonus", charges: 1, range: 60, target: "space", note: "Native charge + range only; token movement is manual without macro." },
@@ -328,7 +359,7 @@ function TFRNativeEffectDuration(spec = {}, fallbackRounds = 10, fallbackSeconds
 }
 
 /** Display name for a status id: the system status label (localized when available), else title case. */
-function TFRConditionLabel(statusId = "") {
+export function TFRConditionLabel(statusId = "") {
   const status = (globalThis.CONFIG?.statusEffects || []).find(s => s.id === statusId);
   const name = status?.name ? globalThis.game?.i18n?.localize?.(status.name) || status.name : "";
   return name || TFRTitleCaseStatus(statusId);
@@ -450,7 +481,7 @@ function TFRNativeActivityEffectRefs(relic, slot) {
   return TFRNativeActivityEffectEntries(relic, slot).map(entry => entry.ref);
 }
 
-function TFRBuildNativeActivityEffects(relic, stage = "dormant", signatureUnlocked = false) {
+export function TFRBuildNativeActivityEffects(relic, stage = "dormant", signatureUnlocked = false) {
   const effects = [];
   const seen = new Set();
   for (const slot of TFRUnlockedActivitySlots(stage, signatureUnlocked)) {
@@ -471,13 +502,13 @@ function TFRChatMessageHasNativeEffectTray(message) {
   return TFRCollectionToArray(effects).length > 0;
 }
 
-function TFRShouldPreferNativeActivityEffects(relic, slot, options = {}) {
+export function TFRShouldPreferNativeActivityEffects(relic, slot, options = {}) {
   if (!options.fromChatCard || options.forceApplyCondition === true || options.forceApplyNativeHelper === true) return false;
   if (!TFRChatMessageHasNativeEffectTray(options.message)) return false;
   return TFRNativeActivityEffectRefs(relic, slot).length > 0;
 }
 
-function TFRRuntimeWorkCoveredByNativeEffects(spec = {}) {
+export function TFRRuntimeWorkCoveredByNativeEffects(spec = {}) {
   if (spec.teleport) return false;
   if (spec.removeSelf?.length || spec.removeTarget?.length) return false;
   if (spec.tempHp) return false;
@@ -486,7 +517,7 @@ function TFRRuntimeWorkCoveredByNativeEffects(spec = {}) {
 
 
 
-function TFRAbilityDefinitions() {
+export function TFRAbilityDefinitions() {
   return {
     cloak_feywilds: {
       active1: { name: "Fey Step", type: "utility", activation: "bonus", charges: 1, range: 60, target: "space", template: "mistyStep", teleport: true },
@@ -588,13 +619,13 @@ function TFRAbilityDefinitions() {
   };
 }
 
-function TFRGetAbilityDefinition(relic, slot) {
+export function TFRGetAbilityDefinition(relic, slot) {
   const def = TFRAbilityDefinitions()[relic.id]?.[slot] || null;
   const localizedName = relic?.abilityNames?.[slot];
   return def && localizedName ? { ...def, name: localizedName } : def;
 }
 
-function TFRActivityDescription(relic, slot) {
+export function TFRActivityDescription(relic, slot) {
   const f = relic.features || {};
   if (slot === "avatar") return f.avatar || "";
   if (slot === "signature") return f.signature || "";
@@ -760,7 +791,7 @@ function TFRApplyActivityTemplate(activity, def) {
   return activity;
 }
 
-async function TFRAuditActivityTemplates() {
+export async function TFRAuditActivityTemplates() {
   const relics = await TFRLoadRelics();
   const rows = [];
 
@@ -826,7 +857,7 @@ function TFRApplyMistyStepTemplate(activity, def) {
 }
 
 
-function TFRCreateEngineActivity(relic, slot, stage, signatureUnlocked) {
+export function TFRCreateEngineActivity(relic, slot, stage, signatureUnlocked) {
   const def = TFRGetAbilityDefinition(relic, slot);
   if (!def) return null;
 
@@ -894,3 +925,7 @@ function TFRCreateEngineActivity(relic, slot, stage, signatureUnlocked) {
   return base;
 }
 
+// Text these builders write into world documents uses the world's relic content language, not
+// the language of whichever GM triggers the write (see TFRContentScoped in 00-core.js).
+TFRBuildDescription = TFRContentScoped(TFRBuildDescription);
+TFRBuildNativeActivityEffects = TFRContentScoped(TFRBuildNativeActivityEffects);

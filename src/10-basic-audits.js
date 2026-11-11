@@ -1,4 +1,8 @@
-async function TFRAuditRelics() {
+import "./09-dashboard.js"; // keeps the original load order
+import { TFRLoadRelics, TFRT, TFR_CLOAK_DISPLAY_NAME } from "./00-core.js";
+import { TFRBuildActivities } from "./04-items.js";
+
+export async function TFRAuditRelics() {
   const relics = await TFRLoadRelics();
   const required = [
     "id", "name", "class", "virtue", "theme", "trueName", "personality",
@@ -52,7 +56,7 @@ async function TFRAuditRelics() {
 
 
 
-async function TFRAuditMidiEffects() {
+export async function TFRAuditMidiEffects() {
   const relics = await TFRLoadRelics();
   const cloak = relics.find(r => r.id === "cloak_feywilds");
   if (!cloak) {
@@ -74,7 +78,7 @@ async function TFRAuditMidiEffects() {
 }
 
 
-async function TFRAuditActivities() {
+export async function TFRAuditActivities() {
   const relics = await TFRLoadRelics();
   const rows = [];
   const stage = "exalted";

@@ -1,8 +1,13 @@
-function TFRGetSelectedTargetToken() {
+import "./11-effect-helpers.js"; // keeps the original load order
+import { TFRT, TFR_MODULE_ID } from "./00-core.js";
+import { TFRSafeDeleteDocument, TFRTokenForActor } from "./11-effect-helpers.js";
+import { TFRGetActivitySlot } from "./24-chat-and-gates.js";
+
+export function TFRGetSelectedTargetToken() {
   return Array.from(game.user?.targets || [])[0] || null;
 }
 
-function TFRGetConditionIcon(statusId = "restrained") {
+export function TFRGetConditionIcon(statusId = "restrained") {
   const status = (CONFIG.statusEffects || []).find(s => s.id === statusId || s._id === statusId || s.name?.toLowerCase?.() === statusId);
   return status?.img || status?.icon || "icons/svg/net.svg";
 }
@@ -80,7 +85,7 @@ function TFRRestrainedEffectData(sourceActor, item = null) {
   };
 }
 
-async function TFRApplyRestrainedCondition(sourceActor, targetActorOrToken = null, item = null) {
+export async function TFRApplyRestrainedCondition(sourceActor, targetActorOrToken = null, item = null) {
   const { targetActor, targetToken } = TFRResolveActorTokenForEffect(targetActorOrToken);
 
   if (!targetActor) {
@@ -150,7 +155,7 @@ function TFRFindActorConditionEffects(actor, statusId = "") {
   }) || [];
 }
 
-function TFRRegisterTimedEffectExpiry() {
+export function TFRRegisterTimedEffectExpiry() {
   if (globalThis.__TFR_TIMED_EFFECT_EXPIRY_HOOK__) return;
   globalThis.__TFR_TIMED_EFFECT_EXPIRY_HOOK__ = true;
 
@@ -220,7 +225,7 @@ function TFRStatusEffectData(statusId, name, sourceActor = null, item = null, ro
   return data;
 }
 
-async function TFRApplyStatusCondition(sourceActor, targetActorOrToken = null, item = null, statusId = "restrained", label = "Relic Condition", rounds = 10, seconds = 60, changes = [], options = {}) {
+export async function TFRApplyStatusCondition(sourceActor, targetActorOrToken = null, item = null, statusId = "restrained", label = "Relic Condition", rounds = 10, seconds = 60, changes = [], options = {}) {
   const { targetActor, targetToken } = TFRResolveActorTokenForEffect(targetActorOrToken);
   const status = String(statusId || "").toLowerCase();
 
@@ -267,7 +272,7 @@ async function TFRApplyStatusCondition(sourceActor, targetActorOrToken = null, i
   return created;
 }
 
-async function TFRRemoveActorConditions(actor, conditionIds = []) {
+export async function TFRRemoveActorConditions(actor, conditionIds = []) {
   if (!actor || !conditionIds?.length) return [];
   const ids = conditionIds.map(c => String(c).toLowerCase());
   const toDelete = actor.effects.filter(e => {
@@ -282,7 +287,7 @@ async function TFRRemoveActorConditions(actor, conditionIds = []) {
   return toDelete;
 }
 
-function TFRCollectionToArray(value) {
+export function TFRCollectionToArray(value) {
   if (!value) return [];
   if (Array.isArray(value)) return value;
   if (value instanceof Set) return Array.from(value);
@@ -319,7 +324,7 @@ function TFRActorTokenRef(value) {
   return null;
 }
 
-function TFRUniqueActorTokenRefs(values) {
+export function TFRUniqueActorTokenRefs(values) {
   const rows = [];
   const seen = new Set();
   for (const value of TFRCollectionToArray(values)) {
@@ -358,7 +363,7 @@ function TFRSameActor(a, b) {
   return a.id === b.id || a.uuid === b.uuid || a.name === b.name;
 }
 
-function TFRWorkflowMatchesPending(workflow, pending) {
+export function TFRWorkflowMatchesPending(workflow, pending) {
   const sourceActor = TFRWorkflowSourceActor(workflow);
   if (sourceActor && pending.actorId && !TFRSameActor(sourceActor, { id: pending.actorId, uuid: pending.actorUuid, name: pending.actorName })) return false;
 
@@ -393,7 +398,7 @@ function TFRExtractWorkflowTargetRefsFromKeys(workflow, keys) {
   return refs;
 }
 
-function TFRExtractWorkflowFailedSaveRefs(workflow) {
+export function TFRExtractWorkflowFailedSaveRefs(workflow) {
   const failedKeys = [
     "failedSaves",
     "failedSave",
@@ -426,7 +431,7 @@ function TFRExtractWorkflowFailedSaveRefs(workflow) {
   return { readable: false, failed: [] };
 }
 
-async function TFRApplyConditionSpecToRefs(sourceActor, relic, item, def, spec, refs, { source = "save-aware" } = {}) {
+export async function TFRApplyConditionSpecToRefs(sourceActor, relic, item, def, spec, refs, { source = "save-aware" } = {}) {
   const applied = [];
   const changes = foundry.utils.deepClone(spec.extraTargetChanges || []);
   for (const ref of refs || []) {

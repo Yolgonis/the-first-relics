@@ -1,3 +1,19 @@
+import "./01-stages-and-text.js"; // keeps the original load order
+import { TFRNotifyInfo, TFRNotifyWarn, TFRT, TFR_ATTUNEMENT_REFUSAL_FLAG, TFR_MODULE_ID } from "./00-core.js";
+import {
+  TFRAttunementForStage,
+  TFRRemoveDescriptionSection,
+  TFRRemovePlayerMoodHistory,
+  TFRSheetHtmlElement
+} from "./01-stages-and-text.js";
+import { TFRRelicItemStage } from "./04-items.js";
+import {
+  TFRFindAllRelicItemCopies,
+  TFRGetRelicById,
+  TFRGetRelicState,
+  TFRSetRelicState
+} from "./06-relic-state.js";
+
 function TFRIsRelicItem(item) {
   return !!(
     item?.getFlag?.(TFR_MODULE_ID, "relicId") ||
@@ -5,14 +21,14 @@ function TFRIsRelicItem(item) {
   );
 }
 
-function TFRRelicRefusesAttunement(item) {
+export function TFRRelicRefusesAttunement(item) {
   return !!(
     item?.getFlag?.(TFR_MODULE_ID, TFR_ATTUNEMENT_REFUSAL_FLAG) ||
     item?.flags?.[TFR_MODULE_ID]?.[TFR_ATTUNEMENT_REFUSAL_FLAG]
   );
 }
 
-function TFRRelicFeaturesAreBlocked(item) {
+export function TFRRelicFeaturesAreBlocked(item) {
   return TFRIsRelicItem(item) && TFRRelicRefusesAttunement(item);
 }
 
@@ -20,7 +36,7 @@ function TFRWarnRelicFeaturesBlocked(item, label = "Relic ability") {
   TFRNotifyWarn(TFRT("{itemName} refuses attunement. {label} cannot be used until the GM allows attunement.", { itemName: item?.name || TFRT("The relic"), label: label }));
 }
 
-function TFRBlockRelicFeatureUse(item, label = "Relic ability") {
+export function TFRBlockRelicFeatureUse(item, label = "Relic ability") {
   if (!TFRRelicFeaturesAreBlocked(item)) return false;
   TFRWarnRelicFeaturesBlocked(item, label);
   return true;
@@ -109,7 +125,7 @@ async function TFRResolveRelicItem(itemOrUuid = null) {
   }
 }
 
-async function TFRSetAttunementRefusal(itemOrUuid, refuses = true) {
+export async function TFRSetAttunementRefusal(itemOrUuid, refuses = true) {
   if (!game.user?.isGM) {
     TFRNotifyWarn(TFRT("The First Relics: Only the GM can change a relic's attunement consent."));
     return false;
@@ -137,7 +153,7 @@ async function TFRSetAttunementRefusal(itemOrUuid, refuses = true) {
   return item;
 }
 
-async function TFRSetRelicAttunementRefusal(relicId, refuses = true) {
+export async function TFRSetRelicAttunementRefusal(relicId, refuses = true) {
   if (!game.user?.isGM) {
     TFRNotifyWarn(TFRT("The First Relics: Only the GM can change a relic's attunement consent."));
     return false;
@@ -182,12 +198,12 @@ async function TFRSetRelicAttunementRefusal(relicId, refuses = true) {
   return data;
 }
 
-function TFRRegisterAttunementRefusal() {
+export function TFRRegisterAttunementRefusal() {
   Hooks.on("preUpdateItem", TFRBlockRefusedAttunementUpdate);
   Hooks.on("preCreateItem", TFRNormalizeRefusedAttunementOnCreate);
 }
 
-async function TFRNormalizeRefusingRelicItems() {
+export async function TFRNormalizeRefusingRelicItems() {
   if (!game.user?.isGM) return 0;
   const items = [...(game.items?.contents || [])];
   for (const actor of game.actors?.contents || []) items.push(...(actor.items?.contents || []));
@@ -204,7 +220,7 @@ async function TFRNormalizeRefusingRelicItems() {
   return normalized;
 }
 
-async function TFRApplyRelicSheetVisibility(app, html) {
+export async function TFRApplyRelicSheetVisibility(app, html) {
   const item = app?.document || app?.item || app?.object;
   const relicId = item?.getFlag?.(TFR_MODULE_ID, "relicId");
   if (!relicId) return;

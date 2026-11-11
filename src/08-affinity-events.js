@@ -1,4 +1,8 @@
-function TFREventOptions(relic) {
+import "./07-settings.js"; // keeps the original load order
+import { TFRT } from "./00-core.js";
+import { TFRGetRelicById, TFRGetRelicState, TFRSetRelicState } from "./06-relic-state.js";
+
+export function TFREventOptions(relic) {
   const events = relic.affinityEvents || [];
   return events.map(e => {
     const sign = e.delta >= 0 ? "+" : "";
@@ -6,12 +10,12 @@ function TFREventOptions(relic) {
   }).join("");
 }
 
-function TFRGetAffinityEvent(relic, eventId) {
+export function TFRGetAffinityEvent(relic, eventId) {
   return (relic.affinityEvents || []).find(e => e.id === eventId);
 }
 
 
-function TFREscapeHtml(value) {
+export function TFREscapeHtml(value) {
   const text = String(value ?? "");
   if (globalThis.foundry?.utils?.escapeHTML) return foundry.utils.escapeHTML(text);
   return text
@@ -26,7 +30,7 @@ function TFRTimelineReason(type, label, note = "") {
   return `[${type}] ${label}${note ? ` — ${note}` : ""}`;
 }
 
-async function TFRAddTimeline(relicId, type, label, note = "") {
+export async function TFRAddTimeline(relicId, type, label, note = "") {
   const data = await TFRGetRelicState(relicId);
   data.timeline = data.timeline || [];
   data.timeline.push({
@@ -39,7 +43,7 @@ async function TFRAddTimeline(relicId, type, label, note = "") {
   return data;
 }
 
-async function TFRSetRequirement(relicId, requirementId, completed = true, note = "") {
+export async function TFRSetRequirement(relicId, requirementId, completed = true, note = "") {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const relic = await TFRGetRelicById(relicId);
   if (!relic) return ui.notifications.warn(TFRT("Relic not found: {relicId}", { relicId: relicId }));
@@ -58,7 +62,7 @@ async function TFRSetRequirement(relicId, requirementId, completed = true, note 
   return data;
 }
 
-async function TFRUnlockMemory(relicId, memoryId, note = "") {
+export async function TFRUnlockMemory(relicId, memoryId, note = "") {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const relic = await TFRGetRelicById(relicId);
   if (!relic) return ui.notifications.warn(TFRT("Relic not found: {relicId}", { relicId: relicId }));
@@ -78,7 +82,7 @@ async function TFRUnlockMemory(relicId, memoryId, note = "") {
   return data;
 }
 
-async function TFRSendDream(relicId, dreamId, whisperToActorName = "") {
+export async function TFRSendDream(relicId, dreamId, whisperToActorName = "") {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const relic = await TFRGetRelicById(relicId);
   if (!relic) return ui.notifications.warn(TFRT("Relic not found: {relicId}", { relicId: relicId }));

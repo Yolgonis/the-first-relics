@@ -1,10 +1,15 @@
-function TFRResolveActor(actorOrId = null) {
+import "./10-basic-audits.js"; // keeps the original load order
+import { TFRT, TFR_CLOAK_DISPLAY_NAME, TFR_CLOAK_ITEM_NAMES, TFR_MODULE_ID } from "./00-core.js";
+import { TFRConditionLabel } from "./03-activities.js";
+import { TFREscapeHtml } from "./08-affinity-events.js";
+
+export function TFRResolveActor(actorOrId = null) {
   if (actorOrId?.documentName === "Actor") return actorOrId;
   if (typeof actorOrId === "string") return game.actors.get(actorOrId) || game.actors.getName(actorOrId) || canvas.tokens?.get(actorOrId)?.actor;
   return canvas.tokens?.controlled?.[0]?.actor || game.user.character || null;
 }
 
-function TFRTokenForActor(actor) {
+export function TFRTokenForActor(actor) {
   if (!actor) return null;
   const controlled = canvas?.tokens?.controlled || [];
   const selected = controlled.find(t => t?.actor?.id === actor.id);
@@ -12,7 +17,7 @@ function TFRTokenForActor(actor) {
   return canvas?.tokens?.placeables?.find(t => t?.actor?.id === actor.id) || null;
 }
 
-function TFRGetActorRelicItem(actor, relicId) {
+export function TFRGetActorRelicItem(actor, relicId) {
   if (!actor) return null;
   const flagged = actor.items.find(item => item.getFlag("the-first-relics", "relicId") === relicId);
   if (flagged) return flagged;
@@ -29,11 +34,11 @@ function TFRGetActorRelicItem(actor, relicId) {
   return actor.items.getName(names[relicId]) || game.items.getName(names[relicId]);
 }
 
-function TFRGetSelectedTargetActor() {
+export function TFRGetSelectedTargetActor() {
   return Array.from(game.user.targets || [])[0]?.actor || null;
 }
 
-async function TFRSpendRelicCharges(item, charges) {
+export async function TFRSpendRelicCharges(item, charges) {
   charges = Number(charges || 0);
   if (charges <= 0) return true;
   if (!item) return false;
@@ -48,7 +53,7 @@ async function TFRSpendRelicCharges(item, charges) {
   return true;
 }
 
-function TFREffectData(name, img, changes, rounds = 10, seconds = 60, origin = null) {
+export function TFREffectData(name, img, changes, rounds = 10, seconds = 60, origin = null) {
   return {
     name, img, origin, transfer: false, disabled: false,
     changes,
@@ -57,7 +62,7 @@ function TFREffectData(name, img, changes, rounds = 10, seconds = 60, origin = n
   };
 }
 
-async function TFRSafeDeleteDocument(document, context = "") {
+export async function TFRSafeDeleteDocument(document, context = "") {
   if (!document) return false;
   try {
     const parent = document.parent || null;
@@ -82,7 +87,7 @@ async function TFRSafeDeleteDocument(document, context = "") {
   }
 }
 
-async function TFRApplyOrRefreshEffect(actor, effectData) {
+export async function TFRApplyOrRefreshEffect(actor, effectData) {
   if (!actor) return null;
   const existing = actor.effects.find(e => e.name === effectData.name);
   if (existing) await TFRSafeDeleteDocument(existing, `refresh effect ${effectData.name}`);
@@ -90,7 +95,7 @@ async function TFRApplyOrRefreshEffect(actor, effectData) {
   return created;
 }
 
-function TFRChatFlags(extra = {}) {
+export function TFRChatFlags(extra = {}) {
   return {
     [TFR_MODULE_ID]: {
       tfrAutomationMessage: true,
@@ -99,7 +104,7 @@ function TFRChatFlags(extra = {}) {
   };
 }
 
-function TFRAbilityHelperKind({ applied = false, saveQueued = false, spec = {} } = {}) {
+export function TFRAbilityHelperKind({ applied = false, saveQueued = false, spec = {} } = {}) {
   if (saveQueued) return "Save Resolver";
   if (applied) return "Module Helper";
   if (spec?.note) return "Manual Reminder";
@@ -116,7 +121,7 @@ function TFRHelperKindLabel(kind) {
   return labels[kind] || kind;
 }
 
-function TFRAbilityHelperChatContent({ relic, def, spec = {}, applied = false, saveQueued = false } = {}) {
+export function TFRAbilityHelperChatContent({ relic, def, spec = {}, applied = false, saveQueued = false } = {}) {
   const ability = TFREscapeHtml(def?.name || "Relic Ability");
   const relicName = TFREscapeHtml(relic?.name || "The First Relic");
   const kind = TFRAbilityHelperKind({ applied, saveQueued, spec });

@@ -1,6 +1,48 @@
-const TFR_TEST_LAB_FOLDER = "The First Relics — Test Lab";
+import "./15-automation-audits.js"; // keeps the original load order
+import {
+  TFRLoadRelics,
+  TFRNotifyInfo,
+  TFRNotifyWarn,
+  TFRT,
+  TFR_ACTIVITY_SLOTS,
+  TFR_FINAL_FORM_BONUS,
+  TFR_FINAL_FORM_CHARGES,
+  TFR_MODULE_ID,
+  TFR_STARTUP_SYNC,
+  TFR_VERSION
+} from "./00-core.js";
+import { TFRGetStageData, TFRIsFinalForm } from "./01-stages-and-text.js";
+import {
+  TFRBuildDescription,
+  TFRGetAbilityDefinition,
+  TFRRuntimeWorkCoveredByNativeEffects
+} from "./03-activities.js";
+import {
+  TFRBuildActivities,
+  TFRBuildItem,
+  TFRBuildItemEffects,
+  TFRHasUniversalRelicBonus,
+  TFRRequiredStageForSlot,
+  TFRUpdateRelicItem
+} from "./04-items.js";
+import { TFRCreateAll } from "./05-journal.js";
+import {
+  TFRAuditFinalFormBonuses,
+  TFRAuditProgressiveAppearanceUnlocks,
+  TFRAuditTrueNameSealing,
+  TFRGetRelicState,
+  TFRGetWorldState,
+  TFRMoodFromAffinity,
+  TFRSetRelicState,
+  TFRSetWorldState
+} from "./06-relic-state.js";
+import { TFRRelicAbilityRuntimeSpec } from "./14-ability-runtime.js";
+import { TFRAuditStageSyncSafety, TFRSyncAllInventoryStages } from "./15-automation-audits.js";
+import { TFRAuditRuntimeCoverage } from "./17-coverage-audits.js";
 
-function TFRActivityCount(itemOrActivities) {
+export const TFR_TEST_LAB_FOLDER = "The First Relics — Test Lab";
+
+export function TFRActivityCount(itemOrActivities) {
   const acts = itemOrActivities?.system?.activities ?? itemOrActivities;
   if (!acts) return 0;
   if (typeof acts.size === "number") return acts.size;
@@ -12,7 +54,7 @@ function TFRActivityCount(itemOrActivities) {
   return 0;
 }
 
-function TFRGetTestLabBackupState() {
+export function TFRGetTestLabBackupState() {
   try { return foundry.utils.deepClone(game.settings.get("the-first-relics", "testLabBackupState")); }
   catch (err) { return null; }
 }
@@ -21,7 +63,7 @@ async function TFRSetTestLabBackupState(state) {
   return game.settings.set("the-first-relics", "testLabBackupState", state ?? null);
 }
 
-async function TFRBackupWorldStateForTestLab(force = false) {
+export async function TFRBackupWorldStateForTestLab(force = false) {
   const existing = TFRGetTestLabBackupState();
   if (existing && !force) return existing;
   const current = TFRGetWorldState();
@@ -31,13 +73,13 @@ async function TFRBackupWorldStateForTestLab(force = false) {
 
 
 
-async function TFRGetOrCreateTestFolder(type = "Actor") {
+export async function TFRGetOrCreateTestFolder(type = "Actor") {
   let folder = game.folders.find(f => f.type === type && f.name === TFR_TEST_LAB_FOLDER);
   if (!folder) folder = await Folder.create({ name: TFR_TEST_LAB_FOLDER, type });
   return folder;
 }
 
-async function TFRDeleteTestLab() {
+export async function TFRDeleteTestLab() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
   const folderIds = game.folders.filter(f => f.name === TFR_TEST_LAB_FOLDER && f.type === "Actor").map(f => f.id);
   const actors = game.actors.filter(a => a.getFlag("the-first-relics", "testLab") || folderIds.includes(a.folder?.id));
@@ -49,7 +91,7 @@ async function TFRDeleteTestLab() {
   return { actors: actors.length };
 }
 
-async function TFRRestoreAfterTestLab() {
+export async function TFRRestoreAfterTestLab() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
   await TFR_STARTUP_SYNC;
   await TFRDeleteTestLab();
@@ -87,7 +129,7 @@ function TFRTestActorName(relic) {
   return `TFR Test — ${relic.name}`;
 }
 
-async function TFRCreateTestActor(relic, folder) {
+export async function TFRCreateTestActor(relic, folder) {
   const existing = game.actors.getName(TFRTestActorName(relic));
   if (existing) return existing;
   return Actor.create({
@@ -215,7 +257,7 @@ async function TFRPrepareRelicForTestActor(actor, relic, stage = "exalted", affi
 }
 
 
-async function TFRCreateTestLab(options = {}) {
+export async function TFRCreateTestLab(options = {}) {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics Test Lab: GM only."));
   await TFR_STARTUP_SYNC;
   const stage = options.stage || "exalted";
@@ -254,7 +296,7 @@ async function TFRCreateTestLab(options = {}) {
   return rows;
 }
 
-async function TFRAuditTestLab() {
+export async function TFRAuditTestLab() {
   const relics = await TFRLoadRelics();
   const rows = [];
 
@@ -306,7 +348,7 @@ async function TFRAuditTestLab() {
 
 
 
-async function TFRRunDiagnostics(options = {}) {
+export async function TFRRunDiagnostics(options = {}) {
   const relics = await TFRLoadRelics();
   const rows = [];
   let totalExpected = 0;
@@ -362,7 +404,7 @@ async function TFRRunDiagnostics(options = {}) {
   return { summary, rows };
 }
 
-async function TFRRunPlaytestHealthCheck() {
+export async function TFRRunPlaytestHealthCheck() {
   const diagnostics = await TFRRunDiagnostics();
   const qaMatrix = await TFRAuditRelicQAMatrix();
   const runtimeCoverage = await TFRAuditRuntimeCoverage();
@@ -425,7 +467,7 @@ async function TFRFetchModuleText(path) {
   return response.text();
 }
 
-async function TFRRunReleaseCandidateCheck() {
+export async function TFRRunReleaseCandidateCheck() {
   const checks = [];
   const issues = [];
   let stageSafetyRows = [];
@@ -551,7 +593,7 @@ async function TFRRunReleaseCandidateCheck() {
   return { summary, checks, issues, playtest, stageSafetyRows, trueNameAudit, appearanceAudit, finalFormAudit };
 }
 
-async function TFRAuditRelicCleanup() {
+export async function TFRAuditRelicCleanup() {
   const relics = await TFRLoadRelics();
   const rows = [];
   const issues = [];
@@ -614,7 +656,7 @@ async function TFRAuditRelicCleanup() {
   return { summary, rows, issues };
 }
 
-async function TFRAuditRelicQAMatrix() {
+export async function TFRAuditRelicQAMatrix() {
   const relics = await TFRLoadRelics();
   const rows = [];
   const issues = [];

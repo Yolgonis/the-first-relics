@@ -1,3 +1,51 @@
+import "./19-fey-step.js"; // keeps the original load order
+import { TFRT } from "./00-core.js";
+import { TFRSheetHtmlElement } from "./01-stages-and-text.js";
+import { TFRAuditActivityTemplates } from "./03-activities.js";
+import { TFRCreateAll } from "./05-journal.js";
+import { TFRAuditFinalFormBonuses, TFRAuditProgressiveAppearanceUnlocks } from "./06-relic-state.js";
+import { TFREscapeHtml } from "./08-affinity-events.js";
+import { TFRUseSelectedRelicAbility } from "./14-ability-runtime.js";
+import {
+  TFRAuditAllRelicEffectAutomation,
+  TFRAuditCloakAutomation,
+  TFRAuditInventorySync,
+  TFRAuditNative,
+  TFRAuditStageSyncSafety,
+  TFRSyncAllInventoryStages,
+  TFRUseCloakAbility
+} from "./15-automation-audits.js";
+import {
+  TFRAuditRelicCleanup,
+  TFRAuditRelicQAMatrix,
+  TFRAuditTestLab,
+  TFRCreateTestLab,
+  TFRDeleteTestLab,
+  TFRRunDiagnostics,
+  TFRRunPlaytestHealthCheck,
+  TFRRunReleaseCandidateCheck
+} from "./16-test-lab.js";
+import {
+  TFRAuditActivitiesDetailed,
+  TFRAuditRuntimeCoverage,
+  TFRCreatePlaytestLabSafe,
+  TFRResetTestLabSafe,
+  TFRRestoreAfterTestLabSafe
+} from "./17-coverage-audits.js";
+import { TFRAuditAutomationEngine, TFRAuditSprint1 } from "./18-automation-engine.js";
+import { TFRExecuteFeyStep } from "./19-fey-step.js";
+import { TFRApplySystemTemplates, TFRAuditSystemTemplates } from "./21-system-templates.js";
+import {
+  TFRAuditFeatureItems,
+  TFRAuditGeneratedFeatureItems,
+  TFRAuditResolvedTemplateItems,
+  TFRAuditSpellbookFeatures,
+  TFRCreateFeatureItems,
+  TFRCreateResolvedTemplateItems,
+  TFRCreateSpellbookFeatures,
+  TFRDeleteFeatureItems
+} from "./22-feature-items.js";
+
 function TFRControlPanelHtml() {
   return TFRControlPanelHtmlV2();
 }
@@ -65,7 +113,7 @@ function TFRControlPanelResultHtml(result, fallbackLabel = "Action") {
   `;
 }
 
-function TFRControlPanelHtmlV2() {
+export function TFRControlPanelHtmlV2() {
   return `
     <div class="the-first-relics-control-panel tfr-control-panel-v2">
       <div class="tfr-control-status" data-tfr-control-status>${TFRT("Ready.")}</div>
@@ -204,7 +252,7 @@ async function TFRRunControlPanelAction(action, context = {}) {
   }
 }
 
-function TFRWireControlPanel(html) {
+export function TFRWireControlPanel(html) {
   const root = TFRSheetHtmlElement(html);
   if (!root) return;
 
@@ -246,7 +294,7 @@ function TFRWireControlPanel(html) {
   });
 }
 
-async function TFROpenControlPanel() {
+export async function TFROpenControlPanel() {
   if (!game.user.isGM) return ui.notifications.warn(TFRT("The First Relics: GM only."));
   const dialog = new foundry.applications.api.DialogV2({
     classes: ["tfr-dialog"],
