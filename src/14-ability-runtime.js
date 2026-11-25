@@ -154,7 +154,7 @@ export async function TFRApplyCloakAvatar(actor, item) {
     item?.img || "modules/the-first-relics/art/icons/cloak-feywilds.svg",
     [
       { key: "system.attributes.movement.fly", mode: TFRMode("UPGRADE"), value: "40", priority: 20 },
-      { key: "system.attributes.movement.hover", mode: TFRMode("OVERRIDE"), value: "true", priority: 20 },
+      { key: "system.attributes.movement.hover", mode: TFRMode("CUSTOM"), value: "true", priority: 20 },
       { key: "system.bonuses.abilities.save", mode: TFRMode("ADD"), value: "+1", priority: 20 }
     ],
     10, 60, item?.uuid
@@ -178,7 +178,9 @@ export function TFREffectChangesForRelicAbility(relicId, slot, relic = null, ite
   const add = TFRMode("ADD");
   const upgrade = TFRMode("UPGRADE");
   const override = TFRMode("OVERRIDE");
-    const common = TFRRelicTable("abilityEffects", { bonus, add, upgrade, override });
+  // CUSTOM is resolved by TFRApplyCustomEffectChange; used for booleans, which DAE would turn into 1.
+  const custom = TFRMode("CUSTOM");
+  const common = TFRRelicTable("abilityEffects", { bonus, add, upgrade, override, custom });
   return foundry.utils.deepClone(common[relicId]?.[slot] || []);
 }
 

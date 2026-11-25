@@ -23,18 +23,18 @@ export default {
     3: { changes: [["system.traits.dr.value", "ADD", "fire"], ["system.traits.dr.value", "ADD", "cold"], ["system.traits.ci.value", "ADD", "frightened"]] }
   },
   /** Active Effect changes applied when an ability is used, by slot. `bonus` is the stage bonus. */
-  abilityEffects: ({ bonus, add, upgrade, override }) => ({
+  abilityEffects: ({ bonus, add, upgrade, override, custom }) => ({
     active2: [
       { key: "system.bonuses.mwak.damage", mode: add, value: "+2d6[fire]", priority: 20 },
       { key: "system.bonuses.rwak.damage", mode: add, value: "+2d6[fire]", priority: 20 }
     ],
     active3: [
       { key: "system.attributes.movement.fly", mode: upgrade, value: "60", priority: 20 },
-      { key: "system.attributes.movement.hover", mode: override, value: "true", priority: 20 }
+      { key: "system.attributes.movement.hover", mode: custom, value: "true", priority: 20 }
     ],
     avatar: [
       { key: "system.attributes.movement.fly", mode: upgrade, value: "80", priority: 20 },
-      { key: "system.attributes.movement.hover", mode: override, value: "true", priority: 20 },
+      { key: "system.attributes.movement.hover", mode: custom, value: "true", priority: 20 },
       { key: "system.traits.dr.value", mode: add, value: "fire", priority: 20 },
       { key: "system.traits.dr.value", mode: add, value: "cold", priority: 20 },
       { key: "system.traits.dr.value", mode: add, value: "lightning", priority: 20 },
@@ -43,7 +43,7 @@ export default {
     ],
     signature: [
       { key: "system.attributes.movement.fly", mode: upgrade, value: "80", priority: 20 },
-      { key: "system.attributes.movement.hover", mode: override, value: "true", priority: 20 },
+      { key: "system.attributes.movement.hover", mode: custom, value: "true", priority: 20 },
       { key: "system.bonuses.abilities.save", mode: add, value: `+${bonus}`, priority: 20 }
     ]
   }),

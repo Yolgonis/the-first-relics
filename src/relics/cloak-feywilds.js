@@ -31,12 +31,12 @@ export default {
     1: { changes: [["system.attributes.movement.ignoredDifficultTerrain", "ADD", "nonmagical"]], note: "terrain" }
   },
   /** Active Effect changes applied when an ability is used, by slot. `bonus` is the stage bonus. */
-  abilityEffects: ({ bonus, add, upgrade, override }) => ({
+  abilityEffects: ({ bonus, add, upgrade, override, custom }) => ({
     active2: [{ key: "flags.the-first-relics.markedByFirstHunt", mode: override, value: "true", priority: 20 }],
     active3: [{ key: "system.attributes.movement.walk", mode: add, value: "10", priority: 20 }],
     avatar: [
       { key: "system.attributes.movement.fly", mode: upgrade, value: "40", priority: 20 },
-      { key: "system.attributes.movement.hover", mode: override, value: "true", priority: 20 },
+      { key: "system.attributes.movement.hover", mode: custom, value: "true", priority: 20 },
       { key: "system.bonuses.rwak.attack", mode: add, value: `+${bonus}`, priority: 20 }
     ]
   }),

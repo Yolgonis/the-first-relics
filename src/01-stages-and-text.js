@@ -185,7 +185,7 @@ export function TFRAvatarEffect(relic) {
     disabled: true,
     changes: [
       { key: "system.attributes.movement.fly", mode: TFRMode("UPGRADE"), value: "40", priority: 20 },
-      { key: "system.attributes.movement.hover", mode: TFRMode("OVERRIDE"), value: "true", priority: 20 },
+      { key: "system.attributes.movement.hover", mode: TFRMode("CUSTOM"), value: "true", priority: 20 },
       { key: "system.bonuses.abilities.save", mode: TFRMode("ADD"), value: "+1", priority: 20 }
     ],
     duration: { seconds: 60, rounds: 10 },

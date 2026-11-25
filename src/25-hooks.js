@@ -113,6 +113,18 @@ import {
 import { TFRRegisterFeyStepChatAutomation, TFRRegisterRelicActivityGateHooks } from "./24-chat-and-gates.js";
 import { TFRPassiveStatus, TFRRegisterPassiveTriggers } from "./27-passive-triggers.js";
 
+/**
+ * Boolean changes the relics write in CUSTOM mode (such as hover). DAE evaluates OVERRIDE values
+ * of boolean fields as expressions and turns "true" into "1", which a BooleanField reads as false;
+ * CUSTOM changes skip that evaluation and are resolved here. Registered at load so actors prepared
+ * before "ready" get it too.
+ */
+const TFR_CUSTOM_BOOLEAN_KEYS = new Set(["system.attributes.movement.hover"]);
+Hooks.on("applyActiveEffect", (actor, change, current, delta, changes) => {
+  if (!TFR_CUSTOM_BOOLEAN_KEYS.has(change?.key)) return;
+  changes[change.key] = String(change.value).trim().toLowerCase() === "true";
+});
+
 Hooks.once("ready", async () => {
   Hooks.on("renderItemSheet", TFRApplyRelicSheetVisibility);
   Hooks.on("renderItemSheet5e", TFRApplyRelicSheetVisibility);

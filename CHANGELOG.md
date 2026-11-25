@@ -8,6 +8,7 @@
   - Inner Dragon Manifest also lets you grapple two creatures, damages grappled creatures and restores 1 Focus Point at the start of each of your turns (automated in combat). Dragon Unbound restores all Focus Points, lowers Monk feature costs by 1 and gives resistance to all damage except psychic, immunity to grappled, restrained and stunned, and a 19–20 critical range.
 - Relic damage abilities can roll a formula (such as `4@scale.monk.die`) instead of fixed dice.
 - Fixed ability helpers that scale with the relic bonus (temporary hit points, Focus Points) using the Exalted bonus on Final Form relics instead of the Final Form bonus.
+- Fixed hover never turning on for relic flight (avatars of the Bands, Girdle, Mantle, Cloaks, Chains and Blood of the First Dragon). With DAE active, an OVERRIDE "true" on a boolean field was evaluated to "1" and read as false; hover is now written in CUSTOM mode and applied by the module.
 - Fixed relic abilities whose chat card badges match another ability (such as a bonus action on yourself next to the avatar) not running their helper; the ability is now read from the activity recorded on the card.
 
 ## v0.5.1

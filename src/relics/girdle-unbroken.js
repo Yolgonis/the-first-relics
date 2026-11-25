@@ -27,10 +27,10 @@ export default {
   /** Passives run by hooks in 27-passive-triggers.js: passive index -> { note? }. */
   passiveTriggers: { 2: { note: "rage" } },
   /** Active Effect changes applied when an ability is used, by slot. `bonus` is the stage bonus. */
-  abilityEffects: ({ bonus, add, upgrade, override }) => ({
+  abilityEffects: ({ bonus, add, upgrade, override, custom }) => ({
     avatar: [
       { key: "system.attributes.movement.fly", mode: upgrade, value: "30", priority: 20 },
-      { key: "system.attributes.movement.hover", mode: override, value: "true", priority: 20 },
+      { key: "system.attributes.movement.hover", mode: custom, value: "true", priority: 20 },
       { key: "system.traits.ci.value", mode: add, value: "prone", priority: 20 }
     ],
     signature: [
