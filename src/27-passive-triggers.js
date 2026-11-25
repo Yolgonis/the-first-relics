@@ -176,6 +176,13 @@ async function TFRStartCombatPassives(combat) {
       const regained = await TFRRegainFeatureUses(actor, "font-of-magic", await TFRPassiveRelicBonus(blood), TFRT("Wellspring"));
       if (regained) await TFRPassiveChat(actor, blood, 0, TFRT("{actor} regains {amount} Sorcery Points.", { actor: TFREscapeHtml(actor.name), amount: regained }));
     }
+
+    // King's Mercy (Crown of the Conqueror): five times the relic bonus back into Lay on Hands.
+    const mercy = TFRActivePassiveItem(actor, "crown_conqueror", 2);
+    if (mercy) {
+      const regained = await TFRRegainFeatureUses(actor, "lay-on-hands", 5 * await TFRPassiveRelicBonus(mercy), TFRT("King's Mercy"));
+      if (regained) await TFRPassiveChat(actor, mercy, 2, TFRT("{actor} regains {amount} hit points in the Lay on Hands pool.", { actor: TFREscapeHtml(actor.name), amount: regained }));
+    }
   }
 }
 
@@ -335,6 +342,18 @@ async function TFRPassivesAfterActivity(activity) {
   if (turn && mantle.getFlag(TFR_MODULE_ID, "livingChronicleTurn") === turn) return;
   if (turn) await mantle.setFlag(TFR_MODULE_ID, "livingChronicleTurn", turn);
   await TFRApplyTempHp(actor, TFRProficiency(actor) + await TFRPassiveRelicBonus(mantle), TFRT("Living Chronicle"));
+}
+
+// ---- Divine Smite damage: Crowned Smite (Crown of the Conqueror) ----
+
+function TFRAddCrownedSmite(config) {
+  const activity = config?.subject;
+  const spell = activity?.item;
+  if (activity?.type !== "damage" || spell?.type !== "spell" || spell.system?.identifier !== "divine-smite") return;
+  const crown = TFRActivePassiveItem(activity.actor, "crown_conqueror", 0);
+  if (!crown) return;
+  const roll = config.rolls?.[0];
+  if (roll?.parts) roll.parts.push(`1d8[radiant] + ${TFRItemRelicBonus(crown)}`);
 }
 
 // ---- Class spell damage: Arcane Edge (Mantle of the First Seer), Elemental Wrath (Blood of the First Dragon) ----
@@ -519,6 +538,7 @@ export function TFRRegisterPassiveTriggers() {
   Hooks.on("dnd5e.preCalculateDamage", TFRReduceRagingDamage);
   Hooks.on("dnd5e.applyDamage", TFRMarkWillBeforeWound);
   Hooks.on("dnd5e.preRollDamageV2", TFRAddSpellDamagePassive);
+  Hooks.on("dnd5e.preRollDamageV2", TFRAddCrownedSmite);
   Hooks.on("dnd5e.preApplyDamage", TFRRecordHpBeforeDamage);
   Hooks.on("dnd5e.applyDamage", TFRPricePaidCheck);
 }

@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.10.0
+
+- Redesigned the Crown of the Conqueror (Paladin) around Divine Smite, Lay on Hands and Channel Divinity, and removed its overlapping fear, charm and Wisdom save protections. Royal Presence, Sovereign Aura, Rally and Banner Unbroken are replaced.
+  - Passives: Crowned Smite (Divine Smite deals an extra 1d8 radiant + relic bonus, automated), Banner of Order (unchanged), King's Mercy (five times the relic bonus back into Lay on Hands when combat starts, automated) and Commander's Resolve (unchanged).
+  - Actives: Crown's Judgment (no action after a melee hit, 3d8 radiant, automated) and Divine Mandate (regain a Channel Divinity use, automated); Royal Decree and March of Kings now cost a bonus action instead of an action.
+  - The avatar adds 1d8 radiant to melee weapon hits (automated) and widens Aura of Protection by 10 feet instead of granting fear and charm save bonuses.
+- The Crown's damage abilities now deal radiant damage instead of force.
+
 ## v0.9.0
 
 - Redesigned the Blood of the First Dragon (Sorcerer) around Sorcery Points, Metamagic and Innate Sorcery so it works for every subclass. Ancient Scales, Unyielding Will, Dragon Soul, Draconic Roar and Wings of the First Dragon are replaced.

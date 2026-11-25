@@ -15,10 +15,10 @@ function TFRFallbackAbilityAutomation(relicId, slot) {
       signature: { type: "utility", activation: "special", target: "creature", range: "30 ft" }
     },
     crown_conqueror: {
-      active1: { type: "utility", activation: "bonus", target: "creature", range: "30 ft" },
-      active2: { type: "save", activation: "action", target: "creature", range: "60 ft", save: "wis" },
-      active3: { type: "utility", activation: "action", target: "self", range: "self" },
-      active4: { type: "utility", activation: "action", target: "creature", range: "30 ft" },
+      active1: { type: "damage", activation: "special", target: "creature", range: "5 ft", damage: "3d8 radiant" },
+      active2: { type: "save", activation: "bonus", target: "creature", range: "60 ft", save: "wis" },
+      active3: { type: "utility", activation: "special", target: "self", range: "self" },
+      active4: { type: "utility", activation: "bonus", target: "creature", range: "30 ft" },
       avatar: { type: "utility", activation: "bonus", target: "self", range: "self" },
       signature: { type: "save", activation: "action", target: "creature", range: "60 ft", save: "wis" }
     },

@@ -2091,18 +2091,18 @@
     ],
     "features": {
       "passives": [
-        "<strong>Royal Presence.</strong> You and allies within 30 feet of you add the relic bonus to Wisdom saving throws.",
+        "<strong>Crowned Smite.</strong> When you deal damage with Divine Smite, it deals an extra 1d8 radiant damage plus the relic bonus.",
         "<strong>Banner of Order.</strong> When combat begins, choose a number of allies within 30 feet of you equal to your proficiency bonus. Each gains temporary hit points equal to your proficiency bonus + the relic bonus.",
-        "<strong>Commander's Resolve.</strong> When an ally you can see within 30 feet fails a saving throw, you can use your reaction to let them reroll it; they must use the new roll. You can do this a number of times equal to your proficiency bonus, regaining all uses when you finish a long rest.",
-        "<strong>Sovereign Aura.</strong> You and allies within 30 feet of you have advantage on saving throws against being charmed or frightened."
+        "<strong>King's Mercy.</strong> When you roll initiative, you regain a number of hit points in your Lay on Hands pool equal to five times the relic bonus.",
+        "<strong>Commander's Resolve.</strong> When an ally you can see within 30 feet fails a saving throw, you can use your reaction to let them reroll it; they must use the new roll. You can do this a number of times equal to your proficiency bonus, regaining all uses when you finish a long rest."
       ],
       "actives": [
-        "<strong>Rally.</strong> <em>Bonus Action, 1 charge.</em> Choose allies within 30 feet who can hear you. Each may move up to half their speed without provoking opportunity attacks.",
-        "<strong>Royal Decree.</strong> <em>Action, 2 charges.</em> One creature within 60 feet must make a Wisdom saving throw. On a failure, it is compelled by your command until the end of your next turn.",
-        "<strong>Banner Unbroken.</strong> <em>Action, 3 charges, 1 minute.</em> You project a 10-foot command aura. Allies in the aura gain +2 AC while they can see or hear you.",
-        "<strong>March of Kings.</strong> <em>Action, 4 charges.</em> Choose allies within 30 feet who can hear you. Each may immediately move or make one weapon attack as the table resolves the command."
+        "<strong>Crown's Judgment.</strong> <em>No action, 1 charge, once per turn.</em> When you hit a creature with a melee attack, the crown passes judgment, and the target takes an extra 3d8 radiant damage.",
+        "<strong>Royal Decree.</strong> <em>Bonus Action, 2 charges.</em> One creature within 60 feet must make a Wisdom saving throw. On a failure, it is compelled by your command until the end of your next turn.",
+        "<strong>Divine Mandate.</strong> <em>No action, 3 charges.</em> You regain one expended use of Channel Divinity.",
+        "<strong>March of Kings.</strong> <em>Bonus Action, 4 charges.</em> Choose allies within 30 feet who can hear you. Each can use its reaction to move up to half its speed or make one weapon attack."
       ],
-      "avatar": "<strong>King Eternal.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> A spectral mantle and crown form around you. You gain flying speed 30 feet with hover, resistance to psychic damage, and allies within 30 feet gain the relic bonus to saving throws against fear and charm.",
+      "avatar": "<strong>King Eternal.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> A spectral mantle and crown form around you. You gain a flying speed of 30 feet and can hover, you have resistance to psychic damage, your melee weapon hits deal an extra 1d8 radiant damage, and the radius of your Aura of Protection increases by 10 feet.",
       "signature": "<strong>The World Shall Kneel.</strong> <em>Once per long rest.</em> Enemies of your choice within 60 feet must make a Wisdom saving throw. On a failure, a creature is frightened, knocked prone, reduced to speed 0, and cannot take reactions for 1 minute."
     },
     "dreams": [
