@@ -12,7 +12,7 @@ import {
 import { TFRGetRelicById } from "./06-relic-state.js";
 import { TFREscapeHtml } from "./08-affinity-events.js";
 import { TFRChatFlags, TFRResolveActor } from "./11-effect-helpers.js";
-import { TFRApplyTempHp } from "./14-ability-runtime.js";
+import { TFRApplyTempHp, TFRMonkFocusItem, TFRRegainFocus } from "./14-ability-runtime.js";
 import { TFRDistanceFeet } from "./19-fey-step.js";
 
 // Event-triggered passive features: combat start, dropping to 0 hit points, long rests, casting
@@ -401,12 +401,24 @@ export function TFRPassiveStatus(actorOrId) {
   })));
 }
 
+// ---- Turn start: Inner Dragon Manifest (Bands of the Inner Dragon) regains 1 Focus Point ----
+
+async function TFRInnerDragonTurnFocus(combat) {
+  const actor = combat?.started ? combat.combatant?.actor : null;
+  if (!actor?.getFlag(TFR_MODULE_ID, "innerDragonFocus")) return;
+  const item = TFRMonkFocusItem(actor);
+  if (!item || !(Number(item.system.uses.spent) > 0)) return;
+  await TFRRegainFocus(actor, 1, TFRT("Inner Dragon Manifest"));
+}
+
 export function TFRRegisterPassiveTriggers() {
   if (globalThis.__TFR_PASSIVE_TRIGGERS__) return;
   globalThis.__TFR_PASSIVE_TRIGGERS__ = true;
 
   Hooks.on("updateCombat", (combat, changed) => {
-    if (!TFRIsResponsibleGM() || !("round" in changed)) return;
+    if (!TFRIsResponsibleGM()) return;
+    if ("turn" in changed || "round" in changed) TFRInnerDragonTurnFocus(combat).catch(error => console.warn("The First Relics | Inner Dragon focus failed.", error));
+    if (!("round" in changed)) return;
     const run = combat.round === 1
       ? TFRStartCombatPassives(combat).then(() => TFRBannerOfOrder(combat))
       : combat.round > 1 ? TFRRemoveCombatPassives(combat, ["dawnsEndurance"]) : null;

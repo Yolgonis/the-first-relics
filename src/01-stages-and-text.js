@@ -151,7 +151,8 @@ export function TFRDamageTypeForRelic(relic) {
   return map[relic.id] ?? "force";
 }
 
-export function TFRMakeDamageActivity(activity, relic, number = 4, denomination = 8, forcedType = null) {
+/** `formula`, when given, replaces the number/denomination dice (e.g. "4@scale.monk.die"). */
+export function TFRMakeDamageActivity(activity, relic, number = 4, denomination = 8, forcedType = null, formula = "") {
   const dtype = forcedType || TFRDamageTypeForRelic(relic);
   activity.type = "damage";
   delete activity.roll;
@@ -164,10 +165,11 @@ export function TFRMakeDamageActivity(activity, relic, number = 4, denomination 
       bonus: "",
       types: [dtype],
       scaling: { mode: "", number: 1 },
-      custom: { enabled: false }
+      custom: formula ? { enabled: true, formula } : { enabled: false }
     }]
   };
-  activity.description.chatFlavor = `${activity.description.chatFlavor}<br><strong>Automation:</strong> This activity rolls ${number}d${denomination} ${dtype} damage. Apply secondary conditions manually if needed.`;
+  const dice = formula || `${number}d${denomination}`;
+  activity.description.chatFlavor = `${activity.description.chatFlavor}<br><strong>Automation:</strong> This activity rolls ${dice} ${dtype} damage. Apply secondary conditions manually if needed.`;
   activity.macroData = {};
   activity.midiProperties.magicDamage = true;
   activity.midiProperties.magicEffect = true;

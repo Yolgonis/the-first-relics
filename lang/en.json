@@ -64,6 +64,7 @@
     "t5iyxbe": "The First Relics Activity Template Audit passed.",
     "t1hfsxmf": "Automated as an aura with the Aura Effects module.",
     "t1cbvh5z": "Speed is automated; jump distance is GM-resolved.",
+    "t4lst4o": "Automated for all melee weapon attacks.",
     "t1t2l5j4": "Automated with Midi-QOL and DAE.",
     "t1p8k07t": "Automated when healing is applied from a chat card.",
     "t11ng93i": "Automated when damage is applied from a chat card.",
@@ -219,6 +220,8 @@
     "tqqodp0": "<strong>Native save resolver:</strong> all targets succeeded; no condition applied.",
     "tfis7ax": "The First Relics: {rowsCount} pending save-aware helper(s).",
     "tyg95lq": "{label}: {actorName} has {next} temp HP.",
+    "t1tpgbbt": "{label}: {actorName} has no Monk's Focus feature.",
+    "tz2672h": "{label}: {actorName} regains {regained} Focus Points ({value}/{max}).",
     "t12k7nsi": "Briar Snare: target one creature first.",
     "t1rxi36f": "dnd5e consumed the resource. Restrained was applied as a GM helper; remove it if the target succeeds its save.",
     "t1igej4q": "Restrained was applied as a GM helper; remove it if the target succeeds its save.",
@@ -426,6 +429,7 @@
     "t122v3x2": "{actor} drops to 1 hit point instead of 0, sustained by {bearer}.",
     "t87g9xs": "Living Sap",
     "tq7d9d1": "Living Chronicle",
-    "t1k83w04": "Price Paid"
+    "t1k83w04": "Price Paid",
+    "tuvkvu3": "Inner Dragon Manifest"
   }
 }

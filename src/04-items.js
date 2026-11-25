@@ -261,6 +261,7 @@ export function TFRPassiveAutomationNote(automation) {
   if (automation?.aura) return TFRT("Automated as an aura with the Aura Effects module.");
   switch (automation?.note) {
     case "speedOnly": return TFRT("Speed is automated; jump distance is GM-resolved.");
+    case "meleeWeapon": return TFRT("Automated for all melee weapon attacks.");
     case "midi": return TFRT("Automated with Midi-QOL and DAE.");
     case "chatHealing": return TFRT("Automated when healing is applied from a chat card.");
     case "chatDamage": return TFRT("Automated when damage is applied from a chat card.");

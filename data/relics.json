@@ -2439,19 +2439,19 @@
     ],
     "features": {
       "passives": [
-        "<strong>Centered Mind.</strong> You have advantage on Constitution saving throws made to maintain concentration.",
-        "<strong>Perfect Motion.</strong> The first opportunity attack made against you each round has disadvantage.",
-        "<strong>Body Beyond Limits.</strong> Your speed increases by 10 feet, and your jump distance is doubled.",
-        "<strong>Flow State.</strong> When you fail a Strength, Dexterity, or Constitution saving throw, you can reroll it and must use the new roll. Once you use this feature, you can't use it again until you finish a long rest."
+        "<strong>Dragon's Grip.</strong> You can grapple a creature of any size up to Huge. A creature grappled by you has disadvantage on checks it makes to escape the grapple, and moving a creature you are grappling costs you no extra movement.",
+        "<strong>Breath Between Blows.</strong> Once per turn, when a creature fails a saving throw against one of your Monk features (such as Stunning Strike) or against your Grapple or Shove, you regain 1 Focus Point. You can use this feature a number of times equal to the relic bonus, and you regain all uses when you finish a short or long rest.",
+        "<strong>Dragon Hide.</strong> Your hit point maximum increases by an amount equal to your Monk level.",
+        "<strong>Dragon's Fang.</strong> Your Unarmed Strikes and Monk weapon attacks deal extra force damage equal to the relic bonus."
       ],
       "actives": [
-        "<strong>Dragon Breath.</strong> <em>Bonus Action, 1 charge, 1 minute.</em> You ignore nonmagical difficult terrain, gain a climbing speed equal to your walking speed, and add the relic bonus to Dexterity (Acrobatics) checks.",
-        "<strong>Iron Soul.</strong> <em>Reaction, 2 charges.</em> When you fail a saving throw, reroll it. The new result must be used.",
-        "<strong>Hundred Forms.</strong> <em>Action, 3 charges, 1 minute.</em> You have advantage on Strength (Athletics) and Dexterity (Acrobatics) checks, and your AC increases by 2 while you are not incapacitated.",
-        "<strong>Perfect Strike.</strong> <em>Action, 4 charges.</em> Focus your next hit before the end of your next turn. If it hits, the attack becomes a critical hit."
+        "<strong>Dragon Seizes.</strong> <em>Reaction, 1 charge.</em> When a creature within your reach moves away from you or misses you with a melee attack, you make an Unarmed Strike against it using the Grapple option.",
+        "<strong>Still Breath.</strong> <em>Bonus Action, 2 charges.</em> You regain Focus Points equal to the relic bonus + 1.",
+        "<strong>Coiled Scales.</strong> <em>Reaction, 3 charges.</em> When you are hit by an attack, your AC increases by 5 until the start of your next turn, including against the triggering attack.",
+        "<strong>Perfect Strike.</strong> <em>No action, 4 charges, once per turn.</em> When you hit a creature, it takes extra force damage equal to four rolls of your Martial Arts die."
       ],
-      "avatar": "<strong>Inner Dragon Manifest.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> A translucent dragon coils around your limbs. You gain flying speed 40 feet with hover, resistance to force damage, +5 feet reach, and once per turn your unarmed strike or monk weapon hit deals an extra 2d10 force damage.",
-      "signature": "<strong>Dragon Unbound.</strong> <em>Once per long rest, 1 minute.</em> You gain advantage on attack rolls and saving throws, your speed doubles, you gain resistance to bludgeoning, piercing, slashing, and force damage, and you are immune to stunned and restrained."
+      "avatar": "<strong>Inner Dragon Manifest.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> A translucent dragon coils around your limbs. You gain a flying speed of 40 feet and can hover, your reach increases by 5 feet, and your Unarmed Strike hits deal an extra 1d10 force damage. You can grapple two creatures at once, and a creature grappled by you takes force damage equal to one roll of your Martial Arts die at the start of each of its turns. You regain 1 Focus Point at the start of each of your turns.",
+      "signature": "<strong>Dragon Unbound.</strong> <em>Once per long rest, 1 minute.</em> You regain all expended Focus Points, and your Monk features cost 1 fewer Focus Point (minimum 0). You have resistance to all damage except psychic damage, you can't be grappled, restrained, or stunned, and your Unarmed Strikes score a critical hit on a roll of 19 or 20."
     },
     "dreams": [
       {

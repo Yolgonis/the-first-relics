@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.6.0
+
+- Redesigned the Bands of the Inner Dragon (Monk) around grappling, Focus Points, survival and damage. The old features (Centered Mind, Perfect Motion, Body Beyond Limits, Flow State, Dragon Breath, Iron Soul, Hundred Forms) are replaced.
+  - Passives: Dragon's Grip (grapple up to Huge, disadvantage on escape, no extra movement when moving a grappled creature), Breath Between Blows (regain 1 Focus Point when a creature fails a save against your Monk features or grapple/shove, relic bonus uses per short or long rest), Dragon Hide (hit point maximum + Monk level, automated) and Dragon's Fang (relic bonus force damage on hits, automated for all melee weapon attacks).
+  - Actives: Dragon Seizes (reaction grapple), Still Breath (regain relic bonus + 1 Focus Points, automated), Coiled Scales (reaction, +5 AC until your next turn, automated) and Perfect Strike (no action, extra force damage equal to four Martial Arts dice).
+  - Inner Dragon Manifest also lets you grapple two creatures, damages grappled creatures and restores 1 Focus Point at the start of each of your turns (automated in combat). Dragon Unbound restores all Focus Points, lowers Monk feature costs by 1 and gives resistance to all damage except psychic, immunity to grappled, restrained and stunned, and a 19–20 critical range.
+- Relic damage abilities can roll a formula (such as `4@scale.monk.die`) instead of fixed dice.
+
 ## v0.5.1
 
 - The item sheet now says, under the attunement row, when the bearer lacks the relic's class, so players see it before they try to attune.

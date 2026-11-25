@@ -223,7 +223,7 @@ function TFREnforceActivity(activity, relic, slot) {
   activity.consumption.targets = cfg.charges > 0 ? [{ type: "itemUses", value: String(cfg.charges), scaling: {} }] : [];
 
   if (cfg.type === "damage") {
-    TFRMakeDamageActivity(activity, relic, cfg.damage?.number || 4, cfg.damage?.denomination || 8, cfg.damage?.type);
+    TFRMakeDamageActivity(activity, relic, cfg.damage?.number || 4, cfg.damage?.denomination || 8, cfg.damage?.type, cfg.damage?.formula || "");
     return TFRApplyActivityTargeting(activity, relic, slot);
   }
 
@@ -479,7 +479,7 @@ export function TFRShouldPreferNativeActivityEffects(relic, slot, options = {}) 
 export function TFRRuntimeWorkCoveredByNativeEffects(spec = {}) {
   if (spec.teleport) return false;
   if (spec.removeSelf?.length || spec.removeTarget?.length) return false;
-  if (spec.tempHp) return false;
+  if (spec.tempHp || spec.focus) return false;
   return !!(spec.selfEffect || spec.targetEffect || spec.condition || spec.conditionSelf);
 }
 
@@ -763,7 +763,7 @@ export function TFRCreateEngineActivity(relic, slot, stage, signatureUnlocked) {
         denomination: def.damage?.denomination || 6,
         bonus: "",
         types: [def.damage?.type || "force"],
-        custom: { enabled: false, formula: "" },
+        custom: def.damage?.formula ? { enabled: true, formula: def.damage.formula } : { enabled: false, formula: "" },
         scaling: { mode: "", number: 1 }
       }]
     };
