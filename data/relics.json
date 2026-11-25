@@ -3485,13 +3485,13 @@
       "passives": [
         "<strong>Gentle Light.</strong> Allies within 30 feet of you have advantage on death saving throws.",
         "<strong>Saint's Grace.</strong> When you restore hit points to a creature with a spell or feature, it regains additional hit points equal to your proficiency bonus.",
-        "<strong>Beacon of Hope.</strong> Allies within 30 feet of you have advantage on saving throws against being charmed or frightened.",
-        "<strong>Unyielding Spirit.</strong> When a spell or effect would kill you outright, you can reject it and drop to 1 hit point instead. Once you use this feature, you can't use it again until you finish a long rest."
+        "<strong>Font of Divinity.</strong> When you roll initiative, you regain one expended use of Channel Divinity.",
+        "<strong>Radiant Sermon.</strong> Once per turn, when a cleric spell you cast deals damage, add your Wisdom modifier + the relic bonus to one damage roll of that spell."
       ],
       "actives": [
         "<strong>Blessing.</strong> <em>Bonus Action, 1 charge.</em> An ally within 30 feet adds 1d4 to attack rolls, saving throws, and ability checks until the end of your next turn.",
-        "<strong>Cleansing Light.</strong> <em>Action, 2 charges.</em> End one poison, disease, frightened, or charmed condition affecting a creature within 30 feet.",
-        "<strong>Sanctuary of Dawn.</strong> <em>Action, 3 charges, 1 minute.</em> You create a 10-foot aura of sanctuary. Allies in the aura gain resistance to necrotic and radiant damage.",
+        "<strong>Cleansing Light.</strong> <em>Bonus Action, 2 charges.</em> End one poison, disease, frightened, or charmed condition affecting a creature within 30 feet.",
+        "<strong>Steadfast Prayer.</strong> <em>Reaction, 3 charges.</em> When you fail a Constitution saving throw to maintain concentration, you succeed instead.",
         "<strong>Wings of Mercy.</strong> <em>Action, 4 charges.</em> Up to three allies within 60 feet each regain 6d8 hit points. Wings of light carry the healing around cover at the GM's discretion."
       ],
       "avatar": "<strong>Saint Incarnate.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> Wings and vestments of light form around you. You gain flying speed 40 feet with hover, resistance to radiant damage, shed bright light, and allies near you regain hit points equal to the relic bonus at the start of their turns.",

@@ -15,7 +15,7 @@
 > - Fighter 0.15.0
 > - Warlock 0.16.0
 >
-> Ayrıntılar `CHANGELOG.md` içinde. Vestments of the First Saint (Cleric) henüz eski haliyle duruyor.
+> Ayrıntılar `CHANGELOG.md` içinde. Kapsam dışı olan Cleric (Vestments of the First Saint) de sonradan kullanıcının isteğiyle 0.17.0'da revize edildi.
 
 Kaynaklar: EN World, D&D Beyond forumları ve yorumları, RPGBot, Wargamer, Arcane Eye, Dungeonmister. Reddit araması sonuç vermedi. Forum görüşleri topluluk görüşüdür, resmî değildir; bir kısmı 2024 öncesi playtest dönemine ait. Notlar bunları 2024 PHB kurallarıyla birlikte yorumlar.
 

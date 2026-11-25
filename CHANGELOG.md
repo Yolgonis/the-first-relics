@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.17.0
+
+- Redesigned the Vestments of the First Saint (Cleric) around Channel Divinity and concentration. Beacon of Hope, Unyielding Spirit and Sanctuary of Dawn are replaced.
+  - Passives: Gentle Light and Saint's Grace (unchanged), Font of Divinity (regain a Channel Divinity use when combat starts, automated) and Radiant Sermon (once per turn, Wisdom modifier + relic bonus to a cleric spell's damage, automated).
+  - Actives: Steadfast Prayer (reaction, a failed concentration save succeeds) replaces Sanctuary of Dawn, whose effect gave bludgeoning, piercing and slashing resistance instead of the necrotic and radiant resistance its text described; Cleansing Light now costs a bonus action; Blessing and Wings of Mercy stay.
+  - The avatar now hovers.
+
 ## v0.16.0
 
 - Redesigned the Chains of the Patron (Warlock) around Pact Magic slots and Eldritch Invocations, so it works for every patron. Read the Fine Print, Price Paid (a copy of the Fiend's Dark One's Blessing), No Master But the Price and Patron's Glance are replaced.

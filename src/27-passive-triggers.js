@@ -113,7 +113,7 @@ function TFRTokenCenterPoint(token) {
   return { x: (doc?.x || 0) + ((doc?.width || 1) * size) / 2, y: (doc?.y || 0) + ((doc?.height || 1) * size) / 2 };
 }
 
-// ---- Combat start: Unseen Hunter (Umbral Veil), Prepared Mind, Wellspring, King's Mercy, Endless Seasons, Endless Refrain, Undying Fury, Second Dawn ----
+// ---- Combat start: Unseen Hunter (Umbral Veil), Prepared Mind, Wellspring, King's Mercy, Endless Seasons, Endless Refrain, Undying Fury, Second Dawn, Pact Reservoir, Font of Divinity ----
 
 async function TFRStartCombatPassives(combat) {
   const actors = new Map();
@@ -205,6 +205,13 @@ async function TFRStartCombatPassives(combat) {
     if (reservoir) {
       const level = await TFRRegainPactSlot(actor, TFRT("Pact Reservoir"));
       if (level) await TFRPassiveChat(actor, reservoir, 1, TFRT("{actor} regains a Pact Magic slot.", { actor: TFREscapeHtml(actor.name) }));
+    }
+
+    // Font of Divinity (Vestments of the First Saint): one expended Channel Divinity use back at initiative.
+    const font = TFRActivePassiveItem(actor, "vestments_first_saint", 2);
+    if (font) {
+      const regained = await TFRRegainFeatureUses(actor, "channel-divinity-cleric", 1, TFRT("Font of Divinity"));
+      if (regained) await TFRPassiveChat(actor, font, 2, TFRT("{actor} regains a use of Channel Divinity.", { actor: TFREscapeHtml(actor.name) }));
     }
   }
 }
@@ -392,14 +399,15 @@ function TFRAddCrownedSmite(config) {
   if (roll?.parts) roll.parts.push(`1d8[radiant] + ${TFRItemRelicBonus(crown)}`);
 }
 
-// ---- Class spell damage: Arcane Edge (Mantle), Elemental Wrath (Blood), Primal Wrath (Heart), Dissonant Edge (Lyre) ----
+// ---- Class spell damage: Arcane Edge (Mantle), Elemental Wrath (Blood), Primal Wrath (Heart), Dissonant Edge (Lyre), Radiant Sermon (Vestments) ----
 
 /** Spell damage passives: once per turn, the ability modifier + relic bonus on a spell of that class. */
 const TFR_SPELL_DAMAGE_PASSIVES = [
   { relicId: "mantle_first_seer", index: 3, sourceClass: "wizard", ability: "int", flag: "arcaneEdgeTurn" },
   { relicId: "blood_first_dragon", index: 3, sourceClass: "sorcerer", ability: "cha", flag: "elementalWrathTurn" },
   { relicId: "heart_yggdrasil", index: 3, sourceClass: "druid", ability: "wis", flag: "primalWrathTurn" },
-  { relicId: "lyre_first_song", index: 3, sourceClass: "bard", ability: "cha", flag: "dissonantEdgeTurn" }
+  { relicId: "lyre_first_song", index: 3, sourceClass: "bard", ability: "cha", flag: "dissonantEdgeTurn" },
+  { relicId: "vestments_first_saint", index: 3, sourceClass: "cleric", ability: "wis", flag: "radiantSermonTurn" }
 ];
 
 function TFRAddSpellDamagePassive(config) {
