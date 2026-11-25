@@ -8,24 +8,28 @@ export default {
   damageType: "force",
   /** The six abilities by slot: what the item's activities are built from. */
   abilities: {
-    active1: { name: "Stand", type: "utility", activation: "bonus", charges: 1, range: 0, target: "self" },
+    active1: { name: "Primal Surge", type: "utility", activation: "special", charges: 1, range: 0, target: "self" },
     active2: { name: "Stoneheart Surge", type: "damage", activation: "special", charges: 2, range: 5, target: "creature", damage: { number: 4, denomination: 8, type: "force" } },
     active3: { name: "Refuse the Fall", type: "utility", activation: "reaction", charges: 3, range: 0, target: "self" },
-    active4: { name: "Hold the World", type: "utility", activation: "reaction", charges: 4, range: 10, target: "creature" },
+    active4: { name: "Earthshaker Leap", type: "save", activation: "bonus", charges: 4, range: 5, target: "creature", save: "str" },
     avatar: { name: "Avatar of Indomitable Will", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self" },
     signature: { name: "Signature of Indomitable Will", type: "utility", activation: "special", charges: 0, range: 0, target: "self" }
   },
   /** Per-slot overrides on top of `abilities` that describe how each activity is automated. */
   automation: {
-    active1: { role: "self-recovery", type: "utility", activation: "bonus", charges: 1, range: 0, target: "self", note: "End prone + temp HP; utility/reminder." },
-    active2: { role: "bonus-damage", type: "damage", activation: "special", charges: 2, range: 5, target: "creature", damage: { number: 4, denomination: 8, type: "force" }, note: "Extra force damage after melee hit." },
-    active3: { role: "saving-reroll", type: "utility", activation: "reaction", charges: 3, range: 0, target: "self", note: "Reroll failed STR/CON/WIS save." },
-    active4: { role: "ally-protection", type: "utility", activation: "reaction", charges: 4, range: 10, target: "creature", note: "+3 AC or take movement/effect; GM resolved." },
-    avatar: { role: "self-buff", type: "utility", activation: "bonus", charges: 8, range: 0, target: "self", effect: true, note: "Unbroken avatar effect/reminder." },
-    signature: { role: "death-ward-state", type: "utility", activation: "special", charges: 0, range: 0, target: "self", note: "1 HP refusal state." }
+    active1: { role: "rage-start", note: "Enter Rage without a bonus action (spend a Rage use) and move half your speed; GM-resolved." },
+    active2: { role: "bonus-damage", note: "Extra force damage after a melee hit." },
+    active3: { role: "saving-reroll", note: "Reroll failed STR/CON/WIS save." },
+    active4: { role: "save-control", note: "STR save; Prone, and a flying target falls. The leap is moved manually." },
+    avatar: { role: "self-buff", effect: true, note: "Unbroken avatar effect/reminder." },
+    signature: { role: "death-ward-state", note: "1 HP refusal state." }
+  },
+  /** Always-on passives as Active Effects: passive index -> { changes, aura?, note? }. */
+  passiveEffects: {
+    3: { changes: [["system.scale.barbarian.rage-damage.value", "ADD", "{bonus}"]] }
   },
   /** Passives run by hooks in 27-passive-triggers.js: passive index -> { note? }. */
-  passiveTriggers: { 2: { note: "rage" } },
+  passiveTriggers: { 0: { note: "rage" }, 1: {}, 2: { note: "rage" } },
   /** Active Effect changes applied when an ability is used, by slot. `bonus` is the stage bonus. */
   abilityEffects: ({ bonus, add, upgrade, override, custom }) => ({
     avatar: [
@@ -41,9 +45,9 @@ export default {
   }),
   /** What the module does when an ability is used, by slot (helper effects, conditions, reminders). `mode` gives an Active Effect mode by name. */
   runtime: ({ mode }) => ({
-    active1: { removeSelf: ["prone"], tempHp: "level+bonus", rounds: 1, seconds: 6 },
+    active1: { note: "Primal Surge is manual: enter your Rage without taking a bonus action (it still spends a use of Rage), then move up to half your speed." },
     active3: { note: "Refuse the Fall is manual: reroll the failed Strength, Constitution, or Wisdom save and use the new result." },
-    active4: { note: "Hold the World is manual: protect the chosen creature within 10 ft, then resolve the AC bonus, movement, or intercepted effect with the GM." },
+    active4: { condition: "prone", targetName: "Prone — Earthshaker Leap", rounds: 1, seconds: 6, note: "Earthshaker Leap: move your token next to the target first; a flying target that fails also falls." },
     avatar: { selfEffect: true },
     signature: { selfEffect: true }
   })

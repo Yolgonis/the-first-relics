@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.14.0
+
+- Redesigned the Girdle of the Unbroken (Barbarian) around Rage, damage types Rage doesn't resist, bonus action pressure and enemies out of reach. Unyielding Core, Stand Again, The Unbroken Does Not Kneel, Stand and Hold the World are replaced.
+  - Passives: Primal Hide (while raging, resistance to acid, cold, fire, lightning, poison and thunder, automated), Undying Fury (regain a Rage use when combat starts, automated), Will Before Wound (unchanged) and Thunderous Fury (Rage Damage bonus + relic bonus, automated).
+  - Actives: Primal Surge (enter Rage without a bonus action and move half your speed) and Earthshaker Leap (bonus action leap to a creature, even a flying one; Strength save or prone, automated) are new; Stoneheart Surge and Refuse the Fall stay.
+
 ## v0.13.0
 
 - Redesigned the Lyre of the First Song (Bard) around Bardic Inspiration and removed its overlapping save and fear auras. Echo of Inspiration, Song of Courage, Melody of Unity and Verse of Silence are replaced, and Song of Rest is renamed Rallying Chord.

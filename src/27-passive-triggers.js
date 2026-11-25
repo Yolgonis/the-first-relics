@@ -197,6 +197,13 @@ async function TFRStartCombatPassives(combat) {
       const regained = await TFRRegainFeatureUses(actor, "bardic-inspiration", 1, TFRT("Endless Refrain"));
       if (regained) await TFRPassiveChat(actor, refrain, 0, TFRT("{actor} regains a use of Bardic Inspiration.", { actor: TFREscapeHtml(actor.name) }));
     }
+
+    // Undying Fury (Girdle of the Unbroken): one expended Rage use back at initiative.
+    const fury = TFRActivePassiveItem(actor, "girdle_unbroken", 1);
+    if (fury) {
+      const regained = await TFRRegainFeatureUses(actor, "rage", 1, TFRT("Undying Fury"));
+      if (regained) await TFRPassiveChat(actor, fury, 1, TFRT("{actor} regains a use of Rage.", { actor: TFREscapeHtml(actor.name) }));
+    }
   }
 }
 
@@ -422,6 +429,18 @@ function TFRIsRaging(actor) {
   return false;
 }
 
+/** Primal Hide: while raging, elemental damage the bearer doesn't already resist is halved. */
+const TFR_PRIMAL_HIDE_TYPES = ["acid", "cold", "fire", "lightning", "poison", "thunder"];
+
+function TFRPrimalHideDamage(actor, damages) {
+  if (!TFRActivePassiveItem(actor, "girdle_unbroken", 0) || !TFRIsRaging(actor)) return;
+  const resisted = actor.system?.traits?.dr?.value;
+  for (const damage of damages) {
+    if (!TFR_PRIMAL_HIDE_TYPES.includes(damage.type) || resisted?.has?.(damage.type)) continue;
+    damage.value = Math.floor((Number(damage.value) || 0) / 2);
+  }
+}
+
 /** The Girdle whose Will Before Wound can still reduce damage this round, or null. */
 function TFRWillBeforeWoundItem(actor) {
   const girdle = TFRActivePassiveItem(actor, "girdle_unbroken", 2);
@@ -588,6 +607,7 @@ export function TFRRegisterPassiveTriggers() {
   Hooks.on("dnd5e.preRollDamageV2", TFRHuntersMarkDamage);
   Hooks.on("dnd5e.preUseActivity", TFRUnbrokenMark);
   Hooks.on("dnd5e.preCalculateDamage", TFRAddHealingReceived);
+  Hooks.on("dnd5e.preCalculateDamage", TFRPrimalHideDamage);
   Hooks.on("dnd5e.preCalculateDamage", TFRReduceRagingDamage);
   Hooks.on("dnd5e.applyDamage", TFRMarkWillBeforeWound);
   Hooks.on("dnd5e.preRollDamageV2", TFRAddSpellDamagePassive);

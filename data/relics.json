@@ -1025,16 +1025,16 @@
     ],
     "features": {
       "passives": [
-        "<strong>Unyielding Core.</strong> You gain the relic bonus to Strength checks and Strength saving throws made to resist being moved, knocked prone, grappled, restrained, or frightened.",
-        "<strong>Stand Again.</strong> Standing from prone costs only 5 feet of movement. While raging, it costs no movement.",
+        "<strong>Primal Hide.</strong> While your Rage is active, you also have resistance to acid, cold, fire, lightning, poison, and thunder damage.",
+        "<strong>Undying Fury.</strong> When you roll initiative, you regain one expended use of Rage.",
         "<strong>Will Before Wound.</strong> While raging, the first time each round you take damage, reduce that damage by the relic bonus.",
-        "<strong>The Unbroken Does Not Kneel.</strong> You have advantage on saving throws against frightened, charmed, paralyzed, and stunned. If you already have advantage, add the relic bonus."
+        "<strong>Thunderous Fury.</strong> Your Rage Damage bonus increases by the relic bonus."
       ],
       "actives": [
-        "<strong>Stand.</strong> <em>Bonus Action, 1 charge.</em> End the prone condition on yourself and gain temporary hit points equal to your barbarian level + the relic bonus.",
+        "<strong>Primal Surge.</strong> <em>No action, 1 charge.</em> You enter your Rage without taking a bonus action (it still expends a use of Rage), and you can move up to half your speed.",
         "<strong>Stoneheart Surge.</strong> <em>Special, 2 charges.</em> Use when you hit with a melee weapon attack. The attack deals extra force damage and you may move up to 10 feet without provoking opportunity attacks.",
         "<strong>Refuse the Fall.</strong> <em>Reaction, 3 charges.</em> When you fail a Strength, Constitution, or Wisdom saving throw, reroll it. The new result must be used.",
-        "<strong>Hold the World.</strong> <em>Reaction, 4 charges.</em> When an ally within 10 feet would be hit or forcibly moved, grant that ally +3 AC against the triggering attack or take the forced movement in their place if possible."
+        "<strong>Earthshaker Leap.</strong> <em>Bonus Action, 4 charges.</em> You leap up to your speed without provoking opportunity attacks and land next to a creature you can see, even one in the air. It must succeed on a Strength saving throw against your relic DC or be knocked prone; a flying creature that fails also falls."
       ],
       "avatar": "<strong>Avatar of the Unbroken.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> The ground cracks beneath your feet. You gain flying speed 30 ft with hover in short bursts, cannot be forcibly moved unless you allow it, cannot be knocked prone, and once per turn when you hit with a melee weapon attack you deal extra force damage equal to your barbarian level.",
       "signature": "<strong>Heart That Refuses.</strong> <em>Once per long rest.</em> For 1 minute, the first time you would drop to 0 hit points, you drop to 1 hit point instead. During this duration, you cannot be frightened, paralyzed, or forcibly moved, and when you stand from prone you may make one melee weapon attack as part of the same movement."
