@@ -55,9 +55,9 @@ function TFRFallbackAbilityAutomation(relicId, slot) {
       signature: { type: "utility", activation: "special", target: "creature", range: "60 ft" }
     },
     blood_first_dragon: {
-      active1: { type: "save", activation: "bonus", target: "creature", range: "30 ft", save: "wis" },
+      active1: { type: "utility", activation: "special", target: "self", range: "self" },
       active2: { type: "utility", activation: "bonus", target: "self", range: "self" },
-      active3: { type: "utility", activation: "action", target: "self", range: "self" },
+      active3: { type: "utility", activation: "bonus", target: "self", range: "self" },
       active4: { type: "damage", activation: "action", target: "creature", range: "60 ft", damage: "10d6 fire" },
       avatar: { type: "utility", activation: "bonus", target: "self", range: "self" },
       signature: { type: "utility", activation: "special", target: "self", range: "self" }

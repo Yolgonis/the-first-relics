@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.9.0
+
+- Redesigned the Blood of the First Dragon (Sorcerer) around Sorcery Points, Metamagic and Innate Sorcery so it works for every subclass. Ancient Scales, Unyielding Will, Dragon Soul, Draconic Roar and Wings of the First Dragon are replaced.
+  - Passives: Wellspring (Sorcery Points equal to the relic bonus when combat starts, automated), Draconic Blood (unchanged), Twin Heart (a free 1-point Metamagic once per turn, relic bonus uses per long rest) and Elemental Wrath (once per turn, Charisma modifier + relic bonus to a sorcerer spell's damage, automated).
+  - Actives: Kindled Sorcery (regain an Innate Sorcery use, automated) and Blood Tithe (regain relic bonus + 2 Sorcery Points, automated); Burning Blood now also applies to spell attacks; Primordial Breath stays.
+  - The avatar lowers Metamagic costs by 1; the signature restores all Sorcery Points and applies resistance to all damage and a 19–20 critical range for weapons and spells (automated).
+- Relic abilities can restore uses of a class feature by its identifier (Focus Points, Sorcery Points, Innate Sorcery).
+
 ## v0.8.0
 
 - Redesigned the Mantle of the First Seer (Wizard) so it works for every school instead of only divination spells. Scholar's Insight, Eyes Beyond Time, Echo of Tomorrow and Spell Insight are replaced.

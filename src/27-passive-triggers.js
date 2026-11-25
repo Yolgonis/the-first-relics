@@ -12,7 +12,7 @@ import {
 import { TFRGetRelicById } from "./06-relic-state.js";
 import { TFREscapeHtml } from "./08-affinity-events.js";
 import { TFRChatFlags, TFRResolveActor } from "./11-effect-helpers.js";
-import { TFRApplyTempHp, TFRMonkFocusItem, TFRRegainFocus, TFRRegainSpellSlot } from "./14-ability-runtime.js";
+import { TFRApplyTempHp, TFRMonkFocusItem, TFRRegainFeatureUses, TFRRegainFocus, TFRRegainSpellSlot } from "./14-ability-runtime.js";
 import { TFRDistanceFeet } from "./19-fey-step.js";
 
 // Event-triggered passive features: combat start, dropping to 0 hit points, long rests, casting
@@ -168,6 +168,13 @@ async function TFRStartCombatPassives(combat) {
         await mantle.setFlag(TFR_MODULE_ID, "passiveUses.p2", true);
         await TFRPassiveChat(actor, mantle, 2, TFRT("{actor} regains a level {level} spell slot.", { actor: TFREscapeHtml(actor.name), level }));
       }
+    }
+
+    // Wellspring (Blood of the First Dragon): Sorcery Points equal to the relic bonus at initiative.
+    const blood = TFRActivePassiveItem(actor, "blood_first_dragon", 0);
+    if (blood) {
+      const regained = await TFRRegainFeatureUses(actor, "font-of-magic", await TFRPassiveRelicBonus(blood), TFRT("Wellspring"));
+      if (regained) await TFRPassiveChat(actor, blood, 0, TFRT("{actor} regains {amount} Sorcery Points.", { actor: TFREscapeHtml(actor.name), amount: regained }));
     }
   }
 }
@@ -330,21 +337,28 @@ async function TFRPassivesAfterActivity(activity) {
   await TFRApplyTempHp(actor, TFRProficiency(actor) + await TFRPassiveRelicBonus(mantle), TFRT("Living Chronicle"));
 }
 
-// ---- Wizard spell damage: Arcane Edge (Mantle of the First Seer) ----
+// ---- Class spell damage: Arcane Edge (Mantle of the First Seer), Elemental Wrath (Blood of the First Dragon) ----
 
-function TFRAddArcaneEdge(config) {
+/** Spell damage passives: once per turn, the ability modifier + relic bonus on a spell of that class. */
+const TFR_SPELL_DAMAGE_PASSIVES = [
+  { relicId: "mantle_first_seer", index: 3, sourceClass: "wizard", ability: "int", flag: "arcaneEdgeTurn" },
+  { relicId: "blood_first_dragon", index: 3, sourceClass: "sorcerer", ability: "cha", flag: "elementalWrathTurn" }
+];
+
+function TFRAddSpellDamagePassive(config) {
   const activity = config?.subject;
   const spell = activity?.item;
-  if (!activity || activity.type === "heal" || spell?.type !== "spell" || spell.system?.sourceClass !== "wizard") return;
-  const mantle = TFRActivePassiveItem(activity.actor, "mantle_first_seer", 3);
-  if (!mantle) return;
+  if (!activity || activity.type === "heal" || spell?.type !== "spell") return;
+  const passive = TFR_SPELL_DAMAGE_PASSIVES.find(entry => entry.sourceClass === spell.system?.sourceClass);
+  const relic = passive ? TFRActivePassiveItem(activity.actor, passive.relicId, passive.index) : null;
+  if (!relic) return;
   const turn = TFRCombatTurnKey(activity.actor);
-  if (turn && mantle.getFlag(TFR_MODULE_ID, "arcaneEdgeTurn") === turn) return;
+  if (turn && relic.getFlag(TFR_MODULE_ID, passive.flag) === turn) return;
   const roll = config.rolls?.[0];
   if (!roll?.parts) return;
-  const intelligence = Number(activity.actor.system?.abilities?.int?.mod) || 0;
-  roll.parts.push(String(Math.max(0, intelligence) + TFRItemRelicBonus(mantle)));
-  if (turn && mantle.isOwner) mantle.setFlag(TFR_MODULE_ID, "arcaneEdgeTurn", turn).catch(error => console.warn("The First Relics | Could not record Arcane Edge.", error));
+  const modifier = Number(activity.actor.system?.abilities?.[passive.ability]?.mod) || 0;
+  roll.parts.push(String(Math.max(0, modifier) + TFRItemRelicBonus(relic)));
+  if (turn && relic.isOwner) relic.setFlag(TFR_MODULE_ID, passive.flag, turn).catch(error => console.warn("The First Relics | Could not record a spell damage passive.", error));
 }
 
 // ---- Healing given and received: Saint's Grace (Vestments), Nature's Blessing (Yggdrasil) ----
@@ -504,7 +518,7 @@ export function TFRRegisterPassiveTriggers() {
   Hooks.on("dnd5e.preCalculateDamage", TFRAddHealingReceived);
   Hooks.on("dnd5e.preCalculateDamage", TFRReduceRagingDamage);
   Hooks.on("dnd5e.applyDamage", TFRMarkWillBeforeWound);
-  Hooks.on("dnd5e.preRollDamageV2", TFRAddArcaneEdge);
+  Hooks.on("dnd5e.preRollDamageV2", TFRAddSpellDamagePassive);
   Hooks.on("dnd5e.preApplyDamage", TFRRecordHpBeforeDamage);
   Hooks.on("dnd5e.applyDamage", TFRPricePaidCheck);
 }

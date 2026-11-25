@@ -3831,19 +3831,19 @@
     ],
     "features": {
       "passives": [
+        "<strong>Wellspring.</strong> When you roll initiative, you regain Sorcery Points equal to the relic bonus.",
         "<strong>Draconic Blood.</strong> Your hit point maximum increases by 1 for each of your character levels.",
-        "<strong>Ancient Scales.</strong> You gain a +1 bonus to AC.",
-        "<strong>Unyielding Will.</strong> You have advantage on Strength and Constitution saving throws.",
-        "<strong>Dragon Soul.</strong> You have resistance to fire and cold damage, and you are immune to the frightened condition."
+        "<strong>Twin Heart.</strong> Once per turn, you can apply a Metamagic option that costs 1 Sorcery Point without spending it. You can use this feature a number of times equal to the relic bonus, and you regain all uses when you finish a long rest.",
+        "<strong>Elemental Wrath.</strong> Once per turn, when a sorcerer spell you cast deals damage, add your Charisma modifier + the relic bonus to one damage roll of that spell."
       ],
       "actives": [
-        "<strong>Draconic Roar.</strong> <em>Bonus Action, 1 charge.</em> One creature within 30 feet must make a Wisdom saving throw or be frightened of you until the end of your next turn.",
+        "<strong>Kindled Sorcery.</strong> <em>No action, 1 charge.</em> You regain one expended use of Innate Sorcery.",
         "<strong>Burning Blood.</strong> <em>Bonus Action, 2 charges, 1 minute.</em> Your weapon and spell attacks deal an extra 2d6 fire damage once per turn.",
-        "<strong>Wings of the First Dragon.</strong> <em>Action, 3 charges, 1 minute.</em> You gain flying speed 60 feet with hover as wings of elemental flame unfold from your back.",
+        "<strong>Blood Tithe.</strong> <em>Bonus Action, 3 charges.</em> The first dragon's blood surges through you, and you regain Sorcery Points equal to the relic bonus + 2.",
         "<strong>Primordial Breath.</strong> <em>Action, 4 charges.</em> Exhale a 60-foot cone of primordial fire. Creatures in the area make a Dexterity saving throw, taking 10d6 fire damage on a failure or half as much on a success."
       ],
-      "avatar": "<strong>First Dragon Incarnate.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> You gain flying speed 80 feet with hover, resistance to fire, cold, and lightning damage, a frightful draconic presence, and once per turn your damage deals an extra 2d10 fire, cold, or lightning damage.",
-      "signature": "<strong>Heart of the First Flame.</strong> <em>Once per long rest, 1 minute.</em> You gain flying speed, resistance to all damage, advantage on attack rolls and saving throws, and your weapon and spell attacks score critical hits on a 19 or 20. When it ends, you gain one level of exhaustion."
+      "avatar": "<strong>First Dragon Incarnate.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> You gain flying speed 80 feet with hover, resistance to fire, cold, and lightning damage, a frightful draconic presence, and once per turn your damage deals an extra 2d10 fire, cold, or lightning damage. While it lasts, your Metamagic options cost 1 fewer Sorcery Point (minimum 0).",
+      "signature": "<strong>Heart of the First Flame.</strong> <em>Once per long rest, 1 minute.</em> You regain all expended Sorcery Points. You gain flying speed, resistance to all damage, advantage on attack rolls and saving throws, and your weapon and spell attacks score critical hits on a 19 or 20. When it ends, you gain one level of exhaustion."
     },
     "dreams": [
       {
