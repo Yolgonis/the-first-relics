@@ -2,7 +2,7 @@
   "id": "the-first-relics",
   "title": "The First Relics",
   "description": "Twelve evolving legendary relics for Foundry VTT dnd5e campaigns, with affinity progression, staged powers, GM tools, helper automation, and item art.",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "compatibility": {
     "minimum": "13",
     "verified": "13.351"

@@ -4179,18 +4179,18 @@
     ],
     "features": {
       "passives": [
-        "<strong>Echo of Inspiration.</strong> Allies within 30 feet of you add the relic bonus to their ability checks.",
-        "<strong>Song of Courage.</strong> Allies within 30 feet of you can't be frightened.",
-        "<strong>Melody of Unity.</strong> Allies within 30 feet of you add your proficiency bonus to their saving throws.",
-        "<strong>Symphony Eternal.</strong> When you fail a Constitution saving throw to maintain concentration, you can choose to succeed instead. You can do this a number of times equal to your proficiency bonus, regaining all uses when you finish a long rest."
+        "<strong>Endless Refrain.</strong> When you roll initiative, you regain one expended use of Bardic Inspiration.",
+        "<strong>Resounding Chord.</strong> Your Bardic Inspiration die increases by one step, to a maximum of d12. Features that roll your Bardic Inspiration die use the larger die.",
+        "<strong>Symphony Eternal.</strong> When you fail a Constitution saving throw to maintain concentration, you can choose to succeed instead. You can do this a number of times equal to your proficiency bonus, regaining all uses when you finish a long rest.",
+        "<strong>Dissonant Edge.</strong> Once per turn, when a bard spell you cast deals damage, add your Charisma modifier + the relic bonus to one damage roll of that spell."
       ],
       "actives": [
-        "<strong>Song of Rest.</strong> <em>Action, 1 charge.</em> Allies of your choice within 30 feet regain 2d8 hit points as the first chord restores breath and courage.",
+        "<strong>Rallying Chord.</strong> <em>Bonus Action, 1 charge.</em> Allies of your choice within 30 feet regain 2d8 hit points as the first chord restores breath and courage.",
         "<strong>Ballad of Heroes.</strong> <em>Bonus Action, 2 charges, 1 minute.</em> You create a 30-foot aura. Allies in the aura gain +1 to attack and damage rolls.",
-        "<strong>Verse of Silence.</strong> <em>Action, 3 charges.</em> A creature within 60 feet must make a Wisdom saving throw. On a failure, it is silenced for 1 minute.",
-        "<strong>Chorus of Creation.</strong> <em>Action, 4 charges, 1 minute.</em> Allies in a 30-foot aura have advantage on saving throws, gain +2 AC, and gain temporary hit points equal to 10 + the relic bonus."
+        "<strong>Encore.</strong> <em>No action, 3 charges.</em> The song continues, and you regain two expended uses of Bardic Inspiration.",
+        "<strong>Chorus of Creation.</strong> <em>Bonus Action, 4 charges, 1 minute.</em> Allies in a 30-foot aura have advantage on saving throws, gain +2 AC, and gain temporary hit points equal to 10 + the relic bonus."
       ],
-      "avatar": "<strong>First Song Incarnate.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> Music becomes visible around you. You gain flying speed 40 feet with hover, resistance to radiant and psychic damage, allies near you gain advantage against charm and fear, and your healing songs restore extra hit points equal to the relic bonus.",
+      "avatar": "<strong>First Song Incarnate.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> Music becomes visible around you. You gain a flying speed of 40 feet and can hover, you have resistance to radiant and psychic damage, and your healing songs restore extra hit points equal to the relic bonus. Giving Bardic Inspiration doesn't take your bonus action, and a creature can use your Bardic Inspiration after a successful roll too.",
       "signature": "<strong>The First Song.</strong> <em>Once per long rest, 1 minute.</em> Allies of your choice within 60 feet gain advantage on saving throws and ability checks, +2 AC, +2 to attack rolls, and regeneration 10. Enemies of your choice must make a Wisdom saving throw or be charmed for the duration."
     },
     "dreams": [

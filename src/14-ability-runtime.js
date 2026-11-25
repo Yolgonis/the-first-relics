@@ -416,20 +416,21 @@ export function TFRRelicAbilityFromChatMessage(message, actor = null) {
     if (!item) continue;
     if (!TFRChatMentionsRelicItem(message, actor, relicId, item, haystack)) continue;
 
-    // Infer by explicit ability names, activity ids, and dnd5e badge chips such as
-    // REACTION + SELF or BONUS ACTION + 30 FT + 1 SPACE.
-    const inferred = TFRInferRelicSlotFromChatBadges(relicId, item, haystack);
-    if (inferred) return inferred;
-
-    // Fallback when the badges are ambiguous (two abilities with the same activation and target,
-    // such as a bonus-action self ability next to the avatar) or not English in translated worlds:
     // dnd5e records the used activity on its chat card, and the activity carries its slot flag.
+    // This is checked first: badge and name matching can pick the wrong ability when two share an
+    // activation and target, or when the relic's name contains another ability's name (the Lyre
+    // of the First Song's card matched its signature, The First Song).
     const activityId = message.flags?.dnd5e?.activity?.id || null;
     const flaggedActivity = activityId ? item.system?.activities?.get?.(activityId) : null;
     const flaggedSlot = flaggedActivity ? TFRGetActivitySlot(flaggedActivity) : null;
     if (flaggedSlot && slots[flaggedSlot]) {
       return { relicId, slot: flaggedSlot, name: flaggedActivity.name || slots[flaggedSlot].name, score: 100 };
     }
+
+    // Older cards without the activity: infer by explicit ability names, activity ids, and dnd5e
+    // badge chips such as REACTION + SELF or BONUS ACTION + 30 FT + 1 SPACE.
+    const inferred = TFRInferRelicSlotFromChatBadges(relicId, item, haystack);
+    if (inferred) return inferred;
   }
   return null;
 }

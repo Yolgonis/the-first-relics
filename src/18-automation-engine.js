@@ -63,10 +63,10 @@ function TFRFallbackAbilityAutomation(relicId, slot) {
       signature: { type: "utility", activation: "special", target: "self", range: "self" }
     },
     lyre_first_song: {
-      active1: { type: "heal", activation: "action", target: "creature", range: "30 ft", healing: "2d8" },
+      active1: { type: "heal", activation: "bonus", target: "creature", range: "30 ft", healing: "2d8" },
       active2: { type: "utility", activation: "bonus", target: "self", range: "self" },
-      active3: { type: "save", activation: "action", target: "creature", range: "60 ft", save: "wis" },
-      active4: { type: "utility", activation: "action", target: "self", range: "self" },
+      active3: { type: "utility", activation: "special", target: "self", range: "self" },
+      active4: { type: "utility", activation: "bonus", target: "self", range: "self" },
       avatar: { type: "utility", activation: "bonus", target: "self", range: "self" },
       signature: { type: "save", activation: "special", target: "creature", range: "60 ft", save: "wis" }
     }

@@ -190,6 +190,13 @@ async function TFRStartCombatPassives(combat) {
       const regained = await TFRRegainFeatureUses(actor, "wild-shape", 1, TFRT("Endless Seasons"));
       if (regained) await TFRPassiveChat(actor, seasons, 1, TFRT("{actor} regains a use of Wild Shape.", { actor: TFREscapeHtml(actor.name) }));
     }
+
+    // Endless Refrain (Lyre of the First Song): one expended Bardic Inspiration use back at initiative.
+    const refrain = TFRActivePassiveItem(actor, "lyre_first_song", 0);
+    if (refrain) {
+      const regained = await TFRRegainFeatureUses(actor, "bardic-inspiration", 1, TFRT("Endless Refrain"));
+      if (regained) await TFRPassiveChat(actor, refrain, 0, TFRT("{actor} regains a use of Bardic Inspiration.", { actor: TFREscapeHtml(actor.name) }));
+    }
   }
 }
 
@@ -361,13 +368,14 @@ function TFRAddCrownedSmite(config) {
   if (roll?.parts) roll.parts.push(`1d8[radiant] + ${TFRItemRelicBonus(crown)}`);
 }
 
-// ---- Class spell damage: Arcane Edge (Mantle), Elemental Wrath (Blood of the First Dragon), Primal Wrath (Heart of Yggdrasil) ----
+// ---- Class spell damage: Arcane Edge (Mantle), Elemental Wrath (Blood), Primal Wrath (Heart), Dissonant Edge (Lyre) ----
 
 /** Spell damage passives: once per turn, the ability modifier + relic bonus on a spell of that class. */
 const TFR_SPELL_DAMAGE_PASSIVES = [
   { relicId: "mantle_first_seer", index: 3, sourceClass: "wizard", ability: "int", flag: "arcaneEdgeTurn" },
   { relicId: "blood_first_dragon", index: 3, sourceClass: "sorcerer", ability: "cha", flag: "elementalWrathTurn" },
-  { relicId: "heart_yggdrasil", index: 3, sourceClass: "druid", ability: "wis", flag: "primalWrathTurn" }
+  { relicId: "heart_yggdrasil", index: 3, sourceClass: "druid", ability: "wis", flag: "primalWrathTurn" },
+  { relicId: "lyre_first_song", index: 3, sourceClass: "bard", ability: "cha", flag: "dissonantEdgeTurn" }
 ];
 
 function TFRAddSpellDamagePassive(config) {

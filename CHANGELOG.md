@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.13.0
+
+- Redesigned the Lyre of the First Song (Bard) around Bardic Inspiration and removed its overlapping save and fear auras. Echo of Inspiration, Song of Courage, Melody of Unity and Verse of Silence are replaced, and Song of Rest is renamed Rallying Chord.
+  - Passives: Endless Refrain (regain a Bardic Inspiration use when combat starts, automated), Resounding Chord (the Bardic Inspiration die grows one step up to d12, automated), Symphony Eternal (unchanged) and Dissonant Edge (once per turn, Charisma modifier + relic bonus to a bard spell's damage, automated).
+  - Actives: Rallying Chord now costs a bonus action; Encore (regain two Bardic Inspiration uses, automated) is new; Chorus of Creation now costs a bonus action; Ballad of Heroes stays.
+  - The avatar gains hover, lets you give Bardic Inspiration without a bonus action and use it after a success, instead of granting advantage against charm and fear.
+- Fixed relic abilities used from their chat card running another ability's helper when the relic's name contains that ability's name (Encore on the Lyre of the First Song ran The First Song). The ability is now read from the activity recorded on the card first, and the badge and name matching is only a fallback for older cards.
+
 ## v0.12.0
 
 - Redesigned the Heart of Yggdrasil (Druid) around Wild Shape and moved it away from the Cleric's healer role. Living Sap, World Tree's Gift, Verdant Bloom and Forest Guardian are replaced.
