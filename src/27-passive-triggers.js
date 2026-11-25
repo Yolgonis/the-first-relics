@@ -12,11 +12,11 @@ import {
 import { TFRGetRelicById } from "./06-relic-state.js";
 import { TFREscapeHtml } from "./08-affinity-events.js";
 import { TFRChatFlags, TFRResolveActor } from "./11-effect-helpers.js";
-import { TFRApplyTempHp, TFRMonkFocusItem, TFRRegainFocus } from "./14-ability-runtime.js";
+import { TFRApplyTempHp, TFRMonkFocusItem, TFRRegainFocus, TFRRegainSpellSlot } from "./14-ability-runtime.js";
 import { TFRDistanceFeet } from "./19-fey-step.js";
 
 // Event-triggered passive features: combat start, dropping to 0 hit points, long rests, casting
-// divination spells, healing, and defeating a hostile creature. Passives that need GM judgment
+// spells, rolling initiative, healing, and defeating a hostile creature. Passives that need GM judgment
 // stay manual. A trigger only fires while its passive is unlocked by the item's stage and the
 // relic's effects are active (equipped, attuned where required, not refusing attunement).
 // Once-per-long-rest uses are stored on the relic item and cleared by a long rest.
@@ -159,6 +159,16 @@ async function TFRStartCombatPassives(combat) {
     }
 
     if (effects.length) await actor.createEmbeddedDocuments("ActiveEffect", effects);
+
+    // Prepared Mind (Mantle of the First Seer): one expended slot back at initiative, once per long rest.
+    const mantle = TFRActivePassiveItem(actor, "mantle_first_seer", 2);
+    if (mantle && !TFRPassiveUsed(mantle, 2)) {
+      const level = await TFRRegainSpellSlot(actor, await TFRPassiveRelicBonus(mantle), TFRT("Prepared Mind"));
+      if (level) {
+        await mantle.setFlag(TFR_MODULE_ID, "passiveUses.p2", true);
+        await TFRPassiveChat(actor, mantle, 2, TFRT("{actor} regains a level {level} spell slot.", { actor: TFREscapeHtml(actor.name), level }));
+      }
+    }
   }
 }
 
@@ -305,16 +315,36 @@ function TFRHuntersMarkDamage(config) {
   if (flatBonus) roll.parts.push(String(flatBonus));
 }
 
-// ---- Casting a divination spell: Living Chronicle (Mantle of the First Seer) ----
+// ---- Casting a spell of 1st level or higher: Living Chronicle (Mantle of the First Seer) ----
 
 async function TFRPassivesAfterActivity(activity) {
   const actor = activity?.actor;
   const spell = activity?.item;
   if (actor?.isOwner && TFRIsHuntersMark(spell) && activity.type === "utility") await TFRShroudOfLeaves(actor);
-  if (!actor?.isOwner || spell?.type !== "spell" || spell.system?.school !== "div") return;
-  const mantle = TFRActivePassiveItem(actor, "mantle_first_seer", 3);
+  if (!actor?.isOwner || spell?.type !== "spell" || !(Number(spell.system?.level) >= 1)) return;
+  const mantle = TFRActivePassiveItem(actor, "mantle_first_seer", 1);
   if (!mantle) return;
+  const turn = TFRCombatTurnKey(actor);
+  if (turn && mantle.getFlag(TFR_MODULE_ID, "livingChronicleTurn") === turn) return;
+  if (turn) await mantle.setFlag(TFR_MODULE_ID, "livingChronicleTurn", turn);
   await TFRApplyTempHp(actor, TFRProficiency(actor) + await TFRPassiveRelicBonus(mantle), TFRT("Living Chronicle"));
+}
+
+// ---- Wizard spell damage: Arcane Edge (Mantle of the First Seer) ----
+
+function TFRAddArcaneEdge(config) {
+  const activity = config?.subject;
+  const spell = activity?.item;
+  if (!activity || activity.type === "heal" || spell?.type !== "spell" || spell.system?.sourceClass !== "wizard") return;
+  const mantle = TFRActivePassiveItem(activity.actor, "mantle_first_seer", 3);
+  if (!mantle) return;
+  const turn = TFRCombatTurnKey(activity.actor);
+  if (turn && mantle.getFlag(TFR_MODULE_ID, "arcaneEdgeTurn") === turn) return;
+  const roll = config.rolls?.[0];
+  if (!roll?.parts) return;
+  const intelligence = Number(activity.actor.system?.abilities?.int?.mod) || 0;
+  roll.parts.push(String(Math.max(0, intelligence) + TFRItemRelicBonus(mantle)));
+  if (turn && mantle.isOwner) mantle.setFlag(TFR_MODULE_ID, "arcaneEdgeTurn", turn).catch(error => console.warn("The First Relics | Could not record Arcane Edge.", error));
 }
 
 // ---- Healing given and received: Saint's Grace (Vestments), Nature's Blessing (Yggdrasil) ----
@@ -334,24 +364,6 @@ function TFRAddHealingReceived(actor, damages) {
   if (!TFRActivePassiveItem(actor, "heart_yggdrasil", 1)) return;
   const healing = damages.find(damage => damage.type === "healing" && Number(damage.value) > 0);
   if (healing) healing.value = Number(healing.value) + TFRProficiency(actor);
-}
-
-// ---- Concentration saves: Perfect Concentration (Mantle of the First Seer) ----
-
-function TFRConcentrationAdvantage(config) {
-  const actor = config?.subject;
-  const mantle = TFRActivePassiveItem(actor, "mantle_first_seer", 1);
-  if (!mantle) return;
-  const spells = [...(actor.concentration?.effects ?? [])].map(effect => fromUuidSync(effect.origin)).filter(Boolean);
-  const roll = config.rolls?.[0];
-  if (!roll) return;
-  if (spells.some(spell => spell.system?.school === "div")) {
-    roll.options ??= {};
-    roll.options.advantage = true;
-  } else {
-    roll.parts ??= [];
-    roll.parts.push(String(TFRItemRelicBonus(mantle)));
-  }
 }
 
 // ---- Damage while raging: Will Before Wound (Girdle of the Unbroken) ----
@@ -492,7 +504,7 @@ export function TFRRegisterPassiveTriggers() {
   Hooks.on("dnd5e.preCalculateDamage", TFRAddHealingReceived);
   Hooks.on("dnd5e.preCalculateDamage", TFRReduceRagingDamage);
   Hooks.on("dnd5e.applyDamage", TFRMarkWillBeforeWound);
-  Hooks.on("dnd5e.preRollConcentrationV2", TFRConcentrationAdvantage);
+  Hooks.on("dnd5e.preRollDamageV2", TFRAddArcaneEdge);
   Hooks.on("dnd5e.preApplyDamage", TFRRecordHpBeforeDamage);
   Hooks.on("dnd5e.applyDamage", TFRPricePaidCheck);
 }

@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.8.0
+
+- Redesigned the Mantle of the First Seer (Wizard) so it works for every school instead of only divination spells. Scholar's Insight, Eyes Beyond Time, Echo of Tomorrow and Spell Insight are replaced.
+  - Passives: Perfect Concentration (advantage on every concentration save, automated), Living Chronicle (once per turn, temporary hit points when you cast a spell of 1st level or higher, automated), Prepared Mind (once per long rest, regain a spell slot up to the relic bonus when combat starts, automated) and Arcane Edge (once per turn, Intelligence modifier + relic bonus to a wizard spell's damage, automated).
+  - Actives: Veil of Possibility (reaction, +5 AC until your next turn, automated) and Rewrite the Page (bonus action, regain a spell slot up to the relic bonus, automated); Moment of Clarity and Threads of Fate stay.
+  - The avatar's free spell is any wizard spell of 3rd level or lower instead of a divination spell.
+
 ## v0.7.0
 
 - Redesigned the Cloak of Fey Paths (Ranger) around Hunter's Mark. The old Hunter's Instinct, Path of the Wild, Predator's Patience and Nature's Pursuit are replaced.

@@ -92,6 +92,20 @@ export async function TFRRegainFocus(actor, amount, label = "Focus Points") {
   return regained;
 }
 
+/** Restores one expended spell slot, the highest level up to `maxLevel`. Returns its level, or 0. */
+export async function TFRRegainSpellSlot(actor, maxLevel, label = "Spell Slot") {
+  const spells = actor?.system?.spells || {};
+  for (let level = Math.min(9, Math.max(0, Number(maxLevel) || 0)); level >= 1; level--) {
+    const slot = spells[`spell${level}`];
+    if (!slot || !(Number(slot.max) > 0) || !(Number(slot.value) < Number(slot.max))) continue;
+    await actor.update({ [`system.spells.spell${level}.value`]: Number(slot.value) + 1 });
+    ui.notifications.info(TFRT("{label}: {actorName} regains a level {level} spell slot.", { label, actorName: actor.name, level }));
+    return level;
+  }
+  ui.notifications.warn(TFRT("{label}: {actorName} has no expended spell slot of level {level} or lower.", { label, actorName: actor?.name || "", level: maxLevel }));
+  return 0;
+}
+
 export async function TFRApplyVerdantSnare(actor, targetActor = null, item = null, options = {}) {
   const targetToken = TFRGetSelectedTargetToken();
   const target = targetActor || targetToken?.actor || null;
@@ -238,6 +252,7 @@ async function TFRApplyRelicAbilityRuntime(actor, relicId, slot, options = {}) {
   }
   if (spec.removeTarget?.length) { if (!targetActor) ui.notifications.warn(TFRT("{value}: target a creature to run cleanup helper.", { value: def?.name || "Relic ability" })); else { await TFRRemoveActorConditions(targetActor, spec.removeTarget); applied = true; } }
   if (spec.tempHp) { const bonus = TFRRelicStageBonusFromItem(relic, item); let amount = 0; if (spec.tempHp === "level+bonus") amount = TFRActorTotalLevel(actor) + bonus; else if (spec.tempHp === "10+bonus") amount = 10 + bonus; else amount = Number(spec.tempHp) || 0; if (amount > 0) { await TFRApplyTempHp(actor, amount, def?.name || "Relic Temp HP"); applied = true; } }
+  if (spec.spellSlot) { await TFRRegainSpellSlot(actor, spec.spellSlot === "bonus" ? TFRRelicStageBonusFromItem(relic, item) : Number(spec.spellSlot) || 1, def?.name || "Spell Slot"); applied = true; }
   if (spec.focus) { const amount = spec.focus === "all" ? "all" : spec.focus === "bonus+1" ? TFRRelicStageBonusFromItem(relic, item) + 1 : Number(spec.focus) || 0; await TFRRegainFocus(actor, amount, def?.name || "Focus Points"); applied = true; }
 
   if (saveQueued) {

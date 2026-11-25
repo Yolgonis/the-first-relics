@@ -658,18 +658,18 @@
     ],
     "features": {
       "passives": [
-        "<strong>Scholar's Insight.</strong> You gain the relic bonus to Intelligence (Arcana), Intelligence (History), and Intelligence (Investigation) checks made to understand magic, prophecy, history, or ancient writing.",
-        "<strong>Perfect Concentration.</strong> You have advantage on saving throws made to maintain concentration on divination spells. If the spell is not divination, you may add the relic bonus instead.",
-        "<strong>Eyes Beyond Time.</strong> The first time each combat you attempt Counterspell, Dispel Magic, or an Arcana check to identify a spell, add the relic bonus to the roll.",
-        "<strong>Living Chronicle.</strong> When you cast a divination spell, you gain temporary hit points equal to your proficiency bonus + the relic bonus. You also cannot be surprised while conscious."
+        "<strong>Perfect Concentration.</strong> You have advantage on Constitution saving throws made to maintain concentration.",
+        "<strong>Living Chronicle.</strong> Once per turn, when you cast a spell of 1st level or higher, you gain temporary hit points equal to your proficiency bonus + the relic bonus. You also can't be surprised while you are conscious.",
+        "<strong>Prepared Mind.</strong> When you roll initiative, you regain one expended spell slot of a level no higher than the relic bonus. Once you use this feature, you can't use it again until you finish a long rest.",
+        "<strong>Arcane Edge.</strong> Once per turn, when a wizard spell you cast deals damage, add your Intelligence modifier + the relic bonus to one damage roll of that spell."
       ],
       "actives": [
-        "<strong>Echo of Tomorrow.</strong> <em>Bonus Action, 1 charge.</em> Gain advantage on your next Intelligence ability check before the end of your next turn.",
+        "<strong>Veil of Possibility.</strong> <em>Reaction, 1 charge.</em> When you are hit by an attack, you glimpse the timeline where it missed. Your AC increases by 5 until the start of your next turn, including against the triggering attack.",
         "<strong>Moment of Clarity.</strong> <em>Reaction, 2 charges.</em> When a creature you can see makes an attack roll, ability check, or saving throw, add or subtract the relic bonus from that roll before the outcome is finalized.",
         "<strong>Threads of Fate.</strong> <em>Reaction, 3 charges.</em> A willing creature within 60 feet may reroll one attack roll, saving throw, or ability check after seeing the result. The new roll must be used.",
-        "<strong>Spell Insight.</strong> <em>Reaction, 4 charges.</em> When you see a creature within 120 feet cast a spell, learn its level, school, and components. If the spell is 5th level or lower, gain advantage on one saving throw against it before the end of the turn."
+        "<strong>Rewrite the Page.</strong> <em>Bonus Action, 4 charges.</em> You regain one expended spell slot of a level no higher than the relic bonus."
       ],
-      "avatar": "<strong>Avatar of the First Seer.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> Constellations orbit you. You gain flying speed 30 ft with hover, detect invisible creatures within 30 ft, advantage on Intelligence and Arcana checks, and advantage on concentration checks. Once during the avatar, you may cast one divination spell of 3rd level or lower without expending a spell slot.",
+      "avatar": "<strong>Avatar of the First Seer.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> Constellations orbit you. You gain a flying speed of 30 feet and can hover, you have truesight out to 30 feet, and you add the relic bonus to your ability checks and saving throws. Once during the avatar, you can cast a wizard spell of 3rd level or lower without expending a spell slot.",
       "signature": "<strong>Chronicle Unwritten.</strong> <em>Once per long rest.</em> When any creature you can see rolls a d20 for an attack roll, saving throw, or ability check, after seeing the result but before the outcome is finalized, force that creature to reroll. You choose which result is used."
     },
     "dreams": [

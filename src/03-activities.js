@@ -479,7 +479,7 @@ export function TFRShouldPreferNativeActivityEffects(relic, slot, options = {}) 
 export function TFRRuntimeWorkCoveredByNativeEffects(spec = {}) {
   if (spec.teleport) return false;
   if (spec.removeSelf?.length || spec.removeTarget?.length) return false;
-  if (spec.tempHp || spec.focus) return false;
+  if (spec.tempHp || spec.focus || spec.spellSlot) return false;
   return !!(spec.selfEffect || spec.targetEffect || spec.condition || spec.conditionSelf);
 }
 
