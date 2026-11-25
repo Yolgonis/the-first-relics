@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.15.0
+
+- Redesigned the Aegis of the Dawn (Fighter) around Second Wind, Action Surge and the subclass dice, keeping its guardian theme. Dawn's Endurance, Unbroken Wall, Stand Firm, Bastion of Resolve and Break the Darkness are replaced.
+  - Passives: Second Dawn (regain a Second Wind use when combat starts, automated), Guardian's Burden (unchanged), Dawnblade (relic bonus radiant damage on weapon hits, automated) and First Light (unchanged).
+  - Actives: Tactical Renewal (regain a Superiority Die or Psionic Energy die, or a Second Wind use, automated), Surge of Dawn (regain an Action Surge use, automated) and Sunbreak Strike (no action after a weapon hit, 4d8 radiant) are new; Dawn Barrier stays.
+  - The avatar now hovers and lets you give your weapon a second Weapon Mastery property.
+- A relic ability can restore uses of the first class feature it finds from a list of identifiers.
+
 ## v0.14.0
 
 - Redesigned the Girdle of the Unbroken (Barbarian) around Rage, damage types Rage doesn't resist, bonus action pressure and enemies out of reach. Unyielding Core, Stand Again, The Unbroken Does Not Kneel, Stand and Hold the World are replaced.

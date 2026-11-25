@@ -113,7 +113,7 @@ function TFRTokenCenterPoint(token) {
   return { x: (doc?.x || 0) + ((doc?.width || 1) * size) / 2, y: (doc?.y || 0) + ((doc?.height || 1) * size) / 2 };
 }
 
-// ---- Combat start: Dawn's Endurance (Aegis), Unseen Hunter (Umbral Veil) ----
+// ---- Combat start: Unseen Hunter (Umbral Veil), Prepared Mind, Wellspring, King's Mercy, Endless Seasons, Endless Refrain, Undying Fury, Second Dawn ----
 
 async function TFRStartCombatPassives(combat) {
   const actors = new Map();
@@ -125,18 +125,6 @@ async function TFRStartCombatPassives(combat) {
       .map(effect => effect.getFlag(TFR_MODULE_ID, "passiveTrigger")));
     const effects = [];
 
-    const aegis = TFRActivePassiveItem(actor, "aegis_dawn", 0);
-    if (aegis && !existing.has("dawnsEndurance")) {
-      const bonus = await TFRPassiveRelicBonus(aegis);
-      effects.push({
-        name: `${aegis.name} - ${TFRT("Dawn's Endurance")}`,
-        img: aegis.img,
-        origin: aegis.uuid,
-        changes: [{ key: "system.attributes.ac.bonus", mode: TFRMode("ADD"), value: `+${bonus}`, priority: 20 }],
-        duration: { combat: combat.id, rounds: 1, startRound: 1 },
-        flags: { [TFR_MODULE_ID]: { passiveTrigger: "dawnsEndurance", combatId: combat.id } }
-      });
-    }
 
     // The first-attack advantage and damage need Midi-QOL with DAE to expire after one attack.
     const veil = midiAttackFlags ? TFRActivePassiveItem(actor, "cloak_shadowfell", 3) : null;
@@ -203,6 +191,13 @@ async function TFRStartCombatPassives(combat) {
     if (fury) {
       const regained = await TFRRegainFeatureUses(actor, "rage", 1, TFRT("Undying Fury"));
       if (regained) await TFRPassiveChat(actor, fury, 1, TFRT("{actor} regains a use of Rage.", { actor: TFREscapeHtml(actor.name) }));
+    }
+
+    // Second Dawn (Aegis of the Dawn): one expended Second Wind use back at initiative.
+    const dawn = TFRActivePassiveItem(actor, "aegis_dawn", 0);
+    if (dawn) {
+      const regained = await TFRRegainFeatureUses(actor, "second-wind", 1, TFRT("Second Dawn"));
+      if (regained) await TFRPassiveChat(actor, dawn, 0, TFRT("{actor} regains a use of Second Wind.", { actor: TFREscapeHtml(actor.name) }));
     }
   }
 }

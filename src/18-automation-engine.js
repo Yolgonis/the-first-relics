@@ -7,10 +7,10 @@ import { TFRActivitySummary, TFRGetActivitiesArray } from "./17-coverage-audits.
 function TFRFallbackAbilityAutomation(relicId, slot) {
   const cfg = {
     aegis_dawn: {
-      active1: { type: "utility", activation: "bonus", target: "self", range: "self" },
+      active1: { type: "utility", activation: "special", target: "self", range: "self" },
       active2: { type: "utility", activation: "reaction", target: "creature", range: "30 ft" },
-      active3: { type: "utility", activation: "action", target: "self", range: "self" },
-      active4: { type: "save", activation: "action", target: "creature", range: "30 ft", save: "con" },
+      active3: { type: "utility", activation: "special", target: "self", range: "self" },
+      active4: { type: "damage", activation: "special", target: "creature", range: "5 ft", damage: "4d8 radiant" },
       avatar: { type: "utility", activation: "bonus", target: "self", range: "self" },
       signature: { type: "utility", activation: "special", target: "creature", range: "30 ft" }
     },

@@ -78,6 +78,16 @@ export function TFRFeatureWithUses(actor, identifier) {
   return actor?.items?.find?.(item => item.system?.identifier === identifier && item.system?.uses?.max) || null;
 }
 
+/**
+ * The first identifier in the list the actor has a feature with spent uses for; else the first
+ * one it has at all; else the first in the list (so the warning names it). A single identifier is returned as is.
+ */
+function TFRPickFeatureIdentifier(actor, identifiers) {
+  if (!Array.isArray(identifiers)) return identifiers;
+  const owned = identifiers.filter(identifier => TFRFeatureWithUses(actor, identifier));
+  return owned.find(identifier => Number(TFRFeatureWithUses(actor, identifier).system.uses.spent) > 0) || owned[0] || identifiers[0];
+}
+
 /** The actor's Monk's Focus feature, whose uses are the Focus Points, or null. */
 export function TFRMonkFocusItem(actor) {
   return TFRFeatureWithUses(actor, "monks-focus");
@@ -265,7 +275,7 @@ async function TFRApplyRelicAbilityRuntime(actor, relicId, slot, options = {}) {
   }
   if (spec.removeTarget?.length) { if (!targetActor) ui.notifications.warn(TFRT("{value}: target a creature to run cleanup helper.", { value: def?.name || "Relic ability" })); else { await TFRRemoveActorConditions(targetActor, spec.removeTarget); applied = true; } }
   if (spec.tempHp) { const bonus = TFRRelicStageBonusFromItem(relic, item); let amount = 0; if (spec.tempHp === "level+bonus") amount = TFRActorTotalLevel(actor) + bonus; else if (spec.tempHp === "10+bonus") amount = 10 + bonus; else amount = Number(spec.tempHp) || 0; if (amount > 0) { await TFRApplyTempHp(actor, amount, def?.name || "Relic Temp HP"); applied = true; } }
-  if (spec.itemUses) { const raw = spec.itemUses.amount; const amount = raw === "all" ? "all" : raw === "bonus+2" ? TFRRelicStageBonusFromItem(relic, item) + 2 : raw === "bonus" ? TFRRelicStageBonusFromItem(relic, item) : Number(raw) || 0; await TFRRegainFeatureUses(actor, spec.itemUses.identifier, amount, def?.name || "Feature Uses"); applied = true; }
+  if (spec.itemUses) { const raw = spec.itemUses.amount; const amount = raw === "all" ? "all" : raw === "bonus+2" ? TFRRelicStageBonusFromItem(relic, item) + 2 : raw === "bonus" ? TFRRelicStageBonusFromItem(relic, item) : Number(raw) || 0; await TFRRegainFeatureUses(actor, TFRPickFeatureIdentifier(actor, spec.itemUses.identifier), amount, def?.name || "Feature Uses"); applied = true; }
   if (spec.spellSlot) { await TFRRegainSpellSlot(actor, spec.spellSlot === "bonus" ? TFRRelicStageBonusFromItem(relic, item) : Number(spec.spellSlot) || 1, def?.name || "Spell Slot"); applied = true; }
   if (spec.focus) { const amount = spec.focus === "all" ? "all" : spec.focus === "bonus+1" ? TFRRelicStageBonusFromItem(relic, item) + 1 : Number(spec.focus) || 0; await TFRRegainFocus(actor, amount, def?.name || "Focus Points"); applied = true; }
 

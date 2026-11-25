@@ -1743,18 +1743,18 @@
     ],
     "features": {
       "passives": [
-        "<strong>Dawn's Endurance.</strong> During the first round of each combat, you gain a bonus to AC equal to the relic bonus.",
-        "<strong>Unbroken Wall.</strong> Opportunity attacks against allies within 5 feet of you have disadvantage.",
+        "<strong>Second Dawn.</strong> When you roll initiative, you regain one expended use of Second Wind.",
         "<strong>Guardian's Burden.</strong> When a creature you can see attacks an ally within 5 feet of you, you can use your reaction to become the target of that attack instead. You can do this a number of times equal to your proficiency bonus, regaining all uses when you finish a long rest.",
+        "<strong>Dawnblade.</strong> Your weapon hits deal extra radiant damage equal to the relic bonus.",
         "<strong>First Light.</strong> When you are reduced to 0 hit points but not killed outright, you drop to 1 hit point instead. Once you use this feature, you can't use it again until you finish a long rest."
       ],
       "actives": [
-        "<strong>Stand Firm.</strong> <em>Bonus Action, 1 charge.</em> Until the start of your next turn, add the relic bonus to checks and saves made to resist being pushed, knocked prone, grappled, or restrained.",
+        "<strong>Tactical Renewal.</strong> <em>No action, 1 charge.</em> You regain one expended Superiority Die or Psionic Energy die. If you have neither, you regain one expended use of Second Wind instead.",
         "<strong>Dawn Barrier.</strong> <em>Reaction, 2 charges.</em> When an ally within 30 feet is hit by an attack, grant that ally +4 AC against the triggering attack, potentially turning the hit into a miss.",
-        "<strong>Bastion of Resolve.</strong> <em>Action, 3 charges, 1 minute.</em> You radiate a 10-foot aura. You and allies in the aura have advantage on saving throws against being frightened or charmed.",
-        "<strong>Break the Darkness.</strong> <em>Action, 4 charges.</em> One fiend or undead within 30 feet must make a Constitution saving throw. On a failure, it takes radiant damage and is blinded until the end of your next turn."
+        "<strong>Surge of Dawn.</strong> <em>No action, 3 charges.</em> You regain one expended use of Action Surge.",
+        "<strong>Sunbreak Strike.</strong> <em>No action, 4 charges, once per turn.</em> When you hit a creature with a weapon attack, it takes an extra 4d8 radiant damage. A fiend or undead hit by it is also blinded until the end of your next turn."
       ],
-      "avatar": "<strong>Dawn Incarnate.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> You shine with sunrise armor. You gain flying speed 30 feet with hover, resistance to bludgeoning, piercing, and slashing damage, shed bright light, and once per turn your weapon hit deals an extra 2d8 radiant damage.",
+      "avatar": "<strong>Dawn Incarnate.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> You shine with sunrise armor. You gain flying speed 30 feet with hover, resistance to bludgeoning, piercing, and slashing damage, shed bright light, and once per turn your weapon hit deals an extra 2d8 radiant damage. While it lasts, you can give your weapon a second Weapon Mastery property you know.",
       "signature": "<strong>Last Sunrise.</strong> <em>Once per long rest.</em> Allies of your choice within 30 feet regain 30 hit points and end frightened and charmed. Until the end of your next turn, the first time each affected ally would drop to 0 hit points, they drop to 1 instead. You gain one level of exhaustion."
     },
     "dreams": [
