@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.12.0
+
+- Redesigned the Heart of Yggdrasil (Druid) around Wild Shape and moved it away from the Cleric's healer role. Living Sap, World Tree's Gift, Verdant Bloom and Forest Guardian are replaced.
+  - Passives: Nature's Blessing (unchanged, now first), Endless Seasons (regain a Wild Shape use when combat starts, automated), Endless Spring (unchanged) and Primal Wrath (once per turn, Wisdom modifier + relic bonus to a druid spell's damage, automated; Wild Shape attacks are GM-resolved).
+  - Actives: Rooted Focus (reaction, a failed concentration save succeeds) and Bark of Yggdrasil (bonus action, +2 AC and bludgeoning, piercing and slashing resistance in any form, automated); Nature's Embrace and Roots of Eternity stay.
+  - The avatar adds 1d8 poison to weapon and Wild Shape attacks (automated) and keeps Wild Shape uses from being spent, instead of healing nearby allies each turn.
+
 ## v0.11.0
 
 - Redesigned the Cloak of the Umbral Veil (Rogue) around Sneak Attack and Cunning Strike, and removed its dependence on dim light and darkness. Shadow Walker, Veil of Silence, One With Darkness and Living Darkness are replaced.

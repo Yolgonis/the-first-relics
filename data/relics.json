@@ -3135,18 +3135,18 @@
     ],
     "features": {
       "passives": [
-        "<strong>Living Sap.</strong> When you finish a long rest, you gain temporary hit points equal to twice your proficiency bonus.",
         "<strong>Nature's Blessing.</strong> Whenever you regain hit points from a spell, potion, or feature, you regain additional hit points equal to your proficiency bonus.",
+        "<strong>Endless Seasons.</strong> When you roll initiative, you regain one expended use of Wild Shape.",
         "<strong>Endless Spring.</strong> The first time an ally within 30 feet of you drops to 0 hit points, they drop to 1 hit point instead. Once this feature saves an ally, it can't do so again until you finish a long rest.",
-        "<strong>World Tree's Gift.</strong> You are immune to the poisoned condition and to disease."
+        "<strong>Primal Wrath.</strong> Once per turn, when a druid spell you cast or an attack you make in Wild Shape deals damage, add your Wisdom modifier + the relic bonus to one damage roll."
       ],
       "actives": [
-        "<strong>Verdant Bloom.</strong> <em>Action, 1 charge.</em> Cause plants and roots to surge in an area within 60 feet. Enemies treat the area as difficult terrain while allies move through it normally.",
+        "<strong>Rooted Focus.</strong> <em>Reaction, 1 charge.</em> When you fail a Constitution saving throw to maintain concentration, you succeed instead.",
         "<strong>Nature's Embrace.</strong> <em>Bonus Action, 2 charges.</em> A creature within 30 feet regains 4d8 hit points.",
-        "<strong>Forest Guardian.</strong> <em>Action, 3 charges, 1 minute.</em> You project a protective growth aura. Allies in the aura gain resistance to one damage type chosen by the GM from the current threat.",
+        "<strong>Bark of Yggdrasil.</strong> <em>Bonus Action, 3 charges, 1 minute.</em> Bark of the World Tree covers you, in any form. You gain a +2 bonus to AC and resistance to bludgeoning, piercing, and slashing damage.",
         "<strong>Roots of Eternity.</strong> <em>Action, 4 charges.</em> A creature within 60 feet must make a Strength saving throw. On a failure, it is restrained by ancient roots for 1 minute."
       ],
-      "avatar": "<strong>Avatar of Yggdrasil.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> Branches and living light surround you. You gain flying speed 30 feet with hover, resistance to acid, cold, fire, lightning, and poison damage, and allies who start their turn near you regain hit points equal to the relic bonus.",
+      "avatar": "<strong>Avatar of Yggdrasil.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> Branches and living light surround you. You gain a flying speed of 30 feet and can hover, you have resistance to acid, cold, fire, lightning, and poison damage, and your weapon and Wild Shape attacks deal an extra 1d8 poison damage. Features that spend a use of Wild Shape don't expend it while the avatar lasts.",
       "signature": "<strong>World Reborn.</strong> <em>Once per long rest.</em> Allies of your choice within 60 feet regain all hit points, end poisoned and diseased, and reduce exhaustion by 1. Enemies chosen by the GM in the renewal surge take 8d8 radiant or force damage."
     },
     "dreams": [

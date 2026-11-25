@@ -183,6 +183,13 @@ async function TFRStartCombatPassives(combat) {
       const regained = await TFRRegainFeatureUses(actor, "lay-on-hands", 5 * await TFRPassiveRelicBonus(mercy), TFRT("King's Mercy"));
       if (regained) await TFRPassiveChat(actor, mercy, 2, TFRT("{actor} regains {amount} hit points in the Lay on Hands pool.", { actor: TFREscapeHtml(actor.name), amount: regained }));
     }
+
+    // Endless Seasons (Heart of Yggdrasil): one expended Wild Shape use back at initiative.
+    const seasons = TFRActivePassiveItem(actor, "heart_yggdrasil", 1);
+    if (seasons) {
+      const regained = await TFRRegainFeatureUses(actor, "wild-shape", 1, TFRT("Endless Seasons"));
+      if (regained) await TFRPassiveChat(actor, seasons, 1, TFRT("{actor} regains a use of Wild Shape.", { actor: TFREscapeHtml(actor.name) }));
+    }
   }
 }
 
@@ -269,15 +276,13 @@ function TFRPreventDropToZero(actor, changes, options) {
   })().catch(error => console.warn("The First Relics | Could not record a 0 HP passive.", error));
 }
 
-// ---- Long rest: reset once-per-rest uses; Living Sap (Heart of Yggdrasil) ----
+// ---- Long rest: reset once-per-rest uses ----
 
 async function TFRPassivesAfterRest(actor, result) {
   if (!result?.longRest || !actor?.isOwner) return;
   for (const item of actor.items.filter(candidate => candidate.getFlag?.(TFR_MODULE_ID, "passiveUses"))) {
     await item.unsetFlag(TFR_MODULE_ID, "passiveUses");
   }
-  const heart = TFRActivePassiveItem(actor, "heart_yggdrasil", 0);
-  if (heart) await TFRApplyTempHp(actor, TFRProficiency(actor) * 2, TFRT("Living Sap"));
 }
 
 // ---- Hunter's Mark: Unbroken Mark, Shroud of Leaves, Marked Quarry (Cloak of Fey Paths) ----
@@ -356,12 +361,13 @@ function TFRAddCrownedSmite(config) {
   if (roll?.parts) roll.parts.push(`1d8[radiant] + ${TFRItemRelicBonus(crown)}`);
 }
 
-// ---- Class spell damage: Arcane Edge (Mantle of the First Seer), Elemental Wrath (Blood of the First Dragon) ----
+// ---- Class spell damage: Arcane Edge (Mantle), Elemental Wrath (Blood of the First Dragon), Primal Wrath (Heart of Yggdrasil) ----
 
 /** Spell damage passives: once per turn, the ability modifier + relic bonus on a spell of that class. */
 const TFR_SPELL_DAMAGE_PASSIVES = [
   { relicId: "mantle_first_seer", index: 3, sourceClass: "wizard", ability: "int", flag: "arcaneEdgeTurn" },
-  { relicId: "blood_first_dragon", index: 3, sourceClass: "sorcerer", ability: "cha", flag: "elementalWrathTurn" }
+  { relicId: "blood_first_dragon", index: 3, sourceClass: "sorcerer", ability: "cha", flag: "elementalWrathTurn" },
+  { relicId: "heart_yggdrasil", index: 3, sourceClass: "druid", ability: "wis", flag: "primalWrathTurn" }
 ];
 
 function TFRAddSpellDamagePassive(config) {
@@ -394,7 +400,7 @@ function TFRAddHealingGiven(config) {
 }
 
 function TFRAddHealingReceived(actor, damages) {
-  if (!TFRActivePassiveItem(actor, "heart_yggdrasil", 1)) return;
+  if (!TFRActivePassiveItem(actor, "heart_yggdrasil", 0)) return;
   const healing = damages.find(damage => damage.type === "healing" && Number(damage.value) > 0);
   if (healing) healing.value = Number(healing.value) + TFRProficiency(actor);
 }

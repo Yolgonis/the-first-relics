@@ -264,6 +264,7 @@ export function TFRPassiveAutomationNote(automation) {
     case "meleeWeapon": return TFRT("Automated for all melee weapon attacks.");
     case "smite": return TFRT("Automated when you roll Divine Smite damage.");
     case "sneakAttack": return TFRT("Automated when you roll Sneak Attack damage.");
+    case "spellDamage": return TFRT("Automated for druid spell damage; Wild Shape attacks are GM-resolved.");
     case "huntersMarkDamage": return TFRT("Automated when you roll the Hunter's Mark damage activity.");
     case "midi": return TFRT("Automated with Midi-QOL and DAE.");
     case "chatHealing": return TFRT("Automated when healing is applied from a chat card.");
