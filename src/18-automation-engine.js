@@ -32,9 +32,9 @@ function TFRFallbackAbilityAutomation(relicId, slot) {
     },
     cloak_shadowfell: {
       active1: { type: "utility", activation: "bonus", target: "space", range: "30 ft" },
-      active2: { type: "utility", activation: "reaction", target: "self", range: "self" },
-      active3: { type: "utility", activation: "action", target: "space", range: "60 ft" },
-      active4: { type: "damage", activation: "action", target: "creature", range: "5 ft", damage: "8d6 necrotic" },
+      active2: { type: "utility", activation: "reaction", target: "creature", range: "30 ft" },
+      active3: { type: "utility", activation: "reaction", target: "self", range: "self" },
+      active4: { type: "damage", activation: "special", target: "creature", range: "5 ft", damage: "8d6 necrotic" },
       avatar: { type: "utility", activation: "bonus", target: "self", range: "self" },
       signature: { type: "damage", activation: "special", target: "creature", range: "60 ft", damage: "10d6 necrotic" }
     },

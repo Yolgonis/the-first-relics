@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.11.0
+
+- Redesigned the Cloak of the Umbral Veil (Rogue) around Sneak Attack and Cunning Strike, and removed its dependence on dim light and darkness. Shadow Walker, Veil of Silence, One With Darkness and Living Darkness are replaced.
+  - Passives: Deepened Shadows (one extra Sneak Attack die, automated), Umbral Shroud (the first damage you take each round is reduced by Dexterity modifier + relic bonus, automated), Cunning Shadow (one Cunning Strike effect per turn costs one fewer die) and Unseen Hunter (unchanged).
+  - Actives: Shadow Step no longer needs a shadow; Second Shadow (reaction weapon attack that can carry Sneak Attack) is new; Fade Away now costs 3 charges; Death From Silence is used after a Sneak Attack hit instead of costing an action.
+  - The avatar lets you apply Sneak Attack twice per turn to different creatures and Hide as a bonus action in any light.
+
 ## v0.10.0
 
 - Redesigned the Crown of the Conqueror (Paladin) around Divine Smite, Lay on Hands and Channel Divinity, and removed its overlapping fear, charm and Wisdom save protections. Royal Presence, Sovereign Aura, Rally and Banner Unbroken are replaced.

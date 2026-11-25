@@ -2787,18 +2787,18 @@
     ],
     "features": {
       "passives": [
-        "<strong>Shadow Walker.</strong> You have advantage on Dexterity (Stealth) checks while you are in dim light or darkness.",
-        "<strong>Veil of Silence.</strong> Your movement makes no sound, and you have advantage on Wisdom (Perception) checks made to detect hidden creatures.",
-        "<strong>One With Darkness.</strong> While you are in dim light or darkness, you gain a +2 bonus to AC.",
+        "<strong>Deepened Shadows.</strong> Your Sneak Attack deals one extra die of damage. You can forgo this die for Cunning Strike like any other Sneak Attack die.",
+        "<strong>Umbral Shroud.</strong> The first time you take damage each round, reduce that damage by your Dexterity modifier + the relic bonus.",
+        "<strong>Cunning Shadow.</strong> Once per turn, one Cunning Strike effect you use costs one fewer Sneak Attack die (minimum 0).",
         "<strong>Unseen Hunter.</strong> You have advantage on the first attack roll you make in each combat. If that attack hits, it deals an extra 2d8 necrotic damage."
       ],
       "actives": [
-        "<strong>Shadow Step.</strong> <em>Bonus Action, 1 charge.</em> Teleport up to 30 feet to an unoccupied space in dim light or darkness that you can see.",
-        "<strong>Fade Away.</strong> <em>Reaction, 2 charges.</em> When you are targeted by an attack or effect, become invisible until the end of your next turn or until you attack or cast a spell.",
-        "<strong>Living Darkness.</strong> <em>Action, 3 charges.</em> Create a zone of magical darkness at a point within 60 feet. The bearer can see through this darkness.",
-        "<strong>Death From Silence.</strong> <em>Action, 4 charges.</em> Make a weapon attack against a creature within reach. On a hit, deal an extra 8d6 necrotic damage; the GM may call for a save to resist being stunned."
+        "<strong>Shadow Step.</strong> <em>Bonus Action, 1 charge.</em> Teleport up to 30 feet to an unoccupied space you can see.",
+        "<strong>Second Shadow.</strong> <em>Reaction, 2 charges.</em> When a creature you can see within 30 feet takes damage from another creature, you make one weapon attack against it. If you haven't used your Sneak Attack this turn, you can apply it to this attack.",
+        "<strong>Fade Away.</strong> <em>Reaction, 3 charges.</em> When you are targeted by an attack or effect, become invisible until the end of your next turn or until you attack or cast a spell.",
+        "<strong>Death From Silence.</strong> <em>No action, 4 charges.</em> When you hit a creature with a Sneak Attack, it takes an extra 8d6 necrotic damage; the GM may call for a Constitution saving throw to resist being stunned until the end of your next turn."
       ],
-      "avatar": "<strong>Walker Between Shadows.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> You gain flying speed 40 feet with hover, resistance to necrotic damage, may become invisible as a bonus action in dim light or darkness, and your movement does not provoke opportunity attacks.",
+      "avatar": "<strong>Walker Between Shadows.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> You gain a flying speed of 40 feet and can hover, you have resistance to necrotic damage, and your movement doesn't provoke opportunity attacks. You can take the Hide action as a bonus action in any light, and you can apply Sneak Attack twice per turn, but not to the same creature.",
       "signature": "<strong>One Step Behind.</strong> <em>Once per long rest, 1 minute.</em> At the start of each of your turns, you may teleport to a shadow within 60 feet. The first attack you make after each teleport has advantage and deals an extra 10d6 necrotic damage on a hit."
     },
     "dreams": [

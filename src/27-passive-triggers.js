@@ -438,6 +438,45 @@ function TFRMarkWillBeforeWound(actor, amount) {
   girdle.setFlag(TFR_MODULE_ID, "willBeforeWoundRound", round).catch(error => console.warn("The First Relics | Could not record Will Before Wound.", error));
 }
 
+// ---- Sneak Attack and damage taken: Deepened Shadows, Umbral Shroud (Cloak of the Umbral Veil) ----
+
+/** Deepened Shadows: one extra die on the Sneak Attack damage roll. */
+function TFRAddDeepenedShadows(config) {
+  const activity = config?.subject;
+  if (activity?.type !== "damage" || activity.item?.system?.identifier !== "sneak-attack") return;
+  if (!TFRActivePassiveItem(activity.actor, "cloak_shadowfell", 0)) return;
+  const roll = config.rolls?.[0];
+  if (roll?.parts) roll.parts.push("1d6");
+}
+
+function TFRUmbralShroudItem(actor) {
+  const veil = TFRActivePassiveItem(actor, "cloak_shadowfell", 1);
+  if (!veil) return null;
+  const round = TFRCombatRoundKey(actor);
+  return round && veil.getFlag(TFR_MODULE_ID, "umbralShroudRound") === round ? null : veil;
+}
+
+// Like Will Before Wound: previews also call calculateDamage, so the use is recorded on apply.
+function TFRReduceUmbralShroudDamage(actor, damages) {
+  const veil = TFRUmbralShroudItem(actor);
+  if (!veil) return;
+  let remaining = Math.max(0, Number(actor.system?.abilities?.dex?.mod) || 0) + TFRItemRelicBonus(veil);
+  for (const damage of [...damages].filter(d => !(d.type in CONFIG.DND5E.healingTypes)).sort((a, b) => b.value - a.value)) {
+    const cut = Math.min(remaining, Math.max(0, Number(damage.value) || 0));
+    damage.value -= cut;
+    remaining -= cut;
+    if (!remaining) break;
+  }
+}
+
+function TFRMarkUmbralShroud(actor, amount) {
+  if (!(amount > 0)) return;
+  const veil = TFRUmbralShroudItem(actor);
+  const round = TFRCombatRoundKey(actor);
+  if (!veil || !round || !veil.isOwner) return;
+  veil.setFlag(TFR_MODULE_ID, "umbralShroudRound", round).catch(error => console.warn("The First Relics | Could not record Umbral Shroud.", error));
+}
+
 // ---- Warlock damage: Borrowed Power (Chains of the Patron) ----
 
 function TFRAddBorrowedPower(config) {
@@ -539,6 +578,9 @@ export function TFRRegisterPassiveTriggers() {
   Hooks.on("dnd5e.applyDamage", TFRMarkWillBeforeWound);
   Hooks.on("dnd5e.preRollDamageV2", TFRAddSpellDamagePassive);
   Hooks.on("dnd5e.preRollDamageV2", TFRAddCrownedSmite);
+  Hooks.on("dnd5e.preRollDamageV2", TFRAddDeepenedShadows);
+  Hooks.on("dnd5e.preCalculateDamage", TFRReduceUmbralShroudDamage);
+  Hooks.on("dnd5e.applyDamage", TFRMarkUmbralShroud);
   Hooks.on("dnd5e.preApplyDamage", TFRRecordHpBeforeDamage);
   Hooks.on("dnd5e.applyDamage", TFRPricePaidCheck);
 }
