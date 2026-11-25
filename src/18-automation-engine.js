@@ -23,10 +23,10 @@ function TFRFallbackAbilityAutomation(relicId, slot) {
       signature: { type: "save", activation: "action", target: "creature", range: "60 ft", save: "wis" }
     },
     bands_inner_dragon: {
-      active1: { type: "utility", activation: "bonus", target: "self", range: "self" },
-      active2: { type: "utility", activation: "reaction", target: "self", range: "self" },
-      active3: { type: "utility", activation: "action", target: "self", range: "self" },
-      active4: { type: "utility", activation: "action", target: "self", range: "self" },
+      active1: { type: "utility", activation: "reaction", target: "creature", range: "5 ft" },
+      active2: { type: "utility", activation: "bonus", target: "self", range: "self" },
+      active3: { type: "utility", activation: "reaction", target: "self", range: "self" },
+      active4: { type: "damage", activation: "special", target: "creature", range: "5 ft", damage: "4 Martial Arts dice force" },
       avatar: { type: "utility", activation: "bonus", target: "self", range: "self" },
       signature: { type: "utility", activation: "special", target: "self", range: "self" }
     },

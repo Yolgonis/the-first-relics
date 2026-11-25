@@ -170,7 +170,7 @@ export async function TFRApplyCloakAvatar(actor, item) {
 
 function TFRRelicStageBonusFromItem(relic, item) {
   const stage = item ? TFRRelicItemStage(item) : "dormant";
-  return Number(TFRGetStageData(relic, stage)?.bonus || 1) || 1;
+  return Number(TFRGetStageData(relic, stage, item ? TFRRelicItemSignatureUnlocked(item) : false)?.bonus || 1) || 1;
 }
 
 export function TFREffectChangesForRelicAbility(relicId, slot, relic = null, item = null) {
@@ -425,9 +425,10 @@ export function TFRRelicAbilityFromChatMessage(message, actor = null) {
     const inferred = TFRInferRelicSlotFromChatBadges(relicId, item, haystack);
     if (inferred) return inferred;
 
-    // Fallback for translated worlds, where ability names and badge text are not English:
+    // Fallback when the badges are ambiguous (two abilities with the same activation and target,
+    // such as a bonus-action self ability next to the avatar) or not English in translated worlds:
     // dnd5e records the used activity on its chat card, and the activity carries its slot flag.
-    const activityId = TFRContentLanguage() !== "en" ? message.flags?.dnd5e?.activity?.id : null;
+    const activityId = message.flags?.dnd5e?.activity?.id || null;
     const flaggedActivity = activityId ? item.system?.activities?.get?.(activityId) : null;
     const flaggedSlot = flaggedActivity ? TFRGetActivitySlot(flaggedActivity) : null;
     if (flaggedSlot && slots[flaggedSlot]) {
