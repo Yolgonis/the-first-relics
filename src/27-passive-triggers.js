@@ -12,7 +12,7 @@ import {
 import { TFRGetRelicById } from "./06-relic-state.js";
 import { TFREscapeHtml } from "./08-affinity-events.js";
 import { TFRChatFlags, TFRResolveActor } from "./11-effect-helpers.js";
-import { TFRApplyTempHp, TFRMonkFocusItem, TFRRegainFeatureUses, TFRRegainFocus, TFRRegainSpellSlot } from "./14-ability-runtime.js";
+import { TFRApplyTempHp, TFRMonkFocusItem, TFRRegainFeatureUses, TFRRegainFocus, TFRRegainPactSlot, TFRRegainSpellSlot } from "./14-ability-runtime.js";
 import { TFRDistanceFeet } from "./19-fey-step.js";
 
 // Event-triggered passive features: combat start, dropping to 0 hit points, long rests, casting
@@ -199,6 +199,13 @@ async function TFRStartCombatPassives(combat) {
       const regained = await TFRRegainFeatureUses(actor, "second-wind", 1, TFRT("Second Dawn"));
       if (regained) await TFRPassiveChat(actor, dawn, 0, TFRT("{actor} regains a use of Second Wind.", { actor: TFREscapeHtml(actor.name) }));
     }
+
+    // Pact Reservoir (Chains of the Patron): one expended Pact Magic slot back at initiative.
+    const reservoir = TFRActivePassiveItem(actor, "chains_patron", 1);
+    if (reservoir) {
+      const level = await TFRRegainPactSlot(actor, TFRT("Pact Reservoir"));
+      if (level) await TFRPassiveChat(actor, reservoir, 1, TFRT("{actor} regains a Pact Magic slot.", { actor: TFREscapeHtml(actor.name) }));
+    }
   }
 }
 
@@ -345,11 +352,26 @@ function TFRHuntersMarkDamage(config) {
 
 // ---- Casting a spell of 1st level or higher: Living Chronicle (Mantle of the First Seer) ----
 
-async function TFRPassivesAfterActivity(activity) {
+/** Binding Ward (Chains of the Patron): once per turn, temporary hit points when a Pact Magic slot is spent. */
+async function TFRBindingWard(actor, spell, usage) {
+  const slot = usage?.spell?.slot;
+  const pactCast = slot === "pact" || (!slot && spell.system?.method === "pact");
+  if (!pactCast) return;
+  const chains = TFRActivePassiveItem(actor, "chains_patron", 2);
+  if (!chains) return;
+  const turn = TFRCombatTurnKey(actor);
+  if (turn && chains.getFlag(TFR_MODULE_ID, "bindingWardTurn") === turn) return;
+  if (turn) await chains.setFlag(TFR_MODULE_ID, "bindingWardTurn", turn);
+  const warlock = Number(actor.classes?.warlock?.system?.levels) || 0;
+  await TFRApplyTempHp(actor, warlock + await TFRPassiveRelicBonus(chains), TFRT("Binding Ward"));
+}
+
+async function TFRPassivesAfterActivity(activity, usage) {
   const actor = activity?.actor;
   const spell = activity?.item;
   if (actor?.isOwner && TFRIsHuntersMark(spell) && activity.type === "utility") await TFRShroudOfLeaves(actor);
   if (!actor?.isOwner || spell?.type !== "spell" || !(Number(spell.system?.level) >= 1)) return;
+  await TFRBindingWard(actor, spell, usage);
   const mantle = TFRActivePassiveItem(actor, "mantle_first_seer", 1);
   if (!mantle) return;
   const turn = TFRCombatTurnKey(actor);
@@ -523,32 +545,6 @@ function TFRAddBorrowedPower(config) {
   if (turn && chains.isOwner) chains.setFlag(TFR_MODULE_ID, "borrowedPowerTurn", turn).catch(error => console.warn("The First Relics | Could not record Borrowed Power.", error));
 }
 
-// ---- Defeating a hostile creature: Price Paid (Chains of the Patron) ----
-
-// Hit points before damage, recorded in preApplyDamage, so applyDamage can tell a kill apart from
-// damage to a creature that was already at 0 or was kept at 1 by another passive.
-const TFR_HP_BEFORE_DAMAGE = new Map();
-
-function TFRRecordHpBeforeDamage(actor) {
-  TFR_HP_BEFORE_DAMAGE.set(actor.uuid, Number(actor.system?.attributes?.hp?.value) || 0);
-}
-
-function TFRPricePaidCheck(actor, amount, options) {
-  const before = TFR_HP_BEFORE_DAMAGE.get(actor.uuid) ?? 0;
-  TFR_HP_BEFORE_DAMAGE.delete(actor.uuid);
-  if (!(amount > 0) || before <= 0 || !options?.originatingMessage) return;
-  if ((Number(actor.system?.attributes?.hp?.value) || 0) !== 0) return;
-  const target = TFRActorToken(actor)?.document || actor.prototypeToken;
-  if (target?.disposition !== CONST.TOKEN_DISPOSITIONS.HOSTILE) return;
-  const source = ChatMessage.getSpeakerActor(options.originatingMessage.speaker);
-  const chains = TFRActivePassiveItem(source, "chains_patron", 2);
-  if (!chains || !source.isOwner) return;
-  (async () => {
-    const warlock = Number(source.classes?.warlock?.system?.levels) || 0;
-    await TFRApplyTempHp(source, warlock + await TFRPassiveRelicBonus(chains), TFRT("Price Paid"));
-  })().catch(error => console.warn("The First Relics | Could not apply Price Paid.", error));
-}
-
 /** Diagnostic: the state of every relic passive on an actor (unlocked, active, used this rest). */
 export function TFRPassiveStatus(actorOrId) {
   const actor = TFRResolveActor(actorOrId);
@@ -594,8 +590,8 @@ export function TFRRegisterPassiveTriggers() {
   Hooks.on("dnd5e.restCompleted", (actor, result) => {
     TFRPassivesAfterRest(actor, result).catch(error => console.warn("The First Relics | Rest passive trigger failed.", error));
   });
-  Hooks.on("dnd5e.postUseActivity", activity => {
-    TFRPassivesAfterActivity(activity).catch(error => console.warn("The First Relics | Activity passive trigger failed.", error));
+  Hooks.on("dnd5e.postUseActivity", (activity, usage) => {
+    TFRPassivesAfterActivity(activity, usage).catch(error => console.warn("The First Relics | Activity passive trigger failed.", error));
   });
   Hooks.on("dnd5e.preRollDamageV2", TFRAddHealingGiven);
   Hooks.on("dnd5e.preRollDamageV2", TFRAddBorrowedPower);
@@ -610,6 +606,4 @@ export function TFRRegisterPassiveTriggers() {
   Hooks.on("dnd5e.preRollDamageV2", TFRAddDeepenedShadows);
   Hooks.on("dnd5e.preCalculateDamage", TFRReduceUmbralShroudDamage);
   Hooks.on("dnd5e.applyDamage", TFRMarkUmbralShroud);
-  Hooks.on("dnd5e.preApplyDamage", TFRRecordHpBeforeDamage);
-  Hooks.on("dnd5e.applyDamage", TFRPricePaidCheck);
 }

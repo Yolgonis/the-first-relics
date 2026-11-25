@@ -115,6 +115,18 @@ export async function TFRRegainFocus(actor, amount, label = "Focus Points") {
   return TFRRegainFeatureUses(actor, "monks-focus", amount, label);
 }
 
+/** Restores one expended Pact Magic slot. Returns the slot level, or 0. */
+export async function TFRRegainPactSlot(actor, label = "Pact Slot") {
+  const pact = actor?.system?.spells?.pact;
+  if (!pact || !(Number(pact.max) > 0) || !(Number(pact.value) < Number(pact.max))) {
+    ui.notifications.warn(TFRT("{label}: {actorName} has no expended Pact Magic slot.", { label, actorName: actor?.name || "" }));
+    return 0;
+  }
+  await actor.update({ "system.spells.pact.value": Number(pact.value) + 1 });
+  ui.notifications.info(TFRT("{label}: {actorName} regains a Pact Magic slot.", { label, actorName: actor.name }));
+  return Number(pact.level) || 1;
+}
+
 /** Restores one expended spell slot, the highest level up to `maxLevel`. Returns its level, or 0. */
 export async function TFRRegainSpellSlot(actor, maxLevel, label = "Spell Slot") {
   const spells = actor?.system?.spells || {};

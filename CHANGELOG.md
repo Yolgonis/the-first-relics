@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.16.0
+
+- Redesigned the Chains of the Patron (Warlock) around Pact Magic slots and Eldritch Invocations, so it works for every patron. Read the Fine Print, Price Paid (a copy of the Fiend's Dark One's Blessing), No Master But the Price and Patron's Glance are replaced.
+  - Passives: Borrowed Power (unchanged), Pact Reservoir (regain a Pact Magic slot when combat starts, automated), Binding Ward (once per turn, warlock level + relic bonus temporary hit points when you spend a Pact Magic slot, automated) and Forbidden Lore (one extra Eldritch Invocation).
+  - Actives: Unbroken Pact (reaction, keep concentration on a warlock spell) is new; Chain of Binding now costs a bonus action; Borrowed Ruin and Pay the Difference stay.
+
 ## v0.15.0
 
 - Redesigned the Aegis of the Dawn (Fighter) around Second Wind, Action Surge and the subclass dice, keeping its guardian theme. Dawn's Endurance, Unbroken Wall, Stand Firm, Bastion of Resolve and Break the Darkness are replaced.

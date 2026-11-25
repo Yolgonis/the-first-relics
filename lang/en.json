@@ -226,6 +226,8 @@
     "tyg95lq": "{label}: {actorName} has {next} temp HP.",
     "t1gcr93m": "{label}: {actorName} has no feature with uses for {identifier}.",
     "tj7zowl": "{label}: {actorName} regains {regained} uses of {feature} ({value}/{max}).",
+    "tkbo4lc": "{label}: {actorName} has no expended Pact Magic slot.",
+    "thbpym8": "{label}: {actorName} regains a Pact Magic slot.",
     "t1hopm5": "{label}: {actorName} regains a level {level} spell slot.",
     "t1gmbj64": "{label}: {actorName} has no expended spell slot of level {level} or lower.",
     "t12k7nsi": "Briar Snare: target one creature first.",
@@ -432,6 +434,8 @@
     "tpr17p3": "{actor} regains a use of Rage.",
     "t2r6lqx": "Second Dawn",
     "t1rfd7e2": "{actor} regains a use of Second Wind.",
+    "t1fx9yec": "Pact Reservoir",
+    "t8snz63": "{actor} regains a Pact Magic slot.",
     "tg3cv7s": "Banner of Order",
     "t1tlyolh": "{bearer} raises the banner. Choose up to {limit} allies; each gains {amount} temporary hit points.",
     "t1k6e5zv": "Apply",
@@ -441,8 +445,8 @@
     "tdz9icy": "{actor} drops to 1 hit point instead of 0.",
     "t122v3x2": "{actor} drops to 1 hit point instead of 0, sustained by {bearer}.",
     "t1713h5j": "Shroud of Leaves",
+    "t1bmqu20": "Binding Ward",
     "tq7d9d1": "Living Chronicle",
-    "t1k83w04": "Price Paid",
     "tuvkvu3": "Inner Dragon Manifest"
   }
 }

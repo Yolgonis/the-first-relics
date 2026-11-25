@@ -1393,14 +1393,14 @@
     "features": {
       "passives": [
         "<strong>Borrowed Power.</strong> Once per turn when you deal damage with Eldritch Blast, a pact weapon, or a warlock spell, add the relic bonus to one damage roll.",
-        "<strong>Read the Fine Print.</strong> You gain the relic bonus to Charisma (Deception), Charisma (Persuasion), and Intelligence (Arcana) checks related to pacts, fiends, patrons, contracts, curses, or forbidden magic.",
-        "<strong>Price Paid.</strong> When you reduce a hostile creature to 0 hit points, gain temporary hit points equal to your warlock level + the relic bonus.",
-        "<strong>No Master But the Price.</strong> You have advantage on saving throws against being charmed, dominated, or magically compelled by patrons, fiends, celestials, or pact-bound entities."
+        "<strong>Pact Reservoir.</strong> When you roll initiative, you regain one expended Pact Magic spell slot.",
+        "<strong>Binding Ward.</strong> Once per turn, when you cast a spell using a Pact Magic spell slot, you gain temporary hit points equal to your warlock level + the relic bonus.",
+        "<strong>Forbidden Lore.</strong> While attuned to the relic, you know one additional Eldritch Invocation of your choice for which you meet the prerequisites. You can replace it when you finish a long rest."
       ],
       "actives": [
-        "<strong>Patron's Glance.</strong> <em>Bonus Action, 1 charge.</em> Choose one creature within 60 feet. Until the end of your next turn, you sense whether it is bound by a pact, curse, oath, or extraplanar influence.",
+        "<strong>Unbroken Pact.</strong> <em>Reaction, 1 charge.</em> When you would lose concentration on a warlock spell, you keep concentrating on it instead.",
         "<strong>Borrowed Ruin.</strong> <em>Special, 2 charges.</em> Use when you hit with Eldritch Blast, a pact weapon, or a warlock spell. The attack or spell deals extra necrotic damage.",
-        "<strong>Chain of Binding.</strong> <em>Action, 3 charges.</em> A creature within 60 feet must make a Strength saving throw. On a failure, it is restrained by spectral chains until the end of your next turn. <strong>Midi:</strong> Save Activity requests a STR save; apply Restrained through normal Foundry condition tools if the condition is not applied automatically.",
+        "<strong>Chain of Binding.</strong> <em>Bonus Action, 3 charges.</em> A creature within 60 feet must make a Strength saving throw. On a failure, it is restrained by spectral chains until the end of your next turn. <strong>Midi:</strong> Save Activity requests a STR save; apply Restrained through normal Foundry condition tools if the condition is not applied automatically.",
         "<strong>Pay the Difference.</strong> <em>Reaction, 4 charges.</em> When you fail a saving throw, take necrotic damage equal to your warlock level to reroll the save. The new result must be used."
       ],
       "avatar": "<strong>Avatar of the Pact.</strong> <em>Bonus Action, 8 charges, 1 minute.</em> Black-gold chains orbit you. You gain flying speed 30 ft with hover, resistance to necrotic damage, and once per turn when you deal damage with Eldritch Blast, a pact weapon, or a warlock spell, you deal extra necrotic damage equal to your warlock level.",

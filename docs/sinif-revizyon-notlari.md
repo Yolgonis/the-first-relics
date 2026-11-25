@@ -2,6 +2,21 @@
 
 25.11.2026. Monk (Bands of the Inner Dragon, 0.6.0'da yapıldı) ve Cleric (Vestments of the First Saint) kapsam dışı.
 
+> [!info] Durum (25.11.2026)
+> Aşağıdaki 10 relic'in hepsi revize edildi ve canlı Foundry'de denendi:
+> - Ranger 0.7.0
+> - Wizard 0.8.0
+> - Sorcerer 0.9.0
+> - Paladin 0.10.0
+> - Rogue 0.11.0
+> - Druid 0.12.0
+> - Bard 0.13.0
+> - Barbarian 0.14.0
+> - Fighter 0.15.0
+> - Warlock 0.16.0
+>
+> Ayrıntılar `CHANGELOG.md` içinde. Vestments of the First Saint (Cleric) henüz eski haliyle duruyor.
+
 Kaynaklar: EN World, D&D Beyond forumları ve yorumları, RPGBot, Wargamer, Arcane Eye, Dungeonmister. Reddit araması sonuç vermedi. Forum görüşleri topluluk görüşüdür, resmî değildir; bir kısmı 2024 öncesi playtest dönemine ait. Notlar bunları 2024 PHB kurallarıyla birlikte yorumlar.
 
 ## Genel bulgular (bütün relic'ler)
