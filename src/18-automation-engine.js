@@ -89,8 +89,8 @@ function TFRSprint1Expected() {
     cloak_feywilds: {
       active1: { name: "Fey Step", type: "utility", activation: "bonus", range: "60 ft", target: "space", charges: "1 itemUses" },
       active2: { name: "Arrow of the First Hunt", type: "damage", activation: "special", range: "120 ft", target: "creature", damage: "4d8 force", charges: "2 itemUses" },
-      active3: { name: "Nature's Pursuit", type: "utility", activation: "bonus", range: "self", target: "self", charges: "3 itemUses" },
-      active4: { name: "Briar Snare", type: "save", activation: "action", range: "60 ft", target: "creature", save: "str", charges: "4 itemUses" },
+      active3: { name: "Glamour Veil", type: "utility", activation: "reaction", range: "self", target: "self", charges: "3 itemUses" },
+      active4: { name: "Briar Snare", type: "save", activation: "special", range: "120 ft", target: "creature", save: "str", charges: "4 itemUses" },
       avatar: { name: "Avatar of The Hunt", type: "utility", activation: "bonus", range: "self", target: "self", charges: "8 itemUses" },
       signature: { name: "Signature of The Hunt", type: "utility", activation: "special", range: "self", target: "self", charges: "0/" }
     },

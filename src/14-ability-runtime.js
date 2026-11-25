@@ -133,41 +133,6 @@ export async function TFRApplyCloakMark(sourceActor, targetActor) {
   return created;
 }
 
-export async function TFRApplyNaturePursuit(actor, item) {
-  const effect = TFREffectData(
-    "Nature's Pursuit",
-    item?.img || "modules/the-first-relics/art/icons/cloak-feywilds.svg",
-    [{ key: "system.attributes.movement.walk", mode: TFRMode("ADD"), value: "10", priority: 20 }],
-    10, 60, item?.uuid
-  );
-  await TFRApplyOrRefreshEffect(actor, effect);
-  ChatMessage.create({
-    speaker: ChatMessage.getSpeaker({ actor }),
-    flags: TFRChatFlags({ ability: "naturesPursuit" }),
-    content: `<h2>${TFRT("Nature's Pursuit")}</h2><p>${TFRT("{actor}'s speed increases by 10 ft for 1 minute. Ignore nonmagical difficult terrain and long-range disadvantage manually where needed.", { actor: actor.name })}</p>`
-  });
-}
-
-export async function TFRApplyCloakAvatar(actor, item) {
-  const effect = TFREffectData(
-    "Avatar of the First Hunt",
-    item?.img || "modules/the-first-relics/art/icons/cloak-feywilds.svg",
-    [
-      { key: "system.attributes.movement.fly", mode: TFRMode("UPGRADE"), value: "40", priority: 20 },
-      { key: "system.attributes.movement.hover", mode: TFRMode("CUSTOM"), value: "true", priority: 20 },
-      { key: "system.bonuses.abilities.save", mode: TFRMode("ADD"), value: "+1", priority: 20 }
-    ],
-    10, 60, item?.uuid
-  );
-  await TFRApplyOrRefreshEffect(actor, effect);
-  ChatMessage.create({
-    speaker: ChatMessage.getSpeaker({ actor }),
-    flags: TFRChatFlags({ ability: "avatar" }),
-    content: `<h2>${TFRT("Avatar of the First Hunt")}</h2><p>${TFRT("{actor} manifests Sylvara's hunt. Fly 40 ft, hover, and helper bonuses are applied. Resolve marked target advantage, cover ignore, beast behavior, and terrain narration manually.", { actor: actor.name })}</p>`
-  });
-}
-
-
 function TFRRelicStageBonusFromItem(relic, item) {
   const stage = item ? TFRRelicItemStage(item) : "dormant";
   return Number(TFRGetStageData(relic, stage, item ? TFRRelicItemSignatureUnlocked(item) : false)?.bonus || 1) || 1;
@@ -178,7 +143,7 @@ export function TFREffectChangesForRelicAbility(relicId, slot, relic = null, ite
   const add = TFRMode("ADD");
   const upgrade = TFRMode("UPGRADE");
   const override = TFRMode("OVERRIDE");
-  // CUSTOM is resolved by TFRApplyCustomEffectChange; used for booleans, which DAE would turn into 1.
+  // CUSTOM is resolved by the applyActiveEffect hook in 25-hooks.js; used for booleans, which DAE would turn into 1.
   const custom = TFRMode("CUSTOM");
   const common = TFRRelicTable("abilityEffects", { bonus, add, upgrade, override, custom });
   return foundry.utils.deepClone(common[relicId]?.[slot] || []);

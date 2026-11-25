@@ -256,11 +256,61 @@ async function TFRPassivesAfterRest(actor, result) {
   if (heart) await TFRApplyTempHp(actor, TFRProficiency(actor) * 2, TFRT("Living Sap"));
 }
 
+// ---- Hunter's Mark: Unbroken Mark, Shroud of Leaves, Marked Quarry (Cloak of Fey Paths) ----
+// The avatar doubles the mark's damage dice and the signature maximizes them, through flags their
+// effects set on the bearer.
+
+function TFRIsHuntersMark(item) {
+  return item?.type === "spell" && item.system?.identifier === "hunters-mark";
+}
+
+/** Unbroken Mark: casting or moving Hunter's Mark doesn't start concentration. */
+function TFRUnbrokenMark(activity, usageConfig) {
+  if (!TFRIsHuntersMark(activity?.item) || !usageConfig?.concentration) return;
+  if (!TFRActivePassiveItem(activity.actor, "cloak_feywilds", 0)) return;
+  usageConfig.concentration.begin = false;
+  usageConfig.concentration.end = null;
+}
+
+/** Shroud of Leaves: temporary hit points when Hunter's Mark is cast or moved. */
+async function TFRShroudOfLeaves(actor) {
+  const cloak = TFRActivePassiveItem(actor, "cloak_feywilds", 1);
+  if (!cloak) return;
+  const wisdom = Number(actor.system?.abilities?.wis?.mod) || 0;
+  await TFRApplyTempHp(actor, Math.max(1, wisdom + await TFRPassiveRelicBonus(cloak)), TFRT("Shroud of Leaves"));
+}
+
+/** Marked Quarry (die step), the avatar (doubled dice) and the signature (maximized) on Hunter's Mark damage. */
+function TFRHuntersMarkDamage(config) {
+  const activity = config?.subject;
+  if (activity?.type !== "damage" || !TFRIsHuntersMark(activity.item)) return;
+  const actor = activity.actor;
+  const quarry = TFRActivePassiveItem(actor, "cloak_feywilds", 2);
+  const twin = !!actor?.getFlag?.(TFR_MODULE_ID, "cloakTwinMark");
+  const max = !!actor?.getFlag?.(TFR_MODULE_ID, "cloakMaxMark");
+  if (!quarry && !twin && !max) return;
+  const roll = config.rolls?.[0];
+  if (!roll?.parts?.length) return;
+  let flatBonus = 0;
+  roll.parts = roll.parts.map(part => String(part).replace(/(\d*)d(\d+)/g, (match, count, faces) => {
+    let number = Number(count) || 1;
+    let size = Number(faces);
+    if (quarry) {
+      if (size < 10) size += 2;
+      else flatBonus = TFRItemRelicBonus(quarry);
+    }
+    if (twin) number *= 2;
+    return max ? String(number * size) : `${number}d${size}`;
+  }));
+  if (flatBonus) roll.parts.push(String(flatBonus));
+}
+
 // ---- Casting a divination spell: Living Chronicle (Mantle of the First Seer) ----
 
 async function TFRPassivesAfterActivity(activity) {
   const actor = activity?.actor;
   const spell = activity?.item;
+  if (actor?.isOwner && TFRIsHuntersMark(spell) && activity.type === "utility") await TFRShroudOfLeaves(actor);
   if (!actor?.isOwner || spell?.type !== "spell" || spell.system?.school !== "div") return;
   const mantle = TFRActivePassiveItem(actor, "mantle_first_seer", 3);
   if (!mantle) return;
@@ -437,6 +487,8 @@ export function TFRRegisterPassiveTriggers() {
   });
   Hooks.on("dnd5e.preRollDamageV2", TFRAddHealingGiven);
   Hooks.on("dnd5e.preRollDamageV2", TFRAddBorrowedPower);
+  Hooks.on("dnd5e.preRollDamageV2", TFRHuntersMarkDamage);
+  Hooks.on("dnd5e.preUseActivity", TFRUnbrokenMark);
   Hooks.on("dnd5e.preCalculateDamage", TFRAddHealingReceived);
   Hooks.on("dnd5e.preCalculateDamage", TFRReduceRagingDamage);
   Hooks.on("dnd5e.applyDamage", TFRMarkWillBeforeWound);

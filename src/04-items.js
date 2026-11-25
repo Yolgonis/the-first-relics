@@ -262,6 +262,7 @@ export function TFRPassiveAutomationNote(automation) {
   switch (automation?.note) {
     case "speedOnly": return TFRT("Speed is automated; jump distance is GM-resolved.");
     case "meleeWeapon": return TFRT("Automated for all melee weapon attacks.");
+    case "huntersMarkDamage": return TFRT("Automated when you roll the Hunter's Mark damage activity.");
     case "midi": return TFRT("Automated with Midi-QOL and DAE.");
     case "chatHealing": return TFRT("Automated when healing is applied from a chat card.");
     case "chatDamage": return TFRT("Automated when damage is applied from a chat card.");

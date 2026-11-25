@@ -39,9 +39,7 @@ import {
 } from "./11-effect-helpers.js";
 import { TFRApplyRestrainedCondition } from "./12-conditions.js";
 import {
-  TFRApplyCloakAvatar,
   TFRApplyCloakMark,
-  TFRApplyNaturePursuit,
   TFRApplyVerdantSnare,
   TFREffectChangesForRelicAbility,
   TFRRelicAbilityRuntimeSpec,
@@ -90,7 +88,7 @@ export async function TFRUseCloakAbility(actorOrId, abilityId, options = {}) {
   const abilities = {
     feyStep: { charges: 1, label: "Fey Step", slot: "active1" },
     arrowFirstHunt: { charges: 2, label: "Arrow of the First Hunt", slot: "active2" },
-    naturesPursuit: { charges: 3, label: "Nature's Pursuit", slot: "active3" },
+    glamourVeil: { charges: 3, label: "Glamour Veil", slot: "active3" },
     verdantSnare: { charges: 4, label: "Briar Snare", slot: "active4" },
     avatar: { charges: 8, label: "Avatar of the First Hunt", slot: "avatar" },
     signature: { charges: 0, label: "Blessing of Sylvara", slot: "signature" }
@@ -139,27 +137,15 @@ export async function TFRUseCloakAbility(actorOrId, abilityId, options = {}) {
       content: `<h2>${TFRT("Arrow of the First Hunt")}</h2><p>${TFRT("Roll the item's damage activity for extra force damage if needed. The target cannot benefit from invisibility against {actor} until the start of {actor}'s next turn.", { actor: actor.name })}</p>`
     });
   }
-  if (abilityId === "naturesPursuit") return TFRApplyNaturePursuit(actor, item);
-  if (abilityId === "verdantSnare") {
-    // Save-based ability: do not apply Restrained immediately. Queue the save resolver instead.
-    return TFRUseRelicAbility(actor, "cloak_feywilds", "active4", { ...options, spendCharges: false });
-  }
-  if (abilityId === "avatar") return TFRApplyCloakAvatar(actor, item);
-  if (abilityId === "signature") {
-    return ChatMessage.create({
-      speaker: ChatMessage.getSpeaker({ actor }),
-      flags: TFRChatFlags({ ability: "signature" }),
-      content: `<h1>${TFRT("Blessing of Sylvara")}</h1><p>${TFRT("For 1 minute, marked prey cannot hide behind invisibility, mundane hiding, natural terrain, or nonmagical cover. Resolve first-hit extra damage and free Fey Step manually.")}</p>`
-    });
-  }
+  // Briar Snare is save-based: the save resolver applies Restrained. Glamour Veil, the avatar and the
+  // signature use the shared relic runtime, so their helper effects come from the relic definition.
+  return TFRUseRelicAbility(actor, "cloak_feywilds", ability.slot, { ...options, spendCharges: false });
 }
 
 export async function TFRAuditCloakAutomation() {
   const checks = [
     ["TFRUseCloakAbility", typeof TFRUseCloakAbility === "function"],
     ["TFRApplyCloakMark", typeof TFRApplyCloakMark === "function"],
-    ["TFRApplyNaturePursuit", typeof TFRApplyNaturePursuit === "function"],
-    ["TFRApplyCloakAvatar", typeof TFRApplyCloakAvatar === "function"],
     ["TFRApplyVerdantSnare", typeof TFRApplyVerdantSnare === "function"],
     ["TFRApplyRestrainedCondition", typeof TFRApplyRestrainedCondition === "function"],
     ["TFRSpendRelicCharges", typeof TFRSpendRelicCharges === "function"]

@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.7.0
+
+- Redesigned the Cloak of Fey Paths (Ranger) around Hunter's Mark. The old Hunter's Instinct, Path of the Wild, Predator's Patience and Nature's Pursuit are replaced.
+  - Passives: Unbroken Mark (Hunter's Mark doesn't require concentration, automated), Shroud of Leaves (temporary hit points equal to Wisdom modifier + relic bonus when you cast or move Hunter's Mark, automated), Marked Quarry (the Hunter's Mark die grows a step, or adds the relic bonus from d10, automated on the Hunter's Mark damage roll) and Eternal Hunt (tracking, no invisibility, ignores half and three-quarters cover).
+  - Actives: Arrow of the First Hunt works after any weapon hit and moves Hunter's Mark; Glamour Veil (reaction, disadvantage on the attack and a counterattack on a miss) replaces Nature's Pursuit; Briar Snare is used after a weapon hit instead of costing an action.
+  - The avatar keeps Hunter's Mark on two creatures, doubles its damage dice (automated) and empowers the Primal Companion; the signature maximizes Hunter's Mark damage (automated) and grants an extra attack.
+- The GM Control Panel's Cloak quick use now runs the Glamour Veil, avatar and signature through the shared relic runtime, so it applies the same effects as the item.
+
 ## v0.6.0
 
 - Redesigned the Bands of the Inner Dragon (Monk) around grappling, Focus Points, survival and damage. The old features (Centered Mind, Perfect Motion, Body Beyond Limits, Flow State, Dragon Breath, Iron Soul, Hundred Forms) are replaced.

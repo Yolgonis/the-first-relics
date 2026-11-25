@@ -280,7 +280,7 @@ function TFRCloakAbilityIdFromChatMessage(message, actor = null) {
   const haystack = `${text} ${flagText}`;
   if (haystack.includes("fey step")) return "feyStep";
   if (haystack.includes("arrow of the first hunt")) return "arrowFirstHunt";
-  if (haystack.includes("nature's pursuit") || haystack.includes("natures pursuit")) return "naturesPursuit";
+  if (haystack.includes("glamour veil")) return "glamourVeil";
   if (haystack.includes("briar snare") || haystack.includes("verdant snare")) return "verdantSnare";
   if (haystack.includes("avatar of the first hunt") || haystack.includes("avatar of the hunt")) return "avatar";
   if (haystack.includes("signature of the hunt") || haystack.includes("blessing of sylvara")) return "signature";
@@ -291,7 +291,7 @@ function TFRCloakAbilitySlotFromId(abilityId) {
   return {
     feyStep: "active1",
     arrowFirstHunt: "active2",
-    naturesPursuit: "active3",
+    glamourVeil: "active3",
     verdantSnare: "active4",
     avatar: "avatar",
     signature: "signature"
