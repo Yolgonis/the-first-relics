@@ -2445,7 +2445,7 @@
         "<strong>Dragon's Fang.</strong> Your Unarmed Strikes and Monk weapon attacks deal extra force damage equal to the relic bonus."
       ],
       "actives": [
-        "<strong>Dragon Seizes.</strong> <em>Reaction, 1 charge.</em> When a creature within your reach moves away from you or misses you with a melee attack, you make an Unarmed Strike against it using the Grapple option.",
+        "<strong>Dragon Seizes.</strong> <em>Reaction, 1 charge.</em> When a creature within your reach hits or misses you with a melee attack, the dragon snaps back: the creature takes force damage equal to two rolls of your Martial Arts die. If you are grappling it, it can't escape your grapple until the start of your next turn.",
         "<strong>Still Breath.</strong> <em>Bonus Action, 2 charges.</em> You regain Focus Points equal to the relic bonus + 1.",
         "<strong>Coiled Scales.</strong> <em>Reaction, 3 charges.</em> When you are hit by an attack, your AC increases by 5 until the start of your next turn, including against the triggering attack.",
         "<strong>Perfect Strike.</strong> <em>No action, 4 charges, once per turn.</em> When you hit a creature, it takes extra force damage equal to four rolls of your Martial Arts die."

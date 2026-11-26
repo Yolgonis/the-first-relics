@@ -17,7 +17,7 @@
 | P2 | Perfect Motion | **Breath Between Blows** | Monk özelliğine (Stunning Strike, grapple, shove) karşı save kaçıran olunca turda bir kez 1 Focus; short/long rest başına relic bonus kadar | GM |
 | P3 | Body Beyond Limits | **Dragon Hide** | Savaşta her turunun başında Wisdom modifier + relic bonus temp HP (0.18.0; eskiden HP maksimumu + Monk seviyesi, Tough'la çakışıyordu) | Otomatik |
 | P4 | Flow State | **Dragon's Fang** | Unarmed Strike ve Monk weapon isabetlerine relic bonus kadar force | Otomatik (bütün melee silah saldırılarına uygulanır) |
-| A1 | Dragon Breath | **Dragon Seizes** | Reaction: uzaklaşan ya da ıskalayan yaratığa Unarmed Strike ile Grapple | GM |
+| A1 | Dragon Breath | **Dragon Seizes** | Reaction: yakın dövüşte vuran ya da ıskalayan yaratığa 2 Martial Arts zarı force hasar; grapple ediliyorsa bir sonraki turuna kadar kaçamaz (0.18.1; eski tepki grapple Grappler feat'iyle gereksizdi) | Kısmen (hasar) |
 | A2 | Iron Soul | **Still Breath** | Bonus Action: relic bonus + 1 Focus geri gelir | Otomatik |
 | A3 | Hundred Forms | **Coiled Scales** | Reaction, isabet alınca: bir sonraki tura kadar +5 AC | Otomatik |
 | A4 | Perfect Strike | **Perfect Strike** | Action yerine isabetten sonra aksiyonsuz; critical yerine 4 Martial Arts zarı force | Otomatik (`4@scale.monk.die`) |

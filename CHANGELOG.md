@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.18.1
+
+- Bands of the Inner Dragon: Dragon Seizes no longer makes a reaction grapple, which the Grappler feat already covers. When a creature within your reach hits or misses you with a melee attack, it takes force damage equal to two Martial Arts dice (automated), and a creature you are grappling can't escape until the start of your next turn.
+
 ## v0.18.0
 
 - Relic features that repeated a feat from the campaign's sources were replaced:
