@@ -25,6 +25,7 @@ import {
   TFRNormalizeChatHaystack,
   TFRRelicAbilityFromChatMessage,
   TFRRelicAbilityRuntimeSpec,
+  TFRRelicSlotFromChatActivity,
   TFRUseRelicAbility
 } from "./14-ability-runtime.js";
 import { TFRUseCloakAbility } from "./15-automation-audits.js";
@@ -248,6 +249,10 @@ function TFRLooksLikeFeyStepChatMessage(message, actor = null) {
   if (!message) return false;
   if (message.getFlag?.(TFR_MODULE_ID, "feyStepAutomationHandled")) return false;
 
+  // dnd5e 6 cards have no content; the recorded activity says which ability was used.
+  const fromActivity = TFRRelicSlotFromChatActivity(message);
+  if (fromActivity) return fromActivity.relicId === "cloak_feywilds" && fromActivity.slot === "active1";
+
   const text = TFRChatMessagePlainText(message).toLowerCase();
   let flagText = "";
   try { flagText = JSON.stringify(message.flags || {}).toLowerCase(); } catch (err) {}
@@ -270,6 +275,13 @@ function TFRCloakAbilityIdFromChatMessage(message, actor = null) {
   if (message.getFlag?.(TFR_MODULE_ID, "tfrAutomationMessage")) return null;
   if (message.getFlag?.(TFR_MODULE_ID, "cloakAbilityAutomationHandled")) return null;
 
+  // dnd5e 6 cards have no content; the recorded activity says which ability was used.
+  const fromActivity = TFRRelicSlotFromChatActivity(message);
+  if (fromActivity) {
+    if (fromActivity.relicId !== "cloak_feywilds") return null;
+    return Object.entries(TFR_CLOAK_ABILITY_SLOTS).find(([, slot]) => slot === fromActivity.slot)?.[0] || null;
+  }
+
   const text = TFRChatMessagePlainText(message).toLowerCase();
   let flagText = "";
   try { flagText = JSON.stringify(message.flags || {}).toLowerCase(); } catch (err) {}
@@ -287,15 +299,17 @@ function TFRCloakAbilityIdFromChatMessage(message, actor = null) {
   return null;
 }
 
+const TFR_CLOAK_ABILITY_SLOTS = {
+  feyStep: "active1",
+  arrowFirstHunt: "active2",
+  glamourVeil: "active3",
+  verdantSnare: "active4",
+  avatar: "avatar",
+  signature: "signature"
+};
+
 function TFRCloakAbilitySlotFromId(abilityId) {
-  return {
-    feyStep: "active1",
-    arrowFirstHunt: "active2",
-    glamourVeil: "active3",
-    verdantSnare: "active4",
-    avatar: "avatar",
-    signature: "signature"
-  }[abilityId] || null;
+  return TFR_CLOAK_ABILITY_SLOTS[abilityId] || null;
 }
 
 export function TFRRegisterFeyStepChatAutomation() {

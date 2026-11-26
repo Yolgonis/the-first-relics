@@ -425,10 +425,41 @@ function TFRInferRelicSlotFromChatBadges(relicId, item, haystack) {
   return null;
 }
 
+/**
+ * The activity a dnd5e usage card was made from, or null. dnd5e 6 keeps it on the message's system
+ * data (and leaves the card content and flags empty); dnd5e 5 recorded it in flags.dnd5e.activity.
+ */
+export function TFRChatMessageActivity(message) {
+  const fromSystem = message?.system?.activity;
+  if (fromSystem && typeof fromSystem === "object" && fromSystem.item) return fromSystem;
+  try {
+    const associated = message?.getAssociatedActivity?.();
+    if (associated) return associated;
+  } catch (err) {}
+  const uuid = message?.flags?.dnd5e?.activity?.uuid;
+  return uuid ? fromUuidSync(uuid) : null;
+}
+
+/** The relic id and slot of the relic activity a usage card was made from, or null. */
+export function TFRRelicSlotFromChatActivity(message) {
+  const activity = TFRChatMessageActivity(message);
+  const relicId = activity?.item?.getFlag?.(TFR_MODULE_ID, "relicId");
+  if (!relicId) return null;
+  const slot = TFRGetActivitySlot(activity);
+  const slots = TFRAbilityDefinitions()[relicId] || {};
+  return slot && slots[slot] ? { relicId, slot, name: activity.name || slots[slot].name, score: 100 } : null;
+}
+
 export function TFRRelicAbilityFromChatMessage(message, actor = null) {
   if (!message || !actor) return null;
   if (message.getFlag?.(TFR_MODULE_ID, "tfrAutomationMessage")) return null;
   if (message.getFlag?.(TFR_MODULE_ID, "genericRelicAutomationHandled")) return null;
+
+  // The activity recorded on the card is checked first: badge and name matching can pick the wrong
+  // ability when two share an activation and target, or when the relic's name contains another
+  // ability's name (the Lyre of the First Song's card matched its signature, The First Song).
+  const fromActivity = TFRRelicSlotFromChatActivity(message);
+  if (fromActivity) return fromActivity;
 
   const haystack = TFRNormalizeChatHaystack(message);
   const defs = TFRAbilityDefinitions();
@@ -438,10 +469,7 @@ export function TFRRelicAbilityFromChatMessage(message, actor = null) {
     if (!item) continue;
     if (!TFRChatMentionsRelicItem(message, actor, relicId, item, haystack)) continue;
 
-    // dnd5e records the used activity on its chat card, and the activity carries its slot flag.
-    // This is checked first: badge and name matching can pick the wrong ability when two share an
-    // activation and target, or when the relic's name contains another ability's name (the Lyre
-    // of the First Song's card matched its signature, The First Song).
+    // dnd5e 5 cards: the activity id in flags.dnd5e.activity.
     const activityId = message.flags?.dnd5e?.activity?.id || null;
     const flaggedActivity = activityId ? item.system?.activities?.get?.(activityId) : null;
     const flaggedSlot = flaggedActivity ? TFRGetActivitySlot(flaggedActivity) : null;

@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.17.1
+
+- Foundry v14 / dnd5e 6 support: relic abilities used from their dnd5e usage card ran no helper (no Focus, Sorcery Points, temporary hit points, slots and so on), because dnd5e 6 cards carry the activity in `message.system.activity` and have empty content and flags. The ability is now read from the card's activity first; the old flag, name and badge matching remains for dnd5e 5 cards. Fey Step and the Cloak quick-use routing use the same lookup.
+- `compatibility.maximum` is 14.999.
+
 ## v0.17.0
 
 - Redesigned the Vestments of the First Saint (Cleric) around Channel Divinity and concentration. Beacon of Hope, Unyielding Spirit and Sanctuary of Dawn are replaced.
