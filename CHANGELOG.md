@@ -1,104 +1,22 @@
 # Changelog
 
-## v0.18.1
-
-- Bands of the Inner Dragon: Dragon Seizes no longer makes a reaction grapple, which the Grappler feat already covers. When a creature within your reach hits or misses you with a melee attack, it takes force damage equal to two Martial Arts dice (automated), and a creature you are grappling can't escape until the start of your next turn.
-
-## v0.18.0
+## v0.7.1
 
 - Relic features that repeated a feat from the campaign's sources were replaced:
   - Mantle of the First Seer: Perfect Concentration (War Caster) becomes Unshaken Mind: the relic bonus on concentration saves and psychic resistance, automated.
   - Blood of the First Dragon: Draconic Blood (+1 hit point per level, Tough) now gives fire resistance and the relic bonus on Constitution saves, automated.
   - Bands of the Inner Dragon: Dragon Hide (+Monk level hit points, Tough) now grants Wisdom modifier + relic bonus temporary hit points at the start of each of your turns in combat, automated. Dragon's Grip loses the free movement of a grappled creature (Grappler); a creature you grapple can't take reactions instead.
   - Chains of the Patron: Forbidden Lore (an extra Eldritch Invocation, Eldritch Adept) now makes you immune to charmed and frightened and raises your spell save DC by 1, automated.
+- Bands of the Inner Dragon: Dragon Seizes no longer makes a reaction grapple, which the Grappler feat already covers. When a creature within your reach hits or misses you with a melee attack, it takes force damage equal to two Martial Arts dice (automated), and a creature you are grappling can't escape until the start of your next turn.
 
-## v0.17.1
+## v0.7.0
 
 - Foundry v14 / dnd5e 6 support: relic abilities used from their dnd5e usage card ran no helper (no Focus, Sorcery Points, temporary hit points, slots and so on), because dnd5e 6 cards carry the activity in `message.system.activity` and have empty content and flags. The ability is now read from the card's activity first; the old flag, name and badge matching remains for dnd5e 5 cards. Fey Step and the Cloak quick-use routing use the same lookup.
 - `compatibility.maximum` is 14.999.
 
-## v0.17.0
-
-- Redesigned the Vestments of the First Saint (Cleric) around Channel Divinity and concentration. Beacon of Hope, Unyielding Spirit and Sanctuary of Dawn are replaced.
-  - Passives: Gentle Light and Saint's Grace (unchanged), Font of Divinity (regain a Channel Divinity use when combat starts, automated) and Radiant Sermon (once per turn, Wisdom modifier + relic bonus to a cleric spell's damage, automated).
-  - Actives: Steadfast Prayer (reaction, a failed concentration save succeeds) replaces Sanctuary of Dawn, whose effect gave bludgeoning, piercing and slashing resistance instead of the necrotic and radiant resistance its text described; Cleansing Light now costs a bonus action; Blessing and Wings of Mercy stay.
-  - The avatar now hovers.
-
-## v0.16.0
-
-- Redesigned the Chains of the Patron (Warlock) around Pact Magic slots and Eldritch Invocations, so it works for every patron. Read the Fine Print, Price Paid (a copy of the Fiend's Dark One's Blessing), No Master But the Price and Patron's Glance are replaced.
-  - Passives: Borrowed Power (unchanged), Pact Reservoir (regain a Pact Magic slot when combat starts, automated), Binding Ward (once per turn, warlock level + relic bonus temporary hit points when you spend a Pact Magic slot, automated) and Forbidden Lore (one extra Eldritch Invocation).
-  - Actives: Unbroken Pact (reaction, keep concentration on a warlock spell) is new; Chain of Binding now costs a bonus action; Borrowed Ruin and Pay the Difference stay.
-
-## v0.15.0
-
-- Redesigned the Aegis of the Dawn (Fighter) around Second Wind, Action Surge and the subclass dice, keeping its guardian theme. Dawn's Endurance, Unbroken Wall, Stand Firm, Bastion of Resolve and Break the Darkness are replaced.
-  - Passives: Second Dawn (regain a Second Wind use when combat starts, automated), Guardian's Burden (unchanged), Dawnblade (relic bonus radiant damage on weapon hits, automated) and First Light (unchanged).
-  - Actives: Tactical Renewal (regain a Superiority Die or Psionic Energy die, or a Second Wind use, automated), Surge of Dawn (regain an Action Surge use, automated) and Sunbreak Strike (no action after a weapon hit, 4d8 radiant) are new; Dawn Barrier stays.
-  - The avatar now hovers and lets you give your weapon a second Weapon Mastery property.
-- A relic ability can restore uses of the first class feature it finds from a list of identifiers.
-
-## v0.14.0
-
-- Redesigned the Girdle of the Unbroken (Barbarian) around Rage, damage types Rage doesn't resist, bonus action pressure and enemies out of reach. Unyielding Core, Stand Again, The Unbroken Does Not Kneel, Stand and Hold the World are replaced.
-  - Passives: Primal Hide (while raging, resistance to acid, cold, fire, lightning, poison and thunder, automated), Undying Fury (regain a Rage use when combat starts, automated), Will Before Wound (unchanged) and Thunderous Fury (Rage Damage bonus + relic bonus, automated).
-  - Actives: Primal Surge (enter Rage without a bonus action and move half your speed) and Earthshaker Leap (bonus action leap to a creature, even a flying one; Strength save or prone, automated) are new; Stoneheart Surge and Refuse the Fall stay.
-
-## v0.13.0
-
-- Redesigned the Lyre of the First Song (Bard) around Bardic Inspiration and removed its overlapping save and fear auras. Echo of Inspiration, Song of Courage, Melody of Unity and Verse of Silence are replaced, and Song of Rest is renamed Rallying Chord.
-  - Passives: Endless Refrain (regain a Bardic Inspiration use when combat starts, automated), Resounding Chord (the Bardic Inspiration die grows one step up to d12, automated), Symphony Eternal (unchanged) and Dissonant Edge (once per turn, Charisma modifier + relic bonus to a bard spell's damage, automated).
-  - Actives: Rallying Chord now costs a bonus action; Encore (regain two Bardic Inspiration uses, automated) is new; Chorus of Creation now costs a bonus action; Ballad of Heroes stays.
-  - The avatar gains hover, lets you give Bardic Inspiration without a bonus action and use it after a success, instead of granting advantage against charm and fear.
-- Fixed relic abilities used from their chat card running another ability's helper when the relic's name contains that ability's name (Encore on the Lyre of the First Song ran The First Song). The ability is now read from the activity recorded on the card first, and the badge and name matching is only a fallback for older cards.
-
-## v0.12.0
-
-- Redesigned the Heart of Yggdrasil (Druid) around Wild Shape and moved it away from the Cleric's healer role. Living Sap, World Tree's Gift, Verdant Bloom and Forest Guardian are replaced.
-  - Passives: Nature's Blessing (unchanged, now first), Endless Seasons (regain a Wild Shape use when combat starts, automated), Endless Spring (unchanged) and Primal Wrath (once per turn, Wisdom modifier + relic bonus to a druid spell's damage, automated; Wild Shape attacks are GM-resolved).
-  - Actives: Rooted Focus (reaction, a failed concentration save succeeds) and Bark of Yggdrasil (bonus action, +2 AC and bludgeoning, piercing and slashing resistance in any form, automated); Nature's Embrace and Roots of Eternity stay.
-  - The avatar adds 1d8 poison to weapon and Wild Shape attacks (automated) and keeps Wild Shape uses from being spent, instead of healing nearby allies each turn.
-
-## v0.11.0
-
-- Redesigned the Cloak of the Umbral Veil (Rogue) around Sneak Attack and Cunning Strike, and removed its dependence on dim light and darkness. Shadow Walker, Veil of Silence, One With Darkness and Living Darkness are replaced.
-  - Passives: Deepened Shadows (one extra Sneak Attack die, automated), Umbral Shroud (the first damage you take each round is reduced by Dexterity modifier + relic bonus, automated), Cunning Shadow (one Cunning Strike effect per turn costs one fewer die) and Unseen Hunter (unchanged).
-  - Actives: Shadow Step no longer needs a shadow; Second Shadow (reaction weapon attack that can carry Sneak Attack) is new; Fade Away now costs 3 charges; Death From Silence is used after a Sneak Attack hit instead of costing an action.
-  - The avatar lets you apply Sneak Attack twice per turn to different creatures and Hide as a bonus action in any light.
-
-## v0.10.0
-
-- Redesigned the Crown of the Conqueror (Paladin) around Divine Smite, Lay on Hands and Channel Divinity, and removed its overlapping fear, charm and Wisdom save protections. Royal Presence, Sovereign Aura, Rally and Banner Unbroken are replaced.
-  - Passives: Crowned Smite (Divine Smite deals an extra 1d8 radiant + relic bonus, automated), Banner of Order (unchanged), King's Mercy (five times the relic bonus back into Lay on Hands when combat starts, automated) and Commander's Resolve (unchanged).
-  - Actives: Crown's Judgment (no action after a melee hit, 3d8 radiant, automated) and Divine Mandate (regain a Channel Divinity use, automated); Royal Decree and March of Kings now cost a bonus action instead of an action.
-  - The avatar adds 1d8 radiant to melee weapon hits (automated) and widens Aura of Protection by 10 feet instead of granting fear and charm save bonuses.
-- The Crown's damage abilities now deal radiant damage instead of force.
-
-## v0.9.0
-
-- Redesigned the Blood of the First Dragon (Sorcerer) around Sorcery Points, Metamagic and Innate Sorcery so it works for every subclass. Ancient Scales, Unyielding Will, Dragon Soul, Draconic Roar and Wings of the First Dragon are replaced.
-  - Passives: Wellspring (Sorcery Points equal to the relic bonus when combat starts, automated), Draconic Blood (unchanged), Twin Heart (a free 1-point Metamagic once per turn, relic bonus uses per long rest) and Elemental Wrath (once per turn, Charisma modifier + relic bonus to a sorcerer spell's damage, automated).
-  - Actives: Kindled Sorcery (regain an Innate Sorcery use, automated) and Blood Tithe (regain relic bonus + 2 Sorcery Points, automated); Burning Blood now also applies to spell attacks; Primordial Breath stays.
-  - The avatar lowers Metamagic costs by 1; the signature restores all Sorcery Points and applies resistance to all damage and a 19–20 critical range for weapons and spells (automated).
-- Relic abilities can restore uses of a class feature by its identifier (Focus Points, Sorcery Points, Innate Sorcery).
-
-## v0.8.0
-
-- Redesigned the Mantle of the First Seer (Wizard) so it works for every school instead of only divination spells. Scholar's Insight, Eyes Beyond Time, Echo of Tomorrow and Spell Insight are replaced.
-  - Passives: Perfect Concentration (advantage on every concentration save, automated), Living Chronicle (once per turn, temporary hit points when you cast a spell of 1st level or higher, automated), Prepared Mind (once per long rest, regain a spell slot up to the relic bonus when combat starts, automated) and Arcane Edge (once per turn, Intelligence modifier + relic bonus to a wizard spell's damage, automated).
-  - Actives: Veil of Possibility (reaction, +5 AC until your next turn, automated) and Rewrite the Page (bonus action, regain a spell slot up to the relic bonus, automated); Moment of Clarity and Threads of Fate stay.
-  - The avatar's free spell is any wizard spell of 3rd level or lower instead of a divination spell.
-
-## v0.7.0
-
-- Redesigned the Cloak of Fey Paths (Ranger) around Hunter's Mark. The old Hunter's Instinct, Path of the Wild, Predator's Patience and Nature's Pursuit are replaced.
-  - Passives: Unbroken Mark (Hunter's Mark doesn't require concentration, automated), Shroud of Leaves (temporary hit points equal to Wisdom modifier + relic bonus when you cast or move Hunter's Mark, automated), Marked Quarry (the Hunter's Mark die grows a step, or adds the relic bonus from d10, automated on the Hunter's Mark damage roll) and Eternal Hunt (tracking, no invisibility, ignores half and three-quarters cover).
-  - Actives: Arrow of the First Hunt works after any weapon hit and moves Hunter's Mark; Glamour Veil (reaction, disadvantage on the attack and a counterattack on a miss) replaces Nature's Pursuit; Briar Snare is used after a weapon hit instead of costing an action.
-  - The avatar keeps Hunter's Mark on two creatures, doubles its damage dice (automated) and empowers the Primal Companion; the signature maximizes Hunter's Mark damage (automated) and grants an extra attack.
-- The GM Control Panel's Cloak quick use now runs the Glamour Veil, avatar and signature through the shared relic runtime, so it applies the same effects as the item.
-
 ## v0.6.0
 
+- All twelve relics were redesigned around their class resources (Focus, Hunter's Mark, spell slots, Sorcery Points, Divine Smite and Lay on Hands, Sneak Attack, Wild Shape, Bardic Inspiration, Rage, Second Wind and Action Surge, Pact Magic, Channel Divinity). Class research notes are in `docs/sinif-revizyon-notlari.md`, and per-relic change tables in `docs/relic-degisiklikleri.md`.
 - Redesigned the Bands of the Inner Dragon (Monk) around grappling, Focus Points, survival and damage. The old features (Centered Mind, Perfect Motion, Body Beyond Limits, Flow State, Dragon Breath, Iron Soul, Hundred Forms) are replaced.
   - Passives: Dragon's Grip (grapple up to Huge, disadvantage on escape, no extra movement when moving a grappled creature), Breath Between Blows (regain 1 Focus Point when a creature fails a save against your Monk features or grapple/shove, relic bonus uses per short or long rest), Dragon Hide (hit point maximum + Monk level, automated) and Dragon's Fang (relic bonus force damage on hits, automated for all melee weapon attacks).
   - Actives: Dragon Seizes (reaction grapple), Still Breath (regain relic bonus + 1 Focus Points, automated), Coiled Scales (reaction, +5 AC until your next turn, automated) and Perfect Strike (no action, extra force damage equal to four Martial Arts dice).
@@ -107,6 +25,53 @@
 - Fixed ability helpers that scale with the relic bonus (temporary hit points, Focus Points) using the Exalted bonus on Final Form relics instead of the Final Form bonus.
 - Fixed hover never turning on for relic flight (avatars of the Bands, Girdle, Mantle, Cloaks, Chains and Blood of the First Dragon). With DAE active, an OVERRIDE "true" on a boolean field was evaluated to "1" and read as false; hover is now written in CUSTOM mode and applied by the module.
 - Fixed relic abilities whose chat card badges match another ability (such as a bonus action on yourself next to the avatar) not running their helper; the ability is now read from the activity recorded on the card.
+- Redesigned the Cloak of Fey Paths (Ranger) around Hunter's Mark. The old Hunter's Instinct, Path of the Wild, Predator's Patience and Nature's Pursuit are replaced.
+  - Passives: Unbroken Mark (Hunter's Mark doesn't require concentration, automated), Shroud of Leaves (temporary hit points equal to Wisdom modifier + relic bonus when you cast or move Hunter's Mark, automated), Marked Quarry (the Hunter's Mark die grows a step, or adds the relic bonus from d10, automated on the Hunter's Mark damage roll) and Eternal Hunt (tracking, no invisibility, ignores half and three-quarters cover).
+  - Actives: Arrow of the First Hunt works after any weapon hit and moves Hunter's Mark; Glamour Veil (reaction, disadvantage on the attack and a counterattack on a miss) replaces Nature's Pursuit; Briar Snare is used after a weapon hit instead of costing an action.
+  - The avatar keeps Hunter's Mark on two creatures, doubles its damage dice (automated) and empowers the Primal Companion; the signature maximizes Hunter's Mark damage (automated) and grants an extra attack.
+- The GM Control Panel's Cloak quick use now runs the Glamour Veil, avatar and signature through the shared relic runtime, so it applies the same effects as the item.
+- Redesigned the Mantle of the First Seer (Wizard) so it works for every school instead of only divination spells. Scholar's Insight, Eyes Beyond Time, Echo of Tomorrow and Spell Insight are replaced.
+  - Passives: Perfect Concentration (advantage on every concentration save, automated), Living Chronicle (once per turn, temporary hit points when you cast a spell of 1st level or higher, automated), Prepared Mind (once per long rest, regain a spell slot up to the relic bonus when combat starts, automated) and Arcane Edge (once per turn, Intelligence modifier + relic bonus to a wizard spell's damage, automated).
+  - Actives: Veil of Possibility (reaction, +5 AC until your next turn, automated) and Rewrite the Page (bonus action, regain a spell slot up to the relic bonus, automated); Moment of Clarity and Threads of Fate stay.
+  - The avatar's free spell is any wizard spell of 3rd level or lower instead of a divination spell.
+- Redesigned the Blood of the First Dragon (Sorcerer) around Sorcery Points, Metamagic and Innate Sorcery so it works for every subclass. Ancient Scales, Unyielding Will, Dragon Soul, Draconic Roar and Wings of the First Dragon are replaced.
+  - Passives: Wellspring (Sorcery Points equal to the relic bonus when combat starts, automated), Draconic Blood (unchanged), Twin Heart (a free 1-point Metamagic once per turn, relic bonus uses per long rest) and Elemental Wrath (once per turn, Charisma modifier + relic bonus to a sorcerer spell's damage, automated).
+  - Actives: Kindled Sorcery (regain an Innate Sorcery use, automated) and Blood Tithe (regain relic bonus + 2 Sorcery Points, automated); Burning Blood now also applies to spell attacks; Primordial Breath stays.
+  - The avatar lowers Metamagic costs by 1; the signature restores all Sorcery Points and applies resistance to all damage and a 19–20 critical range for weapons and spells (automated).
+- Relic abilities can restore uses of a class feature by its identifier (Focus Points, Sorcery Points, Innate Sorcery).
+- Redesigned the Crown of the Conqueror (Paladin) around Divine Smite, Lay on Hands and Channel Divinity, and removed its overlapping fear, charm and Wisdom save protections. Royal Presence, Sovereign Aura, Rally and Banner Unbroken are replaced.
+  - Passives: Crowned Smite (Divine Smite deals an extra 1d8 radiant + relic bonus, automated), Banner of Order (unchanged), King's Mercy (five times the relic bonus back into Lay on Hands when combat starts, automated) and Commander's Resolve (unchanged).
+  - Actives: Crown's Judgment (no action after a melee hit, 3d8 radiant, automated) and Divine Mandate (regain a Channel Divinity use, automated); Royal Decree and March of Kings now cost a bonus action instead of an action.
+  - The avatar adds 1d8 radiant to melee weapon hits (automated) and widens Aura of Protection by 10 feet instead of granting fear and charm save bonuses.
+- The Crown's damage abilities now deal radiant damage instead of force.
+- Redesigned the Cloak of the Umbral Veil (Rogue) around Sneak Attack and Cunning Strike, and removed its dependence on dim light and darkness. Shadow Walker, Veil of Silence, One With Darkness and Living Darkness are replaced.
+  - Passives: Deepened Shadows (one extra Sneak Attack die, automated), Umbral Shroud (the first damage you take each round is reduced by Dexterity modifier + relic bonus, automated), Cunning Shadow (one Cunning Strike effect per turn costs one fewer die) and Unseen Hunter (unchanged).
+  - Actives: Shadow Step no longer needs a shadow; Second Shadow (reaction weapon attack that can carry Sneak Attack) is new; Fade Away now costs 3 charges; Death From Silence is used after a Sneak Attack hit instead of costing an action.
+  - The avatar lets you apply Sneak Attack twice per turn to different creatures and Hide as a bonus action in any light.
+- Redesigned the Heart of Yggdrasil (Druid) around Wild Shape and moved it away from the Cleric's healer role. Living Sap, World Tree's Gift, Verdant Bloom and Forest Guardian are replaced.
+  - Passives: Nature's Blessing (unchanged, now first), Endless Seasons (regain a Wild Shape use when combat starts, automated), Endless Spring (unchanged) and Primal Wrath (once per turn, Wisdom modifier + relic bonus to a druid spell's damage, automated; Wild Shape attacks are GM-resolved).
+  - Actives: Rooted Focus (reaction, a failed concentration save succeeds) and Bark of Yggdrasil (bonus action, +2 AC and bludgeoning, piercing and slashing resistance in any form, automated); Nature's Embrace and Roots of Eternity stay.
+  - The avatar adds 1d8 poison to weapon and Wild Shape attacks (automated) and keeps Wild Shape uses from being spent, instead of healing nearby allies each turn.
+- Redesigned the Lyre of the First Song (Bard) around Bardic Inspiration and removed its overlapping save and fear auras. Echo of Inspiration, Song of Courage, Melody of Unity and Verse of Silence are replaced, and Song of Rest is renamed Rallying Chord.
+  - Passives: Endless Refrain (regain a Bardic Inspiration use when combat starts, automated), Resounding Chord (the Bardic Inspiration die grows one step up to d12, automated), Symphony Eternal (unchanged) and Dissonant Edge (once per turn, Charisma modifier + relic bonus to a bard spell's damage, automated).
+  - Actives: Rallying Chord now costs a bonus action; Encore (regain two Bardic Inspiration uses, automated) is new; Chorus of Creation now costs a bonus action; Ballad of Heroes stays.
+  - The avatar gains hover, lets you give Bardic Inspiration without a bonus action and use it after a success, instead of granting advantage against charm and fear.
+- Fixed relic abilities used from their chat card running another ability's helper when the relic's name contains that ability's name (Encore on the Lyre of the First Song ran The First Song). The ability is now read from the activity recorded on the card first, and the badge and name matching is only a fallback for older cards.
+- Redesigned the Girdle of the Unbroken (Barbarian) around Rage, damage types Rage doesn't resist, bonus action pressure and enemies out of reach. Unyielding Core, Stand Again, The Unbroken Does Not Kneel, Stand and Hold the World are replaced.
+  - Passives: Primal Hide (while raging, resistance to acid, cold, fire, lightning, poison and thunder, automated), Undying Fury (regain a Rage use when combat starts, automated), Will Before Wound (unchanged) and Thunderous Fury (Rage Damage bonus + relic bonus, automated).
+  - Actives: Primal Surge (enter Rage without a bonus action and move half your speed) and Earthshaker Leap (bonus action leap to a creature, even a flying one; Strength save or prone, automated) are new; Stoneheart Surge and Refuse the Fall stay.
+- Redesigned the Aegis of the Dawn (Fighter) around Second Wind, Action Surge and the subclass dice, keeping its guardian theme. Dawn's Endurance, Unbroken Wall, Stand Firm, Bastion of Resolve and Break the Darkness are replaced.
+  - Passives: Second Dawn (regain a Second Wind use when combat starts, automated), Guardian's Burden (unchanged), Dawnblade (relic bonus radiant damage on weapon hits, automated) and First Light (unchanged).
+  - Actives: Tactical Renewal (regain a Superiority Die or Psionic Energy die, or a Second Wind use, automated), Surge of Dawn (regain an Action Surge use, automated) and Sunbreak Strike (no action after a weapon hit, 4d8 radiant) are new; Dawn Barrier stays.
+  - The avatar now hovers and lets you give your weapon a second Weapon Mastery property.
+- A relic ability can restore uses of the first class feature it finds from a list of identifiers.
+- Redesigned the Chains of the Patron (Warlock) around Pact Magic slots and Eldritch Invocations, so it works for every patron. Read the Fine Print, Price Paid (a copy of the Fiend's Dark One's Blessing), No Master But the Price and Patron's Glance are replaced.
+  - Passives: Borrowed Power (unchanged), Pact Reservoir (regain a Pact Magic slot when combat starts, automated), Binding Ward (once per turn, warlock level + relic bonus temporary hit points when you spend a Pact Magic slot, automated) and Forbidden Lore (one extra Eldritch Invocation).
+  - Actives: Unbroken Pact (reaction, keep concentration on a warlock spell) is new; Chain of Binding now costs a bonus action; Borrowed Ruin and Pay the Difference stay.
+- Redesigned the Vestments of the First Saint (Cleric) around Channel Divinity and concentration. Beacon of Hope, Unyielding Spirit and Sanctuary of Dawn are replaced.
+  - Passives: Gentle Light and Saint's Grace (unchanged), Font of Divinity (regain a Channel Divinity use when combat starts, automated) and Radiant Sermon (once per turn, Wisdom modifier + relic bonus to a cleric spell's damage, automated).
+  - Actives: Steadfast Prayer (reaction, a failed concentration save succeeds) replaces Sanctuary of Dawn, whose effect gave bludgeoning, piercing and slashing resistance instead of the necrotic and radiant resistance its text described; Cleansing Light now costs a bonus action; Blessing and Wings of Mercy stay.
+  - The avatar now hovers.
 
 ## v0.5.1
 

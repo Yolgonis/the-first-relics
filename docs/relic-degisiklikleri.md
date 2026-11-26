@@ -1,4 +1,4 @@
-# Relic Değişiklikleri (0.6.0 – 0.17.0)
+# Relic Değişiklikleri (0.6.0 – 0.7.1)
 
 25.11.2026 revizyonu. Her tablo bir relic'in on yuvasını eski ve yeni haliyle gösterir. Pasiflerin açılışı: Dormant P1–P2, Awakened P3, Exalted P4.
 
@@ -13,18 +13,18 @@
 
 | Yuva | Eski | Yeni | Ne değişti | Otomasyon |
 |---|---|---|---|---|
-| P1 | Centered Mind | **Dragon's Grip** | Huge'a kadar grapple; kaçma denemelerine disadvantage; grapple edilen yaratık reaksiyon alamaz (0.18.0'da Grappler'la çakışan taşıma maddesi çıktı) | GM |
+| P1 | Centered Mind | **Dragon's Grip** | Huge'a kadar grapple; kaçma denemelerine disadvantage; grapple edilen yaratık reaksiyon alamaz (0.7.1'de Grappler'la çakışan taşıma maddesi çıktı) | GM |
 | P2 | Perfect Motion | **Breath Between Blows** | Monk özelliğine (Stunning Strike, grapple, shove) karşı save kaçıran olunca turda bir kez 1 Focus; short/long rest başına relic bonus kadar | GM |
-| P3 | Body Beyond Limits | **Dragon Hide** | Savaşta her turunun başında Wisdom modifier + relic bonus temp HP (0.18.0; eskiden HP maksimumu + Monk seviyesi, Tough'la çakışıyordu) | Otomatik |
+| P3 | Body Beyond Limits | **Dragon Hide** | Savaşta her turunun başında Wisdom modifier + relic bonus temp HP (0.7.1; eskiden HP maksimumu + Monk seviyesi, Tough'la çakışıyordu) | Otomatik |
 | P4 | Flow State | **Dragon's Fang** | Unarmed Strike ve Monk weapon isabetlerine relic bonus kadar force | Otomatik (bütün melee silah saldırılarına uygulanır) |
-| A1 | Dragon Breath | **Dragon Seizes** | Reaction: yakın dövüşte vuran ya da ıskalayan yaratığa 2 Martial Arts zarı force hasar; grapple ediliyorsa bir sonraki turuna kadar kaçamaz (0.18.1; eski tepki grapple Grappler feat'iyle gereksizdi) | Kısmen (hasar) |
+| A1 | Dragon Breath | **Dragon Seizes** | Reaction: yakın dövüşte vuran ya da ıskalayan yaratığa 2 Martial Arts zarı force hasar; grapple ediliyorsa bir sonraki turuna kadar kaçamaz (0.7.1; eski tepki grapple Grappler feat'iyle gereksizdi) | Kısmen (hasar) |
 | A2 | Iron Soul | **Still Breath** | Bonus Action: relic bonus + 1 Focus geri gelir | Otomatik |
 | A3 | Hundred Forms | **Coiled Scales** | Reaction, isabet alınca: bir sonraki tura kadar +5 AC | Otomatik |
 | A4 | Perfect Strike | **Perfect Strike** | Action yerine isabetten sonra aksiyonsuz; critical yerine 4 Martial Arts zarı force | Otomatik (`4@scale.monk.die`) |
 | AV | Inner Dragon Manifest | **Inner Dragon Manifest** | Hasar 2d10'dan 1d10'a indi. Yeni: iki yaratığı grapple, grapple'dakilere tur başı hasar, her turunda 1 Focus | Kısmen (uçuş, hover, hasar, tur başı Focus) |
 | SIG | Dragon Unbound | **Dragon Unbound** | Tüm Focus geri gelir; Monk özellikleri 1 eksik Focus harcatır; psychic dışı tüm hasara resistance; grappled/restrained/stunned immunity; 19–20 critical | Kısmen (Focus, resistance, immunity, critical; indirim GM'de) |
 
-## Ranger — Cloak of Fey Paths (0.7.0)
+## Ranger — Cloak of Fey Paths (0.6.0)
 
 | Yuva | Eski | Yeni | Ne değişti | Otomasyon |
 |---|---|---|---|---|
@@ -39,11 +39,11 @@
 | AV | Avatar of the First Hunt | **Avatar of the First Hunt** | İki hedef işaretleme; Hunter's Mark zarı ikiye katlanır; Primal Companion'a uçuş ve bonus. Advantage ve siper yok sayma kaldırıldı | Kısmen (uçuş, hover, çift zar) |
 | SIG | Blessing of Sylvara | **Blessing of Sylvara** | Hunter's Mark hasarı maksimum; Attack action'da ek saldırı; işaretli hedef 0 HP'de işaret taşıma ve ücretsiz Fey Step | Kısmen (maksimum hasar) |
 
-## Wizard — Mantle of the First Seer (0.8.0)
+## Wizard — Mantle of the First Seer (0.6.0)
 
 | Yuva | Eski | Yeni | Ne değişti | Otomasyon |
 |---|---|---|---|---|
-| P1 | Scholar's Insight | **Unshaken Mind** | Konsantrasyon save'lerine relic bonus, psychic resistance (0.18.0; Perfect Concentration War Caster'la aynıydı) | Otomatik |
+| P1 | Scholar's Insight | **Unshaken Mind** | Konsantrasyon save'lerine relic bonus, psychic resistance (0.7.1; Perfect Concentration War Caster'la aynıydı) | Otomatik |
 | P2 | Perfect Concentration | **Living Chronicle** | 1. seviye ve üstü her büyüde, turda bir kez proficiency + relic bonus temp HP; surprised olmaz | Kısmen (temp HP) |
 | P3 | Eyes Beyond Time | **Prepared Mind** | Initiative'de relic bonus seviyesine kadar bir slot geri; long rest başına bir kez | Otomatik |
 | P4 | Living Chronicle | **Arcane Edge** | Turda bir kez Wizard büyüsü hasarına INT + relic bonus | Otomatik |
@@ -54,12 +54,12 @@
 | AV | Avatar of the First Seer | **Avatar of the First Seer** | Ücretsiz büyü artık herhangi bir 3. seviye ve altı Wizard büyüsü (eskiden yalnızca divination) | Kısmen (uçuş, hover, truesight, bonuslar) |
 | SIG | Chronicle Unwritten | **Chronicle Unwritten** | Değişmedi | GM |
 
-## Sorcerer — Blood of the First Dragon (0.9.0)
+## Sorcerer — Blood of the First Dragon (0.6.0)
 
 | Yuva | Eski | Yeni | Ne değişti | Otomasyon |
 |---|---|---|---|---|
 | P1 | Draconic Blood | **Wellspring** | Initiative'de relic bonus kadar Sorcery Point | Otomatik |
-| P2 | Ancient Scales | **Draconic Blood** | Fire resistance, Constitution save'lerine relic bonus (0.18.0; seviye başına +1 HP Tough'la çakışıyordu). Ancient Scales (+1 AC) kaldırıldı | Otomatik |
+| P2 | Ancient Scales | **Draconic Blood** | Fire resistance, Constitution save'lerine relic bonus (0.7.1; seviye başına +1 HP Tough'la çakışıyordu). Ancient Scales (+1 AC) kaldırıldı | Otomatik |
 | P3 | Unyielding Will | **Twin Heart** | Turda bir kez 1 SP'lik Metamagic ücretsiz; long rest başına relic bonus kadar | GM |
 | P4 | Dragon Soul | **Elemental Wrath** | Turda bir kez Sorcerer büyüsü hasarına CHA + relic bonus | Otomatik |
 | A1 | Draconic Roar | **Kindled Sorcery** | Aksiyonsuz: bir Innate Sorcery kullanımı geri | Otomatik |
@@ -69,7 +69,7 @@
 | AV | First Dragon Incarnate | **First Dragon Incarnate** | Yeni: Metamagic 1 eksik SP harcatır | Kısmen (uçuş, hover, resistance, hasar) |
 | SIG | Heart of the First Flame | **Heart of the First Flame** | Yeni: tüm Sorcery Point geri gelir; resistance ve 19–20 critical artık efektle uygulanıyor | Kısmen (SP, resistance, critical; advantage ve Exhaustion GM'de) |
 
-## Paladin — Crown of the Conqueror (0.10.0)
+## Paladin — Crown of the Conqueror (0.6.0)
 
 | Yuva | Eski | Yeni | Ne değişti | Otomasyon |
 |---|---|---|---|---|
@@ -86,7 +86,7 @@
 
 Not: Crown'un hasar yetenekleri artık force yerine radiant.
 
-## Rogue — Cloak of the Umbral Veil (0.11.0)
+## Rogue — Cloak of the Umbral Veil (0.6.0)
 
 | Yuva | Eski | Yeni | Ne değişti | Otomasyon |
 |---|---|---|---|---|
@@ -101,7 +101,7 @@ Not: Crown'un hasar yetenekleri artık force yerine radiant.
 | AV | Walker Between Shadows | **Walker Between Shadows** | Turda iki Sneak Attack (farklı hedef); her ışıkta bonus action ile Hide. Loşlukta invisible kaldırıldı | Kısmen (uçuş, hover, resistance) |
 | SIG | One Step Behind | **One Step Behind** | Değişmedi | Kısmen (hasar, ışınlanma aracı) |
 
-## Druid — Heart of Yggdrasil (0.12.0)
+## Druid — Heart of Yggdrasil (0.6.0)
 
 | Yuva | Eski | Yeni | Ne değişti | Otomasyon |
 |---|---|---|---|---|
@@ -116,7 +116,7 @@ Not: Crown'un hasar yetenekleri artık force yerine radiant.
 | AV | Avatar of Yggdrasil | **Avatar of Yggdrasil** | Silah/Wild Shape saldırılarına +1d8 poison; Wild Shape kullanımı harcanmaz; hover eklendi. Müttefik iyileştirmesi kaldırıldı | Kısmen (uçuş, hover, resistance, poison) |
 | SIG | World Reborn | **World Reborn** | Değişmedi | Kısmen (durum temizleme) |
 
-## Bard — Lyre of the First Song (0.13.0)
+## Bard — Lyre of the First Song (0.6.0)
 
 | Yuva | Eski | Yeni | Ne değişti | Otomasyon |
 |---|---|---|---|---|
@@ -131,7 +131,7 @@ Not: Crown'un hasar yetenekleri artık force yerine radiant.
 | AV | First Song Incarnate | **First Song Incarnate** | BI vermek bonus action istemez; BI başarıdan sonra da kullanılabilir; hover eklendi. Korku/charm advantage kaldırıldı | Kısmen (uçuş, hover, resistance) |
 | SIG | The First Song | **The First Song** | Değişmedi | Kısmen (bonuslar, charmed) |
 
-## Barbarian — Girdle of the Unbroken (0.14.0)
+## Barbarian — Girdle of the Unbroken (0.6.0)
 
 | Yuva | Eski | Yeni | Ne değişti | Otomasyon |
 |---|---|---|---|---|
@@ -146,7 +146,7 @@ Not: Crown'un hasar yetenekleri artık force yerine radiant.
 | AV | Avatar of the Unbroken | **Avatar of the Unbroken** | Değişmedi | Kısmen |
 | SIG | Heart That Refuses | **Heart That Refuses** | Değişmedi | Kısmen |
 
-## Fighter — Aegis of the Dawn (0.15.0)
+## Fighter — Aegis of the Dawn (0.6.0)
 
 | Yuva | Eski | Yeni | Ne değişti | Otomasyon |
 |---|---|---|---|---|
@@ -161,14 +161,14 @@ Not: Crown'un hasar yetenekleri artık force yerine radiant.
 | AV | Dawn Incarnate | **Dawn Incarnate** | İkinci Weapon Mastery özelliği; hover eklendi | Kısmen (uçuş, hover, resistance, radiant) |
 | SIG | Last Sunrise | **Last Sunrise** | Değişmedi | Kısmen |
 
-## Warlock — Chains of the Patron (0.16.0)
+## Warlock — Chains of the Patron (0.6.0)
 
 | Yuva | Eski | Yeni | Ne değişti | Otomasyon |
 |---|---|---|---|---|
 | P1 | Borrowed Power | **Borrowed Power** | Değişmedi | Otomatik |
 | P2 | Read the Fine Print | **Pact Reservoir** | Initiative'de bir Pact Magic slot'u geri | Otomatik |
 | P3 | Price Paid | **Binding Ward** | Turda bir kez Pact slot'u harcayınca Warlock seviyesi + relic bonus temp HP | Otomatik |
-| P4 | No Master But the Price | **Forbidden Lore** | Charmed ve frightened olmaz, spell save DC +1 (0.18.0; ek Eldritch Invocation Eldritch Adept'le çakışıyordu) | Otomatik |
+| P4 | No Master But the Price | **Forbidden Lore** | Charmed ve frightened olmaz, spell save DC +1 (0.7.1; ek Eldritch Invocation Eldritch Adept'le çakışıyordu) | Otomatik |
 | A1 | Patron's Glance | **Unbroken Pact** | Reaction: Warlock büyüsündeki konsantrasyon bozulmaz | GM |
 | A2 | Borrowed Ruin | **Borrowed Ruin** | Değişmedi | Otomatik (hasar) |
 | A3 | Chain of Binding | **Chain of Binding** | Action yerine Bonus Action | Otomatik (STR save, Restrained) |
@@ -176,7 +176,7 @@ Not: Crown'un hasar yetenekleri artık force yerine radiant.
 | AV | Avatar of the Pact | **Avatar of the Pact** | Değişmedi | Kısmen |
 | SIG | Price of Eternity | **Price of Eternity** | Değişmedi | Kısmen |
 
-## Cleric — Vestments of the First Saint (0.17.0)
+## Cleric — Vestments of the First Saint (0.6.0)
 
 | Yuva | Eski | Yeni | Ne değişti | Otomasyon |
 |---|---|---|---|---|
@@ -200,5 +200,5 @@ Not: Crown'un hasar yetenekleri artık force yerine radiant.
 | 0.6.0 | Final Form'daki relic'lerde temp HP ve Focus gibi ölçeklenen yardımcılar +3 (Exalted) yerine +5 kullanıyor. |
 | 0.6.0 | Hover, DAE açıkken hiçbir uçuşta açılmıyordu. Artık CUSTOM modda yazılıp modül tarafından uygulanıyor. |
 | 0.6.0 | Hasar yetenekleri sabit zar yerine formül atabiliyor (ör. `4@scale.monk.die`). |
-| 0.9.0 | Yetenekler bir sınıf özelliğinin kullanımlarını kimliğiyle geri yükleyebiliyor (Focus, Sorcery Point, Rage, Wild Shape vb.). |
-| 0.13.0 | Sohbet kartından kullanılan yetenek önce kartın kaydettiği activity'den okunuyor. Eskiden aynı rozetli ya da adı relic adının içinde geçen yetenekler karışıyordu. |
+| 0.6.0 | Yetenekler bir sınıf özelliğinin kullanımlarını kimliğiyle geri yükleyebiliyor (Focus, Sorcery Point, Rage, Wild Shape vb.). |
+| 0.6.0 | Sohbet kartından kullanılan yetenek önce kartın kaydettiği activity'den okunuyor. Eskiden aynı rozetli ya da adı relic adının içinde geçen yetenekler karışıyordu. |
