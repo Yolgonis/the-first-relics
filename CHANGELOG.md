@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.18.0
+
+- Relic features that repeated a feat from the campaign's sources were replaced:
+  - Mantle of the First Seer: Perfect Concentration (War Caster) becomes Unshaken Mind: the relic bonus on concentration saves and psychic resistance, automated.
+  - Blood of the First Dragon: Draconic Blood (+1 hit point per level, Tough) now gives fire resistance and the relic bonus on Constitution saves, automated.
+  - Bands of the Inner Dragon: Dragon Hide (+Monk level hit points, Tough) now grants Wisdom modifier + relic bonus temporary hit points at the start of each of your turns in combat, automated. Dragon's Grip loses the free movement of a grappled creature (Grappler); a creature you grapple can't take reactions instead.
+  - Chains of the Patron: Forbidden Lore (an extra Eldritch Invocation, Eldritch Adept) now makes you immune to charmed and frightened and raises your spell save DC by 1, automated.
+
 ## v0.17.1
 
 - Foundry v14 / dnd5e 6 support: relic abilities used from their dnd5e usage card ran no helper (no Focus, Sorcery Points, temporary hit points, slots and so on), because dnd5e 6 cards carry the activity in `message.system.activity` and have empty content and flags. The ability is now read from the card's activity first; the old flag, name and badge matching remains for dnd5e 5 cards. Fey Step and the Cloak quick-use routing use the same lookup.

@@ -26,10 +26,11 @@ export default {
   },
   /** Always-on passives as Active Effects: passive index -> { changes, aura?, note? }. */
   passiveEffects: {
-    2: { changes: [["system.attributes.hp.bonuses.overall", "ADD", "+@classes.monk.levels"]] },
     // dnd5e has no unarmed-only damage bonus, so the bonus applies to all melee weapon attacks.
     3: { changes: [["system.bonuses.mwak.damage", "ADD", "+{bonus}[force]"]], note: "meleeWeapon" }
   },
+  /** Passives run by hooks in 27-passive-triggers.js: passive index -> { note? }. */
+  passiveTriggers: { 2: {} },
   /** Active Effect changes applied when an ability is used, by slot. `bonus` is the stage bonus. */
   abilityEffects: ({ bonus, add, upgrade, override, custom }) => ({
     active3: [{ key: "system.attributes.ac.bonus", mode: add, value: "+5", priority: 20 }],

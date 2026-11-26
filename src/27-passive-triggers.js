@@ -577,13 +577,26 @@ async function TFRInnerDragonTurnFocus(combat) {
   await TFRRegainFocus(actor, 1, TFRT("Inner Dragon Manifest"));
 }
 
+// ---- Turn start: Dragon Hide (Bands of the Inner Dragon) grants temporary hit points ----
+
+async function TFRDragonHideTurn(combat) {
+  const actor = combat?.started ? combat.combatant?.actor : null;
+  const bands = TFRActivePassiveItem(actor, "bands_inner_dragon", 2);
+  if (!bands) return;
+  const wisdom = Number(actor.system?.abilities?.wis?.mod) || 0;
+  await TFRApplyTempHp(actor, Math.max(1, wisdom + await TFRPassiveRelicBonus(bands)), TFRT("Dragon Hide"));
+}
+
 export function TFRRegisterPassiveTriggers() {
   if (globalThis.__TFR_PASSIVE_TRIGGERS__) return;
   globalThis.__TFR_PASSIVE_TRIGGERS__ = true;
 
   Hooks.on("updateCombat", (combat, changed) => {
     if (!TFRIsResponsibleGM()) return;
-    if ("turn" in changed || "round" in changed) TFRInnerDragonTurnFocus(combat).catch(error => console.warn("The First Relics | Inner Dragon focus failed.", error));
+    if ("turn" in changed || "round" in changed) {
+      TFRInnerDragonTurnFocus(combat).catch(error => console.warn("The First Relics | Inner Dragon focus failed.", error));
+      TFRDragonHideTurn(combat).catch(error => console.warn("The First Relics | Dragon Hide failed.", error));
+    }
     if (!("round" in changed)) return;
     const run = combat.round === 1
       ? TFRStartCombatPassives(combat).then(() => TFRBannerOfOrder(combat))

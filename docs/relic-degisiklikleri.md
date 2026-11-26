@@ -13,9 +13,9 @@
 
 | Yuva | Eski | Yeni | Ne değişti | Otomasyon |
 |---|---|---|---|---|
-| P1 | Centered Mind | **Dragon's Grip** | Huge'a kadar grapple; kaçma denemelerine disadvantage; grapple ettiğini taşımak ek hareket harcatmaz | GM |
+| P1 | Centered Mind | **Dragon's Grip** | Huge'a kadar grapple; kaçma denemelerine disadvantage; grapple edilen yaratık reaksiyon alamaz (0.18.0'da Grappler'la çakışan taşıma maddesi çıktı) | GM |
 | P2 | Perfect Motion | **Breath Between Blows** | Monk özelliğine (Stunning Strike, grapple, shove) karşı save kaçıran olunca turda bir kez 1 Focus; short/long rest başına relic bonus kadar | GM |
-| P3 | Body Beyond Limits | **Dragon Hide** | HP maksimumu + Monk seviyesi | Otomatik |
+| P3 | Body Beyond Limits | **Dragon Hide** | Savaşta her turunun başında Wisdom modifier + relic bonus temp HP (0.18.0; eskiden HP maksimumu + Monk seviyesi, Tough'la çakışıyordu) | Otomatik |
 | P4 | Flow State | **Dragon's Fang** | Unarmed Strike ve Monk weapon isabetlerine relic bonus kadar force | Otomatik (bütün melee silah saldırılarına uygulanır) |
 | A1 | Dragon Breath | **Dragon Seizes** | Reaction: uzaklaşan ya da ıskalayan yaratığa Unarmed Strike ile Grapple | GM |
 | A2 | Iron Soul | **Still Breath** | Bonus Action: relic bonus + 1 Focus geri gelir | Otomatik |
@@ -43,7 +43,7 @@
 
 | Yuva | Eski | Yeni | Ne değişti | Otomasyon |
 |---|---|---|---|---|
-| P1 | Scholar's Insight | **Perfect Concentration** | Bütün konsantrasyon save'lerine advantage (eskiden yalnızca divination) | Otomatik |
+| P1 | Scholar's Insight | **Unshaken Mind** | Konsantrasyon save'lerine relic bonus, psychic resistance (0.18.0; Perfect Concentration War Caster'la aynıydı) | Otomatik |
 | P2 | Perfect Concentration | **Living Chronicle** | 1. seviye ve üstü her büyüde, turda bir kez proficiency + relic bonus temp HP; surprised olmaz | Kısmen (temp HP) |
 | P3 | Eyes Beyond Time | **Prepared Mind** | Initiative'de relic bonus seviyesine kadar bir slot geri; long rest başına bir kez | Otomatik |
 | P4 | Living Chronicle | **Arcane Edge** | Turda bir kez Wizard büyüsü hasarına INT + relic bonus | Otomatik |
@@ -59,7 +59,7 @@
 | Yuva | Eski | Yeni | Ne değişti | Otomasyon |
 |---|---|---|---|---|
 | P1 | Draconic Blood | **Wellspring** | Initiative'de relic bonus kadar Sorcery Point | Otomatik |
-| P2 | Ancient Scales | **Draconic Blood** | Eski P1 buraya taşındı (seviye başına +1 HP). Ancient Scales (+1 AC) kaldırıldı | Otomatik |
+| P2 | Ancient Scales | **Draconic Blood** | Fire resistance, Constitution save'lerine relic bonus (0.18.0; seviye başına +1 HP Tough'la çakışıyordu). Ancient Scales (+1 AC) kaldırıldı | Otomatik |
 | P3 | Unyielding Will | **Twin Heart** | Turda bir kez 1 SP'lik Metamagic ücretsiz; long rest başına relic bonus kadar | GM |
 | P4 | Dragon Soul | **Elemental Wrath** | Turda bir kez Sorcerer büyüsü hasarına CHA + relic bonus | Otomatik |
 | A1 | Draconic Roar | **Kindled Sorcery** | Aksiyonsuz: bir Innate Sorcery kullanımı geri | Otomatik |
@@ -168,7 +168,7 @@ Not: Crown'un hasar yetenekleri artık force yerine radiant.
 | P1 | Borrowed Power | **Borrowed Power** | Değişmedi | Otomatik |
 | P2 | Read the Fine Print | **Pact Reservoir** | Initiative'de bir Pact Magic slot'u geri | Otomatik |
 | P3 | Price Paid | **Binding Ward** | Turda bir kez Pact slot'u harcayınca Warlock seviyesi + relic bonus temp HP | Otomatik |
-| P4 | No Master But the Price | **Forbidden Lore** | Bir ek Eldritch Invocation | GM |
+| P4 | No Master But the Price | **Forbidden Lore** | Charmed ve frightened olmaz, spell save DC +1 (0.18.0; ek Eldritch Invocation Eldritch Adept'le çakışıyordu) | Otomatik |
 | A1 | Patron's Glance | **Unbroken Pact** | Reaction: Warlock büyüsündeki konsantrasyon bozulmaz | GM |
 | A2 | Borrowed Ruin | **Borrowed Ruin** | Değişmedi | Otomatik (hasar) |
 | A3 | Chain of Binding | **Chain of Binding** | Action yerine Bonus Action | Otomatik (STR save, Restrained) |

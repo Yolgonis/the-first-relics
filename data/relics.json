@@ -658,7 +658,7 @@
     ],
     "features": {
       "passives": [
-        "<strong>Perfect Concentration.</strong> You have advantage on Constitution saving throws made to maintain concentration.",
+        "<strong>Unshaken Mind.</strong> You add the relic bonus to Constitution saving throws made to maintain concentration, and you have resistance to psychic damage.",
         "<strong>Living Chronicle.</strong> Once per turn, when you cast a spell of 1st level or higher, you gain temporary hit points equal to your proficiency bonus + the relic bonus. You also can't be surprised while you are conscious.",
         "<strong>Prepared Mind.</strong> When you roll initiative, you regain one expended spell slot of a level no higher than the relic bonus. Once you use this feature, you can't use it again until you finish a long rest.",
         "<strong>Arcane Edge.</strong> Once per turn, when a wizard spell you cast deals damage, add your Intelligence modifier + the relic bonus to one damage roll of that spell."
@@ -1395,7 +1395,7 @@
         "<strong>Borrowed Power.</strong> Once per turn when you deal damage with Eldritch Blast, a pact weapon, or a warlock spell, add the relic bonus to one damage roll.",
         "<strong>Pact Reservoir.</strong> When you roll initiative, you regain one expended Pact Magic spell slot.",
         "<strong>Binding Ward.</strong> Once per turn, when you cast a spell using a Pact Magic spell slot, you gain temporary hit points equal to your warlock level + the relic bonus.",
-        "<strong>Forbidden Lore.</strong> While attuned to the relic, you know one additional Eldritch Invocation of your choice for which you meet the prerequisites. You can replace it when you finish a long rest."
+        "<strong>Forbidden Lore.</strong> The patron's secrets armor your mind. You can't be charmed or frightened, and your spell save DC increases by 1."
       ],
       "actives": [
         "<strong>Unbroken Pact.</strong> <em>Reaction, 1 charge.</em> When you would lose concentration on a warlock spell, you keep concentrating on it instead.",
@@ -2439,9 +2439,9 @@
     ],
     "features": {
       "passives": [
-        "<strong>Dragon's Grip.</strong> You can grapple a creature of any size up to Huge. A creature grappled by you has disadvantage on checks it makes to escape the grapple, and moving a creature you are grappling costs you no extra movement.",
+        "<strong>Dragon's Grip.</strong> You can grapple a creature of any size up to Huge. A creature grappled by you has disadvantage on checks it makes to escape the grapple, and a creature grappled by you can't take reactions.",
         "<strong>Breath Between Blows.</strong> Once per turn, when a creature fails a saving throw against one of your Monk features (such as Stunning Strike) or against your Grapple or Shove, you regain 1 Focus Point. You can use this feature a number of times equal to the relic bonus, and you regain all uses when you finish a short or long rest.",
-        "<strong>Dragon Hide.</strong> Your hit point maximum increases by an amount equal to your Monk level.",
+        "<strong>Dragon Hide.</strong> At the start of each of your turns in combat, you gain temporary hit points equal to your Wisdom modifier + the relic bonus (minimum 1).",
         "<strong>Dragon's Fang.</strong> Your Unarmed Strikes and Monk weapon attacks deal extra force damage equal to the relic bonus."
       ],
       "actives": [
@@ -3832,7 +3832,7 @@
     "features": {
       "passives": [
         "<strong>Wellspring.</strong> When you roll initiative, you regain Sorcery Points equal to the relic bonus.",
-        "<strong>Draconic Blood.</strong> Your hit point maximum increases by 1 for each of your character levels.",
+        "<strong>Draconic Blood.</strong> You have resistance to fire damage, and you add the relic bonus to your Constitution saving throws.",
         "<strong>Twin Heart.</strong> Once per turn, you can apply a Metamagic option that costs 1 Sorcery Point without spending it. You can use this feature a number of times equal to the relic bonus, and you regain all uses when you finish a long rest.",
         "<strong>Elemental Wrath.</strong> Once per turn, when a sorcerer spell you cast deals damage, add your Charisma modifier + the relic bonus to one damage roll of that spell."
       ],

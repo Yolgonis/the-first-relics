@@ -25,7 +25,7 @@ export default {
   },
   /** Always-on passives as Active Effects: passive index -> { changes, aura?, note? }. */
   passiveEffects: {
-    1: { changes: [["system.attributes.hp.bonuses.level", "ADD", "+1"]] }
+    1: { changes: [["system.traits.dr.value", "ADD", "fire"], ["system.abilities.con.bonuses.save", "ADD", "+{bonus}"]] }
   },
   /** Passives run by hooks in 27-passive-triggers.js: passive index -> { note? }. */
   passiveTriggers: { 0: {}, 3: {} },

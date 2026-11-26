@@ -26,7 +26,7 @@ export default {
   },
   /** Always-on passives as Active Effects: passive index -> { changes, aura?, note? }. */
   passiveEffects: {
-    0: { changes: [["system.attributes.concentration.roll.mode", "ADD", "1"]] }
+    0: { changes: [["system.attributes.concentration.bonuses.save", "ADD", "+{bonus}"], ["system.traits.dr.value", "ADD", "psychic"]] }
   },
   /** Passives run by hooks in 27-passive-triggers.js: passive index -> { note? }. */
   passiveTriggers: { 1: { note: "chronicle" }, 2: {}, 3: {} },

@@ -24,6 +24,10 @@ export default {
     avatar: { role: "self-buff", effect: true, note: "Pact avatar effect/reminder." },
     signature: { role: "save-control-signature", note: "CHA save against Price of Eternity." }
   },
+  /** Always-on passives as Active Effects: passive index -> { changes, aura?, note? }. */
+  passiveEffects: {
+    3: { changes: [["system.traits.ci.value", "ADD", "charmed"], ["system.traits.ci.value", "ADD", "frightened"], ["system.bonuses.spell.dc", "ADD", "+1"]] }
+  },
   /** Passives run by hooks in 27-passive-triggers.js: passive index -> { note? }. */
   passiveTriggers: { 0: { note: "borrowed" }, 1: {}, 2: {} },
   /** Active Effect changes applied when an ability is used, by slot. `bonus` is the stage bonus. */
