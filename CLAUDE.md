@@ -37,7 +37,7 @@ pwsh tools/package.ps1
 
 ## Lisans
 
-`LICENSE.md` ticari kişisel kullanım lisansı: yeniden dağıtım, satış, değiştirilmiş sürüm yayınlama ve yapay zekâ eğitimi yasak.
+`LICENSE.md` MIT (26.11.2026'da ticari lisanstan açık kaynağa geçildi). Sürümler GitHub release ile çıkar: `v<sürüm>` etiketiyle release yayınlanınca `.github/workflows/release.yml` module.json ve module.zip'i ekler.
 
 ## Notlar
 

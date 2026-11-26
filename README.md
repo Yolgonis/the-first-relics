@@ -30,9 +30,17 @@ The First Relics is designed as a Foundry-ready relic toolkit, not a replacement
 
 ## Artwork Disclosure
 
-The relic item icons in `art/icons/v1/` are AI-assisted painted PNG assets prepared for this module. They are licensed for use as part of The First Relics package and are not sold as a standalone art or asset pack.
+The relic item icons in `art/icons/v1/` are AI-assisted painted PNG assets prepared for this module. They are released under the same MIT license as the rest of the module.
 
 ## Installation
+
+In Foundry, open **Add-on Modules → Install Module** and paste this into **Manifest URL**:
+
+```
+https://github.com/Yolgonis/the-first-relics/releases/latest/download/module.json
+```
+
+To install by hand instead:
 
 1. In your Foundry `Data/modules/` directory, create a folder named `the-first-relics`.
 2. Extract the release zip into that folder, so that `module.json` sits directly inside `Data/modules/the-first-relics/`.
@@ -67,6 +75,6 @@ See `CHANGELOG.md` for the full development history.
 
 ## License and Use
 
-See `LICENSE.md`.
+MIT. See `LICENSE.md`. Issues and pull requests are welcome.
 
 This package is an independent module for Foundry Virtual Tabletop and is not affiliated with Foundry Gaming LLC, Wizards of the Coast, Hasbro, or any other third-party rights holder.

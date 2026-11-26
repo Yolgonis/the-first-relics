@@ -1,26 +1,21 @@
-# The First Relics License
+MIT License
 
-Copyright (c) 2026 Yolgonis. All rights reserved.
+Copyright (c) 2026 Yolgonis
 
-Purchasing or receiving this package grants you a personal license to install and use The First Relics in your own Foundry Virtual Tabletop games.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-The included icon artwork is AI-assisted and is licensed only as part of this module package. The artwork, text, code, and data are not sold or licensed as standalone asset packs.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-You may:
-
-- Install the module in your own Foundry VTT worlds.
-- Use the relics, automation, text, and artwork in private tabletop sessions.
-- Modify the module for your own table.
-- Record, stream, or publish actual-play sessions that use the module.
-
-You may not:
-
-- Redistribute, resell, sublicense, reupload, or share the module files.
-- Extract and reuse the artwork, text, code, or data as a separate asset pack or product.
-- Publish modified versions of the module.
-- Claim affiliation with Foundry Gaming LLC, Wizards of the Coast, Hasbro, or any other third-party rights holder.
-- Use The First Relics or its assets to train, fine-tune, or build generative AI models or datasets.
-
-This module is provided as-is. No warranty is provided.
-
-Foundry Virtual Tabletop is a trademark of Foundry Gaming LLC. This package is an independent work and is not affiliated with, endorsed by, or sponsored by Foundry Gaming LLC, Wizards of the Coast, or Hasbro.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
